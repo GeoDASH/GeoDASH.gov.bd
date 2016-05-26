@@ -29,11 +29,15 @@ from django.utils.translation import ugettext as _
 from django.contrib.sites.models import Site
 from django.conf import settings
 from django.http import HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import auth, messages
 
 from geonode.people.models import Profile
 from geonode.people.forms import ProfileForm
 from geonode.people.forms import ForgotUsernameForm
 from geonode.tasks.email import send_email
+from account.views import SignupView
+from account.utils import default_redirect
 
 
 @login_required
@@ -74,8 +78,14 @@ def profile_detail(request, username):
     profile = get_object_or_404(Profile, username=username)
     # combined queryset from each model content type
 
+    if profile.is_active:
+        status = "Inactivate User"
+    else:
+        status = "Activate User"
+
     return render(request, "people/profile_detail.html", {
         "profile": profile,
+        "status": status,
     })
 
 
@@ -112,3 +122,46 @@ def forgot_username(request):
                                   'message': message,
                                   'form': username_form
                               }))
+
+
+class CreateUser(SignupView):
+    template_name = "account/create_user.html"
+
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated() and self.request.user.is_superuser:
+            return super(SignupView, self).get(*args, **kwargs)
+        elif self.request.user.is_authenticated():
+            return redirect(default_redirect(self.request, settings.ACCOUNT_LOGIN_REDIRECT_URL))
+        if not self.is_open():
+            return self.closed()
+        return HttpResponseRedirect(reverse('account_signup'))
+
+    def post(self, *args, **kwargs):
+        if not self.is_open():
+            return self.closed()
+        return super(SignupView, self).post(*args, **kwargs)
+
+    def login_user(self):
+        user = self.request.user
+        if settings.ACCOUNT_USE_AUTH_AUTHENTICATE:
+            # call auth.authenticate to ensure we set the correct backend for
+            # future look ups using auth.get_user().
+            user = auth.authenticate(**self.user_credentials())
+        else:
+            # set auth backend to ModelBackend, but this may not be used by
+            # everyone. this code path is deprecated and will be removed in
+            # favor of using auth.authenticate above.
+            user.backend = "django.contrib.auth.backends.ModelBackend"
+        auth.login(self.request, user)
+        self.request.session.set_expiry(0)
+
+
+def activateuser(request, username):
+    if request.method == 'GET':
+        user = Profile.objects.get(username=username)
+        if user.is_active:
+            user.is_active = False
+        else:
+            user.is_active = True
+        user.save()
+        return HttpResponseRedirect(reverse('profile_detail', args=[username]))

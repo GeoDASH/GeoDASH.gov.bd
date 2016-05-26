@@ -157,6 +157,9 @@
     <ul class="list-group">
       <li class="list-group-item"><a href="{% url "profile_edit" profile.username %}"><i class="fa fa-edit"></i> {% trans "Edit profile" %}</a></li>
     </ul>
+    <ul class="list-group">
+      <li class="list-group-item"><a href="{% url "active-inactive-user" profile.username %}"><i class="fa fa-fire"></i> {% trans  "status"  %}</a></li>
+    </ul>
     {% endif %}
     <ul class="list-group">
       <li class="list-group-item"><a href="{% actor_url profile %}"><i class="fa fa-fire"></i> {% trans "User Activities" %}</a></li>
