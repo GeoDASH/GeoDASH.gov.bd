@@ -153,6 +153,8 @@ class GroupProfile(models.Model):
     def can_invite(self, user):
         if not user.is_authenticated():
             return False
+        if user.is_superuser:
+            return True
         return self.user_is_role(user, "manager")
 
     def join(self, user, **kwargs):
@@ -259,7 +261,8 @@ class GroupInvitation(models.Model):
         subject = render_to_string("groups/email/invite_user_subject.txt", ctx)
         message = render_to_string("groups/email/invite_user.txt", ctx)
         # TODO Send a notification rather than a mail
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.email])
+        from_mail = from_user.email
+        send_mail(subject, message, from_mail, [self.email])
 
     def accept(self, user):
         if not user.is_authenticated() or user == user.get_anonymous():

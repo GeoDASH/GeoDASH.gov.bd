@@ -129,7 +129,7 @@ def group_members(request, slug):
             "public-invite",
             "private"] and group.user_is_role(
             request.user,
-            "manager"):
+            "manager") or request.user.is_superuser:
         ctx["invite_form"] = GroupInviteForm()
 
     if group.user_is_role(request.user, "manager") or request.user.is_superuser:

@@ -210,7 +210,7 @@
               <li><a href="{% url "layer_upload" %}"><i class="fa fa-cloud-upload"></i> {% trans "Upload Layers" %}</a></li>
               <li class="modal-divider"></li>
               <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
-            {% if request.user.is_superuser %}
+            {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
               <li><a href="{% url "create-user" %}"><i class="fa fa-fire"></i> {% trans "Create User" %}</a></li>
             {% endif %}
               <li><a href="{% url "recent-activity" %}"><i class="fa fa-fire"></i> {% trans "Recent Activity" %}</a></li>

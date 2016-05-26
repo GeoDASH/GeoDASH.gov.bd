@@ -128,7 +128,7 @@ class CreateUser(SignupView):
     template_name = "account/create_user.html"
 
     def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated() and self.request.user.is_superuser:
+        if self.request.user.is_authenticated() and (self.request.user.is_superuser or self.request.user.is_manager_of_any_group):
             return super(SignupView, self).get(*args, **kwargs)
         elif self.request.user.is_authenticated():
             return redirect(default_redirect(self.request, settings.ACCOUNT_LOGIN_REDIRECT_URL))
