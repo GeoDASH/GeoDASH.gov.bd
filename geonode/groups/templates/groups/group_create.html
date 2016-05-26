@@ -22,6 +22,8 @@
         <fieldset>
             {{ form|as_bootstrap }}
             <div class="form_block">
+                <a href="{% url "create-user" %}" class="btn btn-primary pull-left">{% trans "Or Create New Admin" %}</a>
+                <br><br>
                 <input type="hidden" name="action" value="create" />
                 <input type="submit" class="btn btn-primary" value="{% trans 'Create' %}"/>
             </div>

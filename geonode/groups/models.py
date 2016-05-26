@@ -132,7 +132,7 @@ class GroupProfile(models.Model):
             id__in=self.member_queryset().filter(
                 role='manager').values_list(
                 "user",
-                flat=True))
+                flat=True)).filter(is_active=True)
 
     def user_is_member(self, user):
         if not user.is_authenticated():
@@ -158,11 +158,13 @@ class GroupProfile(models.Model):
     def join(self, user, **kwargs):
         if user == user.get_anonymous():
             raise ValueError("The invited user cannot be anonymous")
+        role = kwargs['role']
         member, created = GroupMember.objects.get_or_create(group=self, user=user, defaults=kwargs)
-        if created:
-            user.groups.add(self.group)
+        if member:
+            member.role = role
+            member.save()
         else:
-            raise ValueError("The invited user \"{0}\" is already a member".format(user.username))
+            user.groups.add(self.group)
 
     def invite(self, user, from_user, role="member", send=True):
         params = dict(role=role, from_user=from_user)

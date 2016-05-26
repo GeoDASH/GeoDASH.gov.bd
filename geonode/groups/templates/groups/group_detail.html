@@ -49,7 +49,7 @@
   </div>
   <div class="col-md-4">
     <ul class="list-group">
-      {% if is_manager %}
+      {% if is_manager or request.user.is_superuser %}
       <li class="list-group-item"><a href="{% url "group_update" object.slug %}">{% trans "Edit Group Details" %}</a></li>
       <li class="list-group-item"><a href="{% url "group_members" object.slug %}">{% trans "Manage Group Members" %}</a></li>
       <li class="list-group-item"><a href="{% url "group_remove" object.slug %}">{% trans "Delete this Group" %}</a></li>
