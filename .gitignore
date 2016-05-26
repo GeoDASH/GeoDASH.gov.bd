@@ -10,6 +10,12 @@ dist
 # supporting stuff pulled in by paver script
 geonode/development.db
 /geoserver/
+migrations/
+python
+uploaded.zip
+uploaded_bk
+
+
 downloaded
 
 docs/i18n/pot/
