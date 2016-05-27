@@ -136,6 +136,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
             'mosaics': mosaics,
             'charsets': CHARSETS,
             'is_layer': True,
+            'allowed_file_types': ['.cst', '.dbf', '.prj', '.shp', '.shx'],
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':
