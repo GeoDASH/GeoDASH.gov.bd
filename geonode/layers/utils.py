@@ -355,7 +355,7 @@ def extract_tarfile(upload_file, extension='.shp', tempdir=None):
     return absolute_base_file
 
 
-def file_upload(filename, name=None, user=None, title=None, abstract=None,
+def file_upload(filename, name=None, group=None, user=None, title=None, abstract=None,
                 keywords=[], category=None, regions=[], date=None,
                 skip=True, overwrite=False, charset='UTF-8',
                 metadata_uploaded_preserve=False):
@@ -421,7 +421,8 @@ def file_upload(filename, name=None, user=None, title=None, abstract=None,
         'bbox_y0': bbox_y0,
         'bbox_y1': bbox_y1,
         'is_published': is_published,
-        'category': category
+        'category': category,
+        'last_group': group,
     }
 
     # set metadata
