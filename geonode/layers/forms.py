@@ -174,9 +174,11 @@ class NewLayerUploadForm(LayerUploadForm):
     xml_file = forms.FileField(required=False)
 
     abstract = forms.CharField(required=False)
-    layer_title = forms.CharField(required=False)
+    layer_title = forms.CharField(required=True)
     permissions = JSONField()
     charset = forms.CharField(required=False)
+    category = forms.CharField(required=True)
+    organization = forms.CharField(required=True)
     metadata_uploaded_preserve = forms.BooleanField(required=False)
 
     spatial_files = (
