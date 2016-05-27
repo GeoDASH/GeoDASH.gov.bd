@@ -130,8 +130,11 @@ class Layer(ResourceBase):
         ("PENDING", _("Pending")),
         ("ACTIVE", _("Active")),
         ("INACTIVE", _("Inactive")),
-        ("DENIED", _("Denied"))],
+        ("DENIED", _("Denied")),
+        ("CANCELED", _("Canceled"))],
         default="DRAFT")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def is_vector(self):
         return self.storeType == 'dataStore'
@@ -279,6 +282,9 @@ class LayerSubmissionActivity(models.Model):
     group_admin = models.ForeignKey('people.Profile')
     iteration = models.IntegerField(default=0)
     is_audited = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = (('layer', 'group', 'group_admin', 'iteration'),)
@@ -300,7 +306,12 @@ class LayerAuditActivity(models.Model):
     result = models.CharField(max_length=15, choices=[
         ("APPROVED", _("Approved")),
         ("DECLEINED", _("Decleined")),
+        ("CANCELED", _("Canceled"))
     ])
+    comment = models.TextField(help_text=_('Comments when auditor denied layer submission'),
+                               blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
 
 class LayerStyles(models.Model):
