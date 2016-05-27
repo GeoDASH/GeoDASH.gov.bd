@@ -308,7 +308,9 @@ class LayerAuditActivity(models.Model):
         ("DECLEINED", _("Decleined")),
         ("CANCELED", _("Canceled"))
     ])
-    comment = models.TextField(help_text=_('Comments when auditor denied layer submission'),
+    comment_subject = models.CharField(max_length=300,
+                                       help_text=_('Comment type to approve or deny layer submission '))
+    comment_body = models.TextField(help_text=_('Comments when auditor denied or approved layer submission'),
                                blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
