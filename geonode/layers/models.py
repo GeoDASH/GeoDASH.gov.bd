@@ -128,7 +128,7 @@ class Layer(ResourceBase):
     status = models.CharField(max_length=10, choices=[
         ("DRAFT", _("Draft")),
         ("PENDING", _("Pending")),
-        ("ACTIVE", _("Pending")),
+        ("ACTIVE", _("Active")),
         ("INACTIVE", _("Inactive")),
         ("DENIED", _("Denied"))],
         default="DRAFT")
