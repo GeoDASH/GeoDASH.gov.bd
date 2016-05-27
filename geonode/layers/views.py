@@ -62,6 +62,7 @@ from geonode.security.views import _perms_info_json
 from geonode.documents.models import get_related_documents
 from geonode.utils import build_social_links
 from geonode.geoserver.helpers import cascading_delete, gs_catalog
+from geonode.groups.models import GroupProfile
 
 CONTEXT_LOG_FILE = None
 
@@ -137,6 +138,8 @@ def layer_upload(request, template='upload/layer_upload.html'):
             'charsets': CHARSETS,
             'is_layer': True,
             'allowed_file_types': ['.cst', '.dbf', '.prj', '.shp', '.shx'],
+            'categories': TopicCategory.objects.all(),
+            'organizations': GroupProfile.objects.filter(groupmember__user=request.user),
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':
@@ -146,11 +149,15 @@ def layer_upload(request, template='upload/layer_upload.html'):
         out = {'success': False}
         if form.is_valid():
             title = form.cleaned_data["layer_title"]
+            category = form.cleaned_data["category"]
+            organization_id = form.cleaned_data["organization"]
+            group = GroupProfile.objects.get(id=organization_id)
             # Replace dots in filename - GeoServer REST API upload bug
             # and avoid any other invalid characters.
             # Use the title if possible, otherwise default to the filename
             if title is not None and len(title) > 0:
                 name_base = title
+                keywords = title.split()
             else:
                 name_base, __ = os.path.splitext(
                     form.cleaned_data["base_file"].name)
@@ -164,6 +171,9 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     base_file,
                     name=name,
                     user=request.user,
+                    category=category,
+                    group=group,
+                    keywords=keywords,
                     overwrite=False,
                     charset=form.cleaned_data["charset"],
                     abstract=form.cleaned_data["abstract"],
