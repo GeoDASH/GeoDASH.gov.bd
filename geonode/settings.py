@@ -196,7 +196,7 @@ SECRET_KEY = 'myv-y4#7j-d*p-__@j#*3z@!y24fz8%^z2v6atuy4bo9vqr1_a'
 ROOT_URLCONF = 'geonode.urls'
 
 # Site id in the Django sites framework
-SITE_ID = 1
+SITE_ID = 2
 
 # Login and logout urls override
 LOGIN_URL = '/account/login/'
@@ -300,7 +300,7 @@ INSTALLED_APPS = (
     'avatar',
     'dialogos',
     'agon_ratings',
-    #'notification',
+    'notification',
     'announcements',
     'actstream',
     'user_messages',
@@ -449,8 +449,8 @@ ACTSTREAM_SETTINGS = {
 
 # Settings for Social Apps
 REGISTRATION_OPEN = True
-ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
+ACCOUNT_EMAIL_CONFIRMATION_EMAIL = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_APPROVAL_REQUIRED = False
 
 # Email for users to contact admins.
