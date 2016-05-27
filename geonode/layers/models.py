@@ -123,6 +123,15 @@ class Layer(ResourceBase):
         null=True,
         blank=True,
         related_name='layer_set')
+    last_group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    status = models.CharField(max_length=10, choices=[
+        ("DRAFT", _("Draft")),
+        ("PENDING", _("Pending")),
+        ("ACTIVE", _("Pending")),
+        ("INACTIVE", _("Inactive")),
+        ("DENIED", _("Denied"))],
+        default="DRAFT")
 
     def is_vector(self):
         return self.storeType == 'dataStore'
@@ -258,6 +267,40 @@ class Layer(ResourceBase):
     @property
     def class_name(self):
         return self.__class__.__name__
+
+
+class LayerSubmissionActivity(models.Model):
+    """
+    This model includes layer submission activityi
+    """
+
+    layer = models.ForeignKey('layers.Layer' )
+    group = models.ForeignKey('groups.GroupProfile')
+    group_admin = models.ForeignKey('people.Profile')
+    iteration = models.IntegerField(default=0)
+    is_audited = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (('layer', 'group', 'group_admin', 'iteration'),)
+
+    def __str__(self):
+        return self.layer.name
+
+    def save(self, *args, **kwargs):
+        self.iteration += 1
+        super(LayerSubmissionActivity, self).save(*args, **kwargs)
+
+
+class LayerAuditActivity(models.Model):
+    """
+    This model is for stacking layer audit activity
+    """
+
+    layer_submission_activity = models.ForeignKey(LayerSubmissionActivity)
+    result = models.CharField(max_length=15, choices=[
+        ("APPROVED", _("Approved")),
+        ("DECLEINED", _("Decleined")),
+    ])
 
 
 class LayerStyles(models.Model):
