@@ -588,7 +588,7 @@ class MapSubmissionActivity(models.Model):
         unique_together = (('map', 'group', 'iteration'),)
 
     def __str__(self):
-        return self.layer.name
+        return self.map.name
 
 
 class MapAuditActivity(models.Model):

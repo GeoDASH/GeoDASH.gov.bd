@@ -923,7 +923,7 @@ def map_publish(request, map_pk):
             return HttpResponse("Map does not exist")
         else:
             if request.user != map.owner:
-                return HttpResponse('you are not allowed to publish this layer')
+                return HttpResponse('you are not allowed to publish this map')
             group = map.group
             map.status = 'PENDING'
             map.current_iteration += 1
