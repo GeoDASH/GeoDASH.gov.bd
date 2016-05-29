@@ -114,6 +114,10 @@ class Profile(AbstractUser):
     def is_manager_of_any_group(self):
         return GroupProfile.objects.filter(groupmember__user=self, groupmember__role="manager").exists()
 
+    @property
+    def is_member_of_any_group(self):
+        return GroupProfile.objects.filter(groupmember__user=self, groupmember__role="member").exists()
+
     def keyword_list(self):
         """
         Returns a list of the Profile's keywords.
