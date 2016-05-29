@@ -522,7 +522,7 @@ class LayerResource(CommonModelApi):
     """Layer API"""
 
     class Meta(CommonMetaApi):
-        queryset = Layer.objects.distinct().order_by('-date')
+        queryset = Layer.objects.distinct().order_by('-date').filter(status='ACTIVE')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'layers'
