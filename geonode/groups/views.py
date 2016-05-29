@@ -28,11 +28,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import ListView
 
 from actstream.models import Action
+from guardian.models import UserObjectPermission
 
 from geonode.groups.forms import GroupInviteForm, GroupForm, GroupUpdateForm, GroupMemberForm
 from geonode.groups.models import GroupProfile, GroupInvitation, GroupMember
 from geonode.people.models import Profile
 from geonode.base.libraries.decorators import superuser_check
+from geonode.layers.models import Layer
 
 @login_required
 @user_passes_test(superuser_check)
@@ -158,7 +160,20 @@ def group_members_add(request, slug):
     if form.is_valid():
         role = form.cleaned_data["role"]
         for user in form.cleaned_data["user_identifiers"]:
+            try:
+                group_member = GroupMember.objects.get(group=group, user=user)
+            except GroupMember.DoesNotExist:
+                pass
+            else:
+                if group_member.role == 'manager':
+                    permissions = UserObjectPermission.objects.filter(user=user)
+                    for layer in Layer.objects.filter(group=group):
+                        if layer.owner != user:
+                            permissions.filter(object_pk=layer.pk).delete()
             group.join(user, role=role)
+        if role == 'manager':
+            for layer in Layer.objects.filter(group=group):
+                layer.set_managers_permissions()
 
     return redirect("group_detail", slug=group.slug)
 
@@ -171,7 +186,13 @@ def group_member_remove(request, slug, username):
     if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
         return HttpResponseForbidden()
     else:
-        GroupMember.objects.get(group=group, user=user).delete()
+        group_member = GroupMember.objects.get(group=group, user=user)
+        if group_member.role == 'manager':
+            permissions = UserObjectPermission.objects.filter(user=user)
+            for layer in Layer.objects.filter(group=group):
+                if layer.owner != user:
+                    permissions.filter(object_pk=layer.pk).delete()
+        group_member.delete()
         user.groups.remove(group.group)
         return redirect("group_detail", slug=group.slug)
 
