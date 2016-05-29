@@ -16,6 +16,24 @@
 
 <div class="col-md-8">
   <form id="upload_form"  method="post" enctype="multipart/form-data" action="{% url "document_upload" %}">
+
+      <section >
+      <p>{% trans "Select organization:" %}</p>
+      <select id= "org-id" name="org-id">
+        {% for organization in ogranizations %}
+        <option  value={{ organization.id }} >{{ organization.title }}</option>
+        {% endfor %}
+       </select>
+       </section><br>
+        <p>{% trans "Select category:" %}</p>
+      <section>
+      <select id= "category-id" name="category-id">
+        {% for category in categories %}
+        <option  value={{ category.gn_description }} >{{ category.gn_description }}</option>
+        {% endfor %}
+       </select>
+      </section><br>
+
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
     {{ form.as_p }}
     <button type="submit" id="upload-button" class="btn btn-danger">Upload</button>
