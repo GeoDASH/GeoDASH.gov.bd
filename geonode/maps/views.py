@@ -39,6 +39,7 @@ except ImportError:
 from django.utils.html import strip_tags
 from django.db.models import F
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.contrib import messages
 
 from geonode.layers.models import Layer
 from geonode.maps.models import Map, MapLayer, MapSnapshot
@@ -59,6 +60,8 @@ from geonode.documents.models import get_related_documents
 from geonode.people.forms import ProfileForm
 from geonode.utils import num_encode, num_decode
 from geonode.utils import build_social_links
+from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
+from geonode.groups.models import GroupProfile
 
 if 'geonode.geoserver' in settings.INSTALLED_APPS:
     # FIXME: The post service providing the map_status object
@@ -106,6 +109,11 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
     The view that show details of each map
     '''
 
+    try:
+        user_role = request.GET['user_role']
+    except:
+        user_role=None
+
     map_obj = _resolve_map(request, mapid, 'base.view_resourcebase', _PERMISSION_MSG_VIEW)
 
     # Update count for popularity ranking,
@@ -120,6 +128,10 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
 
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
+    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
+    approve_comment_subjects = [line for line in approve_subjects_file ]
+    deny_subjects_file = open("geonode/deny_comment_subject.txt", "r")
+    deny_comment_subjects = [line for line in deny_subjects_file ]
 
     context_dict = {
         'config': config,
@@ -128,6 +140,11 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
         'perms_list': get_perms(request.user, map_obj.get_self_resource()),
         'permissions_json': _perms_info_json(map_obj),
         "documents": get_related_documents(map_obj),
+        "user_role": user_role,
+        "status": map_obj.status,
+        "approve_comment_subjects": approve_comment_subjects,
+        "denied_comments": MapAuditActivity.objects.filter(map_submission_activity__map=map_obj),
+        "deny_comment_subjects":deny_comment_subjects,
     }
 
     if settings.SOCIAL_ORIGINS:
@@ -417,7 +434,8 @@ def new_map_json(request):
             )
 
         map_obj = Map(owner=request.user, zoom=0,
-                      center_x=0, center_y=0)
+                      center_x=0, center_y=0,
+                      category=TopicCategory.objects.get(id=1), group=GroupProfile.objects.get(title='wasa')) #hardcoded for now
         map_obj.save()
         map_obj.set_default_permissions()
 
@@ -894,3 +912,123 @@ def map_metadata_detail(request, mapid, template='maps/map_metadata_detail.html'
         "mapid": mapid,
         'SITEURL': settings.SITEURL[:-1]
     }))
+
+
+@login_required
+def map_publish(request, map_pk):
+    if request.method == 'POST':
+        try:
+            map = Map.objects.get(id=map_pk)
+        except Map.DoesNotExist:
+            return HttpResponse("Map does not exist")
+        else:
+            if request.user != map.owner:
+                return HttpResponse('you are not allowed to publish this layer')
+            group = map.group
+            map.status = 'PENDING'
+            map.current_iteration += 1
+            map.save()
+            map_submission_activity = MapSubmissionActivity(map=map, group=group, iteration=map.current_iteration)
+            map_submission_activity.save()
+
+            # set all the permissions for all the managers of the group for this map
+            map.set_managers_permissions()
+
+            messages.info(request, 'published map succesfully')
+            return HttpResponseRedirect(reverse('member-workspace-map'))
+    else:
+        return HttpResponseRedirect(reverse('member-workspace-map'))
+
+
+@login_required
+def map_approve(request, map_pk):
+    if request.method == 'POST':
+        try:
+            map = Map.objects.get(id=map_pk)
+        except Map.DoesNotExist:
+            return HttpResponse("requested map does not exists")
+        else:
+            group = map.group
+            if request.user not in group.get_managers():
+                return HttpResponse("you are not allowed to approve this map")
+            map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
+            map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
+            comment_body = request.POST.get('comment')
+            comment_subject = request.POST.get('comment-subject')
+            map.status = 'ACTIVE'
+            map.last_auditor = request.user
+            map.save()
+
+            map_submission_activity.is_audited = True
+            map_submission_activity.save()
+
+            map_audit_activity.comment_subject = comment_subject
+            map_audit_activity.comment_body = comment_body
+            map_audit_activity.result = 'APPROVED'
+            map_audit_activity.auditor = request.user
+            map_audit_activity.save()
+
+        messages.info(request, 'approved map succesfully')
+        return HttpResponseRedirect(reverse('admin-workspace-map'))
+    else:
+        return HttpResponseRedirect(reverse('admin-workspace-map'))
+
+
+@login_required
+def map_deny(request, map_pk):
+    if request.method == 'POST':
+        try:
+            map = Map.objects.get(id=map_pk)
+        except:
+            return HttpResponse("requested map does not exists")
+        else:
+            group = map.group
+            if request.user not in group.get_managers():
+                return HttpResponse("you are not allowed to deny this map")
+            map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
+            map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
+            comment_body = request.POST.get('comment')
+            comment_subject = request.POST.get('comment-subject')
+            map.status = 'DENIED'
+            map.last_auditor = request.user
+            map.save()
+
+            map_submission_activity.is_audited = True
+            map_submission_activity.save()
+
+            map_audit_activity.comment_subject = comment_subject
+            map_audit_activity.comment_body = comment_body
+            map_audit_activity.result = 'DECLINED'
+            map_audit_activity.auditor = request.user
+            map_audit_activity.save()
+
+        messages.info(request, 'map denied successfully')
+        return HttpResponseRedirect(reverse('admin-workspace-map'))
+    else:
+        return HttpResponseRedirect(reverse('admin-workspace-map'))
+
+
+@login_required
+def map_delete(request, map_pk):
+    if request.method == 'POST':
+        try:
+            map = Map.objects.get(id=map_pk)
+        except:
+            return HttpResponse("requested map does not exists")
+        else:
+            if map.status == 'DRAFT' and ( request.user == map.owner or request.user in map.group.get_managers()):
+                map.status = "DELETED"
+                map.save()
+            else:
+                messages.info(request, 'you have no acces to delete the map')
+
+        messages.info(request, 'map deleted successfully')
+        if request.user.is_manager_of_any_group:
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
+        else:
+            return HttpResponseRedirect(reverse('member-workspace-map'))
+    else:
+        if request.user.is_manager_of_any_group:
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
+        else:
+            return HttpResponseRedirect(reverse('member-workspace-map'))

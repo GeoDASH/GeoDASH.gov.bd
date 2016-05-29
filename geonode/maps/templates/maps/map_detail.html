@@ -67,6 +67,22 @@
 
     <div class="col-md-4">
       <ul class="list-group">
+        {% if user_role == "member" %}
+            {% if status == 'DENIED' %}
+            <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button> <br>
+            {% include "map_templates/_deny_comments.html" %}
+            {% endif %}
+            <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_map">{% trans "Publish Map" %}</button> <br>
+            {% include "map_templates/_publish_map.html" %}
+        {% endif %}
+        {% if user_role == "manager" and status == 'PENDING' %}
+        <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button> <br>
+        {% include "map_templates/_deny_comments.html" %}
+        <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_map">{% trans "Approve Map" %}</button> <br>
+        {% include "map_templates/_approve_map.html" %}
+        <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_map">{% trans "Deney Map" %}</button> <br>
+        {% include "map_templates/_deny_map.html" %}
+        {% endif %}
         {% if "download_resourcebase" in perms_list %}
         <li class="list-group-item">
           <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#download-map">{% trans "Download Map" %}</button>
