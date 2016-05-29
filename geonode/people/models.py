@@ -110,6 +110,14 @@ class Profile(AbstractUser):
     def group_list_all(self):
         return GroupProfile.objects.filter(groupmember__user=self)
 
+    def group_list_with_default_check(self):
+        group_list = GroupProfile.objects.filter(groupmember__user=self)
+        default_group = GroupProfile.objects.get(slug='default')
+        if len(group_list) > 1 and default_group in group_list:
+            return group_list.exclude(slug='default')
+        else:
+            return group_list
+
     @property
     def is_manager_of_any_group(self):
         return GroupProfile.objects.filter(groupmember__user=self, groupmember__role="manager").exists()
