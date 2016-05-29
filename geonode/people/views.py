@@ -17,6 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
+from agon_ratings.categories import slug
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -32,12 +33,16 @@ from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth, messages
 
+from account import signals
+from account.forms import SignupForm
+from account.views import SignupView
+from account.utils import default_redirect
+
 from geonode.people.models import Profile
 from geonode.people.forms import ProfileForm
 from geonode.people.forms import ForgotUsernameForm
 from geonode.tasks.email import send_email
-from account.views import SignupView
-from account.utils import default_redirect
+from geonode.groups.models import GroupProfile, GroupMember
 
 
 @login_required
@@ -165,3 +170,17 @@ def activateuser(request, username):
             user.is_active = True
         user.save()
         return HttpResponseRedirect(reverse('profile_detail', args=[username]))
+
+
+class UserSignup(SignupView):
+    """
+    Extending  geonodes SignupView to override some functionality.
+    """
+
+    def after_signup(self, form):
+        """after signup add created user to default group """
+
+        signals.user_signed_up.send(sender=SignupForm, user=self.created_user, form=form)
+
+        default_group = get_object_or_404(GroupProfile, slug='default')
+        default_group.join(self.created_user, role='member')
