@@ -58,6 +58,9 @@ urlpatterns = patterns('',
                        # Layer views
                        (r'^layers/', include('geonode.layers.urls')),
 
+                       # workspace views
+                       (r'^workspace/', include('geonode.workspace.urls')),
+
                        # Map views
                        (r'^maps/', include('geonode.maps.urls')),
 
