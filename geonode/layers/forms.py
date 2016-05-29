@@ -60,7 +60,7 @@ class LayerForm(ResourceBaseForm):
             'upload_session',
             'service',
             'status',
-            'last_group',
+            'group',
             'last_auditor'
         )
 

@@ -39,6 +39,12 @@ urlpatterns = patterns(
     url(r'^(?P<layername>[^/]*)/thumbnail$', 'layer_thumbnail', name='layer_thumbnail'),
     url(r'^(?P<layername>[^/]*)/metadata_detail$', 'layer_metadata_detail', name='layer_metadata_detail'),
 
+    #layer publish activity urls
+    url(r'^(?P<layer_pk>[0-9]+)/publish$', 'layer_publish', name='layer-publish'),
+    url(r'^(?P<layer_pk>[0-9]+)/approve$', 'layer_approve', name='layer-approve'),
+    url(r'^(?P<layer_pk>[0-9]+)/deney$', 'layer_deney', name='layer-deney'),
+    url(r'^(?P<layer_pk>[0-9]+)/delete$', 'layer_delete', name='layer-delete'),
+
     # url(r'^api/batch_permissions/?$', 'batch_permissions',
     #    name='batch_permssions'),
     # url(r'^api/batch_delete/?$', 'batch_delete', name='batch_delete'),

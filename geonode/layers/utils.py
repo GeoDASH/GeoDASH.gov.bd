@@ -422,7 +422,7 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
         'bbox_y1': bbox_y1,
         'is_published': is_published,
         'category': category,
-        'last_group': group,
+        'group': group,
     }
 
     # set metadata

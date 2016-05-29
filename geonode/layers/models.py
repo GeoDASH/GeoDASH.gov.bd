@@ -123,14 +123,16 @@ class Layer(ResourceBase):
         null=True,
         blank=True,
         related_name='layer_set')
-    last_group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
     last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    current_iteration = models.IntegerField(default=0)
     status = models.CharField(max_length=10, choices=[
         ("DRAFT", _("Draft")),
         ("PENDING", _("Pending")),
         ("ACTIVE", _("Active")),
         ("INACTIVE", _("Inactive")),
         ("DENIED", _("Denied")),
+        ("DELETED", _("Deleted")),
         ("CANCELED", _("Canceled"))],
         default="DRAFT")
     date_created = models.DateTimeField(auto_now_add=True)
@@ -277,9 +279,8 @@ class LayerSubmissionActivity(models.Model):
     This model includes layer submission activityi
     """
 
-    layer = models.ForeignKey('layers.Layer' )
+    layer = models.ForeignKey('layers.Layer', related_name='layer_submission')
     group = models.ForeignKey('groups.GroupProfile')
-    group_admin = models.ForeignKey('people.Profile')
     iteration = models.IntegerField(default=0)
     is_audited = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -287,14 +288,10 @@ class LayerSubmissionActivity(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = (('layer', 'group', 'group_admin', 'iteration'),)
+        unique_together = (('layer', 'group', 'iteration'),)
 
     def __str__(self):
         return self.layer.name
-
-    def save(self, *args, **kwargs):
-        self.iteration += 1
-        super(LayerSubmissionActivity, self).save(*args, **kwargs)
 
 
 class LayerAuditActivity(models.Model):
@@ -308,6 +305,7 @@ class LayerAuditActivity(models.Model):
         ("DECLEINED", _("Decleined")),
         ("CANCELED", _("Canceled"))
     ])
+    auditor = models.ForeignKey('people.Profile')
     comment_subject = models.CharField(max_length=300,
                                        help_text=_('Comment type to approve or deny layer submission '))
     comment_body = models.TextField(help_text=_('Comments when auditor denied or approved layer submission'),
