@@ -327,7 +327,7 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
             all_granules = {"features": []}
     approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
     approve_comment_subjects = [line for line in approve_subjects_file ]
-    deney_subjects_file = open("geonode/deney_comment_subject.txt", "r")
+    deney_subjects_file = open("geonode/deny_comment_subject.txt", "r")
     deney_comment_subjects = [line for line in deney_subjects_file ]
     context_dict = {
         "resource": layer,
