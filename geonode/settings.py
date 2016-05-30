@@ -276,6 +276,9 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.gis',
 
+    # Social auth app
+    'social.apps.django_app.default',
+
     # Third party apps
 
     # Utility
@@ -375,6 +378,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # and GEOSERVER_BASE_URL to all pages that use a RequestContext
     'geonode.context_processors.resource_urls',
     'geonode.geoserver.context_processors.geoserver_urls',
+
+    # Template context processor for social auth
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -393,6 +400,9 @@ MIDDLEWARE_CLASSES = (
     # It sets temporary the involved layers as public before restoring the permissions.
     # Beware that for few seconds the involved layers are public there could be risks.
     # 'geonode.middleware.PrintProxyMiddleware',
+
+    # Middleware class for social auth
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 )
 
 
@@ -401,6 +411,10 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
+
+    # Authentication backend for facebook
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
 )
 
 ANONYMOUS_USER_ID = -1
@@ -450,8 +464,8 @@ ACTSTREAM_SETTINGS = {
 
 # Settings for Social Apps
 REGISTRATION_OPEN = True
-ACCOUNT_EMAIL_CONFIRMATION_EMAIL = True
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 ACCOUNT_APPROVAL_REQUIRED = False
 
 # Email for users to contact admins.
@@ -708,6 +722,7 @@ AUTH_EXEMPT_URLS = ()
 
 # A tuple of hosts the proxy can send requests to.
 PROXY_ALLOWED_HOSTS = ()
+ALLOWED_HOSTS = ['localhost']
 
 # The proxy to use when making cross origin requests.
 PROXY_URL = '/proxy/?url=' if DEBUG else None
