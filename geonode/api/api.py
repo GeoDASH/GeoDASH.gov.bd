@@ -297,6 +297,12 @@ class ProfileResource(TypeFilteredResource):
 
         return super(ProfileResource, self).serialize(request, data, format, options)
 
+    def get_object_list(self, request):
+        if request.user.is_superuser:
+            return super(ProfileResource, self).get_object_list(request).exclude(is_staff=True)
+        else:
+            return super(ProfileResource, self).get_object_list(request).filter(is_active=True).exclude(is_staff=True)
+
     class Meta:
         queryset = get_user_model().objects.exclude(username='AnonymousUser')
         resource_name = 'profiles'

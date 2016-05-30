@@ -210,6 +210,27 @@ class PermissionLevelMixin(object):
         # default permissions for resource owner
         set_owner_permissions(self)
 
+    def set_managers_permissions(self, manager=None):
+        """
+        assign all admin permissions to all the managers of the group for this layer
+        """
+
+        if manager:
+            for perm in LAYER_ADMIN_PERMISSIONS:
+                assign_perm(perm, manager, self.layer)
+
+            for perm in ADMIN_PERMISSIONS:
+                assign_perm(perm, manager, self.get_self_resource())
+        else:
+            managers = [member.user for member in self.group.groupmember_set.filter(role="manager")]
+            if self.polymorphic_ctype.name == 'layer':
+                for perm in LAYER_ADMIN_PERMISSIONS:
+                    for manager in managers:
+                        assign_perm(perm, manager, self.layer)
+            for perm in ADMIN_PERMISSIONS:
+                for manager in managers:
+                    assign_perm(perm, manager, self.get_self_resource())
+
 
 def set_owner_permissions(resource):
     """assign all admin permissions to the owner"""
@@ -227,17 +248,12 @@ def remove_object_permissions(instance):
     from guardian.models import UserObjectPermission, GroupObjectPermission
 
     if hasattr(instance, "layer"):
-        UserObjectPermission.objects.filter(content_type=ContentType.objects.get_for_model(instance),
-                                            object_pk=instance.id).delete()
-        GroupObjectPermission.objects.filter(content_type=ContentType.objects.get_for_model(instance),
-                                             object_pk=instance.id).delete()
+        UserObjectPermission.objects.filter(object_pk=instance.id).delete()
+        GroupObjectPermission.objects.filter(object_pk=instance.id).delete()
 
     resource = instance.get_self_resource()
-    UserObjectPermission.objects.filter(content_type=ContentType.objects.get_for_model(resource),
-                                        object_pk=instance.id).delete()
-    GroupObjectPermission.objects.filter(content_type=ContentType.objects.get_for_model(resource),
-                                         object_pk=instance.id).delete()
-
+    UserObjectPermission.objects.filter(object_pk=instance.id).delete()
+    GroupObjectPermission.objects.filter(object_pk=instance.id).delete()
 
 # Logic to login a user automatically when it has successfully
 # activated an account:

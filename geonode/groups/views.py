@@ -24,16 +24,20 @@ from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, Ht
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import ListView
 
 from actstream.models import Action
+from guardian.models import UserObjectPermission
 
 from geonode.groups.forms import GroupInviteForm, GroupForm, GroupUpdateForm, GroupMemberForm
 from geonode.groups.models import GroupProfile, GroupInvitation, GroupMember
-
+from geonode.people.models import Profile
+from geonode.base.libraries.decorators import superuser_check
+from geonode.layers.models import Layer
 
 @login_required
+@user_passes_test(superuser_check)
 def group_create(request):
     if request.method == "POST":
         form = GroupForm(request.POST, request.FILES)
@@ -41,7 +45,8 @@ def group_create(request):
             group = form.save(commit=False)
             group.save()
             form.save_m2m()
-            group.join(request.user, role="manager")
+            user = Profile.objects.get(id=request.POST['admin'])
+            group.join(user, role="manager")
             return HttpResponseRedirect(
                 reverse(
                     "group_detail",
@@ -58,7 +63,7 @@ def group_create(request):
 @login_required
 def group_update(request, slug):
     group = GroupProfile.objects.get(slug=slug)
-    if not group.user_is_role(request.user, role="manager"):
+    if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
         return HttpResponseForbidden()
 
     if request.method == "POST":
@@ -67,6 +72,9 @@ def group_update(request, slug):
             group = form.save(commit=False)
             group.save()
             form.save_m2m()
+            if request.POST['admin']:
+                user = Profile.objects.get(id=request.POST['admin'])
+                group.join(user, role="manager")
             return HttpResponseRedirect(
                 reverse(
                     "group_detail",
@@ -93,7 +101,7 @@ class GroupDetailView(ListView):
     group = None
 
     def get_queryset(self):
-        return self.group.member_queryset()
+        return self.group.member_queryset().filter(user__is_active=True)
 
     def get(self, request, *args, **kwargs):
         self.group = get_object_or_404(GroupProfile, slug=kwargs.get('slug'))
@@ -123,15 +131,15 @@ def group_members(request, slug):
             "public-invite",
             "private"] and group.user_is_role(
             request.user,
-            "manager"):
+            "manager") or request.user.is_superuser:
         ctx["invite_form"] = GroupInviteForm()
 
-    if group.user_is_role(request.user, "manager"):
+    if group.user_is_role(request.user, "manager") or request.user.is_superuser:
         ctx["member_form"] = GroupMemberForm()
 
     ctx.update({
         "group": group,
-        "members": group.member_queryset(),
+        "members": group.member_queryset().filter(user__is_active=True),
         "is_member": group.user_is_member(request.user),
         "is_manager": group.user_is_role(request.user, "manager"),
     })
@@ -144,7 +152,7 @@ def group_members(request, slug):
 def group_members_add(request, slug):
     group = get_object_or_404(GroupProfile, slug=slug)
 
-    if not group.user_is_role(request.user, role="manager"):
+    if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
         return HttpResponseForbidden()
 
     form = GroupMemberForm(request.POST)
@@ -152,7 +160,20 @@ def group_members_add(request, slug):
     if form.is_valid():
         role = form.cleaned_data["role"]
         for user in form.cleaned_data["user_identifiers"]:
+            try:
+                group_member = GroupMember.objects.get(group=group, user=user)
+            except GroupMember.DoesNotExist:
+                pass
+            else:
+                if group_member.role == 'manager':
+                    permissions = UserObjectPermission.objects.filter(user=user)
+                    for layer in Layer.objects.filter(group=group):
+                        if layer.owner != user:
+                            permissions.filter(object_pk=layer.pk).delete()
             group.join(user, role=role)
+        if role == 'manager':
+            for layer in Layer.objects.filter(group=group):
+                layer.set_managers_permissions()
 
     return redirect("group_detail", slug=group.slug)
 
@@ -162,10 +183,16 @@ def group_member_remove(request, slug, username):
     group = get_object_or_404(GroupProfile, slug=slug)
     user = get_object_or_404(get_user_model(), username=username)
 
-    if not group.user_is_role(request.user, role="manager"):
+    if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
         return HttpResponseForbidden()
     else:
-        GroupMember.objects.get(group=group, user=user).delete()
+        group_member = GroupMember.objects.get(group=group, user=user)
+        if group_member.role == 'manager':
+            permissions = UserObjectPermission.objects.filter(user=user)
+            for layer in Layer.objects.filter(group=group):
+                if layer.owner != user:
+                    permissions.filter(object_pk=layer.pk).delete()
+        group_member.delete()
         user.groups.remove(group.group)
         return redirect("group_detail", slug=group.slug)
 
@@ -233,7 +260,7 @@ def group_remove(request, slug):
             "groups/group_remove.html", RequestContext(request, {"group": group}))
     if request.method == 'POST':
 
-        if not group.user_is_role(request.user, role="manager"):
+        if not group.user_is_role(request.user, role="manager")and not request.user.is_superuser:
             return HttpResponseForbidden()
 
         group.delete()

@@ -36,4 +36,7 @@ class MapForm(ResourceBaseForm):
             'projection',
             'center_x',
             'center_y',
+            'status',
+            'group',
+            'last_auditor'
         )

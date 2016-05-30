@@ -64,10 +64,10 @@
            {% block extra_tab %}
            {% endblock %}
             <li id="nav_people">
-              <a href="{% url "profile_browse" %}">{% trans "People" %}</a>
+              <a href="{% url "profile_browse" %}">{% trans "Users" %}</a>
             </li>
             <li id="nav_groups">
-              <a href="{% url "group_list" %}">{% trans "Groups" %}</a>
+              <a href="{% url "group_list" %}">{% trans "Organizations" %}</a>
             </li>
             {% endblock %}
           </ul>
@@ -101,6 +101,12 @@
               <a href="#" data-toggle="modal" data-target="#SigninModal" role="button" >
                 {% trans "Sign in" %} 
               </a>
+            </li>
+            <li>
+            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+            </li>
+            <li>
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
             </li>
             {% endif %}
           </ul>
@@ -210,6 +216,18 @@
               <li><a href="{% url "layer_upload" %}"><i class="fa fa-cloud-upload"></i> {% trans "Upload Layers" %}</a></li>
               <li class="modal-divider"></li>
               <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
+            {% if request.user.is_authenticated %}
+                    {% if request.user.is_member_of_any_group or  request.user.is_manager_of_any_group or request.user.is_superuser %}
+                        <li><a href="{% url "member-workspace-layer" %}"><i class="fa fa-fire"></i> {% trans "Member-Workspace" %}</a></li>
+                    {% endif %}
+              {% endif %}
+
+              {% if request.user.is_authenticated and request.user.is_manager_of_any_group %}
+                <li><a href="{% url "admin-workspace-layer" %}"><i class="fa fa-fire"></i> {% trans "Admin-Workspace" %}</a></li>
+              {% endif %}
+            {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
+              <li><a href="{% url "create-user" %}"><i class="fa fa-fire"></i> {% trans "Create User" %}</a></li>
+            {% endif %}
               <li><a href="{% url "recent-activity" %}"><i class="fa fa-fire"></i> {% trans "Recent Activity" %}</a></li>
               <li><a href="{% url "messages_inbox" %}"><i class="fa fa-inbox"></i> {% trans "Inbox" %}</a></li>
               {% if USE_NOTIFICATIONS %}

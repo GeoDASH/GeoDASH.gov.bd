@@ -49,6 +49,9 @@ sitemaps = {
 
 urlpatterns = patterns('',
 
+                       # Social authentication
+                       url('', include('social.apps.django_app.urls', namespace='social')),
+
                        # Static pages
                        url(r'^/?$', TemplateView.as_view(template_name='index.html'), name='home'),
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
@@ -57,6 +60,9 @@ urlpatterns = patterns('',
 
                        # Layer views
                        (r'^layers/', include('geonode.layers.urls')),
+
+                       # workspace views
+                       (r'^workspace/', include('geonode.workspace.urls')),
 
                        # Map views
                        (r'^maps/', include('geonode.maps.urls')),

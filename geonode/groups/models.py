@@ -132,7 +132,7 @@ class GroupProfile(models.Model):
             id__in=self.member_queryset().filter(
                 role='manager').values_list(
                 "user",
-                flat=True))
+                flat=True)).filter(is_active=True)
 
     def user_is_member(self, user):
         if not user.is_authenticated():
@@ -153,16 +153,20 @@ class GroupProfile(models.Model):
     def can_invite(self, user):
         if not user.is_authenticated():
             return False
+        if user.is_superuser:
+            return True
         return self.user_is_role(user, "manager")
 
     def join(self, user, **kwargs):
         if user == user.get_anonymous():
             raise ValueError("The invited user cannot be anonymous")
+        role = kwargs['role']
         member, created = GroupMember.objects.get_or_create(group=self, user=user, defaults=kwargs)
-        if created:
-            user.groups.add(self.group)
+        if member:
+            member.role = role
+            member.save()
         else:
-            raise ValueError("The invited user \"{0}\" is already a member".format(user.username))
+            user.groups.add(self.group)
 
     def invite(self, user, from_user, role="member", send=True):
         params = dict(role=role, from_user=from_user)
@@ -257,7 +261,8 @@ class GroupInvitation(models.Model):
         subject = render_to_string("groups/email/invite_user_subject.txt", ctx)
         message = render_to_string("groups/email/invite_user.txt", ctx)
         # TODO Send a notification rather than a mail
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.email])
+        from_mail = from_user.email
+        send_mail(subject, message, from_mail, [self.email])
 
     def accept(self, user):
         if not user.is_authenticated() or user == user.get_anonymous():

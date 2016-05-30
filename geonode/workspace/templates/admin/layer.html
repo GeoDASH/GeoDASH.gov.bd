@@ -1,0 +1,172 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Admin Workspace" %}{% endblock %}
+
+{% comment %}
+{% block subnav %}
+<li><a href="{% url "actstream_object_feed" content_type_id=ctype.pk  object_id=actor.pk %}">RSS</a></li>
+<li><a href="{% url "actstream_object_feed_atom" content_type_id=ctype.pk  object_id=actor.pk %}">ATOM</a></li>
+{% endblock %}
+{% endcomment %}
+
+{% block body %}
+<div class="page-title">
+  <h2>{% trans "Admin Workspace" %}</h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+        <ul class="nav nav-pills">
+        <li role="presentation" class="active"><a href="{% url "admin-workspace-layer" %}">{% trans "Layers" %}</a></li>
+        <li role="presentation"><a href="{% url "admin-workspace-map" %}"> {% trans "Maps" %}</a></li>
+        <li role="presentation"><a href="{% url "admin-workspace-document" %}">{% trans "Documents" %}</a></li>
+        </ul>
+      <br>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User approval request" %}</a></li>
+      <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
+      <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
+      <li><a href="#denied-layers" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
+    </ul>
+    <div class="tab-content">
+      <article id="user-approval-request" class="tab-pane active">
+        <ul class="no-style-list">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Layer Title</th>
+                <th>Organization</th>
+                <th>Tried</th>
+                <th>Date of request</th>
+                </tr>
+            </thead>
+            {% for user_approval in user_approval_request_list %}
+                <tbody>
+                    <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>
+                    <td>{{ user_approval.group }}</td>
+                    <td>{{ user_approval.current_iteration }}</td>
+                    <td>{{ user_approval.date_updated }}</td>
+                    <td><button type="button" class="btn btn-default btn-xs"><a href="{{ user_approval.detail_url }}?user_role=manager">{% trans "approve" %}</a></button></td>
+                    <td><button type="button" class="btn btn-default btn-xs"><a href="{{ user_approval.detail_url }}?user_role=manager">{% trans "deney" %}</a></button></td>
+
+                    </tr>
+                </tbody>
+            {% empty %}
+                <p>{% trans "No pending requests yet" %}</p>
+            {% endfor %}
+        </table>
+        </ul>
+      </article>
+      <article id="approved" class="tab-pane">
+        <ul class="no-style-list">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Layer Title</th>
+                <th>Organization</th>
+                <th>Who requested</th>
+                <th>Who approved</th>
+                <th>Approve date</th>
+                </tr>
+            </thead>
+            {% for approved in approved_list %}
+                <tbody>
+                    <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ approved.title }}</td>
+                    <td>{{ approved.group }}</td>
+                    <td>{{ approved.owner }}</td>
+                    <td>{{ approved.last_auditor }}</td>
+                    <td>{{ approved.date_updated }}</td>
+                    <td><td><button type="button" class="btn btn-default btn-xs"><a href="{{ approved.detail_url }}">{% trans "edit" %}</a></button></td></td>
+                    </tr>
+                </tbody>
+            {% empty %}
+                <p>{% trans "No approved layers yet" %}</p>
+            {% endfor %}
+        </table>
+        </ul>
+      </article>
+      <article id="user-drafts" class="tab-pane">
+        <ul class="no-style-list">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Layer Title</th>
+                <th>Organization</th>
+                <th>Layer creation date</th>
+                </tr>
+            </thead>
+            {% for draft in user_draft_list %}
+                <tbody>
+                    <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ draft.title }}</td>
+                    <td>{{ draft.group }}</td>
+                    <td>{{ draft.date_created }}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#_delete_layer">{% trans "delete layer" %}</button> <br>
+                        {% include "layer_templates/_delete_layer.html" %}
+                    </td>
+                    </tr>
+                </tbody>
+            {% empty %}
+                <p>{% trans "No user drafts yet" %}</p>
+            {% endfor %}
+        </table>
+        </ul>
+      </article>
+
+      <article id="denied-layers" class="tab-pane">
+        <ul class="no-style-list">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Layer Title</th>
+                <th>Organization</th>
+                <th>Who requested</th>
+                <th>Who denied</th>
+                <th>Denied date</th>
+                </tr>
+            </thead>
+            {% for deney in denied_list %}
+                <tbody>
+                    <tr>
+                    <td>{{ forloop.counter}}</td>
+                    <td>{{ deney.title}}</td>
+                    <td>{{ deney.group}}</td>
+                    <td>{{ deney.owner }}</td>
+                    <td>{{ deney.last_auditor }}</td>
+                    <td>{{ deney.date_updated }}</td>
+                    </tr>
+                </tbody>
+            {% empty %}
+                <p>{% trans "No denied layers yet" %}</p>
+            {% endfor %}
+        </table>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+<script>
+$(function () {
+    $("#follow_button, #unfollow_button").click(function () {
+        $.post($(this).attr("href"), {});
+        $(this).parent().find("#follow_button, #unfollow_button").toggle();
+        return false
+    });
+});
+</script>
+{% endblock %}

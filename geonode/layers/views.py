@@ -26,7 +26,7 @@ import traceback
 from guardian.shortcuts import get_perms
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -62,6 +62,9 @@ from geonode.security.views import _perms_info_json
 from geonode.documents.models import get_related_documents
 from geonode.utils import build_social_links
 from geonode.geoserver.helpers import cascading_delete, gs_catalog
+from geonode.groups.models import GroupProfile
+from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
+from geonode.base.libraries.decorators import manager_or_member
 
 CONTEXT_LOG_FILE = None
 
@@ -129,6 +132,7 @@ def _resolve_layer(request, typename, permission='base.view_resourcebase',
 
 
 @login_required
+@user_passes_test(manager_or_member)
 def layer_upload(request, template='upload/layer_upload.html'):
     if request.method == 'GET':
         mosaics = Layer.objects.filter(is_mosaic=True).order_by('name')
@@ -136,6 +140,9 @@ def layer_upload(request, template='upload/layer_upload.html'):
             'mosaics': mosaics,
             'charsets': CHARSETS,
             'is_layer': True,
+            'allowed_file_types': ['.cst', '.dbf', '.prj', '.shp', '.shx'],
+            'categories': TopicCategory.objects.all(),
+            'organizations': GroupProfile.objects.filter(groupmember__user=request.user),
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':
@@ -145,11 +152,15 @@ def layer_upload(request, template='upload/layer_upload.html'):
         out = {'success': False}
         if form.is_valid():
             title = form.cleaned_data["layer_title"]
+            category = form.cleaned_data["category"]
+            organization_id = form.cleaned_data["organization"]
+            group = GroupProfile.objects.get(id=organization_id)
             # Replace dots in filename - GeoServer REST API upload bug
             # and avoid any other invalid characters.
             # Use the title if possible, otherwise default to the filename
             if title is not None and len(title) > 0:
                 name_base = title
+                keywords = title.split()
             else:
                 name_base, __ = os.path.splitext(
                     form.cleaned_data["base_file"].name)
@@ -163,6 +174,9 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     base_file,
                     name=name,
                     user=request.user,
+                    category=category,
+                    group=group,
+                    keywords=keywords,
                     overwrite=False,
                     charset=form.cleaned_data["charset"],
                     abstract=form.cleaned_data["abstract"],
@@ -217,11 +231,30 @@ def layer_upload(request, template='upload/layer_upload.html'):
 
 
 def layer_detail(request, layername, template='layers/layer_detail.html'):
+    try:
+        user_role = request.GET['user_role']
+    except:
+        user_role=None
+
     layer = _resolve_layer(
         request,
         layername,
         'base.view_resourcebase',
         _PERMISSION_MSG_VIEW)
+
+    user = request.user
+    edit_permit = False
+    if layer.owner == user and layer.status in ['DRAFT', 'ACTIVE', 'DENIED']:
+        edit_permit = True
+    elif user in layer.group.get_managers() and layer.status in ['PENDING', 'ACTIVE', 'DENIED']:
+        edit_permit = True
+
+    if not edit_permit and layer.status=='ACTIVE':
+        edit_permit = True
+
+    # if the edit request is not valid then just return from here
+    if not edit_permit:
+        return  HttpResponse('you dont have permission to edit this layer')
 
     # assert False, str(layer_bbox)
     config = layer.attribute_config()
@@ -292,7 +325,10 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         except:
             granules = {"features": []}
             all_granules = {"features": []}
-
+    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
+    approve_comment_subjects = [line for line in approve_subjects_file ]
+    deney_subjects_file = open("geonode/deny_comment_subject.txt", "r")
+    deney_comment_subjects = [line for line in deney_subjects_file ]
     context_dict = {
         "resource": layer,
         'perms_list': get_perms(request.user, layer.get_self_resource()),
@@ -304,6 +340,11 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "granules": granules,
         "all_granules": all_granules,
         "filter": filter,
+        "user_role": user_role,
+        "deney_comment_subjects":deney_comment_subjects,
+        "approve_comment_subjects": approve_comment_subjects,
+        "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
+        "status": layer.status
     }
 
     context_dict["viewer"] = json.dumps(
@@ -659,3 +700,123 @@ def layer_metadata_detail(request, layername, template='layers/layer_metadata_de
         "layer": layer,
         'SITEURL': settings.SITEURL[:-1]
     }))
+
+
+@login_required
+def layer_publish(request, layer_pk):
+    if request.method == 'POST':
+        try:
+            layer = Layer.objects.get(id=layer_pk)
+        except Layer.DoesNotExist:
+            return HttpResponse("Layer does not exist")
+        else:
+            if request.user != layer.owner:
+                return HttpResponse('you are not allowed to publish this layer')
+            group = layer.group
+            layer.status = 'PENDING'
+            layer.current_iteration += 1
+            layer.save()
+            layer_submission_activity = LayerSubmissionActivity(layer=layer, group=group, iteration=layer.current_iteration)
+            layer_submission_activity.save()
+
+            # set all the permissions for all the managers of the group for this layer
+            layer.set_managers_permissions()
+
+            messages.info(request, 'published layer succesfully')
+            return HttpResponseRedirect(reverse('member-workspace-layer'))
+    else:
+        return HttpResponseRedirect(reverse('member-workspace-layer'))
+
+
+@login_required
+def layer_approve(request, layer_pk):
+    if request.method == 'POST':
+        try:
+            layer = Layer.objects.get(id=layer_pk)
+        except Layer.DoesNotExist:
+            return HttpResponse("requested layer does not exists")
+        else:
+            group = layer.group
+            if request.user not in group.get_managers():
+                return HttpResponse("you are not allowed to approve this layer")
+            layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
+            layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
+            comment_body = request.POST.get('comment')
+            comment_subject = request.POST.get('comment-subject')
+            layer.status = 'ACTIVE'
+            layer.last_auditor = request.user
+            layer.save()
+
+            layer_submission_activity.is_audited = True
+            layer_submission_activity.save()
+
+            layer_audit_activity.comment_subject = comment_subject
+            layer_audit_activity.comment_body = comment_body
+            layer_audit_activity.result = 'APPROVED'
+            layer_audit_activity.auditor = request.user
+            layer_audit_activity.save()
+
+        messages.info(request, 'approved layer succesfully')
+        return HttpResponseRedirect(reverse('admin-workspace-layer'))
+    else:
+        return HttpResponseRedirect(reverse('admin-workspace-layer'))\
+
+
+@login_required
+def layer_deney(request, layer_pk):
+    if request.method == 'POST':
+        try:
+            layer = Layer.objects.get(id=layer_pk)
+        except:
+            return HttpResponse("requested layer does not exists")
+        else:
+            group = layer.group
+            if request.user not in group.get_managers():
+                return HttpResponse("you are not allowed to deney this layer")
+            layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
+            layer_audit_activity= LayerAuditActivity(layer_submission_activity=layer_submission_activity)
+            comment_body = request.POST.get('comment')
+            comment_subject = request.POST.get('comment-subject')
+            layer.status = 'DENIED'
+            layer.last_auditor = request.user
+            layer.save()
+
+            layer_submission_activity.is_audited = True
+            layer_submission_activity.save()
+
+            layer_audit_activity.comment_subject = comment_subject
+            layer_audit_activity.comment_body = comment_body
+            layer_audit_activity.result = 'DECLINED'
+            layer_audit_activity.auditor = request.user
+            layer_audit_activity.save()
+
+        messages.info(request, 'layer denied successfully')
+        return HttpResponseRedirect(reverse('admin-workspace-layer'))
+    else:
+        return HttpResponseRedirect(reverse('admin-workspace-layer'))
+
+
+@login_required
+def layer_delete(request, layer_pk):
+    if request.method == 'POST':
+        try:
+            layer = Layer.objects.get(id=layer_pk)
+        except:
+            return HttpResponse("requested layer does not exists")
+        else:
+            if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
+                layer.status = "DELETED"
+                layer.save()
+            else:
+                messages.info(request, 'you have no acces to delete the layer')
+
+        messages.info(request, 'layer deleted successfully')
+        if request.user.is_manager_of_any_group:
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
+        else:
+            return HttpResponseRedirect(reverse('member-workspace-layer'))
+    else:
+        if request.user.is_manager_of_any_group:
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
+        else:
+            return HttpResponseRedirect(reverse('member-workspace-layer'))
