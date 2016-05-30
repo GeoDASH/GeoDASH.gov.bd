@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from geonode.groups.models import GroupProfile
+from geonode.people.models import Profile
 
 
 class GroupForm(forms.ModelForm):
@@ -35,6 +36,12 @@ class GroupForm(forms.ModelForm):
         help_text=_("a short version of the name consisting only of letters, numbers, underscores and hyphens."),
         widget=forms.HiddenInput,
         required=False)
+
+    admin = forms.ModelChoiceField(queryset=Profile.objects.all().filter(is_active=True),
+        help_text=_('select an admin for this organization'),
+        label=_('Organization Admin'),
+
+    )
 
     def clean_slug(self):
         if GroupProfile.objects.filter(
@@ -95,6 +102,9 @@ class GroupMemberForm(forms.Form):
     def clean_user_identifiers(self):
         value = self.cleaned_data["user_identifiers"]
         new_members, errors = [], []
+        user = Profile.objects.get(username=value)
+        if not user.is_active:
+            errors.append("The user you selected is currently inactive")
 
         for ui in value.split(","):
             ui = ui.strip()

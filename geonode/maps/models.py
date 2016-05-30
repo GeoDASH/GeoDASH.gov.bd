@@ -86,6 +86,20 @@ class Map(ResourceBase, GXPMapBase):
         max_length=255,
         blank=True)
     # Full URL for featured map view, ie http://domain/someview
+    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    current_iteration = models.IntegerField(default=0)
+    status = models.CharField(max_length=10, choices=[
+        ("DRAFT", _("Draft")),
+        ("PENDING", _("Pending")),
+        ("ACTIVE", _("Active")),
+        ("INACTIVE", _("Inactive")),
+        ("DENIED", _("Denied")),
+        ("DELETED", _("Deleted")),
+        ("CANCELED", _("Canceled"))],
+        default="DRAFT")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return '%s by %s' % (
@@ -168,6 +182,8 @@ class Map(ResourceBase, GXPMapBase):
             conf = json.loads(conf)
 
         self.title = conf['about']['title']
+        for keyword in self.title.split():
+            self.keywords.add(keyword)
         self.abstract = conf['about']['abstract']
 
         self.set_bounds_from_center_and_zoom(
@@ -552,3 +568,44 @@ class MapSnapshot(models.Model):
 
 signals.pre_delete.connect(pre_delete_map, sender=Map)
 signals.post_save.connect(resourcebase_post_save, sender=Map)
+
+
+class MapSubmissionActivity(models.Model):
+    """
+    This model includes map submission activity
+    """
+
+    map = models.ForeignKey('maps.Map', related_name='map_submission')
+    group = models.ForeignKey('groups.GroupProfile')
+    iteration = models.IntegerField(default=0)
+    is_audited = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        unique_together = (('map', 'group', 'iteration'),)
+
+    def __str__(self):
+        return self.map.name
+
+
+class MapAuditActivity(models.Model):
+    """
+    This model is for stacking map audit activity
+    """
+
+    map_submission_activity = models.ForeignKey(MapSubmissionActivity)
+    result = models.CharField(max_length=15, choices=[
+        ("APPROVED", _("Approved")),
+        ("DECLINED", _("Declined")),
+        ("CANCELED", _("Canceled"))
+    ])
+    auditor = models.ForeignKey('people.Profile')
+    comment_subject = models.CharField(max_length=300,
+                                       help_text=_('Comment type to approve or deny layer submission '))
+    comment_body = models.TextField(help_text=_('Comments when auditor denied or approved layer submission'),
+                               blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)

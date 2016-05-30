@@ -266,6 +266,9 @@ define(function (require, exports) {
         }
 
         form_data.append('charset', $('#charset').val());
+        form_data.append('category', $('#id-select-category').val());
+        form_data.append('organization', $('#id-select-organization').val());
+        form_data.append('layer_title', $('#id-layer-upload-title').val());
         if ($('#id_metadata_uploaded_preserve').prop('checked')) {
              form_data.append('metadata_uploaded_preserve', true);
         }

@@ -522,7 +522,7 @@ class LayerResource(CommonModelApi):
     """Layer API"""
 
     class Meta(CommonMetaApi):
-        queryset = Layer.objects.distinct().order_by('-date')
+        queryset = Layer.objects.distinct().order_by('-date').filter(status='ACTIVE')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'layers'
@@ -534,7 +534,7 @@ class MapResource(CommonModelApi):
     """Maps API"""
 
     class Meta(CommonMetaApi):
-        queryset = Map.objects.distinct().order_by('-date')
+        queryset = Map.objects.distinct().order_by('-date').filter(status='ACTIVE')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'maps'
@@ -547,7 +547,7 @@ class DocumentResource(CommonModelApi):
     class Meta(CommonMetaApi):
         filtering = CommonMetaApi.filtering
         filtering.update({'doc_type': ALL})
-        queryset = Document.objects.distinct().order_by('-date')
+        queryset = Document.objects.distinct().order_by('-date').filter(status='ACTIVE')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'documents'

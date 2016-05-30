@@ -16,7 +16,13 @@
 <div class="page-header">
   <a href="{% url "layer_browse" %}" class="btn btn-primary pull-right">{% trans "Explore Layers" %}</a>
   <h2 class="page-title">{% trans "Upload Layers" %}</h2>
-  
+  <p>Allowed file types types:</p>
+	<p>
+	{% for doc in allowed_file_types %}
+		<span class="label label-default">.{{ doc }}</span>
+	{% endfor %}
+	</p>
+
   <script language="javascript">
     var json_mosaics = [
           {% for mosaic in mosaics %}
@@ -68,6 +74,31 @@
     {% endif %}
 
     <div id="upload-status"></div>
+
+    {% trans "Title" %}:<br>
+    <input id ="id-layer-upload-title" type="text" name="title" size="50"><br>
+
+    <section >
+      <p>{% trans "Category:" %}</p>
+      <select id= "id-select-category">
+        {% for category in categories %}
+        <option  value={{ category.gn_description }} >{{ category.gn_description }}</option>
+        {% endfor %}
+      </select>
+    </section>
+
+   <br>
+
+    <section >
+      <p>{% trans "Organization:" %}</p>
+      <select id= "id-select-organization">
+        {% for organization in organizations %}
+        <option  value={{ organization.id }} >{{ organization.title }}</option>
+        {% endfor %}
+      </select>
+    </section>
+
+    <br>
 
     <section id="drop-zone">
       <h3><i class="fa fa-cloud-upload"></i><br />{% trans "Drop files here" %}</h3>

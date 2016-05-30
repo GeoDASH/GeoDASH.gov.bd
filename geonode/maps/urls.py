@@ -51,4 +51,10 @@ urlpatterns = patterns('geonode.maps.views',
                        url(r'^(?P<mapid>[^/]*)/metadata_detail$', 'map_metadata_detail', name='map_metadata_detail'),
                        url(r'^(?P<layername>[^/]*)/attributes', 'maplayer_attributes', name='maplayer_attributes'),
                        # url(r'^change-poc/(?P<ids>\w+)$', 'change_poc', name='maps_change_poc'),
+
+                       # urls for publishing maps through workspace
+                       url(r'^(?P<map_pk>[0-9]+)/delete$', 'map_delete', name='map-delete'),
+                       url(r'^(?P<map_pk>[0-9]+)/publish$', 'map_publish', name='map-publish'),
+                       url(r'^(?P<map_pk>[0-9]+)/approve$', 'map_approve', name='map-approve'),
+                       url(r'^(?P<map_pk>[0-9]+)/deny$', 'map_deny', name='map-deny'),
                        )
