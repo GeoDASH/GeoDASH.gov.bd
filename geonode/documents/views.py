@@ -557,7 +557,7 @@ def document_approve(request, document_pk):
             document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
             document_audit_activity = DocumentAuditActivity(document_submission_activity=document_submission_activity)
             comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
+            comment_subject = request.POST.get('comment_subject')
             document.status = 'ACTIVE'
             document.last_auditor = request.user
             document.save()
@@ -591,7 +591,7 @@ def document_deny(request, document_pk):
             document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
             document_audit_activity= DocumentAuditActivity(document_submission_activity=document_submission_activity)
             comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
+            comment_subject = request.POST.get('comment_subject')
             document.status = 'DENIED'
             document.last_auditor = request.user
             document.save()

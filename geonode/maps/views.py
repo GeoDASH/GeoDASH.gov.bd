@@ -954,7 +954,7 @@ def map_approve(request, map_pk):
             map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
             map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
             comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
+            comment_subject = request.POST.get('comment_subject')
             map.status = 'ACTIVE'
             map.last_auditor = request.user
             map.save()
@@ -988,7 +988,7 @@ def map_deny(request, map_pk):
             map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
             map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
             comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
+            comment_subject = request.POST.get('comment_subject')
             map.status = 'DENIED'
             map.last_auditor = request.user
             map.save()
