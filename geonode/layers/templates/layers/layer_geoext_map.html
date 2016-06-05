@@ -12,7 +12,7 @@
                     ptype: "gxp_wmsgetfeatureinfo",
                     format: "grid",
                     actionTarget: "main.tbar",
-                    outputConfig: {width: 400, height: 200, panIn: false}
+                    outputConfig: {width: 400, height: 200, panIn: true}
                 }],
                 {% if PROXY_URL %}
                 proxy: '{{ PROXY_URL }}',
@@ -33,7 +33,7 @@
                 
                 portalConfig: {
                     renderTo: "preview_map",
-                    height: 400 
+                    height: GD_WRAPPER__HEIGHT
                 },
 
                 listeners: {

@@ -11,14 +11,26 @@
 {% block title %} Edit Service - {{ block.super }} {% endblock %}
 
 {% block body %}
-<div class="page-header">
-  <h2>{% trans "Edit Service" %}</h2>
+<div class="gd-content">
+    <div class="gd-content-heading">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="title small-content">
+                    {% trans "Edit Service" %}
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="gd-content-body full-pad-40px top-bottom-margin-20px">
+        <form method="POST" id="service_register_form">
+            {% csrf_token %}
+            {{ service_form|as_bootstrap }}
+            <div class="">
+                <input type="submit" class="btn btn-gd-primary btn-lg"
+                   id="submit_button" value="{% trans " Save" %}" />
+            </div>
+        </form>
+    </div>
 </div>
-<form method="POST" id="service_edit_form">
-  {% csrf_token %}
-  {{ service_form|as_bootstrap }}
-  <div class="grid-spacer">
-    <p><input type="submit" class="btn btn-primary" value="{% trans "Save" %}"/></p>
-  </div>
-</form>
 {% endblock %}

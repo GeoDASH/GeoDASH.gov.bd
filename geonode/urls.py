@@ -53,6 +53,12 @@ urlpatterns = patterns('',
                        url('', include('social.apps.django_app.urls', namespace='social')),
 
                        # Static pages
+                       url(r'^categories_key_words/?$', TemplateView.as_view(template_name='categories_key_words.html'),name='categories_key_words'),
+                       url(r'^termsandcondition/?$', TemplateView.as_view(template_name='termsandcondition.html'),name='termsandcondition'),
+                       url(r'^policy/?$', TemplateView.as_view(template_name='policy.html'), name='policy'),
+                       url(r'^termsofuse/?$', TemplateView.as_view(template_name='termsofuse.html'), name='termsofuse'),
+                       url(r'^news/?$', TemplateView.as_view(template_name='news/news_list.html'), name='news'),
+                       url(r'^news/details/?$', TemplateView.as_view(template_name='news/news_details.html'), name='news_details'),
                        url(r'^/?$', TemplateView.as_view(template_name='index.html'), name='home'),
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
                        url(r'^developer/$', TemplateView.as_view(template_name='developer.html'), name='developer'),

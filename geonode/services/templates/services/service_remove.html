@@ -4,20 +4,31 @@
 {% block title %} {{ service.name }} - {{ block.super }} {% endblock %}
 
 {% block body %}
-<div class="page-header">
-  <h2>{% trans "Remove Remote Service" %}</h2>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <p class="lead">{% trans "Are you sure you want to remove"  %} <strong>{{ service.name }}</strong>?</p>
-    <form action="/services/{{service.id}}/remove" method="POST" class="inline">
-      {% csrf_token %}
-      <input type="hidden" value="{{next}}" id="next" name="next">
-      <div class="form-actions">
-        <input class="btn btn-danger" type="submit" value="{% trans "Yes, I am sure" %}" />
-        <a class="btn btn-deafult" href="{{ service.get_absolute_url }}">{% trans "No, don't remove it" %}</a>
+<div class="gd-content">
+    <div class="gd-content-heading">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="title small-content">
+                    {% trans "Remove Remote Service" %}
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="gd-content-body full-pad-40px top-bottom-margin-20px">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="lead">{% trans "Are you sure you want to remove" %} <strong>{{ service.name }}</strong>?</div>
+          <form action="/services/{{service.id}}/remove" method="POST" class="inline">
+            {% csrf_token %}
+            <input type="hidden" value="{{next}}" id="next" name="next">
+            <div class="form-actions">
+              <input class="btn btn-danger" type="submit" value="{% trans " Yes, I am sure" %}" />
+              <a class="btn btn-deafult" href="{{ service.get_absolute_url }}">{% trans "No, don't remove it" %}</a>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
-  </div>
+    </div>
 </div>
 {% endblock %}
