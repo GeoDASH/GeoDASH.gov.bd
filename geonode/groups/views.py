@@ -302,14 +302,11 @@ class GroupActivityView(ListView):
         members = ([(member.user.id) for member in self.group.member_queryset()])
         context['action_list_layers'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members,
-            action_object_content_type__name='layer')[:15]
+            actor_object_id__in=members)[:15]
         context['action_list_maps'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members,
-            action_object_content_type__name='map')[:15]
+            actor_object_id__in=members)[:15]
         context['action_list_comments'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members,
-            action_object_content_type__name='comment')[:15]
+            actor_object_id__in=members)[:15]
         return context

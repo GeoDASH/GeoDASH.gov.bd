@@ -38,6 +38,7 @@
                     $location.search()['category__identifier__in'], 'identifier');
             }
             $rootScope.categories = data.objects;
+            $rootScope.$broadcast('broadcast-apply-filters', { category: true });
             if (HAYSTACK_FACET_COUNTS && $rootScope.query_data) {
                 module.haystack_facets($http, $rootScope, $location);
             }
@@ -55,6 +56,7 @@
                     $location.search()['keywords__slug__in'], 'slug');
             }
             $rootScope.keywords = data.objects;
+            $rootScope.$broadcast('broadcast-apply-filters', { key_word: true });
             if (HAYSTACK_FACET_COUNTS && $rootScope.query_data) {
                 module.haystack_facets($http, $rootScope, $location);
             }
@@ -78,22 +80,22 @@
         });
     }
 
-    module.load_owners = function ($http, $rootScope, $location){
-        var params = typeof FILTER_TYPE == 'undefined' ? {} : {'type': FILTER_TYPE};
-        if ($location.search().hasOwnProperty('title__icontains')){
-            params['title__icontains'] = $location.search()['title__icontains'];
-        }
-        $http.get(OWNERS_ENDPOINT, {params: params}).success(function(data){
-            if($location.search().hasOwnProperty('owner__username__in')){
-                data.objects = module.set_initial_filters_from_query(data.objects,
-                    $location.search()['owner__username__in'], 'identifier');
-            }
-            $rootScope.owners = data.objects;
-            if (HAYSTACK_FACET_COUNTS && $rootScope.query_data) {
-                module.haystack_facets($http, $rootScope, $location);
-            }
-        });
+  module.load_owners = function ($http, $rootScope, $location){
+    var params = typeof FILTER_TYPE == 'undefined' ? {} : {'type': FILTER_TYPE};
+    if ($location.search().hasOwnProperty('title__icontains')){
+        params['title__icontains'] = $location.search()['title__icontains'];
     }
+    $http.get(OWNERS_ENDPOINT, {params: params}).success(function(data){
+        if($location.search().hasOwnProperty('owner__username__in')){
+            data.objects = module.set_initial_filters_from_query(data.objects,
+                $location.search()['owner__username__in'], 'identifier');
+        }
+        $rootScope.owners = data.objects;
+        if (HAYSTACK_FACET_COUNTS && $rootScope.query_data) {
+            module.haystack_facets($http, $rootScope, $location);
+        }
+    });
+  }
 
   // Update facet counts for categories and keywords
   module.haystack_facets = function($http, $rootScope, $location) {
@@ -195,7 +197,12 @@
   * Load data from api and defines the multiple and single choice handlers
   * Syncs the browser url with the selections
   */
-  module.controller('geonode_search_controller', function($injector, $scope, $location, $http, Configs){
+  module.controller('geonode_search_controller', function($injector, $rootScope, $scope, $location, $http, $window, Configs){
+    $scope.filterCategoryEnable = false;
+    $scope.filterKeywordEnable = false;
+    $scope.GD_APPLY_FILTERS = {};
+    $scope.pageViewing = "grid";// "list"; // grid
+    $scope.STATIC_URL = JS_STATIC_URL; // grid
     $scope.query = $location.search();
     $scope.query.limit = $scope.query.limit || CLIENT_RESULTS_LIMIT;
     $scope.query.offset = $scope.query.offset || 0;
@@ -203,8 +210,12 @@
    
     //Get data from apis and make them available to the page
     function query_api(data){
+      /*if (!$scope.query.hasOwnProperty("order_by")){
+        $scope.query["order_by"] = '-popular_count';
+      }*/
       $http.get(Configs.url, {params: data || {}}).success(function(data){
         $scope.results = data.objects;
+        $("#load_apply_filter_box").show();
         $scope.total_counts = data.meta.total_count;
         $scope.$root.query_data = data;
         if (HAYSTACK_SEARCH) {
@@ -235,7 +246,131 @@
     };
     query_api($scope.query);
 
+    $scope.applyAdvancedSearch = function (){
+        if($scope.text_query != ""){
+            $scope.query['title__icontains'] = $scope.text_query;
+        } else {
+            delete $scope.query['title__icontains'];
+        }
+        var region_search_input = $('#region_search_input').val();
+        if(region_search_input != ""){
+            $scope.query['regions__name__in'] = region_search_input;
+        } else {
+            delete $scope.query['regions__name__in'];
+        }
+        //console.log("text_query", $scope.text_query);
+        var absUrl = $location.absUrl();
+        absUrl = absUrl.replace('/layers/', '/search/').replace('/maps/', '/search/').replace('/documents/', '/search/');
+        $window.location.href = absUrl;
+        console.log("query", $location.absUrl(), absUrl);
 
+        $scope.do_apply_filters();
+
+        //$scope.$apply();
+        $("#gd-advanced-search").slideUp("slow");
+    }
+    $scope.do_apply_filters = function() {
+        // apply filter
+        var gdApplyFilters = {};
+        var date_gte = $scope.query['date__gte'];
+        var date_lte = $scope.query['date__lte'];
+        var dateRange = $scope.query['date__range'];
+        var dateRangeItems = null;
+        if (dateRange != undefined) {
+            dateRangeItems = dateRange.split(",");
+            gdApplyFilters.dateRange = true;
+            gdApplyFilters.date__gte = dateRangeItems[0];
+            gdApplyFilters.date__lte = dateRangeItems[1];
+        } else if(date_gte != undefined){
+            gdApplyFilters.dateRange = true;
+            gdApplyFilters.date__gte = date_gte;
+        } else if(date_lte != undefined){
+            gdApplyFilters.dateRange = true;
+            gdApplyFilters.date__lte = date__lte;
+        }
+        gdApplyFilters.APPLY_FILTER_ENABLE = false;
+        gdApplyFilters.categoryEnable = false;
+        gdApplyFilters.keywordsEnable = false;
+        gdApplyFilters.regionsName = false;
+        gdApplyFilters.dateRange = false;
+        gdApplyFilters.textQuery = false;
+
+        gdApplyFilters.category_items = [];
+        gdApplyFilters.keyword_items = [];
+
+        if($scope.query['title__icontains'] != undefined)
+        {
+            gdApplyFilters.textQuery = true;
+            gdApplyFilters.text_query = $scope.query['title__icontains'];
+        }
+        if($scope.query['regions__name__in'] != undefined)
+        {
+            gdApplyFilters.regionsName = true;
+            gdApplyFilters.regions__name__in = $scope.query['regions__name__in'];
+        }
+        if($scope.filterCategoryEnable && $scope.query['category__identifier__in'] != undefined)
+        {
+            gdApplyFilters.categoryEnable = true;
+            var categories = $rootScope.categories;
+            var categoryItems = $scope.query['category__identifier__in'];
+            for(var i=0; i<categories.length; i++){
+                var categorie = deepClone(categories[i]);
+                for(var j=0; j<categoryItems.length; j++){
+                    if(categorie.identifier == categoryItems[j]){
+                        //$rootScope.categories[i]
+                        gdApplyFilters.category_items.push(categorie);
+                    }
+                }
+            }
+        }
+        if($scope.filterKeywordEnable && $scope.query['keywords__slug__in'] != undefined)
+        {
+            gdApplyFilters.keywordsEnable = true;
+            var keywords = $rootScope.keywords;
+            var keywordItems = $scope.query['keywords__slug__in'];
+            for(var i=0; i<keywords.length; i++){
+                var keyword = deepClone(keywords[i]);
+                for(var j=0; j<keywordItems.length; j++){
+                    if(keyword.slug == keywordItems[j]){
+                        gdApplyFilters.keyword_items.push(keyword);
+                    }
+                }
+            }
+        }
+
+        if(gdApplyFilters.categoryEnable || gdApplyFilters.keywordsEnable ||
+            gdApplyFilters.regionsName || gdApplyFilters.dateRange || gdApplyFilters.textQuery
+        ){
+            gdApplyFilters.APPLY_FILTER_ENABLE = true;
+        }
+
+        $scope.GD_APPLY_FILTERS = deepClone(gdApplyFilters);
+        console.log("GD_APPLY_FILTERS",$scope.GD_APPLY_FILTERS);
+    };
+    $scope.removeTextQuery = function(){
+        $scope.text_query = "";
+        delete $scope.query['title__icontains'];
+        query_api($scope.query);
+        $scope.do_apply_filters();
+    }
+    $scope.$on('broadcast-apply-filters', function(event, args) {
+        //var anyThing = args.any;
+        // do what you want to do
+        //console.log("called-broadcast-apply-filters");
+        if($scope.filterCategoryEnable == false && args.category != undefined){
+            $scope.filterCategoryEnable = args.category;
+        }
+        if($scope.filterKeywordEnable == false && args.key_word != undefined){
+            $scope.filterKeywordEnable = args.key_word;
+        }
+        setTimeout($scope.do_apply_filters, 100);
+    });
+    setTimeout($scope.do_apply_filters, 1500);
+
+
+    $scope.displayView = function(type){
+        $scope.pageViewing = type;
+    };
     /*
     * Pagination
     */
@@ -267,6 +402,10 @@
     }
 
     $scope.paginate_up = function(){
+        $scope.numpages = Math.round(
+        ($scope.total_counts / $scope.query.limit) + 0.49
+      );
+
       if($scope.numpages > $scope.page){
         $scope.page += 1;
         $scope.query.offset = $scope.query.limit * ($scope.page - 1);
@@ -289,7 +428,7 @@
     * Add the selection behavior to the element, it adds/removes the 'active' class
     * and pushes/removes the value of the element from the query object
     */
-    $scope.multiple_choice_listener = function($event){
+    $scope.advanced_search_choice_listener = function($event){
       var element = $($event.target);
       var query_entry = [];
       var data_filter = element.attr('data-filter');
@@ -332,7 +471,64 @@
       if(query_entry.length == 0){
         delete($scope.query[data_filter]);
       }
+      //query_api($scope.query);
+    }
+
+    $scope.multiple_choice_listener = function($event){
+      var element = $($event.target);
+      var query_entry = [];
+      var data_filter = element.attr('data-filter');
+      var value = element.attr('data-value');
+      var remove = element.attr('do-remove');
+      var removeID = element.attr('remove-id');
+      var unselectID = element.attr('unselect-id');
+
+      // If the query object has the record then grab it
+      if ($scope.query.hasOwnProperty(data_filter)){
+
+        // When in the location are passed two filters of the same
+        // type then they are put in an array otherwise is a single string
+        if ($scope.query[data_filter] instanceof Array){
+          query_entry = $scope.query[data_filter];
+        }else{
+          query_entry.push($scope.query[data_filter]);
+        }
+      }
+
+      // If the element is active active then deactivate it
+      if(element.hasClass('active')){
+        // clear the active class from it
+        element.removeClass('active');
+        if(remove == 'true'){
+            $("#"+removeID).remove();
+            $("#"+unselectID).removeClass('active');
+            $("#"+unselectID).prop('checked', false); // Unchecks it
+        }
+
+        // Remove the entry from the correct query in scope
+
+        query_entry.splice(query_entry.indexOf(value), 1);
+      }
+      // if is not active then activate it
+      else if(!element.hasClass('active')){
+        // Add the entry in the correct query
+        if (query_entry.indexOf(value) == -1){
+          query_entry.push(value);
+        }
+        element.addClass('active');
+      }
+
+      //save back the new query entry to the scope query
+      $scope.query[data_filter] = query_entry;
+
+      //if the entry is empty then delete the property from the query
+      if(query_entry.length == 0){
+        delete($scope.query[data_filter]);
+      }
       query_api($scope.query);
+      if(remove == 'true'){
+        $scope.do_apply_filters();
+      }
     }
 
     $scope.single_choice_listener = function($event){
@@ -360,7 +556,20 @@
 
         query_api($scope.query);
       }
+      $("#currtenSortTitle").html($('#profileSortId ul li a.selected').html());
     }
+
+    $scope.limit_choice_listener = function(limit){
+        $scope.page = 1;
+        $scope.query.limit = limit;
+        $scope.query.offset = 0;
+
+        $scope.numpages = Math.round(
+            ($scope.total_counts / $scope.query.limit) + 0.49
+        );
+        query_api($scope.query);
+        $("#limitOfpage").html($scope.query.limit);
+    };
 
     /*
     * Text search management
@@ -467,6 +676,38 @@
 
     }, true);
 
+    $scope.advanced_date_query = {
+      'date__gte': '',
+      'date__lte': ''
+    };
+    // advanced_date_query
+    var init_date = true;
+    $scope.$watch('advanced_date_query', function(){
+      if($scope.advanced_date_query.date__gte != '' && $scope.advanced_date_query.date__lte != ''){
+        $scope.query['date__range'] = $scope.advanced_date_query.date__gte + ',' + $scope.advanced_date_query.date__lte;
+        delete $scope.query['date__gte'];
+        delete $scope.query['date__lte'];
+      }else if ($scope.advanced_date_query.date__gte != ''){
+        $scope.query['date__gte'] = $scope.advanced_date_query.date__gte;
+        delete $scope.query['date__range'];
+        delete $scope.query['date__lte'];
+      }else if ($scope.advanced_date_query.date__lte != ''){
+        $scope.query['date__lte'] = $scope.advanced_date_query.date__lte;
+        delete $scope.query['date__range'];
+        delete $scope.query['date__gte'];
+      }else{
+        delete $scope.query['date__range'];
+        delete $scope.query['date__gte'];
+        delete $scope.query['date__lte'];
+      }
+      if (!init_date){
+        //query_api($scope.query);
+      }else{
+        init_date = false;
+      }
+
+    }, true);
+
     /*
     * Spatial search
     */
@@ -487,9 +728,9 @@
           }
         },
         map_center: {
-          lat: 5.6,
-          lng: 3.9,
-          zoom: 0
+          lat: 23.8103,
+          lng: 90.4125,
+          zoom: 5
         },
         defaults: {
           zoomControl: false
@@ -503,12 +744,12 @@
       map.then(function(map){
         map.on('moveend', function(){
           $scope.query['extent'] = map.getBounds().toBBoxString();
-          query_api($scope.query);
+          //query_api($scope.query);
         });
       });
     
       var showMap = false;
-      $('#_extent_filter').click(function(evt) {
+      $('#_extent_filter, #advanced-search-control, .advanced-search-control').click(function(evt) {
      	  showMap = !showMap
         if (showMap){
           leafletData.getMap().then(function(map) {
@@ -517,5 +758,6 @@
         } 
       });
     }
+    $("#limitOfpage").html($scope.query.limit);
   });
 })();

@@ -16,87 +16,161 @@
 {% block body_class %}groups{% endblock %}
 
 {% block body_outer %}
-<div class="page-header">
-  <h2 class="page-title">{{ object.title|default:object.slug }}</h2>
-</div>
-<div class="row">
-  <div class="col-md-8 group-details">
-    <div class="row">
-      <div class="col-xs-4 col-md-3 group-logo">
-      {% if object.logo %}
-        <img src="{{ object.logo.url }}" alt="{{ object.title }}" />
-      {% else %}
-        <!-- <p>{% trans "This group has not created a logo." %}</p> -->
-      {% endif %}
+<div class="gd-content">
+  <div class="gd-content-heading">
+      <div class="row">
+          <div class="col-md-9">
+              <div class="title with-icon-content">
+                  <a href="javascript:;">
+                    {% if object.logo %}
+                      <img height="65" src="{{ object.logo.url }}" alt="{{ object.title }}" />
+                    {% else %}
+                    <!-- <p>{% trans "This group has not created a logo." %}</p> -->
+                    {% endif %}
+                    {{ object.title|default:object.slug }}
+                  </a>
+              </div>
+          </div>
+          <div class="col-md-3">
+              <div class="small-content text-right margin-top-50px">
+                {% if can_view %}
+                  <a class="btn btn-gd-primary" href="{% url "group_activity" object.slug %}">
+                  {% trans "Group Activities" %}
+                  </a>
+                {% endif %}
+              </div>
+          </div>
       </div>
-      <div class="col-xs-8 col-md-9 group-details">
-        <p class="group-desc">{{ object.description }}</p>
-        {% if object.keyword_list %}
-        <p>
-          {% for keyword in object.keyword_list %}
-            <span class="label label-default">{{ keyword }}</span>
-          {% endfor %}
-        </p>
-        {% else %}
-        {% endif %}
-        {% if object.email %}
-        <p><i class="fa fa-envelope-o"></i>
-          <a href="mailto:{{ object.email }}">{{ object.email }}</a>
-        </p>
-        {% endif %}
+      <div class="hr"></div>
+  </div>
+  <div class="gd-content-body transparent top-bottom-margin-20px">
+      <div class="row">
+          <div class="col-md-9">
+              <div class="description">
+                  {{ object.description }}
+              </div>
+              <div class="keywords">
+                {% if object.keyword_list %}
+                  {% for keyword in object.keyword_list %}
+                  <button type="reset" class="btn btn-default btn-xs">
+                      {{ keyword }}
+                  </button>
+                  {% endfor %}
+                {% else %}
+                {% endif %}
+              </div>
+              <div class="emails">
+                {% if object.email %}
+                  <i class="fa fa-envelope"></i>
+                  <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+                {% endif %}
+              </div>
+          </div>
+          <div class="col-md-3">
+            {% if is_manager or request.user.is_superuser %}
+              <ul class="list-group gd-link-style">
+                  <li class="list-group-item">
+                      <a href="{% url "group_update" object.slug %}">
+                        {% trans "Edit Group Details" %}
+                      </a>
+                  </li>
+                  <li class="list-group-item">
+                      <a href="{% url "group_members" object.slug %}">
+                        {% trans "Manage Group Members" %}
+                      </a>
+                  </li>
+                  <li class="list-group-item">
+                      <a href="{% url "group_remove" object.slug %}">
+                        {% trans "Delete this Group" %}
+                      </a>
+                  </li>
+              </ul>
+            {% endif %}
+            {% for manager in object.get_managers %}
+                {% with manager as profile %}
+                  {% include "groups/_manager_about_item.html" %}
+                {% endwith %}
+            {% endfor %}
+
+            <!-- <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="text-right">
+                        <a href="javascript:;">More...</a>
+                    </div>
+                </div>
+            </div> -->
+          </div>
       </div>
-    </div>
   </div>
-  <div class="col-md-4">
-    <ul class="list-group">
-      {% if is_manager or request.user.is_superuser %}
-      <li class="list-group-item"><a href="{% url "group_update" object.slug %}">{% trans "Edit Group Details" %}</a></li>
-      <li class="list-group-item"><a href="{% url "group_members" object.slug %}">{% trans "Manage Group Members" %}</a></li>
-      <li class="list-group-item"><a href="{% url "group_remove" object.slug %}">{% trans "Delete this Group" %}</a></li>
-      {% endif %}
-      {% if can_view %}
-      <li class="list-group-item"><a href="{% url "group_activity" object.slug %}">{% trans "Group Activities" %}</a></li>
-      {% endif %}
-      <li class="list-group-item">
-        <h4>{% trans "Permissions" %}</h4>
-        <p>
-          {% blocktrans with object.get_access_display as access %}
-            This group is <strong>{{ access }}</strong>.
-          {% endblocktrans %}
-          {% if object.access == "public" %}
-            {% trans "Anyone may join this group." %}
-            <form class="uniForm" method="POST" action="{% url "group_join" object.slug %}">
-              {% csrf_token %}
-              {% if not is_member %}
-              <input type="submit" class="btn btn-default btn-md btn-block" value="Join Group" />
-              {% endif %}
-            </form>
-          {% else %} {% if object.access == "public-invite" %}
-            {% trans "Anyone may view this group but membership is by invitation only." %}
-          {% else %} {% if object.access == "private" %}
-            {% trans "Membership is by invitation only." %}
-          {% endif %} {% endif %} {% endif %}
-        </p>
-      </li>
-      <li class="list-group-item">
-        <h4>{% trans "Managers" %}</h4>
-        {% for manager in object.get_managers %}
-        {% with manager as profile %}
-          {% include "people/_profile_about_item.html" %}
-        {% endwith %}
-        {% endfor %}
-      </li>
-    </ul>
+  <div class="gd-content-body">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="gd-box">
+                  <h3>{% trans "Permissions" %}</h3>
+                  <div class="block-separator"></div>
+                  {% blocktrans with object.get_access_display as access %}
+                    This group is <strong>{{ access }}</strong>.
+                  {% endblocktrans %}
+                  {% if object.access == "public" %}
+                    {% trans "Anyone may join this group." %}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="block-separator"></div>
+                            <form class="uniForm" method="POST" action="{% url "group_join" object.slug %}">
+                              {% csrf_token %}
+                              {% if not is_member %}
+                                <input type="submit" class="btn btn-gd-gray btn-md btn-block" value="Join Group" />
+                              {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                  {% else %}
+                      {% if object.access == "public-invite" %}
+                        {% trans "Anyone may view this group but membership is by invitation only." %}
+                      {% else %}
+                        {% if object.access == "private" %}
+                            {% trans "Membership is by invitation only." %}
+                        {% endif %}
+                      {% endif %}
+                  {% endif %}
+              </div>
+          </div>
+      </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h4>{% trans "Members" %}</h4>
-    <div class="tab-content paginate paginate-auto" id="search-content">
-    {% include 'people/_profile_list_item.html' %}
-    </div>
+  <div class="gd-content-heading">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="title small-content">
+                  {% trans "Members" %}
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="small-content pull-right">
+                  <ul class="search-type">
+                      <li ng-class="{active : pageViewing == 'list'}">
+                          <a href="javascript:;" ng-click="displayView('list')">
+                              <i class="fa fa-bars fa-stack-1-5x"></i>
+                          </a>
+                      </li>
+                      <li ng-class="{active : pageViewing == 'grid'}">
+                          <a href="javascript:;" ng-click="displayView('grid')">
+                              <i class="fa fa-th-large fa-stack-1-5x"></i>
+                              <!--<img src="images/user-separator-icon.png" />-->
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="hr"></div>
   </div>
-  {% include 'search/_pagination.html' %}
+  <div class="block-separator"></div>
+  <div class="gd-content-body transparent">
+      <div class="paginate paginate-auto" id="search-content">
+        {% include 'people/_profile_list_item.html' %}
+      </div>
+      {% include 'search/_pagination.html' %}
+  </div>
 </div>
 {% endblock %}
 
