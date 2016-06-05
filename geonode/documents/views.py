@@ -39,7 +39,7 @@ from django.contrib import messages
 from geonode.utils import resolve_object
 from geonode.security.views import _perms_info_json
 from geonode.people.forms import ProfileForm
-from geonode.base.forms import CategoryForm
+from geonode.base.forms import CategoryForm, ResourceDenyForm, ResourceApproveForm
 from geonode.base.models import TopicCategory, ResourceBase
 from geonode.documents.models import Document
 from geonode.documents.forms import DocumentForm, DocumentCreateForm, DocumentReplaceForm
@@ -546,33 +546,38 @@ def document_publish(request, document_pk):
 @login_required
 def document_approve(request, document_pk):
     if request.method == 'POST':
-        try:
-            document = Document.objects.get(id=document_pk)
-        except Document.DoesNotExist:
-            return HttpResponse("requested document does not exists")
+        form = ResourceApproveForm(request.POST)
+        if form.is_valid():
+            try:
+                document = Document.objects.get(id=document_pk)
+            except Document.DoesNotExist:
+                return HttpResponse("requested document does not exists")
+            else:
+                group = document.group
+                if request.user not in group.get_managers():
+                    return HttpResponse("you are not allowed to approve this document")
+                document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
+                document_audit_activity = DocumentAuditActivity(document_submission_activity=document_submission_activity)
+                comment_body = request.POST.get('comment')
+                comment_subject = request.POST.get('comment_subject')
+                document.status = 'ACTIVE'
+                document.last_auditor = request.user
+                document.save()
+
+                document_submission_activity.is_audited = True
+                document_submission_activity.save()
+
+                document_audit_activity.comment_subject = comment_subject
+                document_audit_activity.comment_body = comment_body
+                document_audit_activity.result = 'APPROVED'
+                document_audit_activity.auditor = request.user
+                document_audit_activity.save()
+
+            messages.info(request, 'approved document succesfully')
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
-            group = document.group
-            if request.user not in group.get_managers():
-                return HttpResponse("you are not allowed to approve this document")
-            document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
-            document_audit_activity = DocumentAuditActivity(document_submission_activity=document_submission_activity)
-            comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
-            document.status = 'ACTIVE'
-            document.last_auditor = request.user
-            document.save()
-
-            document_submission_activity.is_audited = True
-            document_submission_activity.save()
-
-            document_audit_activity.comment_subject = comment_subject
-            document_audit_activity.comment_body = comment_body
-            document_audit_activity.result = 'APPROVED'
-            document_audit_activity.auditor = request.user
-            document_audit_activity.save()
-
-        messages.info(request, 'approved document succesfully')
-        return HttpResponseRedirect(reverse('admin-workspace-document'))
+            messages.info(request, 'Please write an approve comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-document'))
 
@@ -580,33 +585,39 @@ def document_approve(request, document_pk):
 @login_required
 def document_deny(request, document_pk):
     if request.method == 'POST':
-        try:
-            document = Document.objects.get(id=document_pk)
-        except Document.DoesNotExist:
-            return HttpResponse("requested document does not exists")
+        form = ResourceDenyForm(request.POST)
+        if form.is_valid():
+            try:
+                document = Document.objects.get(id=document_pk)
+            except Document.DoesNotExist:
+                return HttpResponse("requested document does not exists")
+            else:
+                group = document.group
+                if request.user not in group.get_managers():
+                    return HttpResponse("you are not allowed to deny this document")
+                document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
+                document_audit_activity= DocumentAuditActivity(document_submission_activity=document_submission_activity)
+                comment_body = request.POST.get('comment')
+                comment_subject = request.POST.get('comment_subject')
+                document.status = 'DENIED'
+                document.last_auditor = request.user
+                document.save()
+
+                document_submission_activity.is_audited = True
+                document_submission_activity.save()
+
+                document_audit_activity.comment_subject = comment_subject
+                document_audit_activity.comment_body = comment_body
+                document_audit_activity.result = 'DECLINED'
+                document_audit_activity.auditor = request.user
+                document_audit_activity.save()
+
+            messages.info(request, 'document denied successfully')
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
-            group = document.group
-            if request.user not in group.get_managers():
-                return HttpResponse("you are not allowed to deny this document")
-            document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
-            document_audit_activity= DocumentAuditActivity(document_submission_activity=document_submission_activity)
-            comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
-            document.status = 'DENIED'
-            document.last_auditor = request.user
-            document.save()
+            messages.info(request, 'Please write a deny comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
 
-            document_submission_activity.is_audited = True
-            document_submission_activity.save()
-
-            document_audit_activity.comment_subject = comment_subject
-            document_audit_activity.comment_body = comment_body
-            document_audit_activity.result = 'DECLINED'
-            document_audit_activity.auditor = request.user
-            document_audit_activity.save()
-
-        messages.info(request, 'document denied successfully')
-        return HttpResponseRedirect(reverse('admin-workspace-document'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-document'))
 

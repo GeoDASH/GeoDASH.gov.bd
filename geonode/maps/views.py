@@ -52,7 +52,7 @@ from geonode.utils import resolve_object
 from geonode.utils import layer_from_viewer_config
 from geonode.maps.forms import MapForm
 from geonode.security.views import _perms_info_json
-from geonode.base.forms import CategoryForm
+from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.base.models import TopicCategory
 from geonode.tasks.deletion import delete_map
 
@@ -943,33 +943,38 @@ def map_publish(request, map_pk):
 @login_required
 def map_approve(request, map_pk):
     if request.method == 'POST':
-        try:
-            map = Map.objects.get(id=map_pk)
-        except Map.DoesNotExist:
-            return HttpResponse("requested map does not exists")
+        form = ResourceApproveForm(request.POST)
+        if form.is_valid():
+            try:
+                map = Map.objects.get(id=map_pk)
+            except Map.DoesNotExist:
+                return HttpResponse("requested map does not exists")
+            else:
+                group = map.group
+                if request.user not in group.get_managers():
+                    return HttpResponse("you are not allowed to approve this map")
+                map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
+                map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
+                comment_body = request.POST.get('comment')
+                comment_subject = request.POST.get('comment_subject')
+                map.status = 'ACTIVE'
+                map.last_auditor = request.user
+                map.save()
+
+                map_submission_activity.is_audited = True
+                map_submission_activity.save()
+
+                map_audit_activity.comment_subject = comment_subject
+                map_audit_activity.comment_body = comment_body
+                map_audit_activity.result = 'APPROVED'
+                map_audit_activity.auditor = request.user
+                map_audit_activity.save()
+
+            messages.info(request, 'approved map succesfully')
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
-            group = map.group
-            if request.user not in group.get_managers():
-                return HttpResponse("you are not allowed to approve this map")
-            map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
-            map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
-            comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
-            map.status = 'ACTIVE'
-            map.last_auditor = request.user
-            map.save()
-
-            map_submission_activity.is_audited = True
-            map_submission_activity.save()
-
-            map_audit_activity.comment_subject = comment_subject
-            map_audit_activity.comment_body = comment_body
-            map_audit_activity.result = 'APPROVED'
-            map_audit_activity.auditor = request.user
-            map_audit_activity.save()
-
-        messages.info(request, 'approved map succesfully')
-        return HttpResponseRedirect(reverse('admin-workspace-map'))
+            messages.info(request, 'Please write an approve comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-map'))
 
@@ -977,33 +982,38 @@ def map_approve(request, map_pk):
 @login_required
 def map_deny(request, map_pk):
     if request.method == 'POST':
-        try:
-            map = Map.objects.get(id=map_pk)
-        except:
-            return HttpResponse("requested map does not exists")
+        form = ResourceDenyForm(request.POST)
+        if form.is_valid():
+            try:
+                map = Map.objects.get(id=map_pk)
+            except:
+                return HttpResponse("requested map does not exists")
+            else:
+                group = map.group
+                if request.user not in group.get_managers():
+                    return HttpResponse("you are not allowed to deny this map")
+                map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
+                map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
+                comment_body = request.POST.get('comment')
+                comment_subject = request.POST.get('comment_subject')
+                map.status = 'DENIED'
+                map.last_auditor = request.user
+                map.save()
+
+                map_submission_activity.is_audited = True
+                map_submission_activity.save()
+
+                map_audit_activity.comment_subject = comment_subject
+                map_audit_activity.comment_body = comment_body
+                map_audit_activity.result = 'DECLINED'
+                map_audit_activity.auditor = request.user
+                map_audit_activity.save()
+
+            messages.info(request, 'map denied successfully')
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
-            group = map.group
-            if request.user not in group.get_managers():
-                return HttpResponse("you are not allowed to deny this map")
-            map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
-            map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
-            comment_body = request.POST.get('comment')
-            comment_subject = request.POST.get('comment-subject')
-            map.status = 'DENIED'
-            map.last_auditor = request.user
-            map.save()
-
-            map_submission_activity.is_audited = True
-            map_submission_activity.save()
-
-            map_audit_activity.comment_subject = comment_subject
-            map_audit_activity.comment_body = comment_body
-            map_audit_activity.result = 'DECLINED'
-            map_audit_activity.auditor = request.user
-            map_audit_activity.save()
-
-        messages.info(request, 'map denied successfully')
-        return HttpResponseRedirect(reverse('admin-workspace-map'))
+            messages.info(request, 'Please write an deny comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-map'))
 
