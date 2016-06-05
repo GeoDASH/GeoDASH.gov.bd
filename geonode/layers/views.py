@@ -47,7 +47,7 @@ from django.forms.util import ErrorList
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
 from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
-from geonode.base.forms import CategoryForm
+from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
 from geonode.base.models import TopicCategory
@@ -761,8 +761,11 @@ def layer_approve(request, layer_pk):
 
             messages.info(request, 'approved layer succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
+        else:
+            messages.info(request, 'Please write an approve comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
     else:
-        return HttpResponseRedirect(reverse('admin-workspace-layer'))\
+        return HttpResponseRedirect(reverse('admin-workspace-layer'))
 
 
 @login_required
@@ -796,8 +799,11 @@ def layer_deney(request, layer_pk):
                 layer_audit_activity.auditor = request.user
                 layer_audit_activity.save()
 
-        messages.info(request, 'layer denied successfully')
-        return HttpResponseRedirect(reverse('admin-workspace-layer'))
+            messages.info(request, 'layer denied successfully')
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
+        else:
+            messages.info(request, 'Please write an deny comment and try again')
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-layer'))
 

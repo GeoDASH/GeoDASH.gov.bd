@@ -52,7 +52,7 @@ from geonode.utils import resolve_object
 from geonode.utils import layer_from_viewer_config
 from geonode.maps.forms import MapForm
 from geonode.security.views import _perms_info_json
-from geonode.base.forms import CategoryForm
+from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.base.models import TopicCategory
 from geonode.tasks.deletion import delete_map
 

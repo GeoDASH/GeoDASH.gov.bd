@@ -185,7 +185,6 @@ def comment_subjects(comment_type):
     return iter_list
 
 
-
 class ResourceApproveForm(forms.Form):
     comment_subject = forms.ChoiceField(required=True, choices=comment_subjects('approve'))
     comment = forms.CharField(max_length=500, required=True, widget=forms.Textarea)
