@@ -325,10 +325,8 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         except:
             granules = {"features": []}
             all_granules = {"features": []}
-    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-    approve_comment_subjects = [line for line in approve_subjects_file ]
-    deney_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-    deney_comment_subjects = [line for line in deney_subjects_file ]
+    approve_form = ResourceApproveForm()
+    deny_form = ResourceDenyForm()
     context_dict = {
         "resource": layer,
         'perms_list': get_perms(request.user, layer.get_self_resource()),
@@ -341,8 +339,8 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "all_granules": all_granules,
         "filter": filter,
         "user_role": user_role,
-        "deney_comment_subjects":deney_comment_subjects,
-        "approve_comment_subjects": approve_comment_subjects,
+        "approve_form": approve_form,
+        "deny_form": deny_form,
         "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
         "status": layer.status
     }
@@ -769,7 +767,7 @@ def layer_approve(request, layer_pk):
 
 
 @login_required
-def layer_deney(request, layer_pk):
+def layer_deny(request, layer_pk):
     if request.method == 'POST':
         form = ResourceDenyForm(data=request.POST)
         if form.is_valid():
@@ -781,7 +779,7 @@ def layer_deney(request, layer_pk):
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deney this layer")
+                    return HttpResponse("you are not allowed to deny this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
