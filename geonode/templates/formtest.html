@@ -1,7 +1,7 @@
 {% extends "site_base.html" %}
 
 {% load i18n %}
-{% block title %} {% trans "User Guide" %} - {{ block.super }} {% endblock %}
+{% block title %} {% trans "Test API" %} - {{ block.super }} {% endblock %}
 
 {% block body_outer %}
 <div class="gd-content">
@@ -18,8 +18,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <select id= "org-id" name="org-id" class="col-md-12" >
-                            {% for organization in ogranizations %}
-                            <option  value={{ organization.id }} >{{ organization.title }}</option>
+                            {% for organization1 in ogranizations1 %}
+                            <option  value={{ organization1.id }} >{{ organization1.title }}</option>
                             {% endfor %}
                            </select>
                         </div>
@@ -32,10 +32,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12" >
-                            <select id= "categories" name="categories" class="col-md-12">
-                            {% for category in categories %}
-                            <option  value={{ category.gn_description }} >{{ category.gn_description }}</option>
-                            {% endfor %}
+                            <select id="myselect" name="myselect" class="col-md-12">
+                            <option  selected="selected" >Select One</option>
                            </select>
                         </div>
                     </div>
@@ -81,3 +79,28 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript">
+
+         var url = '{% url 'api_dispatch_list' api_name='api' resource_name='categories' %}';
+         function getCatagory(url){
+            $.ajax({
+                cache: false,
+                type: 'GET',
+                url: url,
+                data: {},
+                dataType: "json",
+                success: function(jsondata) {
+                    console.log("success");
+                    $('#myselect').append(jsondata);
+                    console.log(JSON.stringify(jsondata));
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+            });
+         }
+            getCatagory(url);
+    </script>
+{% endblock extra_script %}

@@ -19,11 +19,13 @@
 
 
           <form method="post" action="{% url "layer-approve" resource.id %}">
+
               {% csrf_token %}
 
                  <div style="padding:0px 50px 0px 50px;">
                       {{ approve_form }}
                       <div class="block-separator"></div>
+
                   </div>
               <div class="modal-footer" style="padding:10px 50px 0px 50px;">
                   <button class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</button>
