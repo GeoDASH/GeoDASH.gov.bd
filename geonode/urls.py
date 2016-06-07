@@ -64,6 +64,8 @@ urlpatterns = patterns('',
                        url(r'^developer/$', TemplateView.as_view(template_name='developer.html'), name='developer'),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
 
+                       url(r'^formtest/$', TemplateView.as_view(template_name='formtest.html'), name='formtest'),
+
                        # Layer views
                        (r'^layers/', include('geonode.layers.urls')),
 

@@ -1,0 +1,106 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% block title %} {% trans "Test API" %} - {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+<div class="gd-content">
+    <div class="gd-content-body transparent top-bottom-margin-20px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gd-content-body full-pad-40px">
+                  <form id="form_test_api"  method="post" enctype="multipart/form-data" action="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Select Organization " %} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select id= "org-id" name="org-id" class="col-md-12" >
+                            {% for organization1 in ogranizations1 %}
+                            <option  value={{ organization1.id }} >{{ organization1.title }}</option>
+                            {% endfor %}
+                           </select>
+                        </div>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Select Category " %} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" >
+                            <select id="myselect" name="myselect" class="col-md-12">
+                            <option  selected="selected" >Select One</option>
+                           </select>
+                        </div>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "User Name" %} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <input id="" class=" form-control" type="text" name="username" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Password" %} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <input id="" class=" form-control" type="password" name="password" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Zip file" %} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <input id="" class=" form-control" type="file" name="zipfile" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="block-separator"></div>
+                    <button type="submit" id="" class="btn btn-gd-primary">Submit</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript">
+
+         var url = '{% url 'api_dispatch_list' api_name='api' resource_name='categories' %}';
+         function getCatagory(url){
+            $.ajax({
+                cache: false,
+                type: 'GET',
+                url: url,
+                data: {},
+                dataType: "json",
+                success: function(jsondata) {
+                    console.log("success");
+                    $('#myselect').append(jsondata);
+                    console.log(JSON.stringify(jsondata));
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+            });
+         }
+            getCatagory(url);
+    </script>
+{% endblock extra_script %}

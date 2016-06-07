@@ -534,7 +534,7 @@ def document_publish(request, document_pk):
             document_submission_activity = DocumentSubmissionActivity(document=document, group=group, iteration=document.current_iteration)
             document_submission_activity.save()
 
-            # set all the permissions for all the managers of the group for this document
+            # set all the permissions for all the managers of the group for this documentt
             document.set_managers_permissions()
 
             messages.info(request, 'published document succesfully')
