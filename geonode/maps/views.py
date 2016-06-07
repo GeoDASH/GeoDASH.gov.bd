@@ -128,10 +128,8 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
 
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
-    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-    approve_comment_subjects = [line for line in approve_subjects_file ]
-    deny_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-    deny_comment_subjects = [line for line in deny_subjects_file ]
+    approve_form = ResourceApproveForm()
+    deny_form = ResourceDenyForm()
 
     context_dict = {
         'config': config,
@@ -142,9 +140,10 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
         "documents": get_related_documents(map_obj),
         "user_role": user_role,
         "status": map_obj.status,
-        "approve_comment_subjects": approve_comment_subjects,
+        "approve_form": approve_form,
+        "deny_form": deny_form,
         "denied_comments": MapAuditActivity.objects.filter(map_submission_activity__map=map_obj),
-        "deny_comment_subjects":deny_comment_subjects,
+
     }
 
     if settings.SOCIAL_ORIGINS:

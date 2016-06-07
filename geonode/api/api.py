@@ -337,3 +337,14 @@ class OwnersResource(TypeFilteredResource):
             'username': ALL,
         }
         serializer = CountJSONSerializer()
+
+
+class UserOrganizationList(TypeFilteredResource):
+
+    class Meta:
+        queryset = GroupProfile.objects.all()
+        resource_name = 'userorganizations'
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+        return super(UserOrganizationList, self).get_object_list(request).filter(groupmember__user=request.user)

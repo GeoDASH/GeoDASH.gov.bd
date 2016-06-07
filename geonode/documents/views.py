@@ -119,10 +119,8 @@ def document_detail(request, docid):
 
         metadata = document.link_set.metadata().filter(
             name__in=settings.DOWNLOAD_FORMATS_METADATA)
-        approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-        approve_comment_subjects = [line for line in approve_subjects_file ]
-        deny_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-        deny_comment_subjects = [line for line in deny_subjects_file ]
+        approve_form = ResourceApproveForm()
+        deny_form = ResourceDenyForm()
 
         context_dict = {
             'perms_list': get_perms(request.user, document.get_self_resource()),
@@ -133,9 +131,11 @@ def document_detail(request, docid):
             'related': related,
             "user_role": user_role,
             "status": document.status,
-            "approve_comment_subjects": approve_comment_subjects,
+            "approve_form": approve_form,
+            "deny_form": deny_form,
             "denied_comments": DocumentAuditActivity.objects.filter(document_submission_activity__document=document),
-            "deny_comment_subjects":deny_comment_subjects}
+
+        }
 
         if settings.SOCIAL_ORIGINS:
             context_dict["social_links"] = build_social_links(request, document)

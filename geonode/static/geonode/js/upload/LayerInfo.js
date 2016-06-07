@@ -207,7 +207,9 @@ define(function (require, exports) {
      *  @returns {string}
      */
     LayerInfo.prototype.logStatus = function (options) {
-        options.element = this.element.find('#status');
+        if(this.element != null){
+            options.element = this.element.find('#status');
+        }
         common.logStatus(options);
     };
 
