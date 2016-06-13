@@ -20,6 +20,11 @@
 
 import json
 import time
+import os
+import sys
+import logging
+import traceback
+import shutil
 
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
@@ -27,9 +32,12 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.db.models import Count
+from django.http import HttpResponse
+from django.utils.html import escape
 
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
+from slugify import slugify
 
 from geonode.base.models import ResourceBase
 from geonode.base.models import TopicCategory
@@ -37,15 +45,33 @@ from geonode.base.models import Region
 from geonode.layers.models import Layer
 from geonode.maps.models import Map
 from geonode.documents.models import Document
-from geonode.groups.models import GroupProfile
+from geonode.groups.models import GroupProfile, GroupMember
+from geonode.layers.forms import NewLayerUploadForm
+from geonode.layers.utils import file_upload
+from geonode.layers.models import UploadSession
+from geonode.people.models import Profile
 
 from taggit.models import Tag
 from django.core.serializers.json import DjangoJSONEncoder
 from tastypie.serializers import Serializer
 from tastypie import fields
 from tastypie.resources import ModelResource
-from tastypie.constants import ALL
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
+
+CONTEXT_LOG_FILE = None
+
+if 'geonode.geoserver' in settings.INSTALLED_APPS:
+    from geonode.geoserver.helpers import _render_thumbnail
+    from geonode.geoserver.helpers import ogc_server_settings
+    CONTEXT_LOG_FILE = ogc_server_settings.LOG_FILE
+
+
+def log_snippet(log_file):
+    if not os.path.isfile(log_file):
+        return "No log file at %s" % log_file
+
+logger = logging.getLogger("geonode.layers.views")
 
 
 FILTER_TYPES = {
@@ -312,9 +338,24 @@ class ProfileResource(TypeFilteredResource):
                     'is_active', 'last_login']
 
         filtering = {
+            'id': ALL,
             'username': ALL,
         }
         serializer = CountJSONSerializer()
+
+
+
+class UserOrganizationList(TypeFilteredResource):
+
+    group = fields.ForeignKey(GroupResource, 'group', full=True)
+    user = fields.ForeignKey(ProfileResource, 'user')
+    class Meta:
+        queryset = GroupMember.objects.all()
+        resource_name = 'user-organization-list'
+        filtering = {
+            'user': ALL_WITH_RELATIONS
+        }
+
 
 
 class OwnersResource(TypeFilteredResource):
@@ -339,12 +380,112 @@ class OwnersResource(TypeFilteredResource):
         serializer = CountJSONSerializer()
 
 
-class UserOrganizationList(TypeFilteredResource):
+class LayerUpload(TypeFilteredResource):
 
     class Meta:
-        queryset = GroupProfile.objects.all()
-        resource_name = 'userorganizations'
-        allowed_methods = ['get']
+        resource_name = 'layerupload'
+        allowed_methods = ['post']
 
-    def get_object_list(self, request):
-        return super(UserOrganizationList, self).get_object_list(request).filter(groupmember__user=request.user)
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            username = request.GET.get('username') or request.POST.get('username')
+            password = request.GET.get('password') or request.POST.get('password')
+            out = {'success': False}
+            try:
+                user = Profile.objects.get(username=username)
+            except Profile.DoesNotExist:
+                out['errors'] = 'The username and/or password you specified are not correct.'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+
+            if user.check_password(password):
+                request.user = user
+            else:
+                out['errors'] = 'The username and/or password you specified are not correct.'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+            form = NewLayerUploadForm(request.POST, request.FILES)
+            tempdir = None
+            errormsgs = []
+            if form.is_valid():
+                title = form.cleaned_data["layer_title"]
+                category = form.cleaned_data["category"]
+                organization_id = form.cleaned_data["organization"]
+                try:
+                    group = GroupProfile.objects.get(id=organization_id)
+                except GroupProfile.DoesNotExist:
+                    out['errors'] = 'Organization does not exists'
+                    return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+                else:
+                    if not group in group.groups_for_user(request.user):
+                        out['errors'] = 'Organization access denied'
+                        return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+                # Replace dots in filename - GeoServer REST API upload bug
+                # and avoid any other invalid characters.
+                # Use the title if possible, otherwise default to the filename
+                if title is not None and len(title) > 0:
+                    name_base = title
+                    keywords = title.split()
+                else:
+                    name_base, __ = os.path.splitext(
+                        form.cleaned_data["base_file"].name)
+                name = slugify(name_base.replace(".", "_"))
+                try:
+                    # Moved this inside the try/except block because it can raise
+                    # exceptions when unicode characters are present.
+                    # This should be followed up in upstream Django.
+                    tempdir, base_file = form.write_files()
+                    saved_layer = file_upload(
+                        base_file,
+                        name=name,
+                        user=request.user,
+                        category=category,
+                        group=group,
+                        keywords=keywords,
+                        status='ACTIVE',
+                        overwrite=False,
+                        charset=form.cleaned_data["charset"],
+                        abstract=form.cleaned_data["abstract"],
+                        title=form.cleaned_data["layer_title"],
+                        metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
+                    )
+                except Exception as e:
+                    exception_type, error, tb = sys.exc_info()
+                    logger.exception(e)
+                    out['success'] = False
+                    out['errors'] = str(error)
+                    # Assign the error message to the latest UploadSession from that user.
+                    latest_uploads = UploadSession.objects.filter(user=request.user).order_by('-date')
+                    if latest_uploads.count() > 0:
+                        upload_session = latest_uploads[0]
+                        upload_session.error = str(error)
+                        upload_session.traceback = traceback.format_exc(tb)
+                        upload_session.context = log_snippet(CONTEXT_LOG_FILE)
+                        upload_session.save()
+                        out['traceback'] = upload_session.traceback
+                        out['context'] = upload_session.context
+                        out['upload_session'] = upload_session.id
+                else:
+                    out['success'] = True
+                    if hasattr(saved_layer, 'info'):
+                        out['info'] = saved_layer.info
+                    out['url'] = reverse(
+                        'layer_detail', args=[
+                            saved_layer.service_typename])
+                    upload_session = saved_layer.upload_session
+                    upload_session.processed = True
+                    upload_session.save()
+                    permissions = form.cleaned_data["permissions"]
+                    if permissions is not None and len(permissions.keys()) > 0:
+                        saved_layer.set_permissions(permissions)
+                finally:
+                    if tempdir is not None:
+                        shutil.rmtree(tempdir)
+            else:
+                for e in form.errors.values():
+                    errormsgs.extend([escape(v) for v in e])
+                out['errors'] = form.errors
+                out['errormsgs'] = errormsgs
+            if out['success']:
+                status_code = 200
+            else:
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
