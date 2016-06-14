@@ -358,7 +358,7 @@ def extract_tarfile(upload_file, extension='.shp', tempdir=None):
 def file_upload(filename, name=None, group=None, user=None, title=None, abstract=None,
                 keywords=[], category=None, regions=[], date=None,
                 skip=True, overwrite=False, charset='UTF-8',
-                metadata_uploaded_preserve=False):
+                metadata_uploaded_preserve=False, status=None):
     """Saves a layer in GeoNode asking as little information as possible.
        Only filename is required, user and title are optional.
     """
@@ -409,6 +409,8 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
     is_published = True
     if settings.RESOURCE_PUBLISHING:
         is_published = False
+    if not status:
+        status = 'DRAFT'
 
     defaults = {
         'upload_session': upload_session,
@@ -423,6 +425,7 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
         'is_published': is_published,
         'category': category,
         'group': group,
+        'status': status
     }
 
     # set metadata
