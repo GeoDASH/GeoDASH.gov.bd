@@ -36,19 +36,19 @@
             <div class="row">
                 <div class="col-md-4 margin-zero right-pad-zero">
                     <div id="gd-accordion-style" class="layer-information">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion1"
-                                           href="#collapse1" aria-expanded="true" aria-controls="collapseOne">
+                                           href="#collapse1-per" aria-expanded="true" aria-controls="collapseOne">
                                             {{ resource.title|default:resource.typename }}
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapse1" class="panel-collapse collapse in" role="tabpanel"
+                                <div id="collapse1-per" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="headingOne">
                                     <div class="panel-body">
 
@@ -262,7 +262,7 @@
                                     <div class="panel-heading" role="tab" id="headingTwo">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse"
-                                               data-parent="#accordion2" href="#collapse2" aria-expanded="false"
+                                               data-parent="#accordion2" href="#collapse-leg" aria-expanded="false"
                                                aria-controls="collapse2">
                                                 {% trans "Legend" %}
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -270,7 +270,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapse2" class="panel-collapse collapse in" role="tabpanel"
+                                    <div id="collapse-leg" class="panel-collapse collapse in" role="tabpanel"
                                          aria-labelledby="headingTwo">
                                         <div class="panel-body">
                                             <p>{{ style.sld_title }}</p>
@@ -287,7 +287,7 @@
                                 <div class="panel-heading" role="tab" id="headingTwo">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse"
-                                           data-parent="#accordion3" href="#collapse3" aria-expanded="false"
+                                           data-parent="#accordion3" href="#collapse3-map" aria-expanded="false"
                                            aria-controls="collapseTwo">
                                             {% trans "Maps using this layer" %}
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -295,7 +295,7 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapse3" class="panel-collapse collapse in" role="tabpanel"
+                                <div id="collapse3-map" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="headingTwo">
                                     <div class="panel-body">
                                         {% if resource.maps %}
@@ -317,7 +317,7 @@
                                 <div class="panel-heading" role="tab" id="headingTwo">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse"
-                                           data-parent="#accordion" href="#collapse4" aria-expanded="false"
+                                           data-parent="#accordion" href="#collapse4-create" aria-expanded="false"
                                            aria-controls="collapseTwo">
                                             {% trans "Create a map using this layer" %}
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -325,7 +325,7 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapse4" class="panel-collapse collapse in" role="tabpanel"
+                                <div id="collapse4-create" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="headingTwo">
                                     <div class="panel-body">
                                         <p>{% trans "Click the button below to generate a new map based on this layer." %}</p>
@@ -367,7 +367,7 @@
                                     <div class="panel-heading" role="tab" id="headingTwo">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse"
-                                               data-parent="#accordion" href="#collapse6" aria-expanded="false"
+                                               data-parent="#accordion" href="#collapse6-styles" aria-expanded="false"
                                                aria-controls="collapseTwo">
                                                 {% trans "Styles" %}
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -375,7 +375,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapse6" class="panel-collapse collapse in" role="tabpanel"
+                                    <div id="collapse6-styles" class="panel-collapse collapse in" role="tabpanel"
                                          aria-labelledby="headingTwo">
                                         <div class="panel-body">
                                             <p>{% trans "The following styles are associated with this layer. Choose a style to view it in the preview map." %}</p>
@@ -409,7 +409,7 @@
                                         <div class="panel-heading" role="tab" id="headingTwo">
                                             <h4 class="panel-title">
                                                 <a role="button" data-toggle="collapse"
-                                                   data-parent="#accordion" href="#collapse7" aria-expanded="false"
+                                                   data-parent="#accordion" href="#collapse7-per" aria-expanded="false"
                                                    aria-controls="collapseTwo">
                                                     {% trans "Permissions" %}
                                                     <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -417,11 +417,11 @@
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="collapse7" class="panel-collapse collapse in" role="tabpanel"
+                                        <div id="collapse7-per" class="panel-collapse collapse in" role="tabpanel"
                                              aria-labelledby="headingTwo">
                                             <div class="panel-body">
                                                 <p>{% trans "Click the button below to change the permissions of this layer." %}</p>
-                                                <p><a href="#modal_perms" data-toggle="modal"
+                                                <p><a href="#modal_per" data-toggle="modal"
                                                       class="btn btn-gd-primary btn-block"
                                                       data-target="#_permissions">{% trans "Change Layer Permissions" %}</a>
                                                 </p>

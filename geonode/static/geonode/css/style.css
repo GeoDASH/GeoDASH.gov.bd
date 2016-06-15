@@ -2720,4 +2720,7 @@ ul.termsuseandcondition li {
     margin-bottom: 10px;
     list-style: circle;
 }
+.table > tbody + tbody {
+    border-top: 1px solid #ddd;
+}
 
