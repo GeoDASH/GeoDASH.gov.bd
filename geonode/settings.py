@@ -232,6 +232,7 @@ GEONODE_APPS = (
     'geonode.groups',
     'geonode.services',
     'geonode.workspace',
+    'geonode.news',
 
     # GeoServer Apps
     # Geoserver needs to come last because

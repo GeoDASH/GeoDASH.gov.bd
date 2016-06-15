@@ -1,0 +1,64 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Log in" %}{% endblock %}
+
+{% block body_outer %}
+    <div class="gd-content-body-news">
+        {% for news in news_list %}
+        <div class="changepass-news" id="changepass">
+            <div class="contents_news">
+                <div class="title">
+                    {{ news.title }}
+                </div>
+                <div class="anchor-link">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="javascript:;">
+                                {{ news.date_created }}
+                            </a>
+                        </div>
+                        <div class="col-md-6 gd-txt-right">
+                            <a href="{% url "news-details" news.id %}">
+                                <span> Read more </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!--<img src="{{ STATIC_URL }}geonode/images/news-img/news3.png"/>-->
+                </div>
+                <div class="block-separator"></div>
+                <div class="details">
+                    {{ news.description }}
+                </div>
+            </div>
+        </div>
+            <div class="block-separator"></div>
+        {% endfor %}
+
+
+        <!--<div class="text-center">-->
+            <!--<nav>-->
+                <!--<ul class="pagination">-->
+                    <!--<li>-->
+                        <!--<a href="#" aria-label="Previous">-->
+                            <!--<span aria-hidden="true">&laquo;</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#">1</a></li>-->
+                    <!--<li><a href="#">2</a></li>-->
+                    <!--<li><a href="#">3</a></li>-->
+                    <!--<li><a href="#">4</a></li>-->
+                    <!--<li><a href="#">5</a></li>-->
+                    <!--<li>-->
+                        <!--<a href="#" aria-label="Next">-->
+                            <!--<span aria-hidden="true">&raquo;</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</nav>-->
+        <!--</div>-->
+    </div>
+{% endblock %}
