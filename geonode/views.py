@@ -37,6 +37,7 @@ from actstream.models import Action
 from geonode import get_version
 from geonode.base.templatetags.base_tags import facets
 from geonode.groups.models import GroupProfile
+from geonode.news.models import News
 
 
 class AjaxLoginForm(forms.Form):
@@ -174,4 +175,5 @@ class IndexClass(ListView):
         context['action_list_comments'] = Action.objects.filter(
             public=True,
             action_object_content_type__id=ct_comment_id)[:15]
+        context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
         return context
