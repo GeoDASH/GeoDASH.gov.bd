@@ -28,22 +28,53 @@
             <div class="row">
                 <div class="col-md-4 margin-zero right-pad-zero">
                     <div id="gd-accordion-style" class="map-details-information">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel-group" id="accordion__" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion1"
-                                           href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                           href="#collapse1-down" aria-expanded="true" aria-controls="collapse1">
                                             {{ resource.title }}
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapse1" class="panel-collapse collapse in" role="tabpanel"
+                                <div id="collapse1-down" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="headingOne">
                                     <div class="panel-body">
                                         <ul class="list-group gd-link-style inaccordion">
+
+                                            {% if resource.storeType != "remoteStore" %}
+                                                <li class="list-group-item">
+                                                  {% if user_role == "member" %}
+                                                    {% if status == 'DENIED' %}
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
+                                                        {% include "map_templates/_deny_comments.html" %}
+                                                        {% endif %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_map">{% trans "Publish Map" %}</button>
+                                                        {% include "map_templates/_publish_map.html" %}
+                                                    {% endif %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    {% if user_role == "manager" and status == 'PENDING' %}
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
+                                                        {% include "map_templates/_deny_comments.html" %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_map">{% trans "Approve Map" %}</button>
+                                                        {% include "map_templates/_approve_map.html" %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_map">{% trans "Deney Map" %}</button>
+                                                        {% include "map_templates/_deny_map.html" %}
+                                                    {% endif %}
+                                                </li>
+
+                                            {% endif %}
+
                                             {% if "download_resourcebase" in perms_list %}
                                                 <li class="list-group-item">
                                                     <button class="btn btn-gd-primary btn-md btn-block"
@@ -163,7 +194,7 @@
                                 <div class="panel-heading" role="tab" id="heading1">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse"
-                                           data-parent="#accordion2" href="#collapse2" aria-expanded="true"
+                                           data-parent="#accordion2-map" href="#collapse2" aria-expanded="true"
                                            aria-controls="collapse2">
                                             {% trans "Map Layers" %}
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -171,7 +202,7 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapse2" class="panel-collapse collapse in" role="tabpanel"
+                                <div id="collapse2-map" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="heading1">
                                     <div class="panel-body">
                                         <p>{% trans "This map uses the following layers:" %}</p>
@@ -223,7 +254,7 @@
                                     <div class="panel-heading" role="tab" id="heading3">
                                         <h4 class="panel-title">
                                             <a role="button" data-toggle="collapse"
-                                               data-parent="#accordion3" href="#collapse4" aria-expanded="true"
+                                               data-parent="#accordion3-per" href="#collapse4" aria-expanded="true"
                                                aria-controls="collapse4">
                                                 {% trans "Permissions" %}
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -231,7 +262,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapse4" class="panel-collapse collapse in" role="tabpanel"
+                                    <div id="collapse4-per" class="panel-collapse collapse in" role="tabpanel"
                                          aria-labelledby="heading3">
                                         <div class="panel-body">
                                             <p>{% trans "Specify which users can view or modify this map" %}</p>
@@ -402,7 +433,7 @@
             </div>
           </div>
         </div>
-        {% endif %}
+
         <li class="list-group-item">
           <a href="{% url "map_view" resource.id %}" class="btn btn-default btn-md btn-block">{% trans "View Map" %}</a>
         </li>
@@ -433,7 +464,7 @@
           <h4>{% trans "Documents related to this map" %}</h4>
           <p>{% trans "List of documents related to this map:" %}</p>
           <ul class="list-unstyled">
-            {% for document in documents %} 
+            {% for document in documents %}
             <li><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></li>
             {% endfor %}
           </ul>
@@ -470,9 +501,9 @@
         {% endif %}
 
         {% include "base/_resourcebase_contact_snippet.html" %}
-    
+
       </ul>
-      
+
     </div>
 {% endblock %}
 
@@ -593,7 +624,7 @@
 
     });
   };
-  {% endverbatim %}
+
 
 
  });
@@ -611,13 +642,13 @@
       data: $("#form_post_comment").serialize(),
       success: function() {
         $('#form_post_comment_div').modal('hide');
-        $('#comments_section').load(window.location.pathname + ' #comments_section', 
+        $('#comments_section').load(window.location.pathname + ' #comments_section',
         		function(){$(this).children().unwrap()})
       }
     });
     return false;
   });
- 
+
 </script>
 {% include "_permissions_form_js.html" %}
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/utils/thumbnail.js"></script>
@@ -627,5 +658,5 @@
     $('#edit-map').modal('toggle');
   });
 </script>
- 
+
 {% endblock %}

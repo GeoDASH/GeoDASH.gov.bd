@@ -115,11 +115,6 @@
             {% elif  resource.doc_url %}
               <a style="text-decoration:none;" target="_blank" href="{{ resource.doc_url }}"><button class="btn btn-primary btn-md btn-block">{% trans "Download Document" %}</button></a>
             {%  endif %}
-          {% else %}
-            {% if request.user.is_authenticated %}
-            <button class="btn btn-gd-primary btn-md btn-block" id="request-download">{% trans "Request Download" %}</button>
-            {%  endif %}
-          {%  endif %}
         {% else %}
           {% if request.user.is_authenticated %}
           <button class="btn btn-primary btn-md btn-block" id="request-download">{% trans "Request Download" %}</button>
