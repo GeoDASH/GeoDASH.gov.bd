@@ -7,7 +7,9 @@
 {% block title %} {% trans "Welcome!" %} - {{ block.super }} {% endblock %}
 
 {% block extra_head %}
-<meta property="og:title" content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}" />
+<meta property="og:title"
+      content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}"
+      xmlns="http://www.w3.org/1999/html"/>
 <meta property="og:site_name" content="{% trans "Welcome!" %} - {{ SITE_NAME }}" />
 <meta property="og:url" content="http{% if request.is_secure %}s{% endif %}://{{ SITE_DOMAIN }}" />
 <meta property="og:description" content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}" />
@@ -449,45 +451,20 @@
                                 <div id="gd-latestnews-left">
                                     <div class="news-title"><i class="fa fa-feed"></i>{% trans "Latest News" %}</div>
                                     <div id="accordion" >
+                                        {% for news in latest_news_list %}
                                         <div class="accordion-section">
                                             <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">Welcome to GeoDASH <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Mon, 9 may 2016</div>
+                                                    <div class="title">{{ news.title }} <i class="fa fa-chevron-right"></i></div>
+                                                    <div class="sub-title">{{ news.date_created }}</div>
                                             </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                Welcome to GeoDASH, the geo-spatial data storing and sharing initiative by Bangladesh Government.
-                                                GeoDASH is a web based platform for compiling, updating and sharing geospatial database of all the
-                                                government organizations which will allow facilitating the use, management, exchange and quality
-                                                control of geospatial data sets in a collaborative manner. &nbsp;&nbsp;
-                                                <span><a href="/news/"> More </a></span>
+                                            <div id="collapseOne"  class="accordion-section-description collapse in">
+                                                {{ news.description }}
+                                                &nbsp;&nbsp;
+                                                 <span> <a href="{% url "news-details" news.id %}"> More </a></span>
                                             </div>
                                         </div>
-                                        <div class="accordion-section">
-                                            <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">GIS Day Observed in Bangladesh <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Sun, 8 may 2016</div>
-                                            </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                USAID/Bangladesh and the Department of Environmental Science and Management of North
-                                                South University organized a workshop on 18 November 2015 to celebrate GIS Day.
-                                                The purpose of the event was to raise awareness about the significance of
-                                                geographic information systems (GIS) and how they can benefit the development
-                                                community.&nbsp;&nbsp;<span><a href="/news/"> More </a></span>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-section">
-                                            <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">Geographical Information Systems <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Sun, 8 may 2016</div>
-                                            </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                Geographical Information Systems (GIS) are systems designed to store and manipulate data
-                                                relating to locations on the earth's surface. The major advantage of GIS is that it can read
-                                                and analyse different layers of spatial information in the form of maps and satellite images
-                                                easily and allows identifying the spatial relationships.
-                                                &nbsp;&nbsp;&nbsp;&nbsp;  <span><a href="/news/"> More </a></span>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
+
                                     </div>
                                 </div>
                             </div>

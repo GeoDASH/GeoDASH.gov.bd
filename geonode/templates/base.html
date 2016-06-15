@@ -156,15 +156,15 @@
                             <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
                             <ul class="dropdown-menu">
                                 <li id="nav_maps">
-                                  <a href="/news/">{% trans "Explore News" %}</a>
+                                  <a href="{% url "news-list" %}">{% trans "Explore News" %}</a>
                                 </li>
                                 <li id="nav_layers">
-                                  <a href="{% url "add_news" %}">{% trans "Add News" %}</a>
+                                  <a href="{% url "news-create" %}">{% trans "Add News" %}</a>
                                 </li>
                             </ul>
                         </li>
                         {% else %}
-                        <li id="nav_maps"><a href="/news/">{% trans "NEWS" %}</a></li>
+                        <li id="nav_maps"><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                         {% endif %}
                         {% endblock %}
                     </ul>
