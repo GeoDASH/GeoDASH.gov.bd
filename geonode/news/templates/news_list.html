@@ -31,7 +31,11 @@
                 </div>
                 <div class="block-separator"></div>
                 <div class="details">
-                    {{ news.description }}
+                    {% if news.description|length >= 300 %}
+                        {{ news.description|truncatechars:300 }}
+                    {% else %}
+                        {{ news.description }}
+                    {% endif %}
                 </div>
             </div>
         </div>
