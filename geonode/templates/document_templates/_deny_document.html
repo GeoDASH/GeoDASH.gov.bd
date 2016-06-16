@@ -1,3 +1,4 @@
+{% load bootstrap_tags %}
 {% load i18n %}
     <div class="modal fade" id="_deny_document" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="width:500px;">
@@ -22,7 +23,7 @@
               {% csrf_token %}
 
                  <div style="padding:0px 50px 0px 50px;">
-                      {{ deny_form }}
+                      {{ deny_form|as_bootstrap }}
                       <div class="block-separator"></div>
                   </div>
               <div class="modal-footer" style="padding:10px 50px 0px 50px;">

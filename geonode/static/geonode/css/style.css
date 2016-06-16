@@ -2723,4 +2723,19 @@ ul.termsuseandcondition li {
 .table > tbody + tbody {
     border-top: 1px solid #ddd;
 }
+.show-notification-msg{
+    width:200px;
+    z-index:99;
+    background:#fff;
+    top:53px;
+    margin-left:91px;
+    position:absolute;
+    height:300px;
+    overflow:auto;
+}
+.show-notification-msg ul li{
+    list-style-type:none;
+    padding: 5px 10px;
+    border-bottom:1px solid #ddd;
 
+}

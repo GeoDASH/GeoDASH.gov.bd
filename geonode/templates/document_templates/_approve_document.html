@@ -1,3 +1,4 @@
+{% load bootstrap_tags %}
 {% load i18n %}
 
     <div class="modal fade" id="_approve_document" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -21,7 +22,7 @@
               {% csrf_token %}
 
                  <div style="padding:0px 50px 0px 50px;">
-                      {{ approve_form }}
+                      {{ approve_form|as_bootstrap }}
                       <div class="block-separator"></div>
                   </div>
               <div class="modal-footer" style="padding:10px 50px 0px 50px;">

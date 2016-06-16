@@ -123,4 +123,7 @@ $(document).ready(function() {
             return this.closable;
         }
     });
+    $("#show-notification").click(function() {
+        $("#show-notification-msg").slideToggle("slow");
+    });
 });

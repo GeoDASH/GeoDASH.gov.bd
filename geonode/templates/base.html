@@ -155,16 +155,17 @@
                                aria-haspopup="true" aria-expanded="false">{% trans "NEWS" %}<span class="caret"></span></a>
                             <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
                             <ul class="dropdown-menu">
-                                <li id="nav_maps">
+                                <li>
                                   <a href="{% url "news-list" %}">{% trans "Explore News" %}</a>
                                 </li>
-                                <li id="nav_layers">
+                                <li>
                                   <a href="{% url "news-create" %}">{% trans "Add News" %}</a>
                                 </li>
                             </ul>
                         </li>
+                        <li><a href="{% url "topiccategory-create" %}">{% trans "Add Category" %}</a></li>
                         {% else %}
-                        <li id="nav_maps"><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
+                        <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                         {% endif %}
                         {% endblock %}
                     </ul>
@@ -209,7 +210,8 @@
                         </li>
                         {% endif %}
                         {% if user.is_authenticated %}
-                        <!-- <li class="notification">
+                        <!--
+                        <li class="notification">
                             <a href="javascript:;">
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
@@ -217,14 +219,23 @@
                                 <span class="badge badge-notifymsg">3</span>
                             </a>
                         </li>
-                        <li class="notification">
-                            <a href="javascript:;">
+                        <li class="notification" id="show-notification">
+                            <a href="javascript:;" >
                                 <button class="btn btn-default btn-link">
-                                    <i class="fa fa-bell"></i>
+                                    <i class="fa fa-bell" ></i>
                                 </button>
                                 <span class="badge badge-notify">3</span>
                             </a>
                         </li>
+                        <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
+                            <ul class="text-center">
+                                <li><a href="">Home</a> </li>
+                                <li><a href="">Home</a> </li>
+                                <li><a href="">Home</a> </li>
+                                <li><a href="">Home</a> </li>
+                            </ul>
+                        </div>
+
                         <li class="notification">
                             <a class="usi" href="javascript:;">
                                 <button class="btn btn-default btn-link">
