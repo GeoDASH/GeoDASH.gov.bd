@@ -20,9 +20,7 @@
                             </a>
                         </div>
                         <div class="col-md-6 gd-txt-right">
-                            <a href="{% url "news-details" news.id %}">
-                                <span> Read more </span>
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -31,8 +29,13 @@
                 </div>
                 <div class="block-separator"></div>
                 <div class="details">
-                    {% if news.description|length >= 300 %}
-                        {{ news.description|truncatechars:300 }}
+                    {% if news.description|length >= 500 %}
+                        {{ news.description|truncatechars:500 }}
+                        <div class="gd-txt-right">
+                            <span><a href="{% url "news-details" news.id %}">
+                                     Read more
+                            </a></span>
+                        </div>
                     {% else %}
                         {{ news.description }}
                     {% endif %}
