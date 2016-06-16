@@ -458,9 +458,13 @@
                                                     <div class="sub-title">{{ news.date_created }}</div>
                                             </div>
                                             <div id="collapseOne"  class="accordion-section-description collapse in">
-                                                {{ news.description }}
-                                                &nbsp;&nbsp;
-                                                 <span> <a href="{% url "news-details" news.id %}"> More </a></span>
+                                                {% if news.description|length >= 300 %}
+                                                    {{ news.description|truncatechars:300 }}
+                                                    &nbsp;&nbsp;
+                                                    <span> <a href="{% url "news-details" news.id %}"> More </a></span>
+                                                {% else %}
+                                                    {{ news.description }}
+                                                {% endif %}
                                             </div>
                                         </div>
                                         {% endfor %}
