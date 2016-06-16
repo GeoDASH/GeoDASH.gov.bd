@@ -31,6 +31,9 @@ from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.views.generic import ListView
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 from actstream.models import Action
 
@@ -38,6 +41,8 @@ from geonode import get_version
 from geonode.base.templatetags.base_tags import facets
 from geonode.groups.models import GroupProfile
 from geonode.news.models import News
+from geonode.base.forms import TopicCategoryForm
+from geonode.base.libraries.decorators import superuser_check
 
 
 class AjaxLoginForm(forms.Form):
@@ -177,3 +182,19 @@ class IndexClass(ListView):
             action_object_content_type__id=ct_comment_id)[:15]
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
         return context
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_create(request):
+    """
+    This view is for adding topic category from web. Only super admin can add topic category
+    """
+
+    if request.method == 'POST':
+        form = TopicCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = TopicCategoryForm()
+    return render(request, "category/upload_category.html", {'form': form, })

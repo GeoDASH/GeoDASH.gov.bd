@@ -5,13 +5,16 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from geonode.news.models import News
 from geonode.news.forms import NewsUpdateForm
+from geonode.base.libraries.decorators import superuser_check
 
 # Create your views here.
 
-
+@login_required
+@user_passes_test(superuser_check)
 def news_create(request):
     if request.method == 'POST':
         form = NewsUpdateForm(request.POST)

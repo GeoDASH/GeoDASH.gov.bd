@@ -107,6 +107,7 @@ urlpatterns = patterns('',
                        url(r'^account/ajax_lookup$', 'geonode.views.ajax_lookup', name='account_ajax_lookup'),
 
                        # Meta
+                       url(r'^topiccategory/create$', 'geonode.views.topiccategory_create', name='topiccategory-create'),
                        url(r'^lang\.js$', TemplateView.as_view(template_name='lang.js', content_type='text/javascript'),
                            name='lang'),
 
