@@ -194,3 +194,9 @@ class ResourceDenyForm(forms.Form):
     comment_subject = forms.ChoiceField(required=True, choices=comment_subjects('deny'))
     comment = forms.CharField(max_length=500, required=True, widget=forms.Textarea)
 
+
+class TopicCategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = TopicCategory
+        fields = ['identifier', 'description', 'gn_description', 'is_choice']
