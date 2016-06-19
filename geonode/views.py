@@ -210,6 +210,9 @@ def topiccategory_create(request):
 @login_required
 @user_passes_test(superuser_check)
 def topiccategory_list(request, template='category/category_list.html'):
+    """
+    This view is for listing topic category from web. Only super admin can list topic category
+    """
     context_dict = {
         "category_list": TopicCategory.objects.all(),
     }
