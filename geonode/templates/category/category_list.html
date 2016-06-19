@@ -27,7 +27,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="gd-content-body1 full-pad-40px1">
-                  <form id=""  method="post" enctype="multipart/form-data" action="">
+                  <form id=""  method="post"  action="{% url "topiccategory-delete" %}">
+                    {% csrf_token %}
                     <div class="row" style="background:#3896e2;text-color:#fff;margin-bottom:5px;">
                         <div class="col-md-2" style="color:#fff;">
                             <h4 >Serial No</h4>
@@ -39,28 +40,20 @@
                             <h4>Action</h4>
                         </div>
                     </div>
+                      {% for category in category_list %}
                     <div class="row" style="background:#fff;border-bottom:1px solid #ddd;">
                         <div class="col-md-2">
-                            1.
+                            {{ forloop.counter }}
                         </div>
                         <div class="col-md-6">
-                            Climatology Meteorology Atmosphere
+                            {{ category.gn_description }}
                         </div>
                         <div class="col-md-4">
-                            <input type="checkbox" name="" id="">
+                            <input type="checkbox" value="{{ category.id }}" name="category_id" id="category_id{{ category.id }}">
                         </div>
                     </div>
-                    <div class="row" style="background:#fff;border-bottom:1px solid #ddd;">
-                        <div class="col-md-2">
-                            2.
-                        </div>
-                        <div class="col-md-6">
-                            Climatology Meteorology Atmosphere
-                        </div>
-                        <div class="col-md-4">
-                            <input type="checkbox" name="" id="">
-                        </div>
-                    </div>
+                      {%endfor %}
+
                     <div class="block-separator"></div>
                     <button type="submit" id="" class="btn btn-gd-primary">Delete Category</button>
                   </form>

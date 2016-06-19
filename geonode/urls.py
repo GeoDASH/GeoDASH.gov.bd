@@ -65,7 +65,6 @@ urlpatterns = patterns('',
 
                        url(r'^formtest/$', TemplateView.as_view(template_name='formtest.html'), name='formtest'),
                        url(r'^add_news/$', TemplateView.as_view(template_name='news/add_news.html'), name='add_news'),
-                       url(r'^category_list/$', TemplateView.as_view(template_name='category/category_list.html'), name='category_list'),
 
                        # Layer views
                        (r'^layers/', include('geonode.layers.urls')),
@@ -109,6 +108,8 @@ urlpatterns = patterns('',
 
                        # Meta
                        url(r'^topiccategory/create$', 'geonode.views.topiccategory_create', name='topiccategory-create'),
+                       url(r'^topiccategory/list$', 'geonode.views.topiccategory_list', name='topiccategory-list'),
+                       url(r'^topiccategory/delete$', 'geonode.views.topiccategory_delete', name='topiccategory-delete'),
                        url(r'^lang\.js$', TemplateView.as_view(template_name='lang.js', content_type='text/javascript'),
                            name='lang'),
 

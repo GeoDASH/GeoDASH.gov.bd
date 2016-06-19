@@ -33,6 +33,10 @@ from django.views.generic import ListView
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 
 from actstream.models import Action
@@ -43,6 +47,7 @@ from geonode.groups.models import GroupProfile
 from geonode.news.models import News
 from geonode.base.forms import TopicCategoryForm
 from geonode.base.libraries.decorators import superuser_check
+from geonode.base.models import TopicCategory
 
 
 class AjaxLoginForm(forms.Form):
@@ -195,6 +200,36 @@ def topiccategory_create(request):
         form = TopicCategoryForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.info(request, 'Added category successfully')
+            return HttpResponseRedirect(reverse('topiccategory-list'))
     else:
         form = TopicCategoryForm()
     return render(request, "category/upload_category.html", {'form': form, })
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_list(request, template='category/category_list.html'):
+    context_dict = {
+        "category_list": TopicCategory.objects.all(),
+    }
+    return render_to_response(template, RequestContext(request, context_dict))
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_delete(request):
+    """
+    This view is for deleting topic category from web. Only super admin can delete topic category
+    """
+
+    if request.method == 'POST':
+        cat_ids = request.POST.getlist('category_id')
+        for id in cat_ids:
+            cat_id = int(id)
+            category = get_object_or_404(TopicCategory, pk=cat_id)
+            category.delete()
+        messages.info(request, 'Deleted category successfully')
+        return HttpResponseRedirect(reverse('topiccategory-list'))
+    else:
+        return HttpResponseRedirect(reverse('topiccategory-list'))
