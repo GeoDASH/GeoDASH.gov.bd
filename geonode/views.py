@@ -48,6 +48,7 @@ from geonode.news.models import News
 from geonode.base.forms import TopicCategoryForm
 from geonode.base.libraries.decorators import superuser_check
 from geonode.base.models import TopicCategory
+from geonode.dashboard.models import SectionManagementTable
 
 
 class AjaxLoginForm(forms.Form):
@@ -186,6 +187,26 @@ class IndexClass(ListView):
             public=True,
             action_object_content_type__id=ct_comment_id)[:15]
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        sections = SectionManagementTable.objects.all()
+        for section in sections:
+            if section.section == 'side_bar':
+                context['is_sidebar'] = section.is_visible,
+            if section.section == 'featured_layer':
+                context['is_featured_layers'] = section.is_visible,
+            if section.section == 'latest_news':
+                context['is_latest_news'] = section.is_visible,
+            if section.section == 'feature_highlights':
+                context['is_feature_highlights'] = section.is_visible,
+            if section.section == 'interportability':
+                context['is_interportability'] = section.is_visible,
+            if section.section == 'pretty_map':
+                context['is_pretty_map'] = section.is_visible,
+            if section.section == 'view_3d_map':
+                context['is_3dmap'] = section.is_visible,
+            if section.section == 'share_map':
+                context['is_share_map'] = section.is_visible,
+            if section.section == 'how_it_works':
+                context['is_how_it_works'] = section.is_visible,
         return context
 
 
