@@ -18,6 +18,22 @@ def section_list(request, template='section_table.html'):
     """
     This view is for updating section sho/hide table from web. Only super admin can manage this table.
     """
+    list_of_sections = [
+        'featured_layer',
+        'latest_news',
+        'feature_highlights',
+        'interportability',
+        'pretty_map',
+        'view_3d_map',
+        'share_map',
+        'how_it_works',
+        'side_bar'
+    ]
+    if len(list_of_sections) != len(SectionManagementTable.objects.all()):
+        for section in list_of_sections:
+            new_section = SectionManagementTable(section=section)
+            new_section.save()
+
     context_dict = {
         "section_list": SectionManagementTable.objects.all(),
     }
