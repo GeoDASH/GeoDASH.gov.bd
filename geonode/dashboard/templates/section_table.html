@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 {% load bootstrap_tags %}
+{% load base_tags %}
 
 {% load i18n %}
 {% block title %} {% trans "Section Table" %} - {{ block.super }} {% endblock %}
@@ -23,9 +24,9 @@
                 <div class="gd-content-body1 full-pad-40px1">
                   <form id=""  method="post"  action="{% url "section-update" %}">
                     {% csrf_token %}
-                    <div class="row" style="background:#3896e2;text-color:#fff;margin-bottom:5px;">
+                    <div class="row topic-cat-list" style="">
                         <div class="col-md-2" style="color:#fff;">
-                            <h4 >Serial No</h4>
+                            <h4 >No.</h4>
                         </div>
                         <div class="col-md-6" style="color:#fff;">
                             <h4>Section</h4>
@@ -35,14 +36,13 @@
                         </div>
                     </div>
                       {% for section in section_list %}
-                    <div class="row" style="background:#fff;border-bottom:1px solid #ddd;">
+                    <div class="row topic-cat-list-data" style="">
                         <div class="col-md-2">
                             {{ forloop.counter }}
                         </div>
                         <div class="col-md-6">
-                            {{ section.section }}
+                             {{ section.section |replace_underscores }}
                         </div>
-{#                        {{ section.is_visible }}#}
                         {% if section.is_visible %}
                             <div class="col-md-4">
                                 <input type="checkbox" checked value="{{ section.id }}" name="section_id" id="section_id{{ section.id }}">
@@ -56,7 +56,9 @@
                       {%endfor %}
 
                     <div class="block-separator"></div>
-                    <button type="submit" id="" class="btn btn-gd-primary">Change</button>
+                    <div class="text-right">
+                        <button type="submit" id="" class="btn btn-gd-primary">Change</button>
+                    </div>
                   </form>
                 </div>
             </div>
