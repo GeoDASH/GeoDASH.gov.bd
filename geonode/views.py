@@ -190,23 +190,23 @@ class IndexClass(ListView):
         sections = SectionManagementTable.objects.all()
         for section in sections:
             if section.section == 'side_bar':
-                context['is_sidebar'] = section.is_visible,
+                context['is_sidebar'] = section.is_visible
             if section.section == 'featured_layer':
-                context['is_featured_layers'] = section.is_visible,
+                context['is_featured_layers'] = section.is_visible
             if section.section == 'latest_news':
-                context['is_latest_news'] = section.is_visible,
+                context['is_latest_news'] = section.is_visible
             if section.section == 'feature_highlights':
-                context['is_feature_highlights'] = section.is_visible,
+                context['is_feature_highlights'] = section.is_visible
             if section.section == 'interportability':
-                context['is_interportability'] = section.is_visible,
+                context['is_interportability'] = section.is_visible
             if section.section == 'pretty_map':
-                context['is_pretty_map'] = section.is_visible,
+                context['is_pretty_map'] = section.is_visible
             if section.section == 'view_3d_map':
-                context['is_3dmap'] = section.is_visible,
+                context['is_3dmap'] = section.is_visible
             if section.section == 'share_map':
-                context['is_share_map'] = section.is_visible,
+                context['is_share_map'] = section.is_visible
             if section.section == 'how_it_works':
-                context['is_how_it_works'] = section.is_visible,
+                context['is_how_it_works'] = section.is_visible
         return context
 
 

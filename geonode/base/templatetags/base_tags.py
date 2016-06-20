@@ -113,3 +113,9 @@ def facets(context):
                 facets['vector'] + facets['remote'] + facets['wms']
 
     return facets
+
+
+@register.filter
+def replace_underscores(string):
+    string = string.replace('_', ' ')
+    return string.upper()

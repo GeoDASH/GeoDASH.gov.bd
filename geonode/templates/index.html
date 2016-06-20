@@ -25,6 +25,8 @@
    {{ block.super }}
   {% block slider %}
       {% if is_sidebar or request.user.is_authenticated %}
+          {{ is_sidebar }}
+          {{ is_share_map }}
         <section class="gd-slider">
           <div id="carousel-home" class="carousel slide" data-ride="carousel">
               <!-- Indicators -->

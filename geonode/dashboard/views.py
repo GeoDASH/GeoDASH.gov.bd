@@ -19,6 +19,8 @@ def section_list(request, template='section_table.html'):
     This view is for updating section sho/hide table from web. Only super admin can manage this table.
     """
     list_of_sections = [
+        'slider',
+        'how_it_works',
         'featured_layer',
         'latest_news',
         'feature_highlights',
