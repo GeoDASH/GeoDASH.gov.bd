@@ -189,8 +189,8 @@ class IndexClass(ListView):
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
         sections = SectionManagementTable.objects.all()
         for section in sections:
-            if section.section == 'side_bar':
-                context['is_sidebar'] = section.is_visible
+            if section.section == 'slider':
+                context['is_slider'] = section.is_visible
             if section.section == 'featured_layer':
                 context['is_featured_layers'] = section.is_visible
             if section.section == 'latest_news':
