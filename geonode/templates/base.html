@@ -599,6 +599,13 @@
                     {% trans "Profile" %}
                 </a>
             </li>
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "section-list-table" %}" class="c-menu__link">
+                    <i class="fa fa-map-marker"></i> {% trans "Manage Section " %}
+                </a>
+            </li>
+            {% endif %}
             {% if request.user.is_authenticated %}
             {% if request.user.is_member_of_any_group or  request.user.is_manager_of_any_group or request.user.is_superuser %}
             <li class="c-menu__item">
@@ -619,7 +626,7 @@
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "topiccategory-list" %}" class="c-menu__link">
-                    <i class="fa fa-map-marker"></i> {% trans "Category Manage" %}
+                    <i class="fa fa-map-marker"></i> {% trans "Manage Category " %}
                 </a>
             </li>
             {% endif %}

@@ -24,7 +24,7 @@
 {% block middle %}
    {{ block.super }}
   {% block slider %}
-      {% if is_sidebar or request.user.is_authenticated %}
+      {% if is_slider or request.user.is_authenticated %}
         <section class="gd-slider">
           <div id="carousel-home" class="carousel slide" data-ride="carousel">
               <!-- Indicators -->
@@ -178,6 +178,7 @@
       <!-- How It Works -->
       {% block index_howitworks %}
         {% if not request.user.is_authenticated %}
+          {% if is_how_it_works %}
             <div id="gd-howitworks">
                 <div class="block-separator"></div>
                 <div class="container">
@@ -249,6 +250,7 @@
                     </div>
                 </div>
             </div>
+          {% endif %}
         {% endif %}
       {% endblock %}
       <!-- Featurd Maps -->
