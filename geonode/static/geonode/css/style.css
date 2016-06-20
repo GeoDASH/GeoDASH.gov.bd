@@ -2737,5 +2737,13 @@ ul.termsuseandcondition li {
     list-style-type:none;
     padding: 5px 10px;
     border-bottom:1px solid #ddd;
-
+}
+.topic-cat-list{
+    background:#3896e2;
+    text-color:#fff;
+    margin-bottom:5px;
+}
+.topic-cat-list-data{
+    background:#fff;
+    border-bottom:1px solid #ddd;
 }

@@ -163,7 +163,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="{% url "topiccategory-list" %}">{% trans "Category" %}</a></li>
                         {% else %}
                         <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                         {% endif %}
@@ -604,7 +603,7 @@
             {% if request.user.is_member_of_any_group or  request.user.is_manager_of_any_group or request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "member-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Member-Workspace" %}
+                    <i class="fa fa-building-o"></i> {% trans "Member-Workspace" %}
                 </a>
             </li>
             {% endif %}
@@ -613,7 +612,14 @@
             {% if request.user.is_authenticated and request.user.is_manager_of_any_group %}
             <li class="c-menu__item">
                 <a href="{% url "admin-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Admin-Workspace" %}
+                    <i class="fa fa-building-o"></i> {% trans "Admin-Workspace" %}
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "topiccategory-list" %}" class="c-menu__link">
+                    <i class="fa fa-map-marker"></i> {% trans "Category Manage" %}
                 </a>
             </li>
             {% endif %}
