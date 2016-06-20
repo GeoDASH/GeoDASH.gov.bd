@@ -81,6 +81,9 @@ urlpatterns = patterns('',
                        # Catalogue views
                        (r'^catalogue/', include('geonode.catalogue.urls')),
 
+                       # dashboard views
+                       (r'^dashboard/', include('geonode.dashboard.urls')),
+
                        # data.json
                        url(r'^data.json$', 'geonode.catalogue.views.data_json', name='data_json'),
 
