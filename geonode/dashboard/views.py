@@ -28,10 +28,9 @@ def section_list(request, template='section_table.html'):
         'pretty_map',
         'view_3d_map',
         'share_map',
-        'how_it_works',
-        'side_bar'
     ]
     if len(list_of_sections) != len(SectionManagementTable.objects.all()):
+        SectionManagementTable.objects.all().delete()
         for section in list_of_sections:
             new_section = SectionManagementTable(section=section)
             new_section.save()
