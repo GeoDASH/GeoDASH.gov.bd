@@ -186,6 +186,15 @@ class IndexClass(ListView):
             public=True,
             action_object_content_type__id=ct_comment_id)[:15]
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        context['is_sidebar'] = True,
+        context['is_featured_layers'] = False,
+        context['is_latest_news'] = False,
+        context['is_feature_highlights'] = True,
+        context['is_interportability'] = True,
+        context['is_pretty_map'] = False,
+        context['is_3dmap'] = True,
+        context['is_share_map'] = False,
+        context['is_partners'] = True,
         return context
 
 
