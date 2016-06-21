@@ -28,7 +28,7 @@
                   </ul>
                   <br>
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User approval request" %}</a></li>
+                  <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User Approval Request" %}</a></li>
                   <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
                   <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
                   <li><a href="#denied-documents" data-toggle="tab">{% trans "Denied Documents" %}</a></li>
@@ -54,8 +54,8 @@
                                         <td>{{ user_approval.group }}</td>
                                         <td>{{ user_approval.current_iteration }}</td>
                                         <td>{{ user_approval.date_updated }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ user_approval.detail_url }}?user_role=manager" style="color:#fff;">{% trans "approve" %}</a></button></td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ user_approval.detail_url }}?user_role=manager" style="color:#fff;">{% trans "deny" %}</a></button></td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Approve" %}</a></td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Deny" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -87,7 +87,7 @@
                                         <td>{{ approved.owner }}</td>
                                         <td>{{ approved.last_auditor }}</td>
                                         <td>{{ approved.date_updated }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ approved.detail_url }}" style="color:#fff;">{% trans "edit" %}</a></button></td>
+                                        <td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -116,7 +116,7 @@
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_document" style="color:#fff;">{% trans "delete document" %}</button> <br>
+                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_document" style="color:#fff;">{% trans "Delete Document" %}</button> <br>
                                             {% include "document_templates/_delete_document.html" %}
                                         </td>
                                     </tr>
