@@ -10,4 +10,4 @@ class SectionManagementTable(models.Model):
     """
 
     section = models.CharField(max_length=50, default='')
-    is_visible = models.BooleanField(default=False)
+    is_visible = models.BooleanField(default=True)

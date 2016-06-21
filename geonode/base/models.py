@@ -98,9 +98,9 @@ class TopicCategory(models.Model):
     <CodeListDictionary gml:id="MD_MD_TopicCategoryCode">
     """
     identifier = models.CharField(max_length=255, default='location')
-    description = models.TextField(default='')
+    description = models.TextField(default='', verbose_name=_('Field description'))
     gn_description = models.TextField('GeoNode description', default='', null=True)
-    is_choice = models.BooleanField(default=True)
+    is_choice = models.BooleanField(default=True, verbose_name=_('Is active'))
 
     def __unicode__(self):
         return u"{0}".format(self.gn_description)
