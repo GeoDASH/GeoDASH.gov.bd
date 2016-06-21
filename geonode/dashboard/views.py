@@ -18,23 +18,6 @@ def section_list(request, template='section_table.html'):
     """
     This view is for updating section sho/hide table from web. Only super admin can manage this table.
     """
-    list_of_sections = [
-        'slider',
-        'how_it_works',
-        'featured_layer',
-        'latest_news',
-        'feature_highlights',
-        'interportability',
-        'pretty_map',
-        'view_3d_map',
-        'share_map',
-    ]
-    if len(list_of_sections) != len(SectionManagementTable.objects.all()):
-        SectionManagementTable.objects.all().delete()
-        for section in list_of_sections:
-            new_section = SectionManagementTable(section=section)
-            new_section.save()
-
     context_dict = {
         "section_list": SectionManagementTable.objects.all(),
     }
@@ -64,3 +47,22 @@ def section_update(request):
         return HttpResponseRedirect(reverse('section-list-table'))
     else:
         return HttpResponseRedirect(reverse('section-list-table'))
+
+
+def add_sections_to_index_page():
+    list_of_sections = [
+        'slider',
+        'how_it_works',
+        'featured_layer',
+        'latest_news',
+        'feature_highlights',
+        'interportability',
+        'pretty_map',
+        'view_3d_map',
+        'share_map',
+    ]
+    if len(list_of_sections) != len(SectionManagementTable.objects.all()):
+        SectionManagementTable.objects.all().delete()
+        for section in list_of_sections:
+            new_section = SectionManagementTable(section=section)
+            new_section.save()

@@ -49,6 +49,7 @@ from geonode.base.forms import TopicCategoryForm
 from geonode.base.libraries.decorators import superuser_check
 from geonode.base.models import TopicCategory
 from geonode.dashboard.models import SectionManagementTable
+from geonode.dashboard.views import add_sections_to_index_page
 
 
 class AjaxLoginForm(forms.Form):
@@ -168,6 +169,10 @@ class IndexClass(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ListView, self).get_context_data(*args, **kwargs)
+
+        # add sections to index page when start the application
+        add_sections_to_index_page()
+
         contenttypes = ContentType.objects.all()
         for ct in contenttypes:
             if ct.name == 'layer':
