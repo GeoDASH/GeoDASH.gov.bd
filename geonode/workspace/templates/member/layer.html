@@ -52,7 +52,7 @@
                                         <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ draft.detail_url }}?user_role=member"> {% trans "publish" %}</a></button></td>
+                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ draft.detail_url }}?user_role=member" style="color:#fff;"> {% trans "publish" %}</a></button></td>
                                         <td>
                                             <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" style="color:#fff;">{% trans "delete layer" %}</button> <br>
                                             {% include "layer_templates/_delete_layer.html" %}
