@@ -257,8 +257,12 @@ def topiccategory_delete(request):
         for id in cat_ids:
             cat_id = int(id)
             category = get_object_or_404(TopicCategory, pk=cat_id)
-            category.delete()
-        messages.info(request, 'Deleted category successfully')
+            status, resource = category.is_used_in_any_resource()
+            if status:
+                messages.info(request, 'Category "%s" cannot be deleted because this category is used in %s' %(category.gn_description, resource))
+            else:
+                category.delete()
+                messages.info(request, 'Deleted category "%s" successfully' %(category.gn_description))
         return HttpResponseRedirect(reverse('topiccategory-list'))
     else:
         return HttpResponseRedirect(reverse('topiccategory-list'))
