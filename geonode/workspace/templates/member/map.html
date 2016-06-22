@@ -39,7 +39,7 @@
                         <table class="table table-hover" style="background:#ffffff;">
                             <thead>
                                 <tr>
-                                    <th>Serial No</th>
+                                    <th>No.</th>
                                     <th>Map Title</th>
                                     <th>Organization</th>
                                     <th>Map creation date</th>
@@ -52,9 +52,9 @@
                                         <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ draft.detail_url }}?user_role=member" style="color:#fff;"> {% trans "publish" %}</a></button></td>
+                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Publish" %}</a></td>
                                         <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "delete map" %}</button> <br>
+                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "Delete Map" %}</button> <br>
                                             {% include "map_templates/_delete_map.html" %}
                                         </td>
                                     </tr>
@@ -111,7 +111,7 @@
                                         <td>{{ denied.group }}</td>
                                         <td>{{ denied.last_auditor }}</td>
                                         <td>{{ denied.date_updated }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ denied.detail_url }}?user_role=member" style="color:#fff;"> {% trans "edit and publish again" %}</a></button></td>
+                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and publish again" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -141,7 +141,7 @@
                                         <td>{{ active.group }}</td>
                                         <td>{{ active.last_auditor }}</td>
                                         <td>{{ active.date_updated }}</td>
-                                        <td><button type="button" class="btn btn-gd-primary"><a href="{{ active.detail_url }}" style="color:#fff;"> {% trans "edit" %}</a></button></td>
+                                        <td><a href="{{ active.detail_url }}" class="btn btn-gd-primary"> {% trans "Edit" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
