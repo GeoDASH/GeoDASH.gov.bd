@@ -109,6 +109,25 @@ class TopicCategory(models.Model):
         ordering = ("identifier",)
         verbose_name_plural = 'Metadata Topic Categories'
 
+    def is_used_in_any_resource(self):
+        from geonode.layers.models import Layer
+        layers = Layer.objects.all()
+        for layer in layers:
+            if layer.category == self:
+                return True, 'Layer resource'
+        from geonode.maps.models import Map
+        maps = Map.objects.all()
+        for map in maps:
+            if map.category == self:
+                return True, 'Map resource'
+        from geonode.documents.models import Document
+        documents = Document.objects.all()
+        for document in documents:
+            if document.category == self:
+                return True, 'Document resource'
+
+        return False, 'No resource'
+
 
 class SpatialRepresentationType(models.Model):
     """
