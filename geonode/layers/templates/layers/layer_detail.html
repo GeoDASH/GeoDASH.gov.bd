@@ -51,163 +51,162 @@
                                 <div id="collapse1-per" class="panel-collapse collapse in" role="tabpanel"
                                      aria-labelledby="headingOne">
                                     <div class="panel-body">
+                                        <ul class="list-group gd-link-style inaccordion">
+                                            {% if resource.storeType != "remoteStore" %}
+                                                {% if user_role == "member" %}
+                                                 {% if status == 'DENIED' %}
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
+                                                        {% include "layer_templates/_deny_comments.html" %}
 
-    <ul class="list-group gd-link-style inaccordion">
-        {% if resource.storeType != "remoteStore" %}
-            <li class="list-group-item">
-              {% if user_role == "member" %}
-                {% if status == 'DENIED' %}
-                    <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                    {% include "layer_templates/_deny_comments.html" %}
-                    {% endif %}
-            </li>
-            <li class="list-group-item">
-                    <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_layer">{% trans "Publish Layer" %}</button>
-                    {% include "layer_templates/_publish_layer.html" %}
-                {% endif %}
-            </li>
-            <li class="list-group-item">
-                {% if user_role == "manager" and status == 'PENDING' %}
-                    <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                    {% include "layer_templates/_deny_comments.html" %}
-            </li>
-            <li class="list-group-item">
-                    <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_layer">{% trans "Approve Layer" %}</button>
-                    {% include "layer_templates/_approve_layer.html" %}
-            </li>
-            <li class="list-group-item">
-                    <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_layer">{% trans "Deney Layer" %}</button>
-                    {% include "layer_templates/_deny_layer.html" %}
-                {% endif %}
-            </li>
+                                                </li>
+                                                {% endif %}
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_layer">{% trans "Publish Layer" %}</button>
+                                                        {% include "layer_templates/_publish_layer.html" %}
+                                                    {% endif %}
+                                                </li>
+                                                {% if user_role == "manager" and status == 'PENDING' %}
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
+                                                        {% include "layer_templates/_deny_comments.html" %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_layer">{% trans "Approve Layer" %}</button>
+                                                        {% include "layer_templates/_approve_layer.html" %}
+                                                </li>
+                                                <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_layer">{% trans "Deney Layer" %}</button>
+                                                        {% include "layer_templates/_deny_layer.html" %}
+                                                    {% endif %}
+                                                </li>
 
-        {% endif %}
-        {% if resource.storeType != "remoteStore" %}
-            {% if links %}
-                <li class="list-group-item">
-                    <button class="btn btn-gd-primary btn-md btn-block"
-                            data-toggle="modal" data-target="#download-layer">
-                        {% trans "Download Layer" %}
-                    </button>
-                </li>
-            {% else %}
-                {% if request.user.is_authenticated %}
-                    <li class="list-group-item">
-                        <button class="btn btn-gd-primary btn-md btn-block"
-                                id="request-download">
-                            {% trans "Request Download" %}
-                        </button>
-                    </li>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-
-        <div class="modal fade" id="download-layer" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"
-                                aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"
-                            id="myModalLabel">{% trans "Download Layer" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {% if links %}
-                            <ul>
-                                {% for link in links %}
-                                    <li>
-                                        <a href="{{ link.url }}">{% trans link.name %}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-gd"
-                                data-dismiss="modal">
-                            {% trans "Close" %}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {% if GEOSERVER_BASE_URL %}
-            {% get_obj_perms request.user for resource.layer as "layer_perms" %}
-        {% endif %}
-        {% if "change_resourcebase_metadata" in perms_list or "change_resourcebase" in perms_list or "delete_resourcebase" in perms_list or "change_layer_style" in layer_perms %}
-            <li class="list-group-item">
-                <button class="btn btn-gd-primary btn-md btn-block"
-                        data-toggle="modal" data-target="#edit-layer">
-                    {% trans "Edit Layer" %}
-                </button>
-            </li>
-            <div class="modal fade" id="edit-layer" tabindex="-1" role="dialog"
-                 aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                            <h4 class="modal-title"
-                                id="myModalLabel">{% trans "Edit Layer" %}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row edit-modal">
-                                {% if "change_resourcebase_metadata" in perms_list %}
-                                    <div class="col-sm-3">
-                                        <i class="fa fa-list-alt fa-3x"></i>
-                                        <h4>{% trans "Metadata" %}</h4>
-                                        <a class="btn btn-default btn-gd btn-block btn-xs"
-                                           href="{% url "layer_metadata" resource.service_typename %}">{% trans "Edit" %}</a>
-                                    </div>
-                                {% endif %}
-                                {% if GEOSERVER_BASE_URL and not resource.service %}
-                                    {% if "change_layer_style" in layer_perms %}
-                                        <div class="col-sm-3">
-                                            <i class="fa fa-tint fa-3x"></i>
-                                            <h4>{% trans "Styles" %}</h4>
-                                            {% if preview == 'geoext' %}
-                                                <a class="btn btn-default btn-gd btn-block btn-xs style-edit"
-                                                   data-dismiss="modal"
-                                                   href="#">{% trans "Edit" %}</a>
                                             {% endif %}
-                                            <a class="btn btn-default btn-gd btn-block btn-xs"
-                                               href="{% url "layer_style_manage" resource.service_typename %}">{% trans "Manage" %}</a>
+                                            {% if resource.storeType != "remoteStore" %}
+                                                {% if links %}
+                                                    <li class="list-group-item">
+                                                        <button class="btn btn-gd-primary btn-md btn-block"
+                                                                data-toggle="modal" data-target="#download-layer">
+                                                            {% trans "Download Layer" %}
+                                                        </button>
+                                                    </li>
+                                                {% else %}
+                                                    {% if request.user.is_authenticated %}
+                                                        <li class="list-group-item">
+                                                            <button class="btn btn-gd-primary btn-md btn-block"
+                                                                    id="request-download">
+                                                                {% trans "Request Download" %}
+                                                            </button>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+
+                                        <div class="modal fade" id="download-layer" tabindex="-1" role="dialog"
+                                             aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title"
+                                                            id="myModalLabel">{% trans "Download Layer" %}</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {% if links %}
+                                                            <ul>
+                                                                {% for link in links %}
+                                                                    <li>
+                                                                        <a href="{{ link.url }}">{% trans link.name %}</a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default btn-gd"
+                                                                data-dismiss="modal">
+                                                            {% trans "Close" %}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    {% endif %}
-                                {% endif %}
-                                {% if "change_resourcebase" in perms_list %}
-                                    <div class="col-sm-3">
-                                        <i class="fa fa-photo fa-3x"></i>
-                                        <h4>{% trans "Thumbnail" %}</h4>
-                                        <a class="btn btn-default btn-gd btn-block btn-xs"
-                                           href="#"
-                                           id="set_thumbnail">{% trans "Set" %}</a>
-                                    </div>
-                                {% endif %}
+                                        {% if GEOSERVER_BASE_URL %}
+                                            {% get_obj_perms request.user for resource.layer as "layer_perms" %}
+                                        {% endif %}
+                                        {% if "change_resourcebase_metadata" in perms_list or "change_resourcebase" in perms_list or "delete_resourcebase" in perms_list or "change_layer_style" in layer_perms %}
+                                            <li class="list-group-item">
+                                                <button class="btn btn-gd-primary btn-md btn-block"
+                                                        data-toggle="modal" data-target="#edit-layer">
+                                                    {% trans "Edit Layer" %}
+                                                </button>
+                                            </li>
+                                            <div class="modal fade" id="edit-layer" tabindex="-1" role="dialog"
+                                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title"
+                                                                id="myModalLabel">{% trans "Edit Layer" %}</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row edit-modal">
+                                                                {% if "change_resourcebase_metadata" in perms_list %}
+                                                                    <div class="col-sm-3">
+                                                                        <i class="fa fa-list-alt fa-3x"></i>
+                                                                        <h4>{% trans "Metadata" %}</h4>
+                                                                        <a class="btn btn-default btn-gd btn-block btn-xs"
+                                                                           href="{% url "layer_metadata" resource.service_typename %}">{% trans "Edit" %}</a>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if GEOSERVER_BASE_URL and not resource.service %}
+                                                                    {% if "change_layer_style" in layer_perms %}
+                                                                        <div class="col-sm-3">
+                                                                            <i class="fa fa-tint fa-3x"></i>
+                                                                            <h4>{% trans "Styles" %}</h4>
+                                                                            {% if preview == 'geoext' %}
+                                                                                <a class="btn btn-default btn-gd btn-block btn-xs style-edit"
+                                                                                   data-dismiss="modal"
+                                                                                   href="#">{% trans "Edit" %}</a>
+                                                                            {% endif %}
+                                                                            <a class="btn btn-default btn-gd btn-block btn-xs"
+                                                                               href="{% url "layer_style_manage" resource.service_typename %}">{% trans "Manage" %}</a>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% if "change_resourcebase" in perms_list %}
+                                                                    <div class="col-sm-3">
+                                                                        <i class="fa fa-photo fa-3x"></i>
+                                                                        <h4>{% trans "Thumbnail" %}</h4>
+                                                                        <a class="btn btn-default btn-gd btn-block btn-xs"
+                                                                           href="#"
+                                                                           id="set_thumbnail">{% trans "Set" %}</a>
+                                                                    </div>
+                                                                {% endif %}
 
-                                {% if "change_resourcebase" in perms_list or "delete_resourcebase" in perms_list or "change_layer_data" in layer_perms %}
-                                    <div class="col-sm-3">
-                                        <i class="fa fa-square-o fa-3x rotate-45"></i>
-                                        <h4>{% trans "Layer" %}</h4>
-                                        {% if "change_resourcebase" in perms_list and not resource.service %}
-                                            <a class="btn btn-default btn-gd btn-block btn-xs"
-                                               href="{% url "layer_replace" resource.service_typename %}">{% trans "Replace" %}</a>
-                                        {% endif %}
-                                        {% if resource.storeType == 'dataStore' and "change_layer_data" in layer_perms %}
-                                            <a class="btn btn-default btn-gd btn-block btn-xs"
-                                               href="{% url "new_map" %}?layer={{ resource.service_typename }}">{% trans "Edit data" %}</a>
-                                        {% endif %}
-                                        {% if "delete_resourcebase" in perms_list %}
-                                            <a class="btn btn-danger btn-gd btn-block btn-xs"
-                                               href="{% url "layer_remove" resource.service_typename %}">{% trans "Remove" %}</a>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
+                                                                {% if "change_resourcebase" in perms_list or "delete_resourcebase" in perms_list or "change_layer_data" in layer_perms %}
+                                                                    <div class="col-sm-3">
+                                                                        <i class="fa fa-square-o fa-3x rotate-45"></i>
+                                                                        <h4>{% trans "Layer" %}</h4>
+                                                                        {% if "change_resourcebase" in perms_list and not resource.service %}
+                                                                            <a class="btn btn-default btn-gd btn-block btn-xs"
+                                                                               href="{% url "layer_replace" resource.service_typename %}">{% trans "Replace" %}</a>
+                                                                        {% endif %}
+                                                                        {% if resource.storeType == 'dataStore' and "change_layer_data" in layer_perms %}
+                                                                            <a class="btn btn-default btn-gd btn-block btn-xs"
+                                                                               href="{% url "new_map" %}?layer={{ resource.service_typename }}">{% trans "Edit data" %}</a>
+                                                                        {% endif %}
+                                                                        {% if "delete_resourcebase" in perms_list %}
+                                                                            <a class="btn btn-danger btn-gd btn-block btn-xs"
+                                                                               href="{% url "layer_remove" resource.service_typename %}">{% trans "Remove" %}</a>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                {% endif %}
 
-    <div class="tab-content">
+                                                                <div class="tab-content">
 
                                                                 </div>
                                                             </div>
@@ -219,15 +218,14 @@
                                                     </div>
                                                 </div>
                                             {% endif %}
-
+                                            <!--
                                             <li class="list-group-item lastchild">
                                                 <button class="btn btn-default btn-gd btn-md btn-block"
                                                         data-toggle="modal"
                                                         data-target="#download-metadata">
                                                     {% trans "Download Metadata" %}
                                                 </button>
-                                            </li>
-
+                                            </li>-->
                                             <div class="modal fade" id="download-metadata" tabindex="-1" role="dialog"
                                                  aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -608,6 +606,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 {% if GEONODE_SECURITY_ENABLED %}
                     {% include "_permissions_form.html" %}
                 {% endif %}
@@ -633,123 +632,120 @@
                 {% endif %}
               </div>
               {% endif %}
-            </div>
-          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- Modal Window HTML Here -->
     <!-- Download Layer -->
 
-    <div class="modal fade" id="download-metadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">{% trans "Download Metadata" %}</h4>
-          </div>
-          <div class="modal-body">
-            <ul>
-              {% for link in metadata %}
-                <li><a href="{{ link.url }}">{{ link.name }}</a></li>
-              {% endfor %}
-            <ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
-          </div>
-        </div>
-      </div>
-    </div>
+                        <div class="modal fade" id="download-metadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">{% trans "Download Metadata" %}</h4>
+                              </div>
+                              <div class="modal-body">
+                                <ul>
+                                  {% for link in metadata %}
+                                    <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+                                  {% endfor %}
+                                <ul>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-    {% if resource.get_legend %}
-    <li class="list-group-item">
-      <h4 class="list-group-item-heading">{%trans "Legend" %}</h4>
-      <p>{{ style.sld_title }}</p>
-      {% if resource.get_legend.link_type == 'image' %}
-      <p><img id="legend_icon" src="{{ resource.get_legend.url }}"></p>
-      {% else %}
-      <div id='legend_placeholder'></div>
-      {% endif %}
-    </li>
-    {% endif %}
-    <li class="list-group-item">
-      <h4>{% trans "Maps using this layer" %}</h4>
-      {% if resource.maps %}
-        <p>{% trans "List of maps using this layer:" %}</p>
-        {% endif %}
-        <ul class="list-unstyled">
-          {% for maplayer in resource.maps %}
-            <li><a href="{{ maplayer.map.get_absolute_url }}">{{ maplayer.map.title }}</a></li>
-          {% empty %}
-            <li>{% trans "This layer is not currently used in any maps." %}</li>
-          {% endfor %}
-        </ul>
-    </li>
-    <li class="list-group-item">
-      <h4>{% trans "Create a map using this layer" %}</h4>
-      <p>{% trans "Click the button below to generate a new map based on this layer." %}</p>
-        <a href="{% url "new_map" %}?layer={{resource.service_typename}}" class="btn btn-primary btn-block">{% trans "Create a Map" %}</a>
-    </li>
+                        {% if resource.get_legend %}
+                        <li class="list-group-item">
+                          <h4 class="list-group-item-heading">{%trans "Legend" %}</h4>
+                          <p>{{ style.sld_title }}</p>
+                          {% if resource.get_legend.link_type == 'image' %}
+                          <p><img id="legend_icon" src="{{ resource.get_legend.url }}"></p>
+                          {% else %}
+                          <div id='legend_placeholder'></div>
+                          {% endif %}
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                          <h4>{% trans "Maps using this layer" %}</h4>
+                          {% if resource.maps %}
+                            <p>{% trans "List of maps using this layer:" %}</p>
+                            {% endif %}
+                            <ul class="list-unstyled">
+                              {% for maplayer in resource.maps %}
+                                <li><a href="{{ maplayer.map.get_absolute_url }}">{{ maplayer.map.title }}</a></li>
+                              {% empty %}
+                                <li>{% trans "This layer is not currently used in any maps." %}</li>
+                              {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                          <h4>{% trans "Create a map using this layer" %}</h4>
+                          <p>{% trans "Click the button below to generate a new map based on this layer." %}</p>
+                            <a href="{% url "new_map" %}?layer={{resource.service_typename}}" class="btn btn-primary btn-block">{% trans "Create a Map" %}</a>
+                        </li>
 
-    {% if documents.count > 0 %}
-    <li class="list-group-item">
-      <h4>{% trans "Documents related to this layer" %}</h4>
-      <p>{% trans "List of documents related to this layer:" %}</p>
-      <ul class="list-unstyled">
-        {% for document in documents %}
-          <li><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </li>
-    {% endif %}
+                        {% if documents.count > 0 %}
+                        <li class="list-group-item">
+                          <h4>{% trans "Documents related to this layer" %}</h4>
+                          <p>{% trans "List of documents related to this layer:" %}</p>
+                          <ul class="list-unstyled">
+                            {% for document in documents %}
+                              <li><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></li>
+                            {% endfor %}
+                          </ul>
+                        </li>
+                        {% endif %}
 
-    {% if user.is_authenticated %}
-    <li class="list-group-item">
-      <h4>{% trans "Styles" %}</h4>
-       <p>{% trans "The following styles are associated with this layer. Choose a style to view it in the preview map." %}</p>
-       <ul class="list-unstyled">
-        {% for style in resource.styles.all %}
-        <li>
-          {% if resource.default_style == style %}
-          <input type="radio" checked name="style" id="{{ style.name }}" value="{{ style.title }}"/>
-          (default style)
-          {% else %}
-          <input type="radio" name="style" id="{{ style.name }}" value="{{ style.title }}"/>
-          {% endif %}
-          <a href="{{ GEOSERVER_BASE_URL }}{{ style.absolute_url }}" >{{ style.sld_title }}</a>
-        </li>
-        {% empty %}
-        <li>{% trans "No styles associated with this layer" %}</li>
-        {% endfor %}
-      </ul>
-    </li>
-    {% endif %}
+                        {% if user.is_authenticated %}
+                        <li class="list-group-item">
+                          <h4>{% trans "Styles" %}</h4>
+                           <p>{% trans "The following styles are associated with this layer. Choose a style to view it in the preview map." %}</p>
+                           <ul class="list-unstyled">
+                            {% for style in resource.styles.all %}
+                            <li>
+                              {% if resource.default_style == style %}
+                              <input type="radio" checked name="style" id="{{ style.name }}" value="{{ style.title }}"/>
+                              (default style)
+                              {% else %}
+                              <input type="radio" name="style" id="{{ style.name }}" value="{{ style.title }}"/>
+                              {% endif %}
+                              <a href="{{ GEOSERVER_BASE_URL }}{{ style.absolute_url }}" >{{ style.sld_title }}</a>
+                            </li>
+                            {% empty %}
+                            <li>{% trans "No styles associated with this layer" %}</li>
+                            {% endfor %}
+                          </ul>
+                        </li>
+                        {% endif %}
 
-    {% if GEONODE_SECURITY_ENABLED %}
-    {% if "change_resourcebase_permissions" in perms_list %}
-    <li class="list-group-item">
-      <h4>{% trans "Permissions" %}</h4>
-      <p>{% trans "Click the button below to change the permissions of this layer." %}</p>
-      <p><a href="#modal_perms" data-toggle="modal" class="btn btn-primary btn-block" data-target="#_permissions">{% trans "Change Layer Permissions" %}</a></p>
-    </li>
-    {% endif %}
-    {% endif %}
+                        {% if GEONODE_SECURITY_ENABLED %}
+                        {% if "change_resourcebase_permissions" in perms_list %}
+                        <li class="list-group-item">
+                          <h4>{% trans "Permissions" %}</h4>
+                          <p>{% trans "Click the button below to change the permissions of this layer." %}</p>
+                          <p><a href="#modal_perms" data-toggle="modal" class="btn btn-primary btn-block" data-target="#_permissions">{% trans "Change Layer Permissions" %}</a></p>
+                        </li>
+                        {% endif %}
+                        {% endif %}
 
-    {% if resource.storeType == "remoteStore" %}
-    <li class="list-group-item">
-            <h4>{% trans "External service layer" %}</h4>
-            <div>{% trans "Source" %}: <a href="/services/{{resource.service.id}}">{{ resource.service.title }}</a></div>
-            <div>{% trans "Type" %}: {{ resource.service.type }}</div>
-    </li>
-    {% endif %}
+                        {% if resource.storeType == "remoteStore" %}
+                        <li class="list-group-item">
+                                <h4>{% trans "External service layer" %}</h4>
+                                <div>{% trans "Source" %}: <a href="/services/{{resource.service.id}}">{{ resource.service.title }}</a></div>
+                                <div>{% trans "Type" %}: {{ resource.service.type }}</div>
+                        </li>
+                        {% endif %}
 
-    {% include "base/_resourcebase_contact_snippet.html" %}
-  </ul>
+                        {% include "base/_resourcebase_contact_snippet.html" %}
+    </ul>
 
 
   {% if GEONODE_SECURITY_ENABLED %}

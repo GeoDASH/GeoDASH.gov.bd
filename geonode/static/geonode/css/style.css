@@ -2747,3 +2747,10 @@ ul.termsuseandcondition li {
     background:#fff;
     border-bottom:1px solid #ddd;
 }
+@media (max-width: 767px) {
+  .layer-map-info{
+    float:left;
+    display:block;
+  }
+
+ }
