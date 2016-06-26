@@ -2748,9 +2748,16 @@ ul.termsuseandcondition li {
     border-bottom:1px solid #ddd;
 }
 @media (max-width: 767px) {
-  .layer-map-info{
+  .layer-test{
+    margin-top:50px;
+  }
+
+ }
+ @media (max-width: 767px) {
+  #embedded_map123456789{
+    margin-top:600px;
+    z-index:1000;
     float:left;
-    display:block;
   }
 
  }
