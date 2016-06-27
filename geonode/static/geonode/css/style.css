@@ -2761,3 +2761,26 @@ ul.termsuseandcondition li {
   }
 
  }
+@media (max-width: 767px) {
+  .gd-slider{
+    height:200px;
+  }
+  .gd-slider .item img{
+    height:200px;
+  }
+  .gd-slider .item .gd-slider-title{
+    font-size:16px;
+    margin-left:70px;
+  }
+  .gd-slider .item .gd-slider-msg{
+    font-size:12px;
+    margin-left:70px;
+    color: #fff;
+    font-weight:normal;
+  }
+  .gd-slider .item .gd-slider-btn a{
+    font-size:12px;
+    margin-left:70px;
+  }
+
+}

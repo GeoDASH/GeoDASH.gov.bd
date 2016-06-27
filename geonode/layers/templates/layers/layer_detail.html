@@ -28,14 +28,15 @@
 {{ block.super }}
 {% endblock %}
 
-{% block body_class %}layers layer-detail-page{% endblock %}
+
+{% block body_class %}layers{% endblock %}
 
 {% block body_outer %}
     <div class="gd-content">
-        <div class="gd-content-body layer-test" >
-            <div class="row" >
-                <div class="col-md-4 margin-zero right-pad-zero">
-                    <div id="gd-accordion-style" class="layer-information">
+      <div class="gd-content-body layer-test" >
+        <div class="row">
+          <div class="col-md-4 margin-zero right-pad-zero">
+            <div id="gd-accordion-style" class="layer-information">
                         <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
@@ -598,163 +599,22 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-8 margin-zero left-pad-zero">
-                    <div class="gd-content-body layer-map-info">
-                        <div id="embedded_map" class="mrg-btm">
-                            <div id="preview_map"></div>
-                        </div>
-                    </div>
-                </div>
+          {% if GEONODE_SECURITY_ENABLED %}
+            {% include "_permissions_form.html" %}
+          {% endif %}
+
+          </div> <!-- col-md-4 -->
+          <div class="col-md-8">
+
+            <div id="embedded_map" class="mrg-btm">
+              <div id="preview_map"></div>
             </div>
-                {% if GEONODE_SECURITY_ENABLED %}
-                    {% include "_permissions_form.html" %}
-                {% endif %}
-              {% if "change_resourcebase" in perms_list %}
-              <div class="col-sm-3">
-                <i class="fa fa-photo fa-3x"></i>
-                <h4>{% trans "Thumbnail" %}</h4>
-                <a class="btn btn-default btn-block btn-xs" href="#" id="set_thumbnail">{% trans "Set" %}</a>
-              </div>
-              {% endif %}
-              {% if "change_resourcebase" in perms_list or "delete_resourcebase" in perms_list or "change_layer_data" in layer_perms %}
-              <div class="col-sm-3">
-                <i class="fa fa-square-o fa-3x rotate-45"></i>
-                <h4>{% trans "Layer" %}</h4>
-                {% if "change_resourcebase" in perms_list and not resource.service %}
-                <a class="btn btn-default btn-block btn-xs" href="{% url "layer_replace" resource.service_typename %}">{% trans "Replace" %}</a>
-                {% endif %}
-                {% if resource.storeType == 'dataStore' and "change_layer_data" in layer_perms %}
-                <a class="btn btn-default btn-block btn-xs" href="{% url "new_map" %}?layer={{resource.service_typename}}">{% trans "Edit data" %}</a>
-                {% endif %}
-                {% if "delete_resourcebase" in perms_list %}
-                <a class="btn btn-danger btn-block btn-xs" href="{% url "layer_remove" resource.service_typename %}">{% trans "Remove" %}</a>
-                {% endif %}
-              </div>
-              {% endif %}
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
-              </div>
-        </div>
+          </div>
+        </div> <!-- row -->
+      </div>
     </div>
-
-    <!-- Modal Window HTML Here -->
-    <!-- Download Layer -->
-
-                        <div class="modal fade" id="download-metadata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">{% trans "Download Metadata" %}</h4>
-                              </div>
-                              <div class="modal-body">
-                                <ul>
-                                  {% for link in metadata %}
-                                    <li><a href="{{ link.url }}">{{ link.name }}</a></li>
-                                  {% endfor %}
-                                <ul>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {% if resource.get_legend %}
-                        <li class="list-group-item">
-                          <h4 class="list-group-item-heading">{%trans "Legend" %}</h4>
-                          <p>{{ style.sld_title }}</p>
-                          {% if resource.get_legend.link_type == 'image' %}
-                          <p><img id="legend_icon" src="{{ resource.get_legend.url }}"></p>
-                          {% else %}
-                          <div id='legend_placeholder'></div>
-                          {% endif %}
-                        </li>
-                        {% endif %}
-                        <li class="list-group-item">
-                          <h4>{% trans "Maps using this layer" %}</h4>
-                          {% if resource.maps %}
-                            <p>{% trans "List of maps using this layer:" %}</p>
-                            {% endif %}
-                            <ul class="list-unstyled">
-                              {% for maplayer in resource.maps %}
-                                <li><a href="{{ maplayer.map.get_absolute_url }}">{{ maplayer.map.title }}</a></li>
-                              {% empty %}
-                                <li>{% trans "This layer is not currently used in any maps." %}</li>
-                              {% endfor %}
-                            </ul>
-                        </li>
-                        <li class="list-group-item">
-                          <h4>{% trans "Create a map using this layer" %}</h4>
-                          <p>{% trans "Click the button below to generate a new map based on this layer." %}</p>
-                            <a href="{% url "new_map" %}?layer={{resource.service_typename}}" class="btn btn-primary btn-block">{% trans "Create a Map" %}</a>
-                        </li>
-
-                        {% if documents.count > 0 %}
-                        <li class="list-group-item">
-                          <h4>{% trans "Documents related to this layer" %}</h4>
-                          <p>{% trans "List of documents related to this layer:" %}</p>
-                          <ul class="list-unstyled">
-                            {% for document in documents %}
-                              <li><a href="{{ document.get_absolute_url }}">{{ document.title }}</a></li>
-                            {% endfor %}
-                          </ul>
-                        </li>
-                        {% endif %}
-
-                        {% if user.is_authenticated %}
-                        <li class="list-group-item">
-                          <h4>{% trans "Styles" %}</h4>
-                           <p>{% trans "The following styles are associated with this layer. Choose a style to view it in the preview map." %}</p>
-                           <ul class="list-unstyled">
-                            {% for style in resource.styles.all %}
-                            <li>
-                              {% if resource.default_style == style %}
-                              <input type="radio" checked name="style" id="{{ style.name }}" value="{{ style.title }}"/>
-                              (default style)
-                              {% else %}
-                              <input type="radio" name="style" id="{{ style.name }}" value="{{ style.title }}"/>
-                              {% endif %}
-                              <a href="{{ GEOSERVER_BASE_URL }}{{ style.absolute_url }}" >{{ style.sld_title }}</a>
-                            </li>
-                            {% empty %}
-                            <li>{% trans "No styles associated with this layer" %}</li>
-                            {% endfor %}
-                          </ul>
-                        </li>
-                        {% endif %}
-
-                        {% if GEONODE_SECURITY_ENABLED %}
-                        {% if "change_resourcebase_permissions" in perms_list %}
-                        <li class="list-group-item">
-                          <h4>{% trans "Permissions" %}</h4>
-                          <p>{% trans "Click the button below to change the permissions of this layer." %}</p>
-                          <p><a href="#modal_perms" data-toggle="modal" class="btn btn-primary btn-block" data-target="#_permissions">{% trans "Change Layer Permissions" %}</a></p>
-                        </li>
-                        {% endif %}
-                        {% endif %}
-
-                        {% if resource.storeType == "remoteStore" %}
-                        <li class="list-group-item">
-                                <h4>{% trans "External service layer" %}</h4>
-                                <div>{% trans "Source" %}: <a href="/services/{{resource.service.id}}">{{ resource.service.title }}</a></div>
-                                <div>{% trans "Type" %}: {{ resource.service.type }}</div>
-                        </li>
-                        {% endif %}
-
-                        {% include "base/_resourcebase_contact_snippet.html" %}
-    </ul>
-
-
-  {% if GEONODE_SECURITY_ENABLED %}
-    {% include "_permissions_form.html" %}
-  {% endif %}
-
-  </div> <!-- col-md-4 -->
-</div> <!-- row -->
 {% endblock %}
+
 {% block extra_script %}
     <script type="text/javascript">
         var GD_WRAPPER__HEIGHT = 0;
@@ -778,35 +638,33 @@
             });
         });
     </script>
-        {% if GEOGIG_ENABLED and resource.link_set.geogig %}
-            {% with "_geogig_scripts.html" as geogig_scripts_template %}
-                {% include  geogig_scripts_template %}
-            {% endwith %}
-        {% endif %}
+    {% if GEOGIG_ENABLED and resource.link_set.geogig %}
+        {% with "_geogig_scripts.html" as geogig_scripts_template %}
+            {% include  geogig_scripts_template %}
+        {% endwith %}
+    {% endif %}
 
-        {% if request.user.is_authenticated %}
-            {% user_rating_js request.user resource "layer" %}
-        {% else %}
-            {% overall_rating resource 'layer' as the_layer_rating %}
-        {% endif %}
-        {% include 'rating.html' %}
-        {% include 'request_download.html' %}
+    {% if request.user.is_authenticated %}
+        {% user_rating_js request.user resource "layer" %}
+    {% else %}
+      {% overall_rating resource 'layer' as the_layer_rating %}
+    {% endif %}
+    {% include 'rating.html' %}
+    {% include 'request_download.html' %}
     <script type="text/javascript">
-        $("#comment_submit_btn").click(function (event) {
+       $("#comment_submit_btn").click(function(event) {
             $.ajax({
-                type: "POST",
-                url: $("#form_post_comment").attr('action'),
-                data: $("#form_post_comment").serialize(),
-                success: function () {
-                    $('#form_post_comment_div').modal('hide');
-                    $('#comments_section').load(window.location.pathname + ' #comments_section',
-                            function () {
-                                $(this).children().unwrap()
-                            })
-                }
+              type: "POST",
+              url: $("#form_post_comment").attr('action'),
+              data: $("#form_post_comment").serialize(),
+              success: function() {
+                $('#form_post_comment_div').modal('hide');
+                $('#comments_section').load(window.location.pathname + ' #comments_section',
+                		function(){$(this).children().unwrap()})
+              }
             });
             return false;
-        });
+          });
 
         {% if resource.get_legend.link_type == 'json' %}
         $.getJSON('{{resource.get_legend_url}}', function (data) {
@@ -816,31 +674,22 @@
                 items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">'+dvalue.label+'</li>');
             });
 
-            {% if resource.get_legend.link_type == 'json' %}
-                $.getJSON('{{resource.get_legend_url}}', function (data) {
-                    var legend = data.layers[0].legend;
-                    var items = [];
-                    $.each(legend, function (key, dvalue) {
-                        items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">' + dvalue.label + '</li>');
-                    });
+            $('<ul/>', {
+                'class': 'arcgis-legend',
+                html: items.join('')
 
-                    $('<ul/>', {
-                        'class': 'arcgis-legend',
-                        html: items.join('')
+            }).appendTo('#legend_placeholder');
 
-                    }).appendTo('#legend_placeholder');
-
-                });
-            {% endif %}
+        });
         {% endif %}
     </script>
     <script type="text/javascript">
-        $('#set_thumbnail').click(function () {
-            createMapThumbnail();
-            $('#edit-layer').modal('toggle');
-        });
+      $('#set_thumbnail').click(function(){
+        createMapThumbnail();
+        $('#edit-layer').modal('toggle');
+      });
     </script>
     {% if GEONODE_SECURITY_ENABLED %}
-        {% include "_permissions_form_js.html" %}
+    {% include "_permissions_form_js.html" %}
     {% endif %}
 {% endblock extra_script %}
