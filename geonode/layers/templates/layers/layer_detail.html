@@ -32,8 +32,8 @@
 
 {% block body_outer %}
     <div class="gd-content">
-        <div class="gd-content-body">
-            <div class="row">
+        <div class="gd-content-body layer-test" >
+            <div class="row" >
                 <div class="col-md-4 margin-zero right-pad-zero">
                     <div id="gd-accordion-style" class="layer-information">
                         <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
@@ -632,9 +632,9 @@
                 {% endif %}
               </div>
               {% endif %}
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
-          </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+              </div>
         </div>
     </div>
 
@@ -778,19 +778,19 @@
             });
         });
     </script>
-    {% if GEOGIG_ENABLED and resource.link_set.geogig %}
-        {% with "_geogig_scripts.html" as geogig_scripts_template %}
-            {% include  geogig_scripts_template %}
-        {% endwith %}
-    {% endif %}
+        {% if GEOGIG_ENABLED and resource.link_set.geogig %}
+            {% with "_geogig_scripts.html" as geogig_scripts_template %}
+                {% include  geogig_scripts_template %}
+            {% endwith %}
+        {% endif %}
 
-    {% if request.user.is_authenticated %}
-        {% user_rating_js request.user resource "layer" %}
-    {% else %}
-        {% overall_rating resource 'layer' as the_layer_rating %}
-    {% endif %}
-    {% include 'rating.html' %}
-    {% include 'request_download.html' %}
+        {% if request.user.is_authenticated %}
+            {% user_rating_js request.user resource "layer" %}
+        {% else %}
+            {% overall_rating resource 'layer' as the_layer_rating %}
+        {% endif %}
+        {% include 'rating.html' %}
+        {% include 'request_download.html' %}
     <script type="text/javascript">
         $("#comment_submit_btn").click(function (event) {
             $.ajax({
@@ -806,33 +806,33 @@
                 }
             });
             return false;
-          });
-
-    {% if resource.get_legend.link_type == 'json' %}
-    $.getJSON('{{resource.get_legend_url}}', function (data) {
-        var legend = data.layers[0].legend;
-        var items = [];
-        $.each(legend, function (key, dvalue) {
-            items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">'+dvalue.label+'</li>');
         });
 
         {% if resource.get_legend.link_type == 'json' %}
-            $.getJSON('{{resource.get_legend_url}}', function (data) {
-                var legend = data.layers[0].legend;
-                var items = [];
-                $.each(legend, function (key, dvalue) {
-                    items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">' + dvalue.label + '</li>');
-                });
-
-                $('<ul/>', {
-                    'class': 'arcgis-legend',
-                    html: items.join('')
-
-                }).appendTo('#legend_placeholder');
-
+        $.getJSON('{{resource.get_legend_url}}', function (data) {
+            var legend = data.layers[0].legend;
+            var items = [];
+            $.each(legend, function (key, dvalue) {
+                items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">'+dvalue.label+'</li>');
             });
+
+            {% if resource.get_legend.link_type == 'json' %}
+                $.getJSON('{{resource.get_legend_url}}', function (data) {
+                    var legend = data.layers[0].legend;
+                    var items = [];
+                    $.each(legend, function (key, dvalue) {
+                        items.push('<li><img src="data:image/png;base64,' + dvalue.imageData + '">' + dvalue.label + '</li>');
+                    });
+
+                    $('<ul/>', {
+                        'class': 'arcgis-legend',
+                        html: items.join('')
+
+                    }).appendTo('#legend_placeholder');
+
+                });
+            {% endif %}
         {% endif %}
-    {% endif %}
     </script>
     <script type="text/javascript">
         $('#set_thumbnail').click(function () {

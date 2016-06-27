@@ -149,23 +149,7 @@
                                 {% endif %}
                             </ul>
                         </li>
-                        {% if request.user.is_superuser %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">{% trans "NEWS" %}<span class="caret"></span></a>
-                            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
-                            <ul class="dropdown-menu">
-                                <li>
-                                  <a href="{% url "news-list" %}">{% trans "Explore News" %}</a>
-                                </li>
-                                <li>
-                                  <a href="{% url "news-create" %}">{% trans "Add News" %}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        {% else %}
                         <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
-                        {% endif %}
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -602,7 +586,21 @@
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "section-list-table" %}" class="c-menu__link">
-                    <i class="fa fa-map-marker"></i> {% trans "Manage Section " %}
+                    <i class="fa fa-tasks"></i> {% trans "Manage Section" %}
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "topiccategory-list" %}" class="c-menu__link">
+                    <i class="fa fa-map-marker"></i> {% trans "Manage Category" %}
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "news-create" %}" class="c-menu__link">
+                    <i class="fa fa-file-text-o"></i> {% trans "Add News" %}
                 </a>
             </li>
             {% endif %}
@@ -620,13 +618,6 @@
             <li class="c-menu__item">
                 <a href="{% url "admin-workspace-layer" %}" class="c-menu__link">
                     <i class="fa fa-building-o"></i> {% trans "Admin-Workspace" %}
-                </a>
-            </li>
-            {% endif %}
-            {% if request.user.is_superuser %}
-            <li class="c-menu__item">
-                <a href="{% url "topiccategory-list" %}" class="c-menu__link">
-                    <i class="fa fa-map-marker"></i> {% trans "Manage Category " %}
                 </a>
             </li>
             {% endif %}
