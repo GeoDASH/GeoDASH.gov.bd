@@ -51,7 +51,7 @@ from arcrest import Folder as ArcFolder, MapService as ArcMapService
 
 from geoserver.catalog import Catalog
 
-from geonode.services.models import Service, Layer, ServiceLayer, WebServiceHarvestLayersJob
+from geonode.services.models import Service, ServiceLayer, WebServiceHarvestLayersJob
 from geonode.security.views import _perms_info_json
 from geonode.utils import bbox_to_wkt
 from geonode.services.forms import CreateServiceForm, ServiceForm
@@ -59,6 +59,7 @@ from geonode.utils import mercator_to_llbbox
 from geonode.layers.utils import create_thumbnail
 from geonode.geoserver.helpers import set_attributes
 from geonode.base.models import Link
+from geonode.layers.models import Layer
 
 logger = logging.getLogger("geonode.core.layers.views")
 
