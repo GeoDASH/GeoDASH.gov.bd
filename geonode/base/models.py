@@ -310,6 +310,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
                                                     limit_choices_to=Q(is_choice=True),
                                                     verbose_name=_("spatial representation type"),
                                                     help_text=spatial_representation_type_help_text)
+    resource_type = models.CharField(max_length=50, help_text=_('type of resource layer, map or document'), default='')
 
     # Section 5
     temporal_extent_start = models.DateTimeField(_('temporal extent start'), blank=True, null=True,
@@ -753,7 +754,8 @@ def resourcebase_post_save(instance, *args, **kwargs):
     ResourceBase.objects.filter(id=instance.id).update(
         thumbnail_url=instance.get_thumbnail_url(),
         detail_url=instance.get_absolute_url(),
-        csw_insert_date=datetime.datetime.now())
+        csw_insert_date=datetime.datetime.now(),
+        resource_type=instance.polymorphic_ctype.name)
     instance.set_missing_info()
 
     # we need to remove stale links
