@@ -67,6 +67,7 @@ class CommonMetaApi:
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
+                 'resource_type':ALL
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
