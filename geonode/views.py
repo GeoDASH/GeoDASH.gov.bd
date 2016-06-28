@@ -50,6 +50,7 @@ from geonode.base.libraries.decorators import superuser_check
 from geonode.base.models import TopicCategory
 from geonode.dashboard.models import SectionManagementTable
 from geonode.dashboard.views import add_sections_to_index_page
+from geonode.layers.models import Layer
 
 
 class AjaxLoginForm(forms.Form):
@@ -192,6 +193,7 @@ class IndexClass(ListView):
             public=True,
             action_object_content_type__id=ct_comment_id)[:15]
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        context['featured_layer_list'] = Layer.objects.filter(featured=True)
         sections = SectionManagementTable.objects.all()
         for section in sections:
             if section.section == 'slider':
