@@ -23,7 +23,7 @@
 
 {% block body_outer %}
     {% overall_rating resource "map" as map_rating %}
-    <div class="gd-content">
+    <div class="gd-content" style="border-top:5px solid lightgrey;">
         <div class="gd-content-body layer-test">
             <div class="row">
                 <div class="col-md-4 margin-zero right-pad-zero">
@@ -462,16 +462,16 @@
     {% if SOCIAL_BUTTONS %}
         <div id="fb-root"></div>
     <script>
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    return;
-                }
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
     {% endif %}
     {% if request.user.is_authenticated %}
@@ -488,7 +488,6 @@
   // TODO: this should really not be inside a script tag...
   var $wmsBtn = $(".layer-group .btn"),
       layerGroupElTpl;
-
             if ($wmsBtn.length > 0) {
                 $wmsBtn.on("click", function (event) {
                     event.preventDefault();

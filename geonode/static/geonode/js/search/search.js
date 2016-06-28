@@ -246,6 +246,51 @@
     };
     query_api($scope.query);
 
+    $scope.layerEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='layer'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'layer'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    $scope.layerEnableClass = ($scope.layerEnable() == true) ? "active" : "";
+    $scope.mapEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='map'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'map'){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    $scope.mapEnableClass = ($scope.mapEnable() == true) ? "active" : "";
+    $scope.docEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='document'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'document'){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    $scope.docEnableClass = ($scope.docEnable() == true) ? "active" : "";
+
     $scope.applyAdvancedSearch = function (){
         if($scope.text_query != ""){
             $scope.query['title__icontains'] = $scope.text_query;

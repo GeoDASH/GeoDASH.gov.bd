@@ -22,21 +22,21 @@
             </a>
         </li>
         <li role="separator" class="divider"></li>
-        <li ng-show="cart.getCart().items.length > 0">
-            <a href="javascript:;" ng-click="cart.clearAllCart()" class="text-center">
-                Cancel All
-            </a>
-        </li>
         <li ng-show="IS_AUTHENTICATED_USER_FOR_CART">
             <a href="javascript:;" ng-disabled="!cart.getCart().items.length" class="text-center"
-                    data-toggle="modal" data-target="#_bulk_permissions">
+                    data-toggle="modal" data-target="#_bulk_permissions" style="text-align: center justify;">
                 Set Permissions
             </a>
         </li>
         <li ng-show="IS_LAYERS_PAGE_FOR_CART" >
             <a href="javascript:;" ng-disabled="!cart.getCart().items.length"
-                ng-click="newMap()" style="background:#41a3f7;" class="text-center">
+                ng-click="newMap()" style="text-align: center justify;background:#41a3f7;">
                 Create a map
+            </a>
+        </li>
+        <li ng-show="cart.getCart().items.length > 0">
+            <a href="javascript:;" ng-click="cart.clearAllCart()" style="text-align: center justify;">
+                Cancel All
             </a>
         </li>
       </ul>
