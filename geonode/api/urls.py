@@ -21,7 +21,7 @@
 from tastypie.api import Api
 
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
-    GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload
+    GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource
 
@@ -42,3 +42,4 @@ api.register(OwnersResource())
 # new apis
 api.register(UserOrganizationList())  # method=get. example: api/user-organization-list/?user__id=7
 api.register(LayerUpload())
+api.register(MakeFeatured())

@@ -34,6 +34,7 @@ from django.conf import settings
 from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.html import escape
+from django.shortcuts import get_object_or_404
 
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
@@ -488,4 +489,47 @@ class LayerUpload(TypeFilteredResource):
                 status_code = 200
             else:
                 status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+class MakeFeatured(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'make-featured'
+        allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            username = request.GET.get('username') or request.POST.get('username')
+            password = request.GET.get('password') or request.POST.get('password')
+            status = request.GET.get('status') or request.POST.get('status')
+            layer_id = request.GET.get('layer_id') or request.POST.get('layer_id')
+
+            out = {'success': False}
+            try:
+                user = Profile.objects.get(username=username)
+            except Profile.DoesNotExist:
+                out['errors'] = 'The username and/or password you specified are not correct.'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+
+            if user.check_password(password):
+                request.user = user
+            else:
+                out['errors'] = 'The username and/or password you specified are not correct.'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+
+            if user.is_superuser:
+                try:
+                    layer = Layer.objects.get(pk=layer_id)
+                except Layer.DoesNotExist:
+                    status_code = 404
+                else:
+                    layer.featured = status
+                    layer.save()
+                    out['success'] = 'True'
+                    status_code = 200
+            else:
+                out['errors'] = 'Access denied'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
