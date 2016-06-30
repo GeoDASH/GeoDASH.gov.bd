@@ -503,8 +503,8 @@ class MakeFeatured(TypeFilteredResource):
             out = {'success': False}
             user = request.user
             if user.is_authenticated() and user.is_superuser:
-                status = request.GET.get('status') or request.POST.get('status')
-                layer_id = request.GET.get('layer_id') or request.POST.get('layer_id')
+                status = json.loads(request.body).get('status')
+                layer_id = json.loads(request.body).get('layer_id')
 
                 try:
                     layer = Layer.objects.get(pk=layer_id)
