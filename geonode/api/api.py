@@ -500,36 +500,26 @@ class MakeFeatured(TypeFilteredResource):
 
     def dispatch(self, request_type, request, **kwargs):
         if request.method == 'POST':
-            username = request.GET.get('username') or request.POST.get('username')
-            password = request.GET.get('password') or request.POST.get('password')
-            status = request.GET.get('status') or request.POST.get('status')
-            layer_id = request.GET.get('layer_id') or request.POST.get('layer_id')
-
             out = {'success': False}
-            try:
-                user = Profile.objects.get(username=username)
-            except Profile.DoesNotExist:
-                out['errors'] = 'The username and/or password you specified are not correct.'
-                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+            user = request.user
+            if user.is_authenticated() and user.is_superuser:
+                status = request.GET.get('status') or request.POST.get('status')
+                layer_id = request.GET.get('layer_id') or request.POST.get('layer_id')
 
-            if user.check_password(password):
-                request.user = user
-            else:
-                out['errors'] = 'The username and/or password you specified are not correct.'
-                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
-
-            if user.is_superuser:
                 try:
                     layer = Layer.objects.get(pk=layer_id)
                 except Layer.DoesNotExist:
                     status_code = 404
+                    out['errors'] = 'Layer does not exist'
                 else:
                     layer.featured = status
                     layer.save()
                     out['success'] = 'True'
                     status_code = 200
             else:
-                out['errors'] = 'Access denied'
-                return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+
 
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
