@@ -17,6 +17,7 @@
 <link href="{{ STATIC_URL }}geonode/css/style-index.css?v={{ VERSION }}" rel="stylesheet" />
 <link href="{{ STATIC_URL }}geonode/css/style_common_feature.css?v={{ VERSION }}" rel="stylesheet" />
 <link href="{{ STATIC_URL }}geonode/css/style_feature.css?v={{ VERSION }}" rel="stylesheet" />
+<link href="http://bxslider.com/lib/jquery.bxslider.css" rel="stylesheet" />
 {% endblock %}
 
 {% block body_class %}home js-Home{% endblock %}
@@ -274,166 +275,71 @@
                         <div class="block-separator"></div>
                         <div class="block-separator"></div>
                         <div class="gd-featurd-maps-content">
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map5.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                   <!-- Organized by:--> BCC
-                                                </a>
+                            <div id="carousel-home-fet" class="carousel slide" data-ride="carousel">
+                              <!-- Indicators -->
+                              <!-- <ol class="carousel-indicators">
+                                  <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                                  <li data-target="#carousel-home" data-slide-to="1"></li>
+                                  <li data-target="#carousel-home" data-slide-to="2"></li>
+                                  <li data-target="#carousel-home" data-slide-to="3"></li>
+                                  <li data-target="#carousel-home" data-slide-to="4"></li>
+                              </ol> -->
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner " role="listbox">
+                                  {% for featured in featured_layer_list %}
+                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 == 0 %}
+                                            <div class="item active {{ forloop.counter0 }}">
+                                        {% endif %}
+                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured_layer_list.count %}
                                             </div>
-                                            <div class="details">
-                                                 Vector Polyline Data showing the Fiber Optics Network ...
+                                            <div class="item {{ forloop.counter0 }} ">
+                                        {% endif %}
+                                        <article id="{{ forloop.counter }}">
+                                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                                                <div class="gd-featurd-maps-container view view-tenth">
+                                                    <div class="avater">
+                                                        <img height="180" width="240" src="{{ featured.thumbnail_url }}" alt="{{ group.title }}" class="img-circle" />
+                                                    </div>
+                                                    <div class="contents mask text-center" style="height:165px;">
+                                                        <div class="title">
+                                                            {% if featured.title|length >= 35 %}
+                                                            {{ featured.abstract|truncatechars:35 }}
+                                                            &nbsp;&nbsp;
+                                                            <span> <a href="javascript:;" title="{{ featured.title }}"> .... </a></span>
+                                                            {% else %}
+                                                                <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a></div>
+                                                            {% endif %}
+                                                        <div class="anchor-link">
+                                                            <a href="javascript:;" class="info">
+                                                               <!-- Organized by:--> {{ featured.category }}
+                                                            </a>
+                                                        </div>
+                                                        <div class="details text-center">
+                                                            {% if featured.abstract|length >= 53 %}
+                                                            {{ featured.abstract|truncatechars:53 }}
+                                                            &nbsp;&nbsp;
+                                                            <span> <a href="javascript:;" title="{{ featured.abstract }}"> .... </a></span>
+                                                            {% else %}
+                                                                {{ featured.abstract }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map6.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Arcl_504">Road Network Banani Gulshan Area</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                  <!--  Organized by:--> The World Bank
-                                                </a>
+                                        </article>
+                                        {% if forloop.counter == featured_layer_list.count %}
                                             </div>
-                                            <div class="details">
-                                                Road Network Data of an area between Banani Graveyard
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map4.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Apip_504">Domestic Water Supply Pipeline DMA504</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                   <!-- Organized by:--> The World Bank
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                This is a vector line data, showing the 'Pipeline layouts'
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map7.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Asaidabad_p_i_ii_project">Saidabad Project Area Road Network, Dhaka</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                  <!--  Organized by:--> Dhaka WASA
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                 Saidabad Project road network data by Dhaka WASA
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map3.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Adhaka_hospital"> Dhaka Hospitals </a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                  <!--  Organized by:--> DSCC
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                Hospital locations in Dhaka. Source: RAJUK
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-maps2.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Adhaka_buildingcount_1">Dhaka Building Density</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                   <!-- Organized by:--> DSCC
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                 Number and density of buildings in Dhaka North and Dhaka South City Corporation jurisdiction by ward.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map8.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Adhaka_indices">Dhaka UDRI</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                   <!-- Organized by: ASTER ---> Dhaka
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                Urban Disaster Risk Index of Dhaka to Madhupur M7.5 Earthquake Scenario. It is a combination of PRI and IFI
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article>
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                    <div class="gd-featurd-maps-container view view-tenth">
-                                        <div class="avater">
-                                            <img src="{{ STATIC_URL }}geonode/images/maps/gd-map1.png" class="img-circle" />
-                                        </div>
-                                        <div class="contents mask">
-                                            <div class="title"><a href="layers/geonode%3Adhaka_electricity">Access to Electricity</a></div>
-                                            <div class="anchor-link">
-                                                <a href="javascript:;" class="info">
-                                                    <!--Organized by:--> DESCO
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                                 Electricity network used in Dhaka Risk Atlas of Bangladesh Urban Earthquake Resilience Project, Phase-1
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
+                                        {% endif %}
+                                  {% endfor %}
+                              </div>
+                              <!-- Controls -->
+                              <a class="left-panel carousel-control" href="#carousel-home-fet" role="button" data-slide="prev">
+                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                              </a>
+                              <a class="right-panel carousel-control" href="#carousel-home-fet" role="button" data-slide="next">
+                                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                              </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -733,6 +639,7 @@
 <script src="{{ STATIC_URL }}lib/js/angular.js"></script>
 {% endif %}
 <script src="{{ STATIC_URL }}lib/js/jquery.mCustomScrollbar.concat.min.js?v={{ VERSION }}"></script>
+<!--<script src="http://bxslider.com/lib/jquery.bxslider.js"></script>-->
 <!--
 <script src="{{ STATIC_URL }}geonode/js/geo-dash/jquery.tubular.js?v={{ VERSION }}"></script>
 <script>
@@ -741,6 +648,14 @@ $(document).ready(function() {
 	});
 </script>
 -->
+<script>
+$(document).ready(function(){
+  $('.feture-slide').bxSlider({
+    minSlides: 1,
+    maxSlides: 8
+  });
+});
+</script>
 <script>
     $('#gd-viewmaps').bind('contextmenu', function(e) {
         return false;

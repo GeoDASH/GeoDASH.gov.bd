@@ -7,7 +7,6 @@
                 <a href="{{ item.detail_url }}" >
                   <img height="180" width="240" ng-src="{{ item.thumbnail_url }}" alt="{{ group.title }}" class="group-logo" />
                 </a>
-                {% endverbatim %}
                     <div class="checkbox-overlay">
                         <div class="checkbox" ng-if="cart" ng-click="cart.toggleItem(item)">
                             <label>
@@ -17,7 +16,6 @@
                             </label>
                         </div>
                     </div>
-                {% verbatim %}
             </div>
             <div class="media-body">
                 <div class="heading">
@@ -98,7 +96,6 @@
                       <img ng-if="item.thumbnail_url == null" ng-src="/static/geonode/img/missing_thumb.png" alt="{{ group.title }}" class="group-logo" />
                     </a>
                   </div>
-                  {% endverbatim %}
                       <div class="checkbox-overlay">
                           <div class="checkbox" ng-if="cart" ng-click="cart.toggleItem(item)">
                               <label>
@@ -115,7 +112,7 @@
                               </label>
                           </div>
                       </div>
-                  {% verbatim %}
+
               </div>
               <div class="information">
                   <div class="top-content text-center">
@@ -132,6 +129,7 @@
                           {{ item.abstract | limitTo: 300 }}{{ item.abstract.length  > 300 ? '...' : ''}}
                       </div>
                   </div>
+
                   <div class="summery">
                       <div class="item-items">
                           <ul class="list-inline lmd">
@@ -168,36 +166,70 @@
                           </ul>
                       </div>
                   </div>
-                  <!-- <div class="bottom-content">
-                      <div class="row">
-                          <div class="profile-items text-center">
-                              <ul class="list-inline">
-                                  <li class="col-md-6" ng-if="item.detail_url.indexOf('/layers/') > -1">
-                                      <a class="btn col-md-12 btn-gd-primary" href="{% endverbatim %}{% url "new_map" %}?layer={% verbatim %}{{ item.detail_url.substring(8) }}">
-                                        <i class="fa fa-map-marker"></i>
-                                        Create a Map
-                                      </a>
-                                  </li>
-                                  <li class="col-md-6" ng-if="item.detail_url.indexOf('/maps/') > -1">
-                                      <a class="btn col-md-12 btn-gd-primary" href="/maps/{{item.id}}/view">
-                                          <i class="fa fa-map-marker"></i>
-                                          View Map
-                                      </a>
-                                  </li>
-                                  <li class="col-md-6">
-                                      <button class="btn col-md-12 btn-gd-primary">
-                                          <i class="fa fa-heart-o"></i>
-                                          Add to favorite
-                                      </button>
-                                  </li>
-                              </ul>
+              </div>
+              {% endverbatim %}
+              <div>
+                  {% if user.is_superuser %}
+                    {% verbatim %}
+                      <div class="bottom-content">
+                          <div class="row">
+                              <div class="profile-items text-center">
+                                  <ul class="list-inline">
+                                      <li ng-if="item.featured" class="col-md-12 " >
+                                          <a class="btn col-md-12 btn-gd-primary" href="" style="background:#d0d0d0;"
+                                             data-layerID="{{item.id}}" data-statusID="{{item.featured}}" id="featured-chngsts123" >
+                                             Unfeatured
+                                          </a>
+                                      </li>
+                                      <li ng-if="!item.featured" class="col-md-12 ">
+                                          <a class="btn col-md-12 btn-gd-primary" id="featured_chngsts" href="" data-layerID="{{item.id}}" data-statusID="{{item.featured}}">
+                                             Featured
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div>
                           </div>
                       </div>
-                  </div> -->
+                    {% endverbatim %}
+                  {% endif %}
               </div>
+              {% verbatim %}
           </div>
       </div>
     </article>
   </div>
 </div>
 {% endverbatim %}
+
+{% block extra_script %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function(){
+            $("#featured_chngsts").click(function(){
+                alert("Are you sure make this as featured layer ?");
+                var url = '{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}';
+                   var qID = $(this).attr('data-layerID');
+                   var qsID = $(this).attr('data-statusID');
+                    var data = JSON.stringify({
+                    "layer_id": qID,
+                    "status": qsID
+                });
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        console.log(JSON.stringify(jsondata));
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
+            });
+        });
+    </script>
+{% endblock extra_script %}
