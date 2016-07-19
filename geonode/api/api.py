@@ -520,6 +520,4 @@ class MakeFeatured(TypeFilteredResource):
                 out['error'] = 'Access denied'
                 out['success'] = False
                 status_code = 400
-
-
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
