@@ -39,6 +39,7 @@ from django.shortcuts import get_object_or_404
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
 from slugify import slugify
+from user_messages.models import UserThread
 
 from geonode.base.models import ResourceBase
 from geonode.base.models import TopicCategory
@@ -521,3 +522,14 @@ class MakeFeatured(TypeFilteredResource):
                 out['success'] = False
                 status_code = 400
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+class MesseagesUnread(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'message-unread'
+        queryset = UserThread.objects.filter(unread=True)
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+            return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)
