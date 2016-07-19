@@ -20,7 +20,7 @@
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
@@ -35,6 +35,8 @@ from geonode.groups.models import GroupProfile, GroupInvitation, GroupMember
 from geonode.people.models import Profile
 from geonode.base.libraries.decorators import superuser_check
 from geonode.layers.models import Layer
+from geonode.groups.models import QuestionAnswer
+from geonode.groups.forms import QuestionForm, AnsewerForm
 
 @login_required
 @user_passes_test(superuser_check)
@@ -323,3 +325,77 @@ class GroupActivityView(ListView):
             actor_object_id__in=members,
             action_object_content_type__id=ct_comment_id)[:15]
         return context
+
+
+@login_required
+def question_answer_list_view(request, slug):
+
+    """
+    This view returns wuestions and answers for an organization.
+    """
+
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        group = get_object_or_404(GroupProfile, slug=slug)
+        if form.is_valid():
+            question = QuestionAnswer()
+            asked_question = form.cleaned_data["question"]
+            questioner = request.user
+            question.question = asked_question
+            question.questioner = questioner
+            question.group = group
+            question.save()
+            return redirect("question-answer-list", slug=slug)
+        else:
+            return redirect("question-answer-list", slug=slug)
+
+    else:
+        group = get_object_or_404(GroupProfile, slug=slug)
+        context_dict = {
+            'question_list': QuestionAnswer.objects.filter(group=group),
+            'form': QuestionForm,
+            'slug': slug
+        }
+        return render_to_response(
+            "groups/question_answer.html",
+            RequestContext(request, context_dict))
+
+
+@login_required
+def answer_view(request, slug, question_pk):
+    """
+    This view is for answering an asked question. Only managers can answer a question.
+    """
+    if request.method == 'POST':
+        form = AnsewerForm(request.POST)
+        respondent = request.user
+        group = get_object_or_404(GroupProfile, slug=slug)
+        managers = group.get_managers()
+        if form.is_valid() and respondent in managers:
+            question = get_object_or_404(QuestionAnswer, pk=question_pk)
+            answer = form.cleaned_data["answer"]
+            question.answer = answer
+            question.group = group
+            question.respondent = respondent
+            question.save()
+        else:
+            return redirect("question-answer-list", slug=slug)
+    else:
+            return redirect("question-answer-list", slug=slug)
+
+
+
+def delete_question(request, slug, question_pk):
+    """
+    This view is for deleting a question with answer.
+    """
+    if request.method == 'POST':
+        group = get_object_or_404(GroupProfile, slug=slug)
+        managers = group.get_managers()
+        if request.user in managers:
+            question = get_object_or_404(QuestionAnswer, pk=question_pk)
+            question.delete()
+        else:
+            return redirect("question-answer-list", slug=slug)
+    else:
+        return redirect("question-answer-list", slug=slug)

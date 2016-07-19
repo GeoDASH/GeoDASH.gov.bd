@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+ <meta charset="UTF-8">
+    {% for question in question_list %}
+        {{ question.question }}
+        <br>
+        {{ question.answer }}
+        <br>
+
+    {% endfor %}
+    {{ answer }}
+<form ction="{% url "question-answer-list" slug %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+</body>
+</html>
