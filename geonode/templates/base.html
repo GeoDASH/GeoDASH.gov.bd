@@ -195,7 +195,7 @@
                         {% if user.is_authenticated %}
 
                         <li class="notification">
-                            <a href="javascript:;">
+                            <a href="{% url "messages_inbox" %}" >
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
                                 </button>
