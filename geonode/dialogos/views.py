@@ -14,6 +14,7 @@ from dialogos.authorization import load_can_delete, load_can_edit
 from dialogos.forms import CommentForm
 from dialogos.models import Comment
 from dialogos.signals import commented, comment_updated
+from notify.signals import notify
 
 
 can_delete = load_can_delete()
@@ -39,6 +40,8 @@ def post_comment(request, content_type_id, object_id, form_class=CommentForm):
     form = form_class(request.POST, request=request, obj=obj, user=request.user)
     if form.is_valid():
         comment = form.save()
+        notify.send(request.user, recipient=obj.owner, actor=request.user,
+                verb='commented on your layer')
         commented.send(sender=post_comment, comment=comment, request=request)
         if request.is_ajax():
             return HttpResponse(json.dumps({

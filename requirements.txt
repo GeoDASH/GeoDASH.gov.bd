@@ -37,7 +37,10 @@ django-tastypie==0.12.2
 django-polymorphic==0.9  
 django-leaflet==0.13.7  
 django-autocomplete-light==2.3.3  
-django-modeltranslation==0.11  
+django-modeltranslation==0.11
+
+# django notification app
+django-notify-x
 
 # GeoNode org maintained apps.
 django-geoexplorer>=4.0.5  
