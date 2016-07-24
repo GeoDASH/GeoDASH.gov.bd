@@ -223,6 +223,7 @@
                     success: function(jsondata) {
                         console.log("success");
                         console.log(JSON.stringify(jsondata));
+                        location.reload(true);
 
                     },
                     error: function(xhr, ajaxOptions, thrownError) {

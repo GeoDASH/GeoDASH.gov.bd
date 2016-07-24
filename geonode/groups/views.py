@@ -345,16 +345,17 @@ def question_answer_list_view(request, slug):
             question.questioner = questioner
             question.group = group
             question.save()
-            return redirect("question-answer-list", slug=slug)
+            return redirect("group_detail", slug=slug)
         else:
-            return redirect("question-answer-list", slug=slug)
+            return redirect("group_detail", slug=slug)
 
     else:
         group = get_object_or_404(GroupProfile, slug=slug)
         context_dict = {
             'question_list': QuestionAnswer.objects.filter(group=group),
             'form': QuestionForm,
-            'slug': slug
+            'slug': slug,
+            'answerform': AnsewerForm
         }
         return render_to_response(
             "groups/question_answer.html",
@@ -378,10 +379,11 @@ def answer_view(request, slug, question_pk):
             question.group = group
             question.respondent = respondent
             question.save()
+            return redirect("group_detail", slug=slug)
         else:
-            return redirect("question-answer-list", slug=slug)
+            return redirect("group_detail", slug=slug)
     else:
-            return redirect("question-answer-list", slug=slug)
+        return redirect("group_detail", slug=slug)
 
 
 
@@ -395,7 +397,8 @@ def delete_question(request, slug, question_pk):
         if request.user in managers:
             question = get_object_or_404(QuestionAnswer, pk=question_pk)
             question.delete()
+            return redirect("group_detail", slug=slug)
         else:
-            return redirect("question-answer-list", slug=slug)
+            return redirect("group_detail", slug=slug)
     else:
-        return redirect("question-answer-list", slug=slug)
+        return redirect("group_detail", slug=slug)
