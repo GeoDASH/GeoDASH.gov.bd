@@ -352,11 +352,16 @@ def question_answer_list_view(request, slug):
     else:
         group = get_object_or_404(GroupProfile, slug=slug)
         context_dict = {
-            'question_list': QuestionAnswer.objects.filter(group=group),
             'form': QuestionForm,
             'slug': slug,
-            'answerform': AnsewerForm
+            'answerform': AnsewerForm,
+            'group': group
         }
+        managers = group.get_managers()
+        if request.user in managers:
+            context_dict['question_list'] = QuestionAnswer.objects.filter(group=group)
+        else:
+            context_dict['question_list'] = QuestionAnswer.objects.filter(group=group, answered=True)
         return render_to_response(
             "groups/question_answer.html",
             RequestContext(request, context_dict))
@@ -378,6 +383,7 @@ def answer_view(request, slug, question_pk):
             question.answer = answer
             question.group = group
             question.respondent = respondent
+            question.answered = True
             question.save()
             return redirect("group_detail", slug=slug)
         else:

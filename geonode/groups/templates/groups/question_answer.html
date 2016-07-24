@@ -25,7 +25,7 @@
         </div>
         {% endif %}
         <div class="block-separator"></div>
-        {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
+        {% if request.user.is_superuser or request.user in group.get_managers %}
                 <div class="row">
                     <div class="col-md-11">
                          <div class="text-right">

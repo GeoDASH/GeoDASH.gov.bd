@@ -303,6 +303,7 @@ class QuestionAnswer(models.Model):
     questioner = models.ForeignKey('people.Profile', blank=True, null=True, related_name='questioner')
     answer = models.TextField(help_text=_('Answer the question'))
     respondent = models.ForeignKey('people.Profile', blank=True, null=True, related_name='respondent')
+    answered = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
