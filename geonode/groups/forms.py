@@ -27,6 +27,7 @@ from django.contrib.auth import get_user_model
 
 from geonode.groups.models import GroupProfile
 from geonode.people.models import Profile
+from geonode.groups.models import QuestionAnswer
 
 
 class GroupForm(forms.ModelForm):
@@ -170,3 +171,21 @@ class GroupInviteForm(forms.Form):
             raise forms.ValidationError(message)
 
         return invitees
+
+
+class QuestionForm(forms.ModelForm):
+    """
+    This form is for question and answer
+    """
+    class Meta:
+        model = QuestionAnswer
+        fields = ['question',]
+
+
+class AnsewerForm(forms.ModelForm):
+    """
+    This form is for answering question
+    """
+    class Meta:
+        model = QuestionAnswer
+        fields = ['answer',]

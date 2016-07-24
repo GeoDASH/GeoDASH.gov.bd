@@ -292,3 +292,18 @@ def group_pre_delete(instance, sender, **kwargs):
          not permitted as will break the geonode permissions system')
 
 signals.pre_delete.connect(group_pre_delete, sender=Group)
+
+
+class QuestionAnswer(models.Model):
+    """
+    This model is for question and answer in organization details page.
+    """
+    group = models.ForeignKey(GroupProfile, blank=True, null=True)
+    question = models.TextField(help_text=_('Ask a question'))
+    questioner = models.ForeignKey('people.Profile', blank=True, null=True, related_name='questioner')
+    answer = models.TextField(help_text=_('Answer the question'))
+    respondent = models.ForeignKey('people.Profile', blank=True, null=True, related_name='respondent')
+    answered = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
