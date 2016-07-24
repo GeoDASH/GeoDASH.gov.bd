@@ -524,6 +524,7 @@ class MakeFeatured(TypeFilteredResource):
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
 
+
 class MesseagesUnread(TypeFilteredResource):
 
     class Meta:
@@ -533,3 +534,65 @@ class MesseagesUnread(TypeFilteredResource):
 
     def get_object_list(self, request):
             return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)
+
+class MakeDocked(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'dockit'
+        allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+            user = request.user
+            if user.is_authenticated():
+                status = json.loads(request.body).get('status')
+                resource_id = json.loads(request.body).get('resource_id')
+
+                try:
+                    resource = ResourceBase.objects.get(pk=resource_id)
+                except ResourceBase.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'resource does not exist'
+                else:
+                    resource.docked = status
+                    resource.save()
+                    out['success'] = 'True'
+                    status_code = 200
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+class MakeFavorite(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'makefavorite'
+        allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+            user = request.user
+            if user.is_authenticated():
+                status = json.loads(request.body).get('status')
+                resource_id = json.loads(request.body).get('resource_id')
+
+                try:
+                    resource = ResourceBase.objects.get(pk=resource_id)
+                except ResourceBase.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'resource does not exist'
+                else:
+                    resource.docked = status
+                    resource.save()
+                    out['success'] = 'True'
+                    status_code = 200
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
