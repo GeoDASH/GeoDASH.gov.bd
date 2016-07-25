@@ -93,6 +93,9 @@ urlpatterns = patterns('',
                        # Search views
                        url(r'^search/$', TemplateView.as_view(template_name='search/search.html'), name='search'),
 
+                       # user notification url
+                       url(r'^notifications/', include('notify.urls', 'notifications')),
+
                        # Social views
                        (r"^account/", include("account.urls")),
                        (r'^people/', include('geonode.people.urls')),

@@ -127,3 +127,9 @@ $(document).ready(function() {
         $("#show-notification-msg").slideToggle("slow");
     });
 });
+
+    $(document).ready(function() {
+        $('.notifications').click(function() {
+            $("#show-notification").load(location.href+" #show-notification>*","");
+        });
+    });

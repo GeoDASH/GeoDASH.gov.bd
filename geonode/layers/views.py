@@ -44,6 +44,8 @@ from django.db import transaction
 from django.db.models import F
 from django.forms.util import ErrorList
 
+from notify.signals import notify
+
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
 from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
@@ -623,6 +625,10 @@ def layer_remove(request, layername, template='layers/layer_remove.html'):
         try:
             with transaction.atomic():
                 delete_layer.delay(object_id=layer.id)
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    verb='deleted your layer')
         except Exception as e:
             message = '{0}: {1}.'.format(_('Unable to delete layer'), layer.typename)
 
@@ -817,6 +823,11 @@ def layer_delete(request, layer_pk):
             if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
                 layer.status = "DELETED"
                 layer.save()
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                notify.send(request.user, recipient=recipient, actor=request.user,
+                verb='deleted your layer')
+
             else:
                 messages.info(request, 'you have no acces to delete the layer')
 

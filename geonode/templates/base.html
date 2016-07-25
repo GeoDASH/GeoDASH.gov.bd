@@ -203,20 +203,21 @@
                             </a>
                         </li>
                         <li class="notification" id="show-notification">
-                            <a href="javascript:;" >
+                            <a href="javascript:;" id="a_href">
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-bell" ></i>
                                 </button>
-                                <span class="badge badge-notify">3</span>
+                                <span class="badge badge-notify" id="rload">{{ request.user.notifications.unread.count }}</span>
                             </a>
                         </li>
                         <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
-                            <ul class="text-center">
-                                <li><a href="">Home</a> </li>
-                                <li><a href="">Home</a> </li>
-                                <li><a href="">Home</a> </li>
-                                <li><a href="">Home</a> </li>
-                            </ul>
+                            <div class="notifications">
+                                <ul class="text-center">
+                                    {% load notification_tags %}
+                                    {% include_notify_js_variables %}
+                                    {% user_notifications %}
+                                </ul>
+                            </div>
                         </div>
                         <!--
                         <li class="notification">
@@ -717,8 +718,10 @@
     <script src="{{ STATIC_URL }}geonode/js/base/base.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/menu.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/basic.js?v={{ VERSION }}"></script>
+    <script src="{{ STATIC_URL }}notify/notifyX.js?v={{ VERSION }}"></script>
     {% include 'autocomplete_light/static.html' %}
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
+
     {% block extra_script %}{% endblock extra_script %}
 
     <script type="text/javascript">
