@@ -41,6 +41,8 @@ from django.db.models import F
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
 
+from notify.signals import notify
+
 from geonode.layers.models import Layer
 from geonode.maps.models import Map, MapLayer, MapSnapshot
 from geonode.layers.views import _resolve_layer
@@ -448,6 +450,13 @@ def new_map_json(request):
 
         try:
             map_obj.update_from_viewer(body)
+
+            # notify layer owners that this layer is used to create this map
+            layers = map_obj.layers
+            layer_owners = [layer.owner for layer in map_obj.local_layers]
+            notify.send(request.user, recipient_list=layer_owners, actor=request.user,
+                verb='created map using your layer', target=map_obj)
+
             MapSnapshot.objects.create(
                 config=clean_config(body),
                 map=map_obj,

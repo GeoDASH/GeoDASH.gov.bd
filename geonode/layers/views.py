@@ -625,10 +625,12 @@ def layer_remove(request, layername, template='layers/layer_remove.html'):
         try:
             with transaction.atomic():
                 delete_layer.delay(object_id=layer.id)
+
+                # notify layer owner that someone have deleted the layer
                 if request.user != layer.owner:
                     recipient = layer.owner
                     notify.send(request.user, recipient=recipient, actor=request.user,
-                    verb='deleted your layer')
+                    target=layer, verb='deleted your layer')
         except Exception as e:
             message = '{0}: {1}.'.format(_('Unable to delete layer'), layer.typename)
 
@@ -722,6 +724,11 @@ def layer_publish(request, layer_pk):
             layer.save()
             layer_submission_activity = LayerSubmissionActivity(layer=layer, group=group, iteration=layer.current_iteration)
             layer_submission_activity.save()
+
+            # notify organization admins about the new published layer
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new layer', target=layer)
 
             # set all the permissions for all the managers of the group for this layer
             layer.set_managers_permissions()
