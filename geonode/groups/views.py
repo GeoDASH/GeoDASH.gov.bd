@@ -29,6 +29,7 @@ from django.views.generic import ListView
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
+from notify.signals import notify
 
 from geonode.groups.forms import GroupInviteForm, GroupForm, GroupUpdateForm, GroupMemberForm
 from geonode.groups.models import GroupProfile, GroupInvitation, GroupMember
@@ -228,7 +229,12 @@ def group_invite(request, slug):
             group.invite(
                 user,
                 request.user,
-                role=form.cleaned_data["invite_role"])
+                role=form.cleaned_data["invite_role"],
+            )
+
+            # notify user that he/she is invited by the group
+            notify.send(request.user, recipient=user, actor=request.user,
+            verb='invited you to join')
 
     return redirect("group_members", slug=group.slug)
 

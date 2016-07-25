@@ -625,10 +625,12 @@ def layer_remove(request, layername, template='layers/layer_remove.html'):
         try:
             with transaction.atomic():
                 delete_layer.delay(object_id=layer.id)
+
+                # notify layer owner that someone have deleted the layer
                 if request.user != layer.owner:
                     recipient = layer.owner
                     notify.send(request.user, recipient=recipient, actor=request.user,
-                    verb='deleted your layer')
+                    target=layer, verb='deleted your layer')
         except Exception as e:
             message = '{0}: {1}.'.format(_('Unable to delete layer'), layer.typename)
 
