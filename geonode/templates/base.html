@@ -193,13 +193,13 @@
                         </li>
                         {% endif %}
                         {% if user.is_authenticated %}
-                        <!--
+
                         <li class="notification">
-                            <a href="javascript:;">
+                            <a href="{% url "messages_inbox" %}" >
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
                                 </button>
-                                <span class="badge badge-notifymsg">3</span>
+                                <span class="badge badge-notifymsg">{{ request.user.message_unread }}</span>
                             </a>
                         </li>
                         <li class="notification" id="show-notification">
@@ -218,7 +218,7 @@
                                 <li><a href="">Home</a> </li>
                             </ul>
                         </div>
-
+                        <!--
                         <li class="notification">
                             <a class="usi" href="javascript:;">
                                 <button class="btn btn-default btn-link">

@@ -31,6 +31,7 @@ from geonode.base.enumerations import COUNTRIES
 from geonode.groups.models import GroupProfile
 
 from account.models import EmailAddress
+from user_messages.models import UserThread
 
 from .utils import format_address
 
@@ -125,6 +126,10 @@ class Profile(AbstractUser):
     @property
     def is_member_of_any_group(self):
         return GroupProfile.objects.filter(groupmember__user=self, groupmember__role="member").exists()
+
+    @property
+    def message_unread(self):
+        return UserThread.objects.filter(user=self, unread=True).count()
 
     def keyword_list(self):
         """
