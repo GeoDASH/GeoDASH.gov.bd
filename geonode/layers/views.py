@@ -723,6 +723,11 @@ def layer_publish(request, layer_pk):
             layer_submission_activity = LayerSubmissionActivity(layer=layer, group=group, iteration=layer.current_iteration)
             layer_submission_activity.save()
 
+            # notify organization admins about the new published layer
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new layer', target=layer)
+
             # set all the permissions for all the managers of the group for this layer
             layer.set_managers_permissions()
 
