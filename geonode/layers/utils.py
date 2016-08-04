@@ -28,6 +28,7 @@ import os
 import glob
 import sys
 import tempfile
+import json
 
 from osgeo import gdal
 
@@ -336,6 +337,25 @@ def unzip_file(upload_file, extension='.shp', tempdir=None):
             absolute_base_file = os.path.join(tempdir, item)
 
     return absolute_base_file
+
+
+def ogrinfo(file_path):
+    from plumbum.cmd import ogrinfo
+    output_string = ogrinfo(file_path)
+    point_layer = '(Point)'
+    line_layer = '(Line String)'
+    multi_line_layer = '(Multi Line String)'
+    multipolygon_layer = '(Geometry Collection)'
+    layers = []
+    if point_layer in output_string:
+        layers.append('points')
+    if line_layer in output_string:
+        layers.append('lines')
+    if multi_line_layer in output_string:
+        layers.append('multilinestrings')
+    if multipolygon_layer in output_string:
+        layers.append('multipolygons')
+    return layers
 
 
 def extract_tarfile(upload_file, extension='.shp', tempdir=None):

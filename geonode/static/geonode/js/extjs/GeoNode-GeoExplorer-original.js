@@ -15,8 +15,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
     metaDataHeader: 'UT:About this Map',
     metaDataMapAbstract: 'UT:Abstract',
     metaDataMapTitle: 'UT:Title',
-    metaDataSelectOrganization: 'Select Organization',
-    metaDataSelectCategory: 'Select Category',
     // end i18n
 
     /** api: ptype = gn_save */
@@ -68,82 +66,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
      */
     initMetadataForm: function(callback){
 
-        // The data store containing the list of states
-        var categoryStates = new Ext.data.JsonStore({
-            // store config
-            autoLoad: true,
-            autoDestroy: true,
-            url: '/api/categories',
-            storeId: 'categoryStates',
-            // render
-            root: 'objects',
-            idProperty: 'id',
-            fields: ['id', 'identifier']
-        });
-        var organizationStore = new Ext.data.JsonStore({
-            // store config
-            autoLoad: true,
-            autoDestroy: true,
-            url: '/api/groups',
-            storeId: 'organizationStore',
-            // render
-            root: 'objects',
-            idProperty: 'id',
-            fields: ['id', 'title']
-        });
-
-        var categoryField = new Ext.form.ComboBox({
-            editable: false,
-            width: '95%',
-            store: categoryStates,
-            allowBlank: false,
-            fieldLabel: this.metaDataSelectCategory,
-            valueField: this.target.about["category"],
-            typeAhead: false,
-            displayField: 'identifier',
-            triggerAction: 'all',
-            lazyRender:true,
-            mode: 'local',
-            listeners: {
-                "valid": function() {
-                    if(titleField.getValue() && categoryField.getValue() && organizationField.getValue() ){
-                        saveAsButton.enable();
-                        saveButton.enable();
-                    }
-                },
-                "invalid": function() {
-                    saveAsButton.disable();
-                    saveButton.disable();
-                }
-            }
-        });
-
-        var organizationField = new Ext.form.ComboBox({
-            editable: false,
-            width: '95%',
-            store: organizationStore,
-            allowBlank: false,
-            fieldLabel: this.metaDataSelectOrganization,
-            valueField: this.target.about["organization"],
-            typeAhead: false,
-            displayField: 'title',
-            triggerAction: 'all',
-            lazyRender:true,
-            mode: 'local',
-            listeners: {
-                "valid": function() {
-                    if(titleField.getValue() && categoryField.getValue() && organizationField.getValue() ){
-                        saveAsButton.enable();
-                        saveButton.enable();
-                    }
-                },
-                "invalid": function() {
-                    saveAsButton.disable();
-                    saveButton.disable();
-                }
-            }
-        });
-
         var titleField = new Ext.form.TextField({
             width: '95%',
             fieldLabel: this.metaDataMapTitle,
@@ -152,10 +74,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             enableKeyEvents: true,
             listeners: {
                 "valid": function() {
-                    if(titleField.getValue() && categoryField.getValue() && organizationField.getValue() ){
-                        saveAsButton.enable();
-                        saveButton.enable();
-                    }
+                    saveAsButton.enable();
+                    saveButton.enable();
                 },
                 "invalid": function() {
                     saveAsButton.disable();
@@ -176,8 +96,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             labelAlign: "top",
             items: [
                 titleField,
-                organizationField,
-                categoryField,
                 abstractField
             ]
         });
@@ -190,8 +108,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
                 delete this.target.id;
                 this.target.about.title = Ext.util.Format.stripTags(titleField.getValue());
                 this.target.about["abstract"] = Ext.util.Format.stripTags(abstractField.getValue());
-                this.target.about["organization"] = Ext.util.Format.stripTags(organizationField.getValue());
-                this.target.about["category"] = Ext.util.Format.stripTags(categoryField.getValue());
                 this.metadataForm.hide();
                 this._doSave = true;
                 this.target.save(this.metadataForm.saveCallback);
@@ -204,8 +120,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             handler: function(e){
                 this.target.about.title = Ext.util.Format.stripTags(titleField.getValue());
                 this.target.about["abstract"] = Ext.util.Format.stripTags(abstractField.getValue());
-                this.target.about["organization"] = Ext.util.Format.stripTags(organizationField.getValue());
-                this.target.about["category"] = Ext.util.Format.stripTags(categoryField.getValue());
                 this.metadataForm.hide();
                 this._doSave = true;
                 this.target.save(this.metadataForm.saveCallback);
@@ -230,8 +144,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
                     handler: function() {
                         titleField.setValue(this.target.about.title);
                         abstractField.setValue(this.target.about["abstract"]);
-                        categoryField.setValue(this.target.about["category"]);
-                        organizationField.setValue(this.target.about["organization"]);
                         this.metadataForm.hide();
                     },
                     scope: this
@@ -272,7 +184,7 @@ GeoNode.plugins.SaveHyperlink = Ext.extend(gxp.plugins.Tool, {
      */
     init: function(target) {
         GeoNode.plugins.SaveHyperlink.superclass.init.apply(this, arguments);
-        this.titleTemplate = new Ext.Template("<a class='maplist' href='" +
+        this.titleTemplate = new Ext.Template("<a class='maplist' href='" + 
             this.target.rest + "'>Maps</a> / <strong>{title}");
         this.target.on("save", function(id) {
             this.actions[0].update(this.getMapTitle());
@@ -477,7 +389,7 @@ Ext.preg(GeoNode.plugins.LayerInfo.prototype.ptype, GeoNode.plugins.LayerInfo);
 
 /** api: constructor
  *  .. class:: Composer(config)
- *
+ *   
  *    The GeoNode Composer application class.
  *    Changes compared to out-of-the-box GeoExplorer:
  *    - before saving a map, show a metadata form

@@ -22,7 +22,7 @@ from tastypie.api import Api
 
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
-        MakeDocked, MakeFavorite
+        MakeDocked, MakeFavorite, OsmOgrInfo
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource
@@ -48,4 +48,5 @@ api.register(MakeFeatured())
 api.register(MesseagesUnread()) # api for unread messages for an user
 api.register(MakeDocked())
 api.register(MakeFavorite())
+api.register(OsmOgrInfo())
 
