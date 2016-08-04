@@ -52,6 +52,7 @@ from geonode.layers.forms import NewLayerUploadForm
 from geonode.layers.utils import file_upload
 from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
+from geonode.settings import MEDIA_ROOT
 
 from taggit.models import Tag
 from django.core.serializers.json import DjangoJSONEncoder
@@ -535,6 +536,7 @@ class MesseagesUnread(TypeFilteredResource):
     def get_object_list(self, request):
             return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)
 
+
 class MakeDocked(TypeFilteredResource):
 
     class Meta:
@@ -570,6 +572,36 @@ class MakeFavorite(TypeFilteredResource):
 
     class Meta:
         resource_name = 'makefavorite'
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+        user = request.user
+        if user.is_authenticated():
+            status = json.loads(request.body).get('status')
+            resource_id = json.loads(request.body).get('resource_id')
+
+            try:
+                resource = ResourceBase.objects.get(pk=resource_id)
+            except ResourceBase.DoesNotExist:
+                status_code = 404
+                out['errors'] = 'resource does not exist'
+            else:
+                resource.docked = status
+                resource.save()
+                out['success'] = 'True'
+                status_code = 200
+        else:
+            out['error'] = 'Access denied'
+            out['success'] = False
+            status_code = 400
+        return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+class OsmOgrInfo(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'ogrinfo'
         allowed_methods = ['post']
 
     def dispatch(self, request_type, request, **kwargs):
@@ -577,22 +609,39 @@ class MakeFavorite(TypeFilteredResource):
             out = {'success': False}
             user = request.user
             if user.is_authenticated():
-                status = json.loads(request.body).get('status')
-                resource_id = json.loads(request.body).get('resource_id')
-
                 try:
-                    resource = ResourceBase.objects.get(pk=resource_id)
-                except ResourceBase.DoesNotExist:
-                    status_code = 404
-                    out['errors'] = 'resource does not exist'
+                    file = request.FILES["base_file"]
+                except:
+                    out['errors'] = 'No file has been choosen as base_file'
+                    return HttpResponse(json.dumps(out), content_type='application/json', status=404)
                 else:
-                    resource.docked = status
-                    resource.save()
-                    out['success'] = 'True'
-                    status_code = 200
-            else:
-                out['error'] = 'Access denied'
-                out['success'] = False
-                status_code = 400
-            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+                    filename = file.name
+                    extension = os.path.splitext(filename)[1]
+                    if extension.lower() != '.osm':
+                        out['errors'] = 'Please upload a valid .osm file'
+                        return HttpResponse(json.dumps(out), content_type='application/json', status=404)
+
+                    file_location = os.path.join(MEDIA_ROOT, "osm_temp")
+                    temporary_file = open('%s/%s' % (file_location, filename), 'w+')
+                    temporary_file.write(file.read())
+                    temporary_file.close()
+                    file_path = temporary_file.name
+                    from plumbum.cmd import ogrinfo
+                    output_string = ogrinfo(file_path)
+                    point_layer = '(Point)'
+                    line_layer = '(Line String)'
+                    multi_line_layer = '(Multi Line String)'
+                    multipolygon_layer = '(Geometry Collection)'
+                    if point_layer in output_string:
+                        out['points'] = 'points'
+                    if line_layer in output_string:
+                        out['lines'] = 'lines'
+                    if multi_line_layer in output_string:
+                        out['multilinestrings'] = 'multilinestrings'
+                    if multipolygon_layer in output_string:
+                        out['multipolygons'] = 'multipolygons'
+                    out['success'] = True
+
+                    os.remove(file_path)
+                    return HttpResponse(json.dumps(out), content_type='application/json', status=200)
 

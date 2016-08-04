@@ -23,6 +23,7 @@ import sys
 import logging
 import shutil
 import traceback
+import requests
 from guardian.shortcuts import get_perms
 
 from django.contrib import messages

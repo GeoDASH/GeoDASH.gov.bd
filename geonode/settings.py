@@ -550,6 +550,14 @@ UPLOADER = {
     }
 }
 
+# UPLOADER = {
+#     'BACKEND' : 'geonode.importer',
+#     'OPTIONS' : {
+#         'TIME_ENABLED': False,
+#         'GEOGIT_ENABLED': False,
+#     }
+# }
+
 # CSW settings
 CATALOGUE = {
     'default': {
