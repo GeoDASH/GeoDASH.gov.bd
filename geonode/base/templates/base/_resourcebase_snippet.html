@@ -169,29 +169,80 @@
               </div>
               {% endverbatim %}
               <div>
-                  {% if user.is_superuser %}
-                    {% verbatim %}
-                      <div class="bottom-content">
-                          <div class="row">
-                              <div class="profile-items text-center">
-                                  <ul class="list-inline">
-                                      <li ng-if="item.featured" class="col-md-12 " >
-                                          <a class="btn col-md-12 btn-gd-primary" href="" style="background:#d0d0d0;"
-                                             data-layerID="{{item.id}}" data-statusID="{{item.featured}}" id="featured-chngsts123" >
-                                             Unfeatured
-                                          </a>
-                                      </li>
-                                      <li ng-if="!item.featured" class="col-md-12 ">
-                                          <a class="btn col-md-12 btn-gd-primary" id="featured_chngsts" href="" data-layerID="{{item.id}}" data-statusID="{{item.featured}}">
-                                             Featured
-                                          </a>
-                                      </li>
-                                  </ul>
-                              </div>
+                  <div class="bottom-content">
+                      <div class="row">
+                          <div class="profile-items text-center">
+                              <ul class="list-inline">
+                                  {% if user.is_superuser %}
+                                  <li ng-if="item.featured" class="col-md-6" >
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" href="" style="background:#d0d0d0;border:none;color:#000;"
+                                         data-layerID="{{item.id}}" data-statusID="false" ng-click="featuredFunction(item.id,false);" >
+                                         <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                          Unfeatured
+                                      </button>
+                                      <div>
+                                      {% endverbatim %}
+                                  </li>
+                                  <li ng-if="!item.featured" class="col-md-6">
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="featuredFunction(item.id,true);" data-layerID="{{item.id}}" data-statusID="true">
+                                         <i class="fa fa-heart-o"></i>
+                                          Featured
+                                      </button>
+                                      </div>
+                                      {% endverbatim %}
+                                  </li>
+                                  <li ng-if="item.favorite" class="col-md-6">
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteFunction(item.id,false);" style="background:#d0d0d0;border:none;color:#000;" data-favouriteID="{{item.id}}" data-favouriteStatus="false">
+                                          <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                          Unfavorite
+                                      </button>
+                                      </div>
+                                      {% endverbatim %}
+                                  </li>
+                                  <li ng-if="!item.favorite" class="col-md-6">
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteFunction(item.id,true);" data-favouriteID="{{item.id}}" data-favouriteStatus="true">
+                                          <i class="fa fa-heart-o"></i>
+                                          Add to favorite
+                                      </button>
+                                      </div>
+                                      {% endverbatim %}
+                                  </li>
+                                  {% else %}
+                                  {% if user.is_authenticated %}
+                                  <li ng-if="item.favorite" class="col-md-12">
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteFunction(item.id,false);" style="background:#d0d0d0;border:none;color:#000;" href="" data-favouriteID="{{item.id}}" data-favouriteStatus="false">
+                                          <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                          Unfavorite
+                                      </button>
+                                      {% endverbatim %}
+                                      </div>
+                                  </li>
+                                  <li ng-if="!item.favorite" class="col-md-12">
+                                      <div>
+                                      {% verbatim %}
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteFunction(item.id,true);" data-favouriteID="{{item.id}}" data-favouriteStatus="true">
+                                          <i class="fa fa-heart-o"></i>
+                                          Add to favorite
+                                      </button>
+                                      {% endverbatim %}
+                                      </div>
+                                  </li>
+                                  {% endif %}
+                                  {% endif %}
+                              </ul>
                           </div>
                       </div>
-                    {% endverbatim %}
-                  {% endif %}
+                  </div>
               </div>
               {% verbatim %}
           </div>
@@ -199,38 +250,6 @@
     </article>
   </div>
 </div>
+
 {% endverbatim %}
 
-{% block extra_script %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script type="text/javascript" language="JavaScript">
-        $(document).ready(function(){
-            $("#featured_chngsts").click(function(){
-                alert("Are you sure make this as featured layer ?");
-                var url = '{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}';
-                   var qID = $(this).attr('data-layerID');
-                   var qsID = $(this).attr('data-statusID');
-                    var data = JSON.stringify({
-                    "layer_id": qID,
-                    "status": qsID
-                });
-                $.ajax({
-                    cache: false,
-                    type: 'POST',
-                    url: url,
-                    data: data,
-                    dataType: "json",
-                    success: function(jsondata) {
-                        console.log("success");
-                        console.log(JSON.stringify(jsondata));
-                        location.reload(true);
-
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        console.log("error");
-                    }
-                 });
-            });
-        });
-    </script>
-{% endblock extra_script %}

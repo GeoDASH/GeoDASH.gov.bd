@@ -493,19 +493,21 @@
                     <div class="gd-control">
                         <div class="gd-interprobability-main">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div id="gd-interprobability-left">
-                                        <img src="{{ STATIC_URL }}geonode/images/Puzzle-1.png" style="height:400px;" class="img-responsive" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div id="gd-interprobability-right">
-                                        <div class="title">{% trans "interoperabity" %}</div>
+                                        <div class="title" style="text-align:center;">{% trans "interoperabity" %}</div>
                                         <div class="description">
                                             {% trans "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content." %}
                                             {% trans "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces." %}
                                             {% trans "You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc." %}
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-9">
+                                    <div id="gd-interprobability-left">
+                                        <img src="{{ STATIC_URL }}geonode/images/Puzzle-1.png" style="height:300px;" class="img-responsive" />
                                     </div>
                                 </div>
                             </div>
@@ -522,15 +524,16 @@
                 <div class="container">
                     <div class="gd-control">
                         <div class="gd-makepretty-main">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>
-                                </div>
-                            </div>
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-8">-->
+                                    <!--<div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="row">
                                 <div class="col-md-5">
                                     <div id="gd-makepretty-right">
                                         <div class="description">
+                                            <div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>
                                             {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
                                             {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
                                             {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
@@ -540,8 +543,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div id="gd-makepretty-left">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps.png" class="img-responsive" />
+                                    <div id="gd-makepretty-left" style="float: right;">
+                                        <img src="{{ STATIC_URL }}geonode/images/geo/1_with_s.png" style="height:400px;" class="img-responsive" />
                                         <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->
                                             <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->
                                             <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->
@@ -555,31 +558,27 @@
             </div>
         {% endif %}
       {% endblock %}
-      <!-- View Maps -->
-      {% block index_viewmaps %}
-        {% if is_3dmap or request.user.is_authenticated %}
-            <div id="gd-viewmaps" >
-                <!--<iframe frameborder="0" height="732" width="1301" style="position: absolute; width: 1288px; height: 725px; left: 0px; top: -136px;" id="tubular-player" allowfullscreen="1" title="YouTube video player" src="https://www.youtube.com/embed/ab0TSkLe-E0?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1">3Gj_fVDhYG4</iframe>-->
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe id="tubular-player" frameborder="0" height="732" width="100%" src="https://www.youtube.com/embed/fjfzXK0DUZs?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1&loop=1&playlist=fjfzXK0DUZs&rel=0&autoBuffering:true" title="YouTube video player" allowfullscreen="1" style="overflow:hidden;position: absolute; width: 100%; height: 725px; left: 0px; top: -136px;">
-                    </iframe>
-                </div>
+      <!-- Make 3d -->
+      {% block index_make3d %}
+            <div id="gd-3dsection" >
                 <div class="container">
                     <div class="gd-control">
-                        <div class="gd-viewmaps-main">
+                        <div class="gd-3dsection-main">
                             <div class="row">
-                                <div class="col-md-">
-                                    <div id="gd-viewmaps-left">
-                                        <!--<img src="{{ STATIC_URL }}geonode/images/maps-monitor.png" class="img-responsive"  /> -->
+                                <div class="col-md-5">
+                                    <div id="gd-3dsection-left" style="float: left;">
+                                        <img src="{{ STATIC_URL }}geonode/images/geo/im-3d.png" style="height:400px;" class="img-responsive" />
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div id="gd-viewmaps-right">
-                                        <div class="title">{% trans "View your maps in 3d" %}</div>
+                                <div class="col-md-6">
+                                    <div id="gd-3dsection-right">
                                         <div class="description">
-                                            <!--Share your map via e-mail, LinkedIn, Twitter, Facebook etc.
-                                            to maximize data sharing and promote your work. You can also publish and embed your map right away.
-                                            -->
+                                            <div class="title">{% trans "View your maps in 3d" %}</div>
+                                            {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
+                                            {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
+                                            {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
+                                            {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
+                                            {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
                                         </div>
                                     </div>
                                 </div>
@@ -588,8 +587,193 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
       {% endblock %}
+      <!-- What GeoDASH offer? -->
+      {% block index_geodashoffer %}
+        <div id="gd-whatoffer">
+            <div class="block-separator"></div>
+            <div class="container">
+                <div class="gd-control">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="header-title text-center">{% trans "What GeoDASH offer ? " %}</div>
+                        </div>
+                    </div>
+                    <div class="gd-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="help-content-offer" class="gd-content-body-offer">
+                                    {% blocktrans %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul class="termsuseandcondition">
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Standard, facebook, google+ login.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload shape formatted polyline, polygon, point layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload OSM formatted polyline, polygon, point, raster layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload CSV formatted polyline, polygon, point layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload documents.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Send “spam” email messages to anyone.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        List/ Grid view of layers, maps and documents.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Dock favourite layers, maps, documents and organizations.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Create map using single/ multiple layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Centroids and centers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Style layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Pan maps.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Get FeatureInfo.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Measure length.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true">
+                                                        </i>Measure Area
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="termsuseandcondition">
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Zoom in.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        zoom out.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        3D map view.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Print map.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Download layer and metadata.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Connect to other GeoServer(s).
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Filter / select by attribute.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Data classification.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Data chart view.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Buffer search.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Radius search.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Query on Map.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Cross joining of different layer columns.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Wiki documentation.
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endblocktrans %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      {% endblock %}
+      <!-- View Maps -->
+      <!--{% block index_viewmaps %}-->
+        <!--{% if is_3dmap or request.user.is_authenticated %}-->
+            <!--<div id="gd-viewmaps" >-->
+                <!--&lt;!&ndash;<iframe frameborder="0" height="732" width="1301" style="position: absolute; width: 1288px; height: 725px; left: 0px; top: -136px;" id="tubular-player" allowfullscreen="1" title="YouTube video player" src="https://www.youtube.com/embed/ab0TSkLe-E0?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1">3Gj_fVDhYG4</iframe>&ndash;&gt;-->
+                <!--<div class="embed-responsive embed-responsive-16by9">-->
+                    <!--<iframe id="tubular-player" frameborder="0" height="732" width="100%" src="https://www.youtube.com/embed/fjfzXK0DUZs?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1&loop=1&playlist=fjfzXK0DUZs&rel=0&autoBuffering:true" title="YouTube video player" allowfullscreen="1" style="overflow:hidden;position: absolute; width: 100%; height: 725px; left: 0px; top: -136px;">-->
+                    <!--</iframe>-->
+                <!--</div>-->
+                <!--<div class="container">-->
+                    <!--<div class="gd-control">-->
+                        <!--<div class="gd-viewmaps-main">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-">-->
+                                    <!--<div id="gd-viewmaps-left">-->
+                                        <!--&lt;!&ndash;<img src="{{ STATIC_URL }}geonode/images/maps-monitor.png" class="img-responsive"  /> &ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-12">-->
+                                    <!--<div id="gd-viewmaps-right">-->
+                                        <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
+                                        <!--<div class="description">-->
+                                            <!--&lt;!&ndash;Share your map via e-mail, LinkedIn, Twitter, Facebook etc.-->
+                                            <!--to maximize data sharing and promote your work. You can also publish and embed your map right away.-->
+                                            <!--&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--{% endif %}-->
+      <!--{% endblock %}-->
       <!-- Share Map -->
       {% block index_sharemap %}
         {% if is_share_map or request.user.is_authenticated %}

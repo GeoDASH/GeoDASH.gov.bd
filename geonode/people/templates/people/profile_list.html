@@ -73,10 +73,11 @@
           <div class="">
               {% include "people/_profile_list_item.html" %}
           </div>
+          <div class="block-separator"></div>
+          {% include 'search/_pagination.html' %}
       </div>
   </div>
 </div>
-{% include 'search/_pagination.html' %}
 {% endblock %}
 
 {% block extra_script %}

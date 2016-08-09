@@ -226,88 +226,89 @@
 
                         var data = eval(jsondata.objects);
                       $.each(data, function(i, item) {
-                        $("#search-content-layers").append('<div class="row">
-                            <article ng-repeat="item in results" resource_id="{{ item.id }}" ng-cloak class="ng-cloak">
-                              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                  <div class="grid-container lmd">
-                                      <div class="avater">
-                                          <div class="avater-img">
-                                            <a class="avater-img-mid" href="{{ item.detail_url }}" >
-                                              <img ng-if="item.thumbnail_url != null" ng-src="{{ item.thumbnail_url }}" alt="{{ group.title }}" class="group-logo" />
-                                              <img ng-if="item.thumbnail_url == null" ng-src="/static/geonode/img/missing_thumb.png" alt="{{ group.title }}" class="group-logo" />
-                                            </a>
-                                          </div>
-                                              <div class="checkbox-overlay">
-                                                  <div class="checkbox" ng-if="cart" ng-click="cart.toggleItem(item)">
-                                                      <label>
-                                                          <span ng-show="cart.isActive(item.id)" class="fa-stack fa-lg">
-                                                              <i class="fa fa-square fa-stack-1x" style="color: #FFF;"></i>
-                                                              <i class="fa fa-check-square fa-stack-1x"></i>
-                                                          </span>
-                                                          <span ng-show="!cart.isActive(item.id)" class="fa-stack fa-lg">
-                                                              <i class="fa fa-square fa-stack-1x"></i>
-                                                          </span>
-                                                      </label>
-                                                  </div>
-                                              </div>
-                                      </div>
-                                      <div class="information">
-                                          <div class="top-content text-center">
-                                              <div class="title">
-                                                  <a href="{{ item.detail_url }}" title="{{ item.title }}">
-                                                      {{ item.title }}
-                                                  </a>
-                                              </div>
-                                              <div class="category">
-                                                  {{ item.category__gn_description }}
+                        //alert(item.title);
+                        var output ='<div class="row">';
+                        var output ='<article >';
+                        var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">';
+                        var output ='<div class="grid-container lmd">';
+                        var output ='<div class="avater">';
+                        var output ='<div class="avater-img">';
+                        var output ='<a class="avater-img-mid" href="{{ item.detail_url }}" >';
+                        var output ='<img ng-if="item.thumbnail_url != null" ng-src="{{ item.thumbnail_url }}" alt="{{ group.title }}" class="group-logo" />';
+                        var output ='<img ng-if="item.thumbnail_url == null" ng-src="/static/geonode/img/missing_thumb.png" alt="{{ group.title }}" class="group-logo" />';
+                        var output ='</a>';
+                        var output ='</div>';
+                        var output ='<div class="checkbox-overlay">';
+                        var output ='<div class="checkbox" ng-if="cart" ng-click="cart.toggleItem(item)">';
+                        var output ='<label>';
+                        var output ='<span ng-show="cart.isActive(item.id)" class="fa-stack fa-lg">';
+                        var output ='<i class="fa fa-square fa-stack-1x" style="color: #FFF;"></i>';
+                        var output ='<i class="fa fa-check-square fa-stack-1x"></i>';
+                        var output ='</span>';
+                        var output ='<span ng-show="!cart.isActive(item.id)" class="fa-stack fa-lg">';
+                        var output ='<i class="fa fa-square fa-stack-1x"></i>';
+                        var output ='</span>';
+                        var output ='</label>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='<div class="information">';
+                        var output ='<div class="top-content text-center">';
+                        var output ='<div class="title">';
+                        var output ='<a href="{{ item.detail_url }}" title="{{ item.title }}">';
+                        var output =''+ item.title +'';
+                        var output ='</a>';
+                        var output ='</div>';
+                        var output ='<div class="category">';
+                        var output ='{{ item.category__gn_description }}';
+                        var output ='</div>';
+                        var output ='<div class="details">';
+                        var output =''+ item.abstract+ '';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='<div class="summery">';
+                        var output ='<div class="item-items">';
+                        var output ='<ul class="list-inline lmd">';
+                        var output ='<li>';
+                        var output ='<a href="/people/profile/{{ item.owner__username }}">';
+                        var output ='<i class="fa fa-user"></i>';
+                        var output =''+ item.owner__username +'';
+                        var output ='</a>';
+                        var output ='</li>';
+                        var output ='<li>';
+                        var output ='<a href="{{ item.detail_url }}#info">';
+                        var output ='<i class="fa fa-calendar-o"></i>';
+                        var output =''+ item.date +'';
+                        var output ='</a>';
+                        var output ='</li>';
+                        var output ='<li>';
+                        var output ='<a href="{{ item.detail_url }}">';
+                        var output ='<i class="fa fa-eye"></i>';
+                        var output =''+ item.popular_count +'';
+                        var output ='</a>';
+                        var output ='</li>';
+                        var output ='<li>';
+                        var output ='<a href="{{ item.detail_url }}#share">';
+                        var output ='<i class="fa fa-share"></i>';
+                        var output =''+ item.share_count +'';
+                        var output ='</a>';
+                        var output ='</li>';
+                        var output ='<li>';
+                        var output ='<a href="{{ item.detail_url }}#rate">';
+                        var output ='<i class="fa fa-star"></i>';
+                        var output =''+ item.rating +'';
+                        var output ='</a>';
+                        var output ='</li>';
+                        var output ='</ul>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='</div>';
+                        var output ='</article>';
+                        var output ='</div>';
 
-                                              </div>
-                                              <div class="details">
-                                                  {{ item.abstract }}
-                                              </div>
-                                          </div>
-
-                                          <div class="summery">
-                                              <div class="item-items">
-                                                  <ul class="list-inline lmd">
-                                                      <li>
-                                                          <a href="/people/profile/{{ item.owner__username }}">
-                                                              <i class="fa fa-user"></i>
-                                                              {{ item.owner__username }}
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="{{ item.detail_url }}#info">
-                                                              <i class="fa fa-calendar-o"></i>
-                                                              {{ item.date|date:'d MMM y' }}
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="{{ item.detail_url }}">
-                                                              <i class="fa fa-eye"></i>
-                                                              {{ item.popular_count }}
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="{{ item.detail_url }}#share">
-                                                              <i class="fa fa-share"></i>
-                                                              {{ item.share_count }}
-                                                          </a>
-                                                      </li>
-                                                      <li>
-                                                          <a href="{{ item.detail_url }}#rate">
-                                                              <i class="fa fa-star"></i>
-                                                              {{ item.rating }}
-                                                          </a>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </article>
-                          </div>');
+                        $("#search-content-layers").append(output);
                       });
 
                     },
