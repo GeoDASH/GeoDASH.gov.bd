@@ -433,10 +433,16 @@ def new_map_json(request):
                 content_type="text/plain",
                 status=401
             )
+        data = json.loads(request.body)
+        title = data['about']['title']
+        category_id = data['about']['category']
+        organization_id = data['about']['organization']
+        group = GroupProfile.objects.get(id=organization_id)
+
 
         map_obj = Map(owner=request.user, zoom=0,
                       center_x=0, center_y=0,
-                      category=TopicCategory.objects.get(id=1), group=GroupProfile.objects.get(title='wasa')) #hardcoded for now
+                      category=TopicCategory.objects.get(id=category_id), group=group, title=title)
         map_obj.save()
         map_obj.set_default_permissions()
 
