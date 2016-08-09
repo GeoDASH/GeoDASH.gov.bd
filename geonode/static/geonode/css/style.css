@@ -2462,7 +2462,6 @@ ul#global-errors li{
 }
 .grid-container.lmd{
     padding: 0;
-
     -webkit-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
     -moz-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
      box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
@@ -2718,7 +2717,7 @@ ul.termsuseandcondition{
 }
 ul.termsuseandcondition li {
     margin-bottom: 10px;
-    list-style: circle;
+    /*list-style: circle;*/
 }
 .table > tbody + tbody {
     border-top: 1px solid #ddd;
@@ -2783,4 +2782,75 @@ ul.termsuseandcondition li {
     margin-left:70px;
   }
 
+}
+
+
+.grid-container-dash.lmd{
+    padding: 0;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
+     box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
+}
+.grid-container-dash.lmd .avater{
+    width: 100%;
+}
+.grid-container-dash.lmd .avater{
+    position: relative;
+}
+.grid-container-dash.lmd .avater .checkbox-overlay{
+    right: 25px;
+    position: absolute;
+    top: 0;
+}
+.grid-container-dash.lmd .avater img{
+    /*height: 200px;*/
+    /*width: 100%;*/
+}
+.grid-container-dash.lmd .avater .avater-img{
+    margin:0 auto;
+    height:180px;
+    max-width:240px;
+    overflow: hidden;
+}
+
+.grid-container-dash.lmd .avater .avater-img-mid{
+    vertical-align:middle;
+    display:table-cell;
+    height:180px;
+    width:240px;
+}
+
+.grid-container-dash.lmd .avater .avater-img-mid img{
+    margin:0 auto;
+    max-height:180px;
+    text-align: center;
+}
+.grid-container-dash.lmd .summery{
+    margin-top: 15px;
+}
+.grid-container-dash.lmd .bottom-content{
+    margin: 15px;
+    margin-bottom: 0;
+}
+.grid-container-dash.lmd .information{
+    padding: 15px;
+}
+.grid-container-dash.lmd .information .category{
+    color: #999999;
+    font-size: 11px;
+    margin: 5px 0;
+    min-height: 15px;
+}
+.grid-container-dash .information .top-content .details{
+    font-size: 12px;
+    min-height: 105px;
+}
+.grid-container-dash.lmd .information .title {
+    font-size: 20px;
+    font-weight: bold;
+    min-height:60px;
+}
+.grid-container-dash.lmd .information .title a,
+.grid-container.lmd .information .title a:hover{
+    color: #337ab7;
 }

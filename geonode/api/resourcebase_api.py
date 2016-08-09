@@ -67,7 +67,9 @@ class CommonMetaApi:
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
-                 'resource_type':ALL
+                 'resource_type':ALL,
+                 'docked': ALL,
+                 'favorite': ALL
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
@@ -466,6 +468,8 @@ class CommonModelApi(ModelResource):
             'detail_url',
             'rating',
             'featured',
+            'docked',
+            'favorite'
         ]
 
         if isinstance(

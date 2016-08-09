@@ -550,13 +550,13 @@ class MakeDocked(TypeFilteredResource):
             if user.is_authenticated():
                 status = json.loads(request.body).get('status')
                 resource_id = json.loads(request.body).get('resource_id')
-
                 try:
                     resource = ResourceBase.objects.get(pk=resource_id)
                 except ResourceBase.DoesNotExist:
                     status_code = 404
                     out['errors'] = 'resource does not exist'
                 else:
+                    resource.favorite = status
                     resource.docked = status
                     resource.save()
                     out['success'] = 'True'
