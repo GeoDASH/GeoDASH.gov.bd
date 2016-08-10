@@ -435,8 +435,8 @@ def new_map_json(request):
             )
         data = json.loads(request.body)
         title = data['about']['title']
-        category_id = data['about']['category']
-        organization_id = data['about']['organization']
+        category_id = int(data['about']['category'])
+        organization_id = int(data['about']['organization'])
         group = GroupProfile.objects.get(id=organization_id)
 
 
