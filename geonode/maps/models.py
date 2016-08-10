@@ -609,3 +609,13 @@ class MapAuditActivity(models.Model):
                                blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+
+class WmsServer(models.Model):
+    """
+    This model is for adding new wms server
+    """
+
+    ptype = models.CharField(max_length=50)
+    url = models.URLField(max_length=500)
+    title = models.CharField(max_length=100)

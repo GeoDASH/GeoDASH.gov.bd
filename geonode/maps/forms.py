@@ -20,11 +20,14 @@
 
 import autocomplete_light
 
+from django.forms import ModelForm
+
 from geonode.maps.models import Map
 
 autocomplete_light.autodiscover() # flake8: noqa
 
 from geonode.base.forms import ResourceBaseForm
+from geonode.maps.models import WmsServer
 
 
 class MapForm(ResourceBaseForm):
@@ -40,3 +43,9 @@ class MapForm(ResourceBaseForm):
             'group',
             'last_auditor'
         )
+
+
+class WmsServerForm(ModelForm):
+    class Meta:
+        model = WmsServer
+        fields = ('title', 'ptype', 'url',)

@@ -53,6 +53,7 @@ from geonode.layers.utils import file_upload
 from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
 from geonode.settings import MEDIA_ROOT
+from geonode.maps.models import WmsServer
 
 from taggit.models import Tag
 from django.core.serializers.json import DjangoJSONEncoder
@@ -645,3 +646,17 @@ class OsmOgrInfo(TypeFilteredResource):
                     os.remove(file_path)
                     return HttpResponse(json.dumps(out), content_type='application/json', status=200)
 
+
+
+class LayerSource(TypeFilteredResource):
+    """
+    api for retrieving server info for layer source
+    """
+
+    class Meta:
+        resource_name = 'layersource'
+        allowed_methods = ['get']
+        queryset = WmsServer.objects.all()
+
+    # def get_object_list(self, request):
+    #         return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+     {% for data in object_list %}
+                        <tr class="gradeX">
+                            <td>{{ data.id }}</td>
+                            <td class="hidden-xs">{{ data.ptype }}</td>
+                            <td class="hidden-xs">{{ data.url }}</td>
+                            <td class="hidden-xs">{{ data.title }}</td>
+
+                            <td class="hidden-xs"><a href="{% url 'wms-server-update' data.id %}"><i
+                                    class="fa fa-pencil-square-o"></i></a>&nbsp;<a
+                                    href="{% url 'wms-server-delete'  data.id %}"><i
+                                    class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                    {% endfor %}
+</body>
+</html>

@@ -21,6 +21,8 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
+from geonode.maps.views import WmsServerList, WmsServerCreate, WmsServerUpdate, WmsServerDelete
+
 js_info_dict = {
     'packages': ('geonode.maps',),
 }
@@ -57,4 +59,10 @@ urlpatterns = patterns('geonode.maps.views',
                        url(r'^(?P<map_pk>[0-9]+)/publish$', 'map_publish', name='map-publish'),
                        url(r'^(?P<map_pk>[0-9]+)/approve$', 'map_approve', name='map-approve'),
                        url(r'^(?P<map_pk>[0-9]+)/deny$', 'map_deny', name='map-deny'),
+
+                       # crud for layer source server
+                       url(r'^wms/serverlist$', WmsServerList.as_view(), name='wms-server-list'),
+                       url(r'^wms/server/create$', WmsServerCreate.as_view(), name='wms-server-create'),
+                       url(r'^wms/server/(?P<server_pk>[0-9]+)$', WmsServerUpdate.as_view(), name='wms-server-update'),
+                       url(r'^wms/server/(?P<server_pk>[0-9]+)/delete$', WmsServerDelete.as_view(), name='wms-server-delete'),
                        )

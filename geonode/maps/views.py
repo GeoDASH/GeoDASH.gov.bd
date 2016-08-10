@@ -40,6 +40,8 @@ from django.utils.html import strip_tags
 from django.db.models import F
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from notify.signals import notify
 
@@ -64,6 +66,8 @@ from geonode.utils import num_encode, num_decode
 from geonode.utils import build_social_links
 from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
 from geonode.groups.models import GroupProfile
+from geonode.maps.models import WmsServer
+from geonode.maps.forms import WmsServerForm
 
 if 'geonode.geoserver' in settings.INSTALLED_APPS:
     # FIXME: The post service providing the map_status object
@@ -1056,3 +1060,46 @@ def map_delete(request, map_pk):
             return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
             return HttpResponseRedirect(reverse('member-workspace-map'))
+
+
+class WmsServerList(ListView):
+
+    template_name = 'wms_server/wms_server_list.html'
+    model = WmsServer
+
+    def get_queryset(self):
+        return WmsServer.objects.all()
+
+
+class WmsServerCreate(CreateView):
+
+    template_name = 'wms_server/wms_server_create.html'
+    model = WmsServer
+    form_class = WmsServerForm
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+
+class WmsServerUpdate(UpdateView):
+    template_name = 'wms_server/wms_server_create.html'
+    model = WmsServer
+    form_class = WmsServerForm
+
+    def get_object(self):
+        return WmsServer.objects.get(pk=self.kwargs['server_pk'])
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+
+class WmsServerDelete(DeleteView):
+    template_name = 'wms_server/wms_server_delete.html'
+    model = WmsServer
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+    def get_object(self):
+        return WmsServer.objects.get(pk=self.kwargs['server_pk'])
+
