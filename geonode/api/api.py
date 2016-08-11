@@ -557,7 +557,6 @@ class MakeDocked(TypeFilteredResource):
                     status_code = 404
                     out['errors'] = 'resource does not exist'
                 else:
-                    resource.favorite = status
                     resource.docked = status
                     resource.save()
                     out['success'] = 'True'
@@ -589,6 +588,7 @@ class MakeFavorite(TypeFilteredResource):
                 out['errors'] = 'resource does not exist'
             else:
                 resource.docked = status
+                resource.favorite = status
                 resource.save()
                 out['success'] = 'True'
                 status_code = 200
