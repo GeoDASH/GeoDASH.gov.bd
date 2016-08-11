@@ -445,7 +445,7 @@
 #gd-featurehighlight{
     background:#f7f7f7;
     padding-bottom:0px;
-    min-height:500px;
+    min-height:450px;
 }
 #gd-featurehighlight .header-title{
     color:#6e6b6b;
@@ -500,7 +500,7 @@
     background:#21d0e8;  /*2c3e50*/
     padding-top:20px;
     /*padding-bottom:50px;*/
-    min-height:500px;
+    min-height:450px;
 }
 .gd-interprobability-main{
     border:none;
@@ -562,7 +562,7 @@
 #gd-makepretty{
     background:#f7f7f7;
     padding-top:30px;
-    min-height:500px;
+    min-height:450px;
 }
 .gd-makepretty-main{
     border:none;
@@ -594,6 +594,7 @@
     color:#6e6b6b;
     text-align:left;
     font-size:13px;
+    padding-top:55px;
 }
 #gd-makepretty-left{
     min-width:452px;
@@ -687,7 +688,7 @@
     color:#fff;
     text-transform: uppercase;
     font-size:30px;
-    margin-top: 20px;
+    margin-top: 55px;
     text-align: left;
     font-family:Titillium Web;
 }
@@ -1003,6 +1004,7 @@
     /*box-shadow: 0 0 5px 0 rgba(224, 217, 224, 1);*/
     margin-top: 20px;
     padding: 10px;
+    margin-left:180px;
 }
 #gd-whatoffer .termsuseandcondition .gd-offer-txt{
     padding-right:10px;
@@ -1015,7 +1017,7 @@
 #gd-3dsection{
     background:#21d0e8;
     padding-top:30px;
-    min-height:500px;
+    min-height:450px;
 }
 .gd-3dsection-main{
     border:none;
