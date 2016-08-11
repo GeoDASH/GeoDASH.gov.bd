@@ -606,11 +606,13 @@
 }
 @media (max-width: 767px) {
   #gd-makepretty-left img{
-    max-width:330px;
     border:none;
+    float:right;
+    padding-left:120px;
   }
 
  }
+
 .gd-makepretty-main .title{
     color:#6e6b6b;
     text-transform: uppercase;
@@ -981,6 +983,7 @@
   }
 
  }
+
 #gd-whatoffer-left{
     /*padding: 20px;*/
     text-align:left;
@@ -1006,6 +1009,16 @@
     padding: 10px;
     margin-left:180px;
 }
+
+ @media (max-width: 767px) {
+  #gd-whatoffer #help-content-offer.gd-content-body-offer{
+    margin-top: 20px;
+    padding: 10px;
+    margin-left:0px;
+  }
+
+ }
+
 #gd-whatoffer .termsuseandcondition .gd-offer-txt{
     padding-right:10px;
     color:#2ecc71; /*#3896e2*/

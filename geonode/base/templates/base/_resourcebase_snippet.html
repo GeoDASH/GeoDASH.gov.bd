@@ -174,10 +174,10 @@
                           <div class="profile-items text-center">
                               <ul class="list-inline">
                                   {% if user.is_superuser %}
-                                  <li ng-if="item.featured" class="col-md-6" >
+                                  <li ng-if="item.featured" class="col-md-6">
                                       <div>
                                       {% verbatim %}
-                                      <button class="btn col-md-12 btn-gd-primary" href="" style="background:#d0d0d0;border:none;color:#000;"
+                                      <button class="btn col-md-12 btn-gd-primary" style="background:#d0d0d0;border:none;color:#000;"
                                          data-layerID="{{item.id}}" data-statusID="false" ng-click="featuredFunction(item.id,false);" >
                                          <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
                                           Unfeatured
@@ -185,8 +185,8 @@
                                       <div>
                                       {% endverbatim %}
                                   </li>
-                                  <li ng-if="!item.featured" class="col-md-6">
-                                      <div>
+                                  <li ng-if="!item.featured" class="col-md-6" id="featured_chng">
+                                      <div >
                                       {% verbatim %}
                                       <button class="btn col-md-12 btn-gd-primary" ng-click="featuredFunction(item.id,true);" data-layerID="{{item.id}}" data-statusID="true">
                                          <i class="fa fa-heart-o"></i>

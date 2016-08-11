@@ -138,3 +138,9 @@ $(document).ready(function() {
             $(".dash-load").load(location.href+" .dash-load>*","");
         });
     });
+    $(document).ready(function() {
+        $('#featured_chng').click(function() {
+            alert("aa");
+            //$("#testfeatured12").load(location.href+" #testfeatured12>*","");
+        });
+    });
