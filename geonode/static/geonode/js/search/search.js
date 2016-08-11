@@ -814,7 +814,8 @@
             var data_statusID = datastatusID;
             //alert(data_statusID);
             //alert("Are you sure make this as featured layer ?");
-                var url = "http://localhost:8000/api/make-featured/";
+                //var url = "http://localhost:8000/api/make-featured/";
+                var url = "http://localhost/api/make-featured/";
                 //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}";
                    var qID = data_layerID;
                    var qsID = data_statusID;
@@ -849,7 +850,8 @@
             var data_statusID = datastatusID;
             //alert(data_statusID);
             //alert("Are you sure make this as favorite ?");
-                var url = "http://localhost:8000/api/makefavorite/";
+                //var url = "http://localhost:8000/api/makefavorite/";
+                var url = "http://localhost/api/makefavorite/";
                 //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}";
                    var qID = data_layerID;
                    var qsID = data_statusID;
