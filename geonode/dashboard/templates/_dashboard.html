@@ -615,8 +615,11 @@
                 success: function(jsondata) {
                     console.log("success");
                     //console.log(JSON.stringify(jsondata));
+                    //location.reload(true);
 
-                    location.reload(true);
+                    var data = eval(jsondata.objects);
+                        window.location.href = data;
+                        window.location.reload();
 
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
