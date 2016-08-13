@@ -507,16 +507,16 @@ class MakeFeatured(TypeFilteredResource):
             user = request.user
             if user.is_authenticated() and user.is_superuser:
                 status = json.loads(request.body).get('status')
-                layer_id = json.loads(request.body).get('layer_id')
+                resource_id = json.loads(request.body).get('resource_id')
 
                 try:
-                    layer = Layer.objects.get(pk=layer_id)
-                except Layer.DoesNotExist:
+                    resource = ResourceBase.objects.get(pk=resource_id)
+                except ResourceBase.DoesNotExist:
                     status_code = 404
                     out['errors'] = 'Layer does not exist'
                 else:
-                    layer.featured = status
-                    layer.save()
+                    resource.featured = status
+                    resource.save()
                     out['success'] = 'True'
                     status_code = 200
             else:
