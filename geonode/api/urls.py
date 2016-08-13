@@ -22,7 +22,7 @@ from tastypie.api import Api
 
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
-        MakeDocked, MakeFavorite, OsmOgrInfo, LayerSource
+        MakeDocked, MakeFavorite, OsmOgrInfo, LayerSource, MakeFavoriteGroup, MakeDockedGroup
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource
@@ -50,4 +50,6 @@ api.register(MakeDocked())
 api.register(MakeFavorite())
 api.register(OsmOgrInfo())
 api.register(LayerSource())
+api.register(MakeFavoriteGroup())
+api.register(MakeDockedGroup())
 

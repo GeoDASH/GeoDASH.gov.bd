@@ -576,27 +576,27 @@ class MakeFavorite(TypeFilteredResource):
     def dispatch(self, request_type, request, **kwargs):
         if request.method == 'POST':
             out = {'success': False}
-        user = request.user
-        if user.is_authenticated():
-            status = json.loads(request.body).get('status')
-            resource_id = json.loads(request.body).get('resource_id')
+            user = request.user
+            if user.is_authenticated():
+                status = json.loads(request.body).get('status')
+                resource_id = json.loads(request.body).get('resource_id')
 
-            try:
-                resource = ResourceBase.objects.get(pk=resource_id)
-            except ResourceBase.DoesNotExist:
-                status_code = 404
-                out['errors'] = 'resource does not exist'
+                try:
+                    resource = ResourceBase.objects.get(pk=resource_id)
+                except ResourceBase.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'resource does not exist'
+                else:
+                    resource.docked = status
+                    resource.favorite = status
+                    resource.save()
+                    out['success'] = 'True'
+                    status_code = 200
             else:
-                resource.docked = status
-                resource.favorite = status
-                resource.save()
-                out['success'] = 'True'
-                status_code = 200
-        else:
-            out['error'] = 'Access denied'
-            out['success'] = False
-            status_code = 400
-        return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
 
 class OsmOgrInfo(TypeFilteredResource):
@@ -658,5 +658,63 @@ class LayerSource(TypeFilteredResource):
         allowed_methods = ['get']
         queryset = WmsServer.objects.all()
 
-    # def get_object_list(self, request):
-    #         return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)
+
+class MakeFavoriteGroup(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'makefavoritegroup'
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+            user = request.user
+            if user.is_authenticated():
+                status = json.loads(request.body).get('status')
+                group_id = json.loads(request.body).get('group_id')
+
+                try:
+                    group = GroupProfile.objects.get(pk=group_id)
+                except GroupProfile.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'Organization does not exist'
+                else:
+                    group.docked = status
+                    group.favorite = status
+                    group.save()
+                    out['success'] = 'True'
+                    status_code = 200
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+class MakeDockedGroup(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'dockitgroup'
+        allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+            user = request.user
+            if user.is_authenticated():
+                status = json.loads(request.body).get('status')
+                group_id = json.loads(request.body).get('group_id')
+                try:
+                    group = GroupProfile.objects.get(pk=group_id)
+                except GroupProfile.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'group does not exist'
+                else:
+                    group.docked = status
+                    group.save()
+                    out['success'] = 'True'
+                    status_code = 200
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)

@@ -55,6 +55,10 @@ class GroupProfile(models.Model):
     slug = models.SlugField(unique=True)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
+    favorite = models.BooleanField(_("Favorite"), default=False,
+                                   help_text=_('Should this organization be in favorite list ?'))
+    docked = models.BooleanField(_("Docked"), default=False,
+                                   help_text=_('Should this organization be docked in home page?'))
     email = models.EmailField(
         _('Email'),
         null=True,
