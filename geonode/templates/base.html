@@ -212,12 +212,17 @@
                             </a>
                         </li>
                         <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
-                            <div class="notifications">
+                            <div class="notifications" style="height:200px;overflow:auto;">
                                 <ul class="text-center">
                                     {% load notification_tags %}
                                     {% include_notify_js_variables %}
                                     {% user_notifications %}
                                 </ul>
+                            </div>
+                            <div style="padding:10px 0px 0px 20px;z-index:100">
+                                <a class="btn btn-gd-primary icon-btn-color" href="{% url "notifications_all" %}" target="_self">
+                                        Show All Notifications
+                                </a>
                             </div>
                         </div>
                         <li class="notification">
