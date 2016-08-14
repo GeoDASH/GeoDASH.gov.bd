@@ -812,32 +812,21 @@
 
             var data_layerID = datalayerID;
             var data_statusID = datastatusID;
-            //alert(data_statusID);
-            //alert("Are you sure make this as featured layer ?");
-                //var url = "http://localhost:8000/api/make-featured/";
-                var url = "http://116.212.105.8/api/make-featured/";
-
-                //var url = "http://localhost:8000/api/make-featured/";
-                //var url = "http://localhost/api/make-featured/";
-                //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}";
+                var JS_STATIC_URL = "../api/make-featured/";
                    var qID = data_layerID;
                    var qsID = data_statusID;
                     var data = JSON.stringify({
-                    "layer_id": qID,
+                    "resource_id": qID,
                     "status": qsID
                 });
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: url,
+                    url: JS_STATIC_URL,
                     data: data,
                     dataType: "json",
                     success: function(jsondata) {
                         console.log("success");
-                        //console.log(JSON.stringify(jsondata));
-                        //location.reload(true);
-                        //$("#featured_chng").load(jsondata);
-                        //window.location = window.location.href;
                         var data = eval(jsondata.objects);
                         $window.location.href = data;
                         $window.location.reload();
@@ -856,13 +845,7 @@
 
             var data_layerID = datalayerID;
             var data_statusID = datastatusID;
-            //alert(data_statusID);
-            //alert("Are you sure make this as favorite ?");
-                //var url = "http://localhost:8000/api/makefavorite/";
-                var url = "http://116.212.105.8/api/makefavorite/";
-                //var url = "http://localhost:8000/api/makefavorite/";
-                //var url = "http://localhost/api/makefavorite/";
-                //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}";
+                var JS_STATIC_URL = "../api/makefavorite/";
                    var qID = data_layerID;
                    var qsID = data_statusID;
                     var data = JSON.stringify({
@@ -872,14 +855,43 @@
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: url,
+                    url: JS_STATIC_URL,
                     data: data,
                     dataType: "json",
                     success: function(jsondata) {
                         console.log("success");
-                        //console.log(JSON.stringify(jsondata));
-                        //location.reload(true);
-                        //$('#thisdiv').load(document.URL +  ' #thisdiv');
+                        var data = eval(jsondata.objects);
+                        $window.location.href = data;
+                        $window.location.reload();
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
+        return false;
+    }
+    // Organization add favorite section
+
+    $scope.favouriteGroup = function(datalayerID,datastatusID){
+
+            var data_layerID = datalayerID;
+            var data_statusID = datastatusID;
+                var JS_STATIC_URL = "../api/makefavoritegroup/";
+                   var qID = data_layerID;
+                   var qsID = data_statusID;
+                    var data = JSON.stringify({
+                    "group_id": qID,
+                    "status": qsID
+                });
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: JS_STATIC_URL,
+                    data: data,
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
                         var data = eval(jsondata.objects);
                         $window.location.href = data;
                         $window.location.reload();

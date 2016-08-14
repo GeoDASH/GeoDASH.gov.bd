@@ -86,42 +86,38 @@
                             </div>
                         </div>
                     </div>
-                    {% endverbatim %}
-                    <div>
-                        <div class="bottom-content">
-                            <div class="row">
-                                <div class="profile-items text-center">
-                                    <ul class="list-inline">
-                                        <li>
-                                            <a href="{{ profile.profile_detail_url }}?content=layers" >
-                                                <span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;">
-                                                    <i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>
-                                                    <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>
-                                                    <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>
-                                                    <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>
-                                                    <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>
-                                                </span>
-                                                {{ profile.layers_count }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ profile.profile_detail_url }}?content=documents">
-                                                <i class="fa fa-file-text-o"></i>
-                                                {{ profile.documents_count }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ profile.profile_detail_url }}?content=maps">
-                                                <i class="fa fa-map-marker"></i>
-                                                {{ profile.maps_count }}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <div class="bottom-content">
+                        <div class="row">
+                            <div class="profile-items text-center">
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="{{ profile.profile_detail_url }}?content=layers" >
+                                            <span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;">
+                                                <i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>
+                                                <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>
+                                                <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>
+                                                <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>
+                                                <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>
+                                            </span>
+                                            {{ profile.layers_count }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ profile.profile_detail_url }}?content=documents">
+                                            <i class="fa fa-file-text-o"></i>
+                                            {{ profile.documents_count }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ profile.profile_detail_url }}?content=maps">
+                                            <i class="fa fa-map-marker"></i>
+                                            {{ profile.maps_count }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    {% verbatim %}
                 </div>
             </div>
         </article>

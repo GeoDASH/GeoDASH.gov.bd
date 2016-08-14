@@ -256,11 +256,11 @@
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .anchor-link {
     text-align: center;
     margin-top: 10px; 
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .anchor-link a{
-    color: #00aeef;
-    font-size: 12px;
+    color: #000eef; /*00aeef*/
+    font-size: 15px;
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .anchor-link a:hover{
     color: #00aeef;
@@ -1007,7 +1007,7 @@
     /*box-shadow: 0 0 5px 0 rgba(224, 217, 224, 1);*/
     margin-top: 20px;
     padding: 10px;
-    margin-left:180px;
+    margin-left:170px;
 }
 
  @media (max-width: 767px) {

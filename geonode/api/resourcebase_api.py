@@ -469,7 +469,8 @@ class CommonModelApi(ModelResource):
             'rating',
             'featured',
             'docked',
-            'favorite'
+            'favorite',
+            'resource_type'
         ]
 
         if isinstance(

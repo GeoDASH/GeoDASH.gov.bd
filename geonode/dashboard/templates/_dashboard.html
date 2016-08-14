@@ -28,7 +28,8 @@
                       </div>
                       <div class="col-md-6">
                           <div class="text-right" style="font-size:20px;">
-                              {% trans "24 Favorites" %}
+                              <span id="total_layers-fav"></span>
+                              {% trans " Favorites" %}
                           </div>
                       </div>
                   </div>
@@ -52,49 +53,43 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div class="carousel-inner " role="listbox">
-                                                      <div class="item active">
-                                                        <article class="gd-featurd-maps-container-dash" id="dash-layer-fav">
-                                                            <!--
-                                                                <div class="grid-container-dash lmd" style="background:none;">
-                                                                    <div class="avater">
-                                                                      <div class="avater-img">
-                                                                        <a class="avater-img-mid" href="#" >
-                                                                            <img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>
+                                                  <div class="carousel-inner " role="listbox" id="dash-layer-fav">
+                                                      <!--<div class="item active">
+                                                            <div class="grid-container-dash lmd" style="background:none;">
+                                                                <div class="avater">
+                                                                  <div class="avater-img">
+                                                                    <a class="avater-img-mid" href="#" >
+                                                                        <img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>
+                                                                    </a>
+                                                                  </div>
+                                                                  <div class="checkbox-overlay">
+                                                                      <div class="checkbox">
+                                                                          <label>
+                                                                              <span class="fa-stack fa-lg" >
+                                                                                  <a href="#" title="Undock" id="undock"><i class="fa fa-times fa-stack-1x"></i></a>
+                                                                              </span>
+                                                                          </label>
+                                                                      </div>
+                                                                  </div>
+                                                                </div>
+                                                                <div class="contents">
+                                                                    <div class="title">
+                                                                        {{ item.id }}.120
+                                                                        <a href="{{ item.detail_url }}" title="{{ item.title }}">
+                                                                              {{ item.title }}
                                                                         </a>
-                                                                      </div>
-                                                                      <div class="checkbox-overlay">
-                                                                          <div class="checkbox">
-                                                                              <label>
-                                                                                  <span class="fa-stack fa-lg" >
-                                                                                      <a href="#" title="Undock" id="undock"><i class="fa fa-times fa-stack-1x"></i></a>
-                                                                                  </span>
-                                                                              </label>
-                                                                          </div>
-                                                                      </div>
-                                                                    </div>
-                                                                    <div class="contents">
-                                                                        <div class="title">
-                                                                            {{ item.id }}.120
-                                                                            <a href="{{ item.detail_url }}" title="{{ item.title }}">
-                                                                                  {{ item.title }}
-                                                                            </a>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                -->
-                                                        </article>
+                                                            </div>
                                                       </div>
-                                                     <div class="item">
-
-                                                      </div>
+                                                     <div class="item"></div>-->
                                                   </div>
                                                   <!-- Controls -->
                                                   <a class="left-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="prev">
-                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" ></span>
                                                   </a>
                                                   <a class="right-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="next">
-                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"  ></span>
                                                   </a>
                                                 </div>
                                             </div>
@@ -120,7 +115,8 @@
                       </div>
                       <div class="col-md-6">
                           <div class="text-right" style="font-size:20px;">
-                              {% trans "20 Favorites" %}
+                              <span id="total_maps-fav"></span>
+                              {% trans " Favorites" %}
                           </div>
                       </div>
                   </div>
@@ -144,43 +140,41 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div class="carousel-inner " role="listbox">
-                                                      <div class="item active">
-                                                        <article class="gd-featurd-maps-container-dash" id="dash-maps-fav">
-                                                            <!--
-                                                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                                                <div class="gd-featurd-maps-container-dash" style="background:#fff;">
-                                                                    <div class="grid-container-dash lmd" style="background:none;">
-                                                                        <div class="avater">
-                                                                          <div class="avater-img">
-                                                                            <a class="avater-img-mid" href="#" >
-                                                                                <img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>
-                                                                            </a>
-                                                                          </div>
-                                                                          <div class="checkbox-overlay">
-                                                                              <div class="checkbox">
-                                                                                  <label>
-                                                                                      <span class="fa-stack fa-lg" >
-                                                                                          <a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>
-                                                                                      </span>
-                                                                                  </label>
-                                                                              </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <div class="contents">
-                                                                            <div class="title">
-                                                                                <a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            -->
-                                                        </article>
-                                                      </div>
-                                                      <div class="item">
-
-                                                      </div>
+                                                  <div class="carousel-inner " role="listbox" id="dash-maps-fav">
+                                                      <!--<div class="item active">-->
+                                                        <!--<article class="gd-featurd-maps-container-dash" >-->
+                                                            <!--<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">-->
+                                                                <!--<div class="gd-featurd-maps-container-dash" style="background:#fff;">-->
+                                                                    <!--<div class="grid-container-dash lmd" style="background:none;">-->
+                                                                        <!--<div class="avater">-->
+                                                                          <!--<div class="avater-img">-->
+                                                                            <!--<a class="avater-img-mid" href="#" >-->
+                                                                                <!--<img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>-->
+                                                                            <!--</a>-->
+                                                                          <!--</div>-->
+                                                                          <!--<div class="checkbox-overlay">-->
+                                                                              <!--<div class="checkbox">-->
+                                                                                  <!--<label>-->
+                                                                                      <!--<span class="fa-stack fa-lg" >-->
+                                                                                          <!--<a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>-->
+                                                                                      <!--</span>-->
+                                                                                  <!--</label>-->
+                                                                              <!--</div>-->
+                                                                          <!--</div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="contents">-->
+                                                                            <!--<div class="title">-->
+                                                                                <!--<a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!---->
+                                                        <!--</article>-->
+                                                      <!--</div>-->
+                                                      <!--<div class="item">-->
+                                                      <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
                                                   <a class="left-panel carousel-control" href="#carousel-home-dash" role="button" data-slide="prev">
@@ -213,7 +207,8 @@
                       </div>
                       <div class="col-md-6">
                           <div class="text-right" style="font-size:20px;">
-                              {% trans "12 Favorites" %}
+                              <span id="total_documents_fav"></span>
+                              {% trans " Favorites" %}
                           </div>
                       </div>
                   </div>
@@ -238,43 +233,43 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div class="carousel-inner " role="listbox">
-                                                      <div class="item active">
-                                                        <article class="gd-featurd-maps-container-dash" id="dash-documents-fav">
-                                                            <!--
-                                                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                                                <div class="gd-featurd-maps-container-dash">
-                                                                    <div class="grid-container-dash lmd" style="background:none;">
-                                                                        <div class="avater">
-                                                                          <div class="avater-img">
-                                                                            <a class="avater-img-mid" href="#" >
-                                                                                <img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>
-                                                                            </a>
-                                                                          </div>
-                                                                          <div class="checkbox-overlay">
-                                                                              <div class="checkbox">
-                                                                                  <label>
-                                                                                      <span class="fa-stack fa-lg" >
-                                                                                          <a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>
-                                                                                      </span>
-                                                                                  </label>
-                                                                              </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <div class="contents">
-                                                                            <div class="title">
-                                                                                <a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            -->
-                                                        </article>
-                                                      </div>
-                                                      <div class="item">
+                                                  <div class="carousel-inner " role="listbox" id="dash-documents-fav">
+                                                      <!--<div class="item active">-->
+                                                        <!--<article class="gd-featurd-maps-container-dash" >-->
+                                                            <!--&lt;!&ndash;-->
+                                                            <!--<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">-->
+                                                                <!--<div class="gd-featurd-maps-container-dash">-->
+                                                                    <!--<div class="grid-container-dash lmd" style="background:none;">-->
+                                                                        <!--<div class="avater">-->
+                                                                          <!--<div class="avater-img">-->
+                                                                            <!--<a class="avater-img-mid" href="#" >-->
+                                                                                <!--<img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>-->
+                                                                            <!--</a>-->
+                                                                          <!--</div>-->
+                                                                          <!--<div class="checkbox-overlay">-->
+                                                                              <!--<div class="checkbox">-->
+                                                                                  <!--<label>-->
+                                                                                      <!--<span class="fa-stack fa-lg" >-->
+                                                                                          <!--<a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>-->
+                                                                                      <!--</span>-->
+                                                                                  <!--</label>-->
+                                                                              <!--</div>-->
+                                                                          <!--</div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="contents">-->
+                                                                            <!--<div class="title">-->
+                                                                                <!--<a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--&ndash;&gt;-->
+                                                        <!--</article>-->
+                                                      <!--</div>-->
+                                                      <!--<div class="item">-->
 
-                                                      </div>
+                                                      <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
                                                   <a class="left-panel carousel-control" href="#carousel-home-dash-doc" role="button" data-slide="prev">
@@ -307,7 +302,8 @@
                       </div>
                       <div class="col-md-6">
                           <div class="text-right" style="font-size:20px;">
-                              {% trans "8 Favorites" %}
+                              <span id="total_org-fav"></span>
+                              {% trans " Favorites" %}
                           </div>
                       </div>
                   </div>
@@ -332,43 +328,43 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div class="carousel-inner " role="listbox">
-                                                      <div class="item active">
-                                                        <article class="gd-featurd-maps-container-dash" id="dash-org-fav">
-                                                            <!--
-                                                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                                                <div class="gd-featurd-maps-container-dash" style="background:#fff;">
-                                                                    <div class="grid-container-dash lmd" style="background:#fff;">
-                                                                        <div class="avater">
-                                                                          <div class="avater-img">
-                                                                            <a class="avater-img-mid" href="#" >
-                                                                                <img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>
-                                                                            </a>
-                                                                          </div>
-                                                                          <div class="checkbox-overlay">
-                                                                              <div class="checkbox">
-                                                                                  <label>
-                                                                                      <span class="fa-stack fa-lg" >
-                                                                                          <a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>
-                                                                                      </span>
-                                                                                  </label>
-                                                                              </div>
-                                                                          </div>
-                                                                        </div>
-                                                                        <div class="contents">
-                                                                            <div class="title">
-                                                                                <a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            -->
-                                                        </article>
-                                                      </div>
-                                                      <div class="item">
+                                                  <div class="carousel-inner " role="listbox" id="dash-org-fav">
+                                                      <!--<div class="item active">-->
+                                                        <!--<article class="gd-featurd-maps-container-dash" >-->
+                                                            <!--&lt;!&ndash;-->
+                                                            <!--<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">-->
+                                                                <!--<div class="gd-featurd-maps-container-dash" style="background:#fff;">-->
+                                                                    <!--<div class="grid-container-dash lmd" style="background:#fff;">-->
+                                                                        <!--<div class="avater">-->
+                                                                          <!--<div class="avater-img">-->
+                                                                            <!--<a class="avater-img-mid" href="#" >-->
+                                                                                <!--<img src="{{ STATIC_URL }}geonode/images/maps/maps7.png"/>-->
+                                                                            <!--</a>-->
+                                                                          <!--</div>-->
+                                                                          <!--<div class="checkbox-overlay">-->
+                                                                              <!--<div class="checkbox">-->
+                                                                                  <!--<label>-->
+                                                                                      <!--<span class="fa-stack fa-lg" >-->
+                                                                                          <!--<a href="#" title="Undock"><i class="fa fa-times fa-stack-1x"></i></a>-->
+                                                                                      <!--</span>-->
+                                                                                  <!--</label>-->
+                                                                              <!--</div>-->
+                                                                          <!--</div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="contents">-->
+                                                                            <!--<div class="title">-->
+                                                                                <!--<a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--&ndash;&gt;-->
+                                                        <!--</article>-->
+                                                      <!--</div>-->
+                                                      <!--<div class="item">-->
 
-                                                      </div>
+                                                      <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
                                                   <a class="left-panel carousel-control" href="#carousel-home-dash-org" role="button" data-slide="prev">
@@ -406,42 +402,63 @@
         success: function(jsondata){
             //console.log(JSON.stringify(jsondata));
             var data = eval(jsondata.objects);
+            var t_count = '';
+                t_count = data.length;
+            $("#total_layers-fav").text(t_count);
+            var output = '';
             $.each(data, function(i, item) {
-            //var count=Object.keys(item).length;
-                //alert(count);
-                var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
-                    output +='<div class="avater">';
-                    output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
-                                if(item.thumbnail_url)
-                    output +='<img src="'+ item.thumbnail_url +'" alt="'+ item.title +'" class="group-logo" />';
-                                else{
-                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="'+ item.title +'" class="group-logo" />';
-                                }
-                    output +='</a>';
-                    output +='</div>';
-                    output +='<div class="checkbox-overlay">';
-                    output +='<div class="checkbox">';
-                    output +='<label>';
-                    output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
-                    output +='</span>';
-                    output +='</label>';
-                    output +='</div>';
-                    output +='</div>';
-                    output +='</div>';
-                    output +='<div class="contents">';
-                    output +='<div class="title">';
-                    output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
-                    output +='</a>';
-                    output +='</div>';
-                    output +='</div>';
-                    output +='</div></div>';
-                $("#dash-layer-fav").append(output);
+                //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
+                output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                output +='<div class="avater">';
+                output +='<div class="avater-img">';
+                output +='<a class="avater-img-mid" href="#" >';
+                            if(item.thumbnail_url)
+                output +='<img src="'+ item.thumbnail_url +'" alt="'+ item.title +'" class="group-logo" />';
+                            else{
+                output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="'+ item.title +'" class="group-logo" />';
+                            }
+                output +='</a>';
+                output +='</div>';
+                output +='<div class="checkbox-overlay">';
+                output +='<div class="checkbox">';
+                output +='<label>';
+                output +='<span class="fa-stack fa-lg" >';
+                output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                output +='</span>';
+                output +='</label>';
+                output +='</div>';
+                output +='</div>';
+                output +='</div>';
+                output +='<div class="contents">';
+                output +='<div class="title">';
+                output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
+                output +=''+ item.title  +'';
+                output +='</a>';
+                output +='</div>';
+                output +='</div>';
+                output +='</div></div>';
+                if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
            });
+           $("#dash-layer-fav").append(output);
         }});
     });
+
+    function layerslice123(t_count){
+        //var make_favoriteStatus = undockStatus;
+        alert(t_count);
+    }
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
@@ -456,10 +473,21 @@
         success: function(jsondata){
             //console.log(JSON.stringify(jsondata));
             var data = eval(jsondata.objects);
+            var t_count = data.length;
+            $("#total_maps-fav").text(t_count);
+            var output = '';
             $.each(data, function(i, item) {
-            //var count=Object.keys(item).length;
-                //alert(item.thumbnail_url);
-                var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<a class="avater-img-mid" href="#" >';
@@ -488,8 +516,12 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                $("#dash-maps-fav").append(output);
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
            });
+           $("#dash-maps-fav").append(output);
         }});
     });
   </script>
@@ -506,10 +538,21 @@
         success: function(jsondata){
             //console.log(JSON.stringify(jsondata));
             var data = eval(jsondata.objects);
+            var t_count = data.length;
+            $("#total_documents_fav").text(t_count);
+            var output = '';
             $.each(data, function(i, item) {
-            //var count=Object.keys(item).length;
-                //alert(item.thumbnail_url);
-                var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<a class="avater-img-mid" href="#" >';
@@ -538,8 +581,12 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                $("#dash-documents-fav").append(output);
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
            });
+           $("#dash-documents-fav").append(output);
         }});
     });
   </script>
@@ -556,15 +603,26 @@
         success: function(jsondata){
             //console.log(JSON.stringify(jsondata));
             var data = eval(jsondata.objects);
+            var t_count = data.length;
+            $("#total_org-fav").text(t_count);
+            var output = '';
             $.each(data, function(i, item) {
-            //var count=Object.keys(item).length;
-                //alert(item.thumbnail_url);
-                var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<a class="avater-img-mid" href="#" >';
-                                if(item.thumbnail_url)
-                    output +='<img src="'+ item.thumbnail_url +'" alt="" class="group-logo" />';
+                                if(item.logo)
+                    output +='<img src="'+ item.logo +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
@@ -574,7 +632,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -588,8 +646,12 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                $("#dash-org-fav").append(output);
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
            });
+           $("#dash-org-fav").append(output);
         }});
     });
   </script>
@@ -604,6 +666,41 @@
                var makefavoritesID = make_favoriteStatus;
                 var data = JSON.stringify({
                 "resource_id": makefavoriteID,
+                "status": makefavoritesID
+            });
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(jsondata) {
+                    console.log("success");
+                    //console.log(JSON.stringify(jsondata));
+                    //location.reload(true);
+
+                    var data = eval(jsondata.objects);
+                        window.location.href = data;
+                        window.location.reload();
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+             });
+        }
+    </script>
+    <script type="text/javascript" language="JavaScript">
+
+        function udockorg(undockID,undockStatus){
+        var make_favoriteStatus = undockStatus;
+        //alert(undockID);
+        //alert("Are you sure make this as undock ?");
+            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='dockitgroup' %}';
+               var makefavoriteID = undockID;
+               var makefavoritesID = make_favoriteStatus;
+                var data = JSON.stringify({
+                "group_id": makefavoriteID,
                 "status": makefavoritesID
             });
             $.ajax({
