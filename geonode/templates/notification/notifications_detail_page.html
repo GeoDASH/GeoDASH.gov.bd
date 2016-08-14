@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{{ STATIC_URL }}notify/notifyX.js?v={{ VERSION }}"></script>
+</head>
+<body>
+
+    <li class="notification" id="show-notification">
+                            <a href="javascript:;" id="a_href">
+                                <button class="btn btn-default btn-link">
+                                    <i class="fa fa-bell" ></i>
+                                </button>
+                                <span class="badge badge-notify" id="rload">{{ request.user.notifications.unread.count }}</span>
+                            </a>
+                        </li>
+
+        {% load notification_tags %}
+        {% user_notifications %}
+
+</body>
+</html>
