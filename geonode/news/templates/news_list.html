@@ -6,11 +6,27 @@
 
 {% block body_outer %}
     <div class="gd-content-body-news">
-        {% for news in news_list %}
+        {% for news in object_list %}
         <div class="changepass-news" id="changepass">
             <div class="contents_news">
                 <div class="title">
-                    {{ news.title }}
+                    <div class="row">
+                        <div class="col-md-11">
+                            {{ news.title }}
+                            {% if user.is_superuser %}
+                                <span style="padding-left:15px;">
+                                    <a href="{% url "news-update" news.id %}" title="Edit News"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 text-right">
+                            {% if user.is_superuser %}
+                                <span>
+                                    <a href="{% url "news-delete" news.id %}" class="" title="Delete News"><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <div class="anchor-link">
                     <div class="row">
