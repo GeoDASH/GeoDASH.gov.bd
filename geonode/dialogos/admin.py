@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from dialogos.models import Comment
+from geonode.dialogos.models import Comment
 
 
 class CommentAdmin(admin.ModelAdmin):  

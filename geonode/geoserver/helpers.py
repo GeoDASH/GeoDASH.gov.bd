@@ -52,7 +52,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from dialogos.models import Comment
+from geonode.dialogos.models import Comment
 from agon_ratings.models import OverallRating
 
 from gsimporter import Client

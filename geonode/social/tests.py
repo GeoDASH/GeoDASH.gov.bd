@@ -27,7 +27,7 @@ Replace this with more appropriate tests for your application.
 
 from actstream import registry
 from actstream.models import Action, actor_stream
-from dialogos.models import Comment
+from geonode.dialogos.models import Comment
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase

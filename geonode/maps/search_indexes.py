@@ -19,7 +19,7 @@
 #########################################################################
 
 from agon_ratings.models import OverallRating
-from dialogos.models import Comment
+from geonode.dialogos.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Avg
 from haystack import indexes

@@ -5,8 +5,8 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 
-from dialogos.forms import CommentForm
-from dialogos.models import Comment
+from geonode.dialogos.forms import CommentForm
+from geonode.dialogos.models import Comment
 
 
 class login(object):

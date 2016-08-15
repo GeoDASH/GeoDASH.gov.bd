@@ -243,7 +243,8 @@ GEONODE_APPS = (
     # it's signals may rely on other apps' signals.
     'geonode.geoserver',
     'geonode.upload',
-    'geonode.tasks'
+    'geonode.tasks',
+    'geonode.dialogos'
 )
 
 GEONODE_CONTRIB_APPS = (
@@ -307,7 +308,7 @@ INSTALLED_APPS = (
     # Social
     'account',
     'avatar',
-    'dialogos',
+    # 'dialogos',
     'agon_ratings',
     'notification',
     'announcements',

@@ -3,9 +3,9 @@ from django.core.urlresolvers import reverse
 
 from django.contrib.contenttypes.models import ContentType
 
-from dialogos.authorization import load_can_delete, load_can_edit
-from dialogos.forms import CommentForm
-from dialogos.models import Comment
+from geonode.dialogos.authorization import load_can_delete, load_can_edit
+from geonode.dialogos.forms import CommentForm
+from geonode.dialogos.models import Comment
 
 
 can_delete = load_can_delete()
