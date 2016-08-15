@@ -45,6 +45,11 @@
                 </div>
                 <div class="block-separator"></div>
                 <div class="details">
+                    {% if news.image %}
+                    <p>
+                        <img src="/uploaded/{{ news.image }}" />
+                    </p><br />
+                    {% endif %}
                     {% if news.description|length >= 500 %}
                         {{ news.description|truncatechars:500 }}
                         <div class="gd-txt-right">

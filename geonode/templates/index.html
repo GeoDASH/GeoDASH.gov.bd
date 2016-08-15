@@ -43,9 +43,9 @@
                           <div class="carousel-caption">
                               <div class="gd-slider-title">GEODASH.GOV.BD</div>
                               <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                                  {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                                  {% trans "PLATFORM" %}
+                                  {% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>
+                                  {% trans "DATA MANAGEMENT AND" %}<br>
+                                  {% trans "VISUALIZATION PLATFORM" %}
                               </div>
                               <div class="gd-slider-btn">
                                   <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
@@ -59,9 +59,9 @@
                           <div class="carousel-caption">
                               <div class="gd-slider-title">GEODASH.GOV.BD</div>
                               <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                                  {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                                  {% trans "PLATFORM" %}
+                                  {% trans "LAYERS ARE THE CONTENTS OF A" %}<br>
+                                  {% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>
+                                  {% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}
                               </div>
                               <div class="gd-slider-btn">
                                   <a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
@@ -75,9 +75,9 @@
                           <div class="carousel-caption">
                               <div class="gd-slider-title">GEODASH.GOV.BD</div>
                               <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                                  {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                                  {% trans "PLATFORM" %}
+                                  {% trans "AN OGC STANDARD INTEROPERABLE" %}<br>
+                                  {% trans "PLATFORM FOR MANAGING,SHARING" %}<br>
+                                  {% trans "& ANALYZING GEOSPATIAL CONTENT" %}
                               </div>
                               <div class="gd-slider-btn">
                                   <a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
@@ -91,9 +91,9 @@
                           <div class="carousel-caption">
                               <div class="gd-slider-title">GEODASH.GOV.BD</div>
                               <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                                  {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                                  {% trans "PLATFORM" %}
+                                  {% trans "A MAPPING PLATFORM" %}<br>
+                                  {% trans "TO CREATE CUSTOM AND" %}<br>
+                                  {% trans "STYLISH MAPS" %}
                               </div>
                               <div class="gd-slider-btn">
                                   <a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
@@ -107,9 +107,9 @@
                           <div class="carousel-caption">
                               <div class="gd-slider-title">GEODASH.GOV.BD</div>
                               <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                                  {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                                  {% trans "PLATFORM" %}
+                                  {% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>
+                                  {% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>
+                                  {% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}
                               </div>
                               <div class="gd-slider-btn">
                                   <a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
@@ -143,7 +143,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
+                            <li class="map-org-li-fixed">
                                 <a href="{% url "maps_browse" %}">
                                     <div class="title animation_conuter">{{ facets.map|default:_("0") }}</div>
                                     <div class="description">
@@ -151,7 +151,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
+                            <li class="map-org-li-fixed">
                                 <a href="{% url "group_list" %}">
                                     <div class="title animation_conuter">{{ facets.group|default:_("0") }}</div>
                                     <div class="description">{% trans "Organizations" %}</div>

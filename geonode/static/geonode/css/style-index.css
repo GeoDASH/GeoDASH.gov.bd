@@ -34,7 +34,7 @@
 }
 .gd-slider-msg{
     text-align:left;
-    font-size:25px;
+    font-size:23px;
     color:#fff;
     /*margin: 0px auto;
     padding-left:60%;*/
@@ -538,7 +538,7 @@
 }
 #gd-interprobability-right .description{
     color:#fff;
-    /*text-align:left;*/
+    text-align:center;
     font-size:13px;
 }
 #gd-interprobability-left{
@@ -1052,7 +1052,7 @@
 #gd-3dsection-right .title{
     color:#fff;
     text-transform: uppercase;
-    text-align:left;
+    text-align:right;
     font-size:30px;
     margin:auto;
     padding-top: 35px;
@@ -1060,7 +1060,7 @@
 }
 #gd-3dsection-right .description{
     color:#fff;
-    text-align:left;
+    text-align:right;
     font-size:13px;
     padding-top:55px;
 }
@@ -1087,3 +1087,10 @@
     /*padding-left: 51px;*/
 }
 /*--- Geo dash 3d section end --*/
+
+@media (min-width: 767px) {
+  .map-org-li-fixed{
+    width:220px;
+  }
+
+ }
