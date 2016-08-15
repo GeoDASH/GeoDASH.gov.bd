@@ -18,4 +18,4 @@
 #
 #########################################################################
 
-default_app_config = 'geonode.dialogos.apps.MyAppConfig'
+default_app_config = 'geonode.maps.apps.MyAppConfig'
