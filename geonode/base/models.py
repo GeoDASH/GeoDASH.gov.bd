@@ -38,6 +38,7 @@ from django.db.models import signals
 from django.core.files import File
 
 from mptt.models import MPTTModel, TreeForeignKey
+from taggit.managers import TaggableManager
 
 from polymorphic.models import PolymorphicModel
 from polymorphic.managers import PolymorphicManager
@@ -49,7 +50,8 @@ from geonode.base.enumerations import ALL_LANGUAGES, \
 from geonode.utils import bbox_to_wkt
 from geonode.utils import forward_mercator
 from geonode.security.models import PermissionLevelMixin
-from taggit.managers import TaggableManager
+from geonode.people.models import Profile
+from geonode.groups.models import GroupProfile
 
 from geonode.people.enumerations import ROLE_VALUES
 
@@ -781,3 +783,31 @@ def rating_post_save(instance, *args, **kwargs):
     ResourceBase.objects.filter(id=instance.object_id).update(rating=instance.rating)
 
 signals.post_save.connect(rating_post_save, sender=OverallRating)
+
+
+
+class FavoriteResource(models.Model):
+    """
+    This model keeps information for favorite layers, maps, groups, documents
+    """
+
+    user = models.ForeignKey(Profile)
+    group = models.ForeignKey(GroupProfile, null=True, blank=True)
+    resource = models.ForeignKey(ResourceBase, null=True, blank=True)
+    active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+
+class DockedResource(models.Model):
+    """
+    This model keeps information for docked layers, maps, groups, documents
+    """
+
+    user = models.ForeignKey(Profile)
+    group = models.ForeignKey(GroupProfile, null=True, blank=True)
+    resource = models.ForeignKey(ResourceBase, null=True, blank=True)
+    active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
