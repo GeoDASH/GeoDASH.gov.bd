@@ -126,6 +126,7 @@ $(document).ready(function() {
     $("#show-notification").click(function() {
         $("#show-notification-msg").slideToggle("slow");
     });
+
 });
 
     $(document).ready(function() {
@@ -136,11 +137,5 @@ $(document).ready(function() {
         $(document).ready(function() {
         $('.gd-featurd-maps-container-dash').click(function() {
             $(".dash-load").load(location.href+" .dash-load>*","");
-        });
-    });
-    $(document).ready(function() {
-        $('#featured_chng').click(function() {
-            alert("aa");
-            //$("#testfeatured12").load(location.href+" #testfeatured12>*","");
         });
     });

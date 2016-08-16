@@ -22,6 +22,11 @@
                 </div>
 
                 <div class="details">
+                    {% if news.image %}
+                    <p>
+                        <img src="/uploaded/{{ news.image }}" />
+                    </p><br />
+                    {% endif %}
                     {{ news.description }}
                 </div>
             </div>
