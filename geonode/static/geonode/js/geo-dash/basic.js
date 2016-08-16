@@ -125,6 +125,10 @@ $(document).ready(function() {
     });
     $("#show-notification").click(function() {
         $("#show-notification-msg").slideToggle("slow");
+        return false;
+    });
+    $("body").click(function() {
+        $("#show-notification-msg").slideUp("slow");
     });
 
 });

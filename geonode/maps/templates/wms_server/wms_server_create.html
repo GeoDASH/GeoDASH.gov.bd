@@ -1,49 +1,79 @@
+{% extends "site_base.html" %}
+{% load bootstrap_tags %}
 
 {% load i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% block title %} {% trans "Add Server" %} - {{ block.super }} {% endblock %}
 
-            <div class="box-body">
+{% block body_outer %}
 
-                <form class="form-horizontal" enctype="multipart/form-data" method="post" action="">
-                    {% csrf_token %}
+            <!--<div class="box-body">-->
 
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                        {# Include the visible fields #}
-                        {% for field in form.visible_fields %}
-                        <div class='form-group {% if field.errors %} has-error{% endif %}'>
-                            <div class="row">
-                                <div class='control-label col-md-3'>
-                                    {% trans field.label %}
-                                    {% if field.field.required %}<span class="required">*</span>{% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    {{ field |safe }}
-                                </div>
-                                <div class='col-md-5'>
-                                    {{ field.help_text }}
-                                    {% if field.errors %}
-                                        <p class="errors">{% trans field.errors.as_text %}</p>
-                                    {% endif %}
-                                </div>
+                <!--<form class="form-horizontal" enctype="multipart/form-data" method="post" action="">-->
+                    <!--{% csrf_token %}-->
+
+                        <!--{% for hidden in form.hidden_fields %}-->
+                            <!--{{ hidden }}-->
+                        <!--{% endfor %}-->
+                        <!--{# Include the visible fields #}-->
+                        <!--{% for field in form.visible_fields %}-->
+                        <!--<div class='form-group {% if field.errors %} has-error{% endif %}'>-->
+                            <!--<div class="row">-->
+                                <!--<div class='control-label col-md-3'>-->
+                                    <!--{% trans field.label %}-->
+                                    <!--{% if field.field.required %}<span class="required">*</span>{% endif %}-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--{{ field |safe }}-->
+                                <!--</div>-->
+                                <!--<div class='col-md-5'>-->
+                                    <!--{{ field.help_text }}-->
+                                    <!--{% if field.errors %}-->
+                                        <!--<p class="errors">{% trans field.errors.as_text %}</p>-->
+                                    <!--{% endif %}-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--{% endfor %}-->
+
+                        <!--<div class="form-group">-->
+                            <!--<div class="col-md-12 btn_align">-->
+                                <!--<button type="submit" class="btn btn-primary md">{% trans 'Save' %}</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+    <div class="gd-content">
+        <div class="gd-content-heading">
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="title small-content">
+                      {% trans "Add Server" %}
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="small-content text-right">
+                  </div>
+              </div>
+          </div>
+          <div class="hr"></div>
+        </div>
+        <div class="gd-content-body transparent top-bottom-margin-20px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="gd-content-body full-pad-40px">
+                      <form id=""  method="post" enctype="multipart/form-data" action="">
+                          {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form|as_bootstrap }}
                             </div>
                         </div>
-                        {% endfor %}
-
-                    <div class="form-group">
-                        <div class="col-md-12 btn_align">
-                            <button type="submit" class="btn btn-primary md">{% trans 'Save' %}</button>
-                        </div>
+                        <div class="block-separator"></div>
+                        <button type="submit" id="" class="btn btn-gd-primary">Add Server</button>
+                      </form>
                     </div>
-                </form>
+                </div>
             </div>
-
-</body>
-</html>
+        </div>
+    </div>
+{% endblock %}
