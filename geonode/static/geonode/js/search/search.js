@@ -877,7 +877,7 @@
 
             var data_layerID = datalayerID;
             var data_statusID = datastatusID;
-                var JS_STATIC_URL = "../api/makefavoritegroup/";
+                var JS_STATIC_URL = "../api/makefavorite/";
                    var qID = data_layerID;
                    var qsID = data_statusID;
                     var data = JSON.stringify({

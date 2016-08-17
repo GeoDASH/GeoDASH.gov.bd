@@ -562,6 +562,7 @@ class UndockResources(TypeFilteredResource):
                         out['errors'] = 'resource does not exist'
                     else:
                         docked = DockedResource.objects.get(user=user, resource=resource)
+                        docked.active = False
                         docked.save()
                         out['success'] = 'True'
                         status_code = 200
@@ -574,6 +575,7 @@ class UndockResources(TypeFilteredResource):
                         out['errors'] = 'group does not exist'
                     else:
                         docked = DockedResource.objects.get(user=user, group=group)
+                        docked.active = False
                         docked.save()
                         out['success'] = 'True'
                         status_code = 200
@@ -717,8 +719,6 @@ class MetaFavorite:
             'detail_url',
             'rating',
             'featured',
-            'docked',
-            'favorite',
             'resource_type'
         ]
 
@@ -729,9 +729,10 @@ class FavoriteLayers(TypeFilteredResource):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'favoritelayers'
+        allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user)
+        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
 
 
 
@@ -740,24 +741,26 @@ class FavoriteMaps(TypeFilteredResource):
         queryset = Map.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
+
         resource_name = 'favoritemaps'
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user)
+        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
 
 
 
 class FavoriteGroups(TypeFilteredResource):
-    class Meta(MetaFavorite):
-        queryset = GroupProfile.objects.filter(favoriteresource__active=True).order_by('-date')
+    class Meta:
+        queryset = GroupProfile.objects.filter(favoriteresource__active=True)
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
+
         resource_name = 'favoritegroups'
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user)
+        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
 
 
 class FavoriteDocuments(TypeFilteredResource):
@@ -765,8 +768,9 @@ class FavoriteDocuments(TypeFilteredResource):
         queryset = Document.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
+
         resource_name = 'favoritedocuments'
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user)
+        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
