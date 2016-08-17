@@ -563,10 +563,11 @@ class DocumentResource(CommonModelApi):
 class CommonFavorite(ModelResource):
     def dehydrate(self, bundle):
 
-        try:
-            bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
-        except FavoriteResource.DoesNotExist:
-            bundle.data['favorite'] = False
+        if bundle.request.user.is_authenticated():
+            try:
+                bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
+            except FavoriteResource.DoesNotExist:
+                bundle.data['favorite'] = False
 
         return bundle
 
@@ -615,8 +616,9 @@ class GroupsResourceWithFavorite(ModelResource):
 
     def dehydrate(self, bundle):
 
-        try:
-            bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, group=GroupProfile.objects.get(id=bundle.obj.id)).active
-        except FavoriteResource.DoesNotExist:
-            bundle.data['favorite'] = False
+        if bundle.request.user.is_authenticated():
+            try:
+                bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, group=GroupProfile.objects.get(id=bundle.obj.id)).active
+            except FavoriteResource.DoesNotExist:
+                bundle.data['favorite'] = False
         return bundle
