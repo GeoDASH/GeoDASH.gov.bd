@@ -137,7 +137,7 @@
                         <ul class="text-center">
                             <li>
                                 <a href="{% url "layer_browse" %}">
-                                    <div class="title animation_conuter" id="total_layers_home">{{ facets.layer|default:_("0") }}</div>
+                                    <div class="title" id="total_layers_home"></div>
                                     <div class="description">
                                         {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
                                     </div>
@@ -309,9 +309,9 @@
                                                                 <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a></div>
                                                             {% endif %}
                                                         <div class="anchor-link">
-                                                            <a href="javascript:;" class="info">
-                                                                 {{ featured.group }}
-                                                            </a>
+                                                            <!--<a href="javascript:;" class="info">-->
+                                                                 <span style="color:#6e6b6b;font-size:14px;font-weight:bold;">{{ featured.group }}</span>
+                                                            <!--</a>-->
                                                         </div>
                                                         <div class="details text-center">
                                                             {% if featured.abstract|length >= 53 %}
@@ -884,7 +884,8 @@ $(document).ready(function() {
             var data = eval(jsondata.objects);
             var t_count = data.length;
             //alert(t_count);
-            $("#total_layers_home").text(t_count);
+            $("#total_layers_home").text(t_count).addClass("animation_conuter");
+            //$("#total_layers_home");
         }});
     });
   </script>
