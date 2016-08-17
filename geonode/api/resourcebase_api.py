@@ -40,6 +40,9 @@ from geonode.layers.models import Layer
 from geonode.maps.models import Map
 from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
+from geonode.api.api import MetaFavorite
+from geonode.base.models import FavoriteResource
+from geonode.groups.models import GroupProfile
 
 from .authorization import GeoNodeAuthorization
 
@@ -68,8 +71,7 @@ class CommonMetaApi:
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
                  'resource_type':ALL,
-                 'docked': ALL,
-                 'favorite': ALL
+
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
@@ -468,8 +470,6 @@ class CommonModelApi(ModelResource):
             'detail_url',
             'rating',
             'featured',
-            'docked',
-            'favorite',
             'resource_type'
         ]
 
@@ -558,3 +558,65 @@ class DocumentResource(CommonModelApi):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'documents'
+
+
+class CommonFavorite(ModelResource):
+    def dehydrate(self, bundle):
+
+        try:
+            bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
+        except FavoriteResource.DoesNotExist:
+            bundle.data['favorite'] = False
+
+        return bundle
+
+
+class LayerResourceWithFavorite(CommonFavorite):
+
+    """Layer API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Layer.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'layers_with_favorite'
+        excludes = ['csw_anytext', 'metadata_xml']
+
+
+class MapResourceWithFavorite(CommonFavorite):
+
+    """Maps API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Map.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'maps_with_favorite'
+
+
+class DocumentResourceWithFavorite(CommonFavorite):
+
+    """Maps API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Document.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'documents_with_favorite'
+
+
+class GroupsResourceWithFavorite(ModelResource):
+
+    """Grpups API with Favorite"""
+
+    class Meta:
+        queryset = GroupProfile.objects.all()
+        resource_name = 'groups_with_favorite'
+
+    def dehydrate(self, bundle):
+
+        try:
+            bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, group=GroupProfile.objects.get(id=bundle.obj.id)).active
+        except FavoriteResource.DoesNotExist:
+            bundle.data['favorite'] = False
+        return bundle

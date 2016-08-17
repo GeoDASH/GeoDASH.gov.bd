@@ -61,6 +61,7 @@ from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
 from geonode.settings import MEDIA_ROOT
 from geonode.maps.models import WmsServer
+from .authorization import GeoNodeAuthorization
 
 
 CONTEXT_LOG_FILE = None
@@ -695,11 +696,39 @@ class LayerSource(TypeFilteredResource):
         queryset = WmsServer.objects.all()
 
 
+class MetaFavorite:
+    authorization = GeoNodeAuthorization()
+    allowed_methods = ['get']
+    fields =  [
+            'id',
+            'uuid',
+            'title',
+            'date',
+            'abstract',
+            'csw_wkt_geometry',
+            'csw_type',
+            'owner__username',
+            'share_count',
+            'popular_count',
+            'srid',
+            'category__gn_description',
+            'supplemental_information',
+            'thumbnail_url',
+            'detail_url',
+            'rating',
+            'featured',
+            'docked',
+            'favorite',
+            'resource_type'
+        ]
+
+
 class FavoriteLayers(TypeFilteredResource):
-    class Meta:
-        queryset = Layer.objects.filter(favoriteresource__active=True)
+    class Meta(MetaFavorite):
+        queryset = Layer.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
         resource_name = 'favoritelayers'
-        allowed_methods = ['get']
 
     def get_object_list(self, request):
         return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user)
@@ -707,8 +736,10 @@ class FavoriteLayers(TypeFilteredResource):
 
 
 class FavoriteMaps(TypeFilteredResource):
-    class Meta:
-        queryset = Map.objects.filter(favoriteresource__active=True)
+    class Meta(MetaFavorite):
+        queryset = Map.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
         resource_name = 'favoritemaps'
         allowed_methods = ['get']
 
@@ -718,8 +749,10 @@ class FavoriteMaps(TypeFilteredResource):
 
 
 class FavoriteGroups(TypeFilteredResource):
-    class Meta:
-        queryset = GroupProfile.objects.filter(favoriteresource__active=True)
+    class Meta(MetaFavorite):
+        queryset = GroupProfile.objects.filter(favoriteresource__active=True).order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
         resource_name = 'favoritegroups'
         allowed_methods = ['get']
 
@@ -728,8 +761,10 @@ class FavoriteGroups(TypeFilteredResource):
 
 
 class FavoriteDocuments(TypeFilteredResource):
-    class Meta:
-        queryset = Document.objects.filter(favoriteresource__active=True)
+    class Meta(MetaFavorite):
+        queryset = Document.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
         resource_name = 'favoritedocuments'
         allowed_methods = ['get']
 

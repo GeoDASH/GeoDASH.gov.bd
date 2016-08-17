@@ -26,7 +26,8 @@ from .api import TagResource, TopicCategoryResource, ProfileResource, \
     FavoriteMaps, FavoriteGroups, FavoriteDocuments
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
-    ResourceBaseResource, FeaturedResourceBaseResource
+    ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
+    DocumentResourceWithFavorite, GroupsResourceWithFavorite
 
 api = Api(api_name='api')
 
@@ -55,4 +56,8 @@ api.register(FavoriteLayers())
 api.register(FavoriteMaps())
 api.register(FavoriteGroups())
 api.register(FavoriteDocuments())
+api.register(LayerResourceWithFavorite())
+api.register(MapResourceWithFavorite())
+api.register(DocumentResourceWithFavorite())
+api.register(GroupsResourceWithFavorite())
 

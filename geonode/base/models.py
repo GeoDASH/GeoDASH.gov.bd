@@ -367,11 +367,6 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     featured = models.BooleanField(_("Featured"), default=False,
                                    help_text=_('Should this resource be advertised in home page?'))
 
-    favorite = models.BooleanField(_("Favorite"), default=False,
-                                   help_text=_('Should this resource be in favorite list ?'))
-
-    docked = models.BooleanField(_("Docked"), default=False,
-                                   help_text=_('Should this resource be docked in home page?'))
     is_published = models.BooleanField(_("Is Published"), default=True,
                                        help_text=_('Should this resource be published and searchable?'))
 
