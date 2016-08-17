@@ -33,6 +33,7 @@ from guardian.shortcuts import get_objects_for_user
 from django.conf.urls import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
+from django.core.urlresolvers import reverse
 
 from tastypie.utils.mime import build_content_type
 
@@ -609,6 +610,19 @@ class DocumentResourceWithFavorite(CommonFavorite):
 class GroupsResourceWithFavorite(ModelResource):
 
     """Grpups API with Favorite"""
+
+    detail_url = fields.CharField()
+    member_count = fields.IntegerField()
+    manager_count = fields.IntegerField()
+
+    def dehydrate_member_count(self, bundle):
+        return bundle.obj.member_queryset().count()
+
+    def dehydrate_manager_count(self, bundle):
+        return bundle.obj.get_managers().count()
+
+    def dehydrate_detail_url(self, bundle):
+        return reverse('group_detail', args=[bundle.obj.slug])
 
     class Meta:
         queryset = GroupProfile.objects.all()
