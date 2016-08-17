@@ -40,8 +40,15 @@ from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
 from slugify import slugify
 from user_messages.models import UserThread
+from taggit.models import Tag
+from django.core.serializers.json import DjangoJSONEncoder
+from tastypie.serializers import Serializer
+from tastypie import fields
+from tastypie.resources import ModelResource
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
+from tastypie.utils import trailing_slash
 
-from geonode.base.models import ResourceBase
+from geonode.base.models import ResourceBase, FavoriteResource, DockedResource
 from geonode.base.models import TopicCategory
 from geonode.base.models import Region
 from geonode.layers.models import Layer
@@ -54,14 +61,8 @@ from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
 from geonode.settings import MEDIA_ROOT
 from geonode.maps.models import WmsServer
+from .authorization import GeoNodeAuthorization
 
-from taggit.models import Tag
-from django.core.serializers.json import DjangoJSONEncoder
-from tastypie.serializers import Serializer
-from tastypie import fields
-from tastypie.resources import ModelResource
-from tastypie.constants import ALL, ALL_WITH_RELATIONS
-from tastypie.utils import trailing_slash
 
 CONTEXT_LOG_FILE = None
 
@@ -540,10 +541,10 @@ class MesseagesUnread(TypeFilteredResource):
             return super(MesseagesUnread, self).get_object_list(request).filter(user=request.user)
 
 
-class MakeDocked(TypeFilteredResource):
+class UndockResources(TypeFilteredResource):
 
     class Meta:
-        resource_name = 'dockit'
+        resource_name = 'undockit'
         allowed_methods = ['post']
 
     def dispatch(self, request_type, request, **kwargs):
@@ -551,18 +552,33 @@ class MakeDocked(TypeFilteredResource):
             out = {'success': False}
             user = request.user
             if user.is_authenticated():
-                status = json.loads(request.body).get('status')
                 resource_id = json.loads(request.body).get('resource_id')
-                try:
-                    resource = ResourceBase.objects.get(pk=resource_id)
-                except ResourceBase.DoesNotExist:
-                    status_code = 404
-                    out['errors'] = 'resource does not exist'
-                else:
-                    resource.docked = status
-                    resource.save()
-                    out['success'] = 'True'
-                    status_code = 200
+                group_id = json.loads(request.body).get('group_id')
+                if resource_id:
+                    try:
+                        resource = ResourceBase.objects.get(pk=resource_id)
+                    except ResourceBase.DoesNotExist:
+                        status_code = 404
+                        out['errors'] = 'resource does not exist'
+                    else:
+                        docked = DockedResource.objects.get(user=user, resource=resource)
+                        docked.active = False
+                        docked.save()
+                        out['success'] = 'True'
+                        status_code = 200
+
+                elif group_id:
+                    try:
+                        group = GroupProfile.objects.get(pk=group_id)
+                    except ResourceBase.DoesNotExist:
+                        status_code = 404
+                        out['errors'] = 'group does not exist'
+                    else:
+                        docked = DockedResource.objects.get(user=user, group=group)
+                        docked.active = False
+                        docked.save()
+                        out['success'] = 'True'
+                        status_code = 200
             else:
                 out['error'] = 'Access denied'
                 out['success'] = False
@@ -570,7 +586,7 @@ class MakeDocked(TypeFilteredResource):
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
 
-class MakeFavorite(TypeFilteredResource):
+class FavoriteUnfavoriteResources(TypeFilteredResource):
 
     class Meta:
         resource_name = 'makefavorite'
@@ -582,18 +598,39 @@ class MakeFavorite(TypeFilteredResource):
             if user.is_authenticated():
                 status = json.loads(request.body).get('status')
                 resource_id = json.loads(request.body).get('resource_id')
+                group_id = json.loads(request.body).get('group_id')
 
-                try:
-                    resource = ResourceBase.objects.get(pk=resource_id)
-                except ResourceBase.DoesNotExist:
-                    status_code = 404
-                    out['errors'] = 'resource does not exist'
-                else:
-                    resource.docked = status
-                    resource.favorite = status
-                    resource.save()
-                    out['success'] = 'True'
-                    status_code = 200
+                if resource_id:
+                    try:
+                        resource = ResourceBase.objects.get(pk=resource_id)
+                    except ResourceBase.DoesNotExist:
+                        status_code = 404
+                        out['errors'] = 'resource does not exist'
+                    else:
+                        favorite, created = FavoriteResource.objects.get_or_create(user=user, resource=resource)
+                        docked, created = DockedResource.objects.get_or_create(user=user, resource=resource)
+                        favorite.active = status
+                        docked.active = status
+                        favorite.save()
+                        docked.save()
+                        out['success'] = 'True'
+                        status_code = 200
+
+                elif group_id:
+                    try:
+                        group = GroupProfile.objects.get(pk=group_id)
+                    except ResourceBase.DoesNotExist:
+                        status_code = 404
+                        out['errors'] = 'group does not exist'
+                    else:
+                        favorite, created = FavoriteResource.objects.get_or_create(user=user, group=group)
+                        docked, created = DockedResource.objects.get_or_create(user=user, group=group)
+                        favorite.active = status
+                        docked.active = status
+                        favorite.save()
+                        docked.save()
+                        out['success'] = 'True'
+                        status_code = 200
             else:
                 out['error'] = 'Access denied'
                 out['success'] = False
@@ -661,62 +698,79 @@ class LayerSource(TypeFilteredResource):
         queryset = WmsServer.objects.all()
 
 
-class MakeFavoriteGroup(TypeFilteredResource):
+class MetaFavorite:
+    authorization = GeoNodeAuthorization()
+    allowed_methods = ['get']
+    fields =  [
+            'id',
+            'uuid',
+            'title',
+            'date',
+            'abstract',
+            'csw_wkt_geometry',
+            'csw_type',
+            'owner__username',
+            'share_count',
+            'popular_count',
+            'srid',
+            'category__gn_description',
+            'supplemental_information',
+            'thumbnail_url',
+            'detail_url',
+            'rating',
+            'featured',
+            'resource_type'
+        ]
 
+
+class FavoriteLayers(TypeFilteredResource):
+    class Meta(MetaFavorite):
+        queryset = Layer.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'favoritelayers'
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+
+
+
+class FavoriteMaps(TypeFilteredResource):
+    class Meta(MetaFavorite):
+        queryset = Map.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+
+        resource_name = 'favoritemaps'
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+
+
+
+class FavoriteGroups(TypeFilteredResource):
     class Meta:
-        resource_name = 'makefavoritegroup'
+        queryset = GroupProfile.objects.filter(favoriteresource__active=True)
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
 
-    def dispatch(self, request_type, request, **kwargs):
-        if request.method == 'POST':
-            out = {'success': False}
-            user = request.user
-            if user.is_authenticated():
-                status = json.loads(request.body).get('status')
-                group_id = json.loads(request.body).get('group_id')
+        resource_name = 'favoritegroups'
+        allowed_methods = ['get']
 
-                try:
-                    group = GroupProfile.objects.get(pk=group_id)
-                except GroupProfile.DoesNotExist:
-                    status_code = 404
-                    out['errors'] = 'Organization does not exist'
-                else:
-                    group.docked = status
-                    group.favorite = status
-                    group.save()
-                    out['success'] = 'True'
-                    status_code = 200
-            else:
-                out['error'] = 'Access denied'
-                out['success'] = False
-                status_code = 400
-            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+    def get_object_list(self, request):
+        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
 
 
-class MakeDockedGroup(TypeFilteredResource):
+class FavoriteDocuments(TypeFilteredResource):
+    class Meta(MetaFavorite):
+        queryset = Document.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
 
-    class Meta:
-        resource_name = 'dockitgroup'
-        allowed_methods = ['post']
+        resource_name = 'favoritedocuments'
+        allowed_methods = ['get']
 
-    def dispatch(self, request_type, request, **kwargs):
-        if request.method == 'POST':
-            out = {'success': False}
-            user = request.user
-            if user.is_authenticated():
-                status = json.loads(request.body).get('status')
-                group_id = json.loads(request.body).get('group_id')
-                try:
-                    group = GroupProfile.objects.get(pk=group_id)
-                except GroupProfile.DoesNotExist:
-                    status_code = 404
-                    out['errors'] = 'group does not exist'
-                else:
-                    group.docked = status
-                    group.save()
-                    out['success'] = 'True'
-                    status_code = 200
-            else:
-                out['error'] = 'Access denied'
-                out['success'] = False
-                status_code = 400
-            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+    def get_object_list(self, request):
+        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)

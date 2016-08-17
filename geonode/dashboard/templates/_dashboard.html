@@ -391,7 +391,7 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='layers' %}?docked=True&favorite=True';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritelayers' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -432,7 +432,7 @@
                 output +='<div class="checkbox">';
                 output +='<label>';
                 output +='<span class="fa-stack fa-lg" >';
-                output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
                 output +='</span>';
                 output +='</label>';
                 output +='</div>';
@@ -462,7 +462,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='maps' %}?docked=True&favorite=True';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritemaps' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -502,7 +502,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -527,7 +527,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='documents' %}?docked=True&favorite=True';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritedocuments' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -567,7 +567,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -592,7 +592,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='groups' %}?docked=True&favorite=True';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritegroups' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -632,7 +632,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+','+false+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -655,18 +655,16 @@
         }});
     });
   </script>
-    <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript" language="JavaScript">
 
-        function udock(undockID,undockStatus){
-        var make_favoriteStatus = undockStatus;
+        function udock(undockID){
+        //var make_favoriteStatus = undockStatus;
         //alert(data_favouriteID+data_favouriteStatus);
         //alert("Are you sure make this as undock ?");
-            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='dockit' %}';
+            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='undockit' %}';
                var makefavoriteID = undockID;
-               var makefavoritesID = make_favoriteStatus;
                 var data = JSON.stringify({
-                "resource_id": makefavoriteID,
-                "status": makefavoritesID
+                "resource_id": makefavoriteID
             });
             $.ajax({
                 cache: false,
@@ -692,16 +690,15 @@
     </script>
     <script type="text/javascript" language="JavaScript">
 
-        function udockorg(undockID,undockStatus){
-        var make_favoriteStatus = undockStatus;
+        function udockorg(undockID){
+        //var make_favoriteStatus = undockStatus;
         //alert(undockID);
         //alert("Are you sure make this as undock ?");
-            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='dockitgroup' %}';
+            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='undockit' %}';
                var makefavoriteID = undockID;
-               var makefavoritesID = make_favoriteStatus;
+               //var makefavoritesID = make_favoriteStatus;
                 var data = JSON.stringify({
-                "group_id": makefavoriteID,
-                "status": makefavoritesID
+                "group_id": makefavoriteID
             });
             $.ajax({
                 cache: false,
@@ -725,4 +722,5 @@
              });
         }
     </script>
+
 {% endblock extra_script %}
