@@ -137,7 +137,7 @@
                         <ul class="text-center">
                             <li>
                                 <a href="{% url "layer_browse" %}">
-                                    <div class="title" id="total_layers_home"></div>
+                                    <div class="title animation_conuter" id="total_layers_home123">{{ facets.layer|default:_("0") }}</div>
                                     <div class="description">
                                         {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
                                     </div>
