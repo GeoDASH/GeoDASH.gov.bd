@@ -24,6 +24,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db.models import signals
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from taggit.managers import TaggableManager
 
@@ -172,6 +173,9 @@ def profile_post_save(instance, sender, **kwargs):
             defaults={'email': instance.email, 'verified': False})
         if not created:
             EmailAddress.objects.filter(user=instance, primary=True).update(email=instance.email)
+    default_group = get_object_or_404(GroupProfile, slug='default')
+    if not instance.is_superuser:
+        default_group.join(instance, role='member')
 
 
 def email_post_save(instance, sender, **kw):
