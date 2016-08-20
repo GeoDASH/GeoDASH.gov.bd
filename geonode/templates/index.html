@@ -137,7 +137,7 @@
                         <ul class="text-center">
                             <li>
                                 <a href="{% url "layer_browse" %}">
-                                    <div class="title animation_conuter" id="total_layers_home123">{{ facets.layer|default:_("0") }}</div>
+                                    <div class="title" id="total_layers_home">{{ facets.layer|default:_("0") }}</div>
                                     <div class="description">
                                         {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
                                     </div>
@@ -145,7 +145,7 @@
                             </li>
                             <li class="map-org-li-fixed">
                                 <a href="{% url "maps_browse" %}">
-                                    <div class="title animation_conuter">{{ facets.map|default:_("0") }}</div>
+                                    <div class="title" id="total_maps_home">{{ facets.map|default:_("0") }}</div>
                                     <div class="description">
                                         {% blocktrans count counter=facets.map %}Map{% plural %}Maps{% endblocktrans %}
                                     </div>
@@ -159,7 +159,7 @@
                             </li>
                             <li>
                                 <a href="{% url "profile_browse" %}">
-                                    <div class="title animation_conuter">{{ facets.user|default:_("0") }}</div>
+                                    <div class="title" id="total_users_home">{{ facets.user|default:_("0") }}</div>
                                     <div class="description">
                                         {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
                                     </div>
@@ -558,6 +558,7 @@
       {% endblock %}
       <!-- Make 3d -->
       {% block index_make3d %}
+        {% if is_3dmap or request.user.is_authenticated %}
             <div id="gd-3dsection" >
                 <div class="container">
                     <div class="gd-control">
@@ -585,9 +586,11 @@
                     </div>
                 </div>
             </div>
+        {% endif %}
       {% endblock %}
       <!-- What GeoDASH offer? -->
       {% block index_geodashoffer %}
+        {% if is_what_geodash_offer or request.user.is_authenticated %}
         <div id="gd-whatoffer">
             <div class="block-separator"></div>
             <div class="container">
@@ -732,6 +735,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
       {% endblock %}
       <!-- View Maps -->
       <!--{% block index_viewmaps %}-->
@@ -885,6 +889,46 @@ $(document).ready(function() {
             var t_count = data.length;
             //alert(t_count);
             $("#total_layers_home").text(t_count).addClass("animation_conuter");
+            //$("#total_layers_home");
+        }});
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='maps' %}';
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        context: document.body,
+        success: function(jsondata){
+            //console.log(JSON.stringify(jsondata));
+            var data = eval(jsondata.objects);
+            var t_count = data.length;
+            //alert(t_count);
+            $("#total_maps_home").text(t_count).addClass("animation_conuter");
+            //$("#total_layers_home");
+        }});
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='profiles' %}';
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        context: document.body,
+        success: function(jsondata){
+            //console.log(JSON.stringify(jsondata));
+            var data = eval(jsondata.objects);
+            var t_count = data.length;
+            //alert(t_count);
+            $("#total_users_home").text(t_count).addClass("animation_conuter");
             //$("#total_layers_home");
         }});
     });

@@ -16,7 +16,10 @@
 {% endblock %}
 
 {% block body_class %}groups{% endblock %}
+{% block extra_head %}
 
+
+{% endblock %}
 {% block body_outer %}
 <div class="gd-content">
   <div class="gd-content-heading">
@@ -167,12 +170,8 @@
                     </article>
                     <article id="layerslist" class="tab-pane">
                         <div class="no-style-list">
-                            <div class="gd-content-body transparent">
-                              <div class="paginate paginate-auto" id="search-content">
-                                  <div id="search-content-layers">
+                            <div class="gd-content-body transparent" id="search-content-layers">
 
-                                  </div>
-                              </div>
                               {% include 'search/_pagination.html' %}
                           </div>
                         </div>
@@ -203,8 +202,6 @@
   <script type="text/javascript">
   SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='profiles' %}'+ '?group='+ '{{ object.slug }}';
   </script>
-
-
   {% with include_spatial='false' %}
   {% include 'search/search_scripts.html' %}
   {% endwith %}
@@ -225,92 +222,83 @@
                         console.log(JSON.stringify(jsondata));
 
                         var data = eval(jsondata.objects);
+                        var output='';
                       $.each(data, function(i, item) {
-                        //alert(item.title);
-                        var output ='<div class="row">';
-                        var output ='<article >';
-                        var output ='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">';
-                        var output ='<div class="grid-container lmd">';
-                        var output ='<div class="avater">';
-                        var output ='<div class="avater-img">';
-                        var output ='<a class="avater-img-mid" href="{{ item.detail_url }}" >';
-                        var output ='<img ng-if="item.thumbnail_url != null" ng-src="{{ item.thumbnail_url }}" alt="{{ group.title }}" class="group-logo" />';
-                        var output ='<img ng-if="item.thumbnail_url == null" ng-src="/static/geonode/img/missing_thumb.png" alt="{{ group.title }}" class="group-logo" />';
-                        var output ='</a>';
-                        var output ='</div>';
-                        var output ='<div class="checkbox-overlay">';
-                        var output ='<div class="checkbox" ng-if="cart" ng-click="cart.toggleItem(item)">';
-                        var output ='<label>';
-                        var output ='<span ng-show="cart.isActive(item.id)" class="fa-stack fa-lg">';
-                        var output ='<i class="fa fa-square fa-stack-1x" style="color: #FFF;"></i>';
-                        var output ='<i class="fa fa-check-square fa-stack-1x"></i>';
-                        var output ='</span>';
-                        var output ='<span ng-show="!cart.isActive(item.id)" class="fa-stack fa-lg">';
-                        var output ='<i class="fa fa-square fa-stack-1x"></i>';
-                        var output ='</span>';
-                        var output ='</label>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='<div class="information">';
-                        var output ='<div class="top-content text-center">';
-                        var output ='<div class="title">';
-                        var output ='<a href="{{ item.detail_url }}" title="{{ item.title }}">';
-                        var output =''+ item.title +'';
-                        var output ='</a>';
-                        var output ='</div>';
-                        var output ='<div class="category">';
-                        var output ='{{ item.category__gn_description }}';
-                        var output ='</div>';
-                        var output ='<div class="details">';
-                        var output =''+ item.abstract+ '';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='<div class="summery">';
-                        var output ='<div class="item-items">';
-                        var output ='<ul class="list-inline lmd">';
-                        var output ='<li>';
-                        var output ='<a href="/people/profile/{{ item.owner__username }}">';
-                        var output ='<i class="fa fa-user"></i>';
-                        var output =''+ item.owner__username +'';
-                        var output ='</a>';
-                        var output ='</li>';
-                        var output ='<li>';
-                        var output ='<a href="{{ item.detail_url }}#info">';
-                        var output ='<i class="fa fa-calendar-o"></i>';
-                        var output =''+ item.date +'';
-                        var output ='</a>';
-                        var output ='</li>';
-                        var output ='<li>';
-                        var output ='<a href="{{ item.detail_url }}">';
-                        var output ='<i class="fa fa-eye"></i>';
-                        var output =''+ item.popular_count +'';
-                        var output ='</a>';
-                        var output ='</li>';
-                        var output ='<li>';
-                        var output ='<a href="{{ item.detail_url }}#share">';
-                        var output ='<i class="fa fa-share"></i>';
-                        var output =''+ item.share_count +'';
-                        var output ='</a>';
-                        var output ='</li>';
-                        var output ='<li>';
-                        var output ='<a href="{{ item.detail_url }}#rate">';
-                        var output ='<i class="fa fa-star"></i>';
-                        var output =''+ item.rating +'';
-                        var output ='</a>';
-                        var output ='</li>';
-                        var output ='</ul>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='</div>';
-                        var output ='</article>';
-                        var output ='</div>';
+                        //alert(item.date);
+                            output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">';
+                            output +='<div class="grid-container lmd">';
+                            output +='<div class="avater">';
+                            output +='<div class="avater-img">';
+                            output +='<a class="avater-img-mid" href="' +item.detail_url+ '" >';
+                                    if(item.thumbnail_url){
+                            output +='<img src="' +item.thumbnail_url+ '" alt="" class="group-logo" />';
+                                    }
+                                    else{
+                            output +='<img src="/static/geonode/img/missing_thumb.png" alt="" class="group-logo" />';
+                                        }
+                            output +='</a>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='<div class="information">';
+                            output +='<div class="top-content text-center">';
+                            output +='<div class="title">';
+                            output +='<a href="' +item.detail_url+ '" title="' +item.title+ '">';
+                            output +=''+ item.title +'';
+                            output +='</a>';
+                            output +='</div>';
+                            output +='<div class="category">';
+                                    if(item.category__gn_description){
+                            output +='' +item.category__gn_description+ '';
+                                    }
+                                    else{
+                            output +='Not provided';
+                                    }
+                            output +='</div>';
+                            output +='<div class="details">';
+                            output +=''+ item.abstract+ '';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='<div class="summery">';
+                            output +='<div class="item-items">';
+                            output +='<ul class="list-inline lmd">';
+                            output +='<li>';
+                            output +='<a href="/people/profile/'+ item.owner__username +'">';
+                            output +='<i class="fa fa-user"></i>';
+                            output +=''+ item.owner__username +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="' +item.detail_url+ '">';
+                            output +='<i class="fa fa-calendar-o"></i>';
 
-                        $("#search-content-layers").append(output);
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="' +item.detail_url+ '#info">';
+                            output +='<i class="fa fa-eye"></i>';
+                            output +=''+ item.popular_count +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="'+ item.detail_url +'#share">';
+                            output +='<i class="fa fa-share"></i>';
+                            output +=''+ item.share_count +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="'+ item.detail_url+'#rate">';
+                            output +='<i class="fa fa-star"></i>';
+                            output +=''+ item.rating +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='</ul>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
                       });
-
+                    $("#search-content-layers").append(output);
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         console.log("error");

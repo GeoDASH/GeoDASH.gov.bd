@@ -736,6 +736,7 @@ class FavoriteLayers(TypeFilteredResource):
 
 
 
+
 class FavoriteMaps(TypeFilteredResource):
     class Meta(MetaFavorite):
         queryset = Map.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
