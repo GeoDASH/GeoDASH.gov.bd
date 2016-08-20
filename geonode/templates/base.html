@@ -158,9 +158,9 @@
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
                                 <div class="input-group">
                                     {% if HAYSTACK_SEARCH %}
-                                        <input id="search_input" type="text" placeholder="" name="q" >
+                                        <input id="search_input" type="text" placeholder="" name="q" style="color:#5a5d63;">
                                     {% else %}
-                                        <input id="search_input" type="text" placeholder="" name="title__icontains">
+                                        <input id="search_input" type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
@@ -580,19 +580,20 @@
             <li class="c-menu__item">
                 <a href="{% url "layer_upload" %}" class="c-menu__link">
                     <i class="fa fa-cloud-upload"></i>
-                    {% trans "Upload Layers" %}
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Upload Layers" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{{ user.get_absolute_url }}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/profile.png" alt="Profile">
-                    {% trans "Profile" %}
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-3px;">{% trans "Profile" %}</span>
                 </a>
             </li>
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "section-list-table" %}" class="c-menu__link">
-                    <i class="fa fa-tasks"></i> {% trans "Manage Section" %}
+                    <i class="fa fa-tasks"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -606,14 +607,16 @@
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "wms-server-list" %}" class="c-menu__link">
-                    <i class="fa fa-tasks"></i> {% trans "Add Server" %}
+                    <i class="fa fa-tasks"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-7px;">{% trans "Add Server" %}</span>
                 </a>
             </li>
             {% endif %}
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "news-create" %}" class="c-menu__link">
-                    <i class="fa fa-file-text-o"></i> {% trans "Add News" %}
+                    <i class="fa fa-file-text-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-6px;">{% trans "Add News" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -621,7 +624,8 @@
             {% if request.user.is_member_of_any_group or  request.user.is_manager_of_any_group or request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "member-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-building-o"></i> {% trans "Member-Workspace" %}
+                    <i class="fa fa-building-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Member-Workspace" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -630,28 +634,30 @@
             {% if request.user.is_authenticated and request.user.is_manager_of_any_group %}
             <li class="c-menu__item">
                 <a href="{% url "admin-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-building-o"></i> {% trans "Admin-Workspace" %}
+                    <i class="fa fa-building-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Admin-Workspace" %}</span>
                 </a>
             </li>
             {% endif %}
             {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
               <li class="c-menu__item">
                   <a href="{% url "create-user" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Create User" %}
+                    <i class="fa fa-fire"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Create User" %}</span>
                   </a>
               </li>
             {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "recent-activity" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/recent-activity.png" alt="Recent Activity">
-                    {% trans "Recent Activity" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Recent Activity" %}</span>
                 </a>
             </li>
             {% if perms.announcements.can_manage %}
             <li class="c-menu__item">
                 <a href="{% url "announcements_list" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/announcements.png" alt="Announcements">
-                    {% trans "Announcements" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Announcements" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -659,19 +665,19 @@
             <li class="c-menu__item">
                 <a href="{% url "services" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/remote-services.png" alt="Remote Services">
-                    {% trans "Remote Services" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Remote Services" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "account_invite_user" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User">
-                    {% trans "Invite User" %}
+                    <span style="text-align:left;color:#fff;margin-left:-14px;">{% trans "Invite User" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{{ GEOSERVER_BASE_URL }}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/geo-server.png" alt="GeoServer">
-                    {% trans "GeoServer" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "GeoServer" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -688,7 +694,7 @@
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    {% trans "Help" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Help" %}</span>
                 </a>
             </li>
             <li class="c-menu__item active">
@@ -697,7 +703,7 @@
                   <a class="c-menu__link" href="javascript:{}"
                      onclick="document.getElementById('logout_form').submit();">
                       <img src="{{ STATIC_URL }}geonode/images/user-icon/logout.png" alt="Logout">
-                      {% trans "Log out" %}
+                      <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Log out" %}</span>
                   </a>
                 </form>
             </li>

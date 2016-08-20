@@ -32,7 +32,11 @@
                         </div>
                     </div>
                     <div class="block-separator"></div>
-                    <button type="submit" id="" class="btn btn-gd-primary">Add News</button>
+                      {% if news.id %}
+                        <button type="submit" id="" class="btn btn-gd-primary">Update News</button>
+                      {% else %}
+                        <button type="submit" id="" class="btn btn-gd-primary">Add News</button>
+                      {% endif %}
                   </form>
                 </div>
             </div>
