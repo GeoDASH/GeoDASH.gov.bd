@@ -546,6 +546,9 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
             ptype: 'gn_savehyperlink',
             actionTarget: 'paneltbar'
         }, {
+            ptype: "sdsl_SearchByRadius",
+            actionTarget: "map.tbar"
+        }, {
             ptype: 'gn_save',
             actions: []
         }, {
