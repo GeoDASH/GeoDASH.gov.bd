@@ -198,22 +198,24 @@ class IndexClass(ListView):
         for section in sections:
             if section.section == 'slider':
                 context['is_slider'] = section.is_visible
-            if section.section == 'featured_layer':
+            if section.section == 'featured_layers':
                 context['is_featured_layers'] = section.is_visible
-            if section.section == 'latest_news':
+            if section.section == 'latest_news_and_updates':
                 context['is_latest_news'] = section.is_visible
-            if section.section == 'feature_highlights':
+            if section.section == 'feature_highlights_of_geodash':
                 context['is_feature_highlights'] = section.is_visible
             if section.section == 'interportability':
                 context['is_interportability'] = section.is_visible
             if section.section == 'pretty_map':
-                context['is_pretty_map'] = section.is_visible
-            if section.section == 'view_3d_map':
+                context['make_pretty_maps_with_geodash'] = section.is_visible
+            if section.section == 'view_your_maps_in_3d':
                 context['is_3dmap'] = section.is_visible
-            if section.section == 'share_map':
+            if section.section == 'share_your_map':
                 context['is_share_map'] = section.is_visible
             if section.section == 'how_it_works':
                 context['is_how_it_works'] = section.is_visible
+            if section.section == 'what_geodash_offer?':
+                context['is_what_geodash_offer'] = section.is_visible
         return context
 
 

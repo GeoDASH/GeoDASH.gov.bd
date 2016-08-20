@@ -53,13 +53,14 @@ def add_sections_to_index_page():
     list_of_sections = [
         'slider',
         'how_it_works',
-        'featured_layer',
-        'latest_news',
-        'feature_highlights',
+        'featured_layers',
+        'latest_news_and_updates',
+        'feature_highlights_of_geodash',
         'interportability',
-        'pretty_map',
-        'view_3d_map',
-        'share_map',
+        'make_pretty_maps_with_geodash',
+        'view_your_maps_in_3d',
+        'share_your_map',
+        'what_geodash_offer?'
     ]
     if len(list_of_sections) != len(SectionManagementTable.objects.all()):
         SectionManagementTable.objects.all().delete()
