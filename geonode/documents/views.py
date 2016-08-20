@@ -36,6 +36,8 @@ from django.forms.util import ErrorList
 from django.views.generic import ListView
 from django.contrib import messages
 
+from notify.signals import notify
+
 from geonode.utils import resolve_object
 from geonode.security.views import _perms_info_json
 from geonode.people.forms import ProfileForm
@@ -482,6 +484,11 @@ def document_remove(request, docid, template='documents/document_remove.html'):
                     print "Could not build slack message for delete document."
 
                 document.delete()
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 try:
                     from geonode.contrib.slack.utils import send_slack_messages
@@ -490,6 +497,11 @@ def document_remove(request, docid, template='documents/document_remove.html'):
                     print "Could not send slack message for delete document."
             else:
                 document.delete()
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
             return HttpResponseRedirect(reverse("document_browse"))
         else:
@@ -533,7 +545,10 @@ def document_publish(request, document_pk):
             document.save()
             document_submission_activity = DocumentSubmissionActivity(document=document, group=group, iteration=document.current_iteration)
             document_submission_activity.save()
-
+            # notify organization admins about the new published document
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new document', target=document)
             # set all the permissions for all the managers of the group for this documentt
             document.set_managers_permissions()
 
@@ -563,6 +578,12 @@ def document_approve(request, document_pk):
                 document.status = 'ACTIVE'
                 document.last_auditor = request.user
                 document.save()
+
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 document_submission_activity.is_audited = True
                 document_submission_activity.save()
@@ -602,6 +623,12 @@ def document_deny(request, document_pk):
                 document.status = 'DENIED'
                 document.last_auditor = request.user
                 document.save()
+
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 document_submission_activity.is_audited = True
                 document_submission_activity.save()

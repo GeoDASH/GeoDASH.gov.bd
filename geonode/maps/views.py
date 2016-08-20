@@ -291,6 +291,11 @@ def map_remove(request, mapid, template='maps/map_remove.html'):
                 print "Could not build slack message for delete map."
 
             delete_map.delay(object_id=map_obj.id)
+            # notify map owner that someone have deleted the map
+            if request.user != map_obj.owner:
+                recipient = map_obj.owner
+                notify.send(request.user, recipient=recipient, actor=request.user,
+                target=map_obj, verb='deleted your map')
 
             try:
                 from geonode.contrib.slack.utils import send_slack_messages
@@ -300,6 +305,11 @@ def map_remove(request, mapid, template='maps/map_remove.html'):
 
         else:
             delete_map.delay(object_id=map_obj.id)
+            # notify map owner that someone have deleted the map
+            if request.user != map_obj.owner:
+                recipient = map_obj.owner
+                notify.send(request.user, recipient=recipient, actor=request.user,
+                target=map_obj, verb='deleted your map')
 
         return HttpResponseRedirect(reverse("maps_browse"))
 
@@ -946,6 +956,12 @@ def map_publish(request, map_pk):
             map.status = 'PENDING'
             map.current_iteration += 1
             map.save()
+
+            # notify organization admins about the new published map
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new map', target=map)
+
             map_submission_activity = MapSubmissionActivity(map=map, group=group, iteration=map.current_iteration)
             map_submission_activity.save()
 
@@ -978,6 +994,12 @@ def map_approve(request, map_pk):
                 map.status = 'ACTIVE'
                 map.last_auditor = request.user
                 map.save()
+
+                # notify map owner that someone have approved the map
+                if request.user != map.owner:
+                    recipient = map.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=map, verb='approved your map')
 
                 map_submission_activity.is_audited = True
                 map_submission_activity.save()
@@ -1017,6 +1039,12 @@ def map_deny(request, map_pk):
                 map.status = 'DENIED'
                 map.last_auditor = request.user
                 map.save()
+
+                # notify map owner that someone have denied the map
+                if request.user != map.owner:
+                    recipient = map.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=map, verb='denied your map')
 
                 map_submission_activity.is_audited = True
                 map_submission_activity.save()

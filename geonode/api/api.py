@@ -732,7 +732,7 @@ class FavoriteLayers(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
 
@@ -746,7 +746,7 @@ class FavoriteMaps(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
 
@@ -760,7 +760,7 @@ class FavoriteGroups(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
 class FavoriteDocuments(TypeFilteredResource):
@@ -773,4 +773,4 @@ class FavoriteDocuments(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True)
+        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()

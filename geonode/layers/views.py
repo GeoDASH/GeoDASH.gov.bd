@@ -762,6 +762,12 @@ def layer_approve(request, layer_pk):
                 layer.last_auditor = request.user
                 layer.save()
 
+                # notify layer owner that someone have approved the layer
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=layer, verb='approved your layer')
+
                 layer_submission_activity.is_audited = True
                 layer_submission_activity.save()
 
@@ -802,6 +808,12 @@ def layer_deny(request, layer_pk):
                 layer.last_auditor = request.user
                 layer.save()
 
+                # notify layer owner that someone have denied the layer
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=layer, verb='denied your layer')
+
                 layer_submission_activity.is_audited = True
                 layer_submission_activity.save()
 
@@ -831,10 +843,6 @@ def layer_delete(request, layer_pk):
             if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
                 layer.status = "DELETED"
                 layer.save()
-                if request.user != layer.owner:
-                    recipient = layer.owner
-                notify.send(request.user, recipient=recipient, actor=request.user,
-                verb='deleted your layer')
 
             else:
                 messages.info(request, 'you have no acces to delete the layer')
