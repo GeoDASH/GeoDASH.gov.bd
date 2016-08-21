@@ -51,7 +51,7 @@ class NewsList(ListView):
     model = News
 
     def get_queryset(self):
-        return News.objects.all()[:15]
+        return News.objects.all().order_by('-date_created')[:15]
 
 
 class NewsCreate(CreateView):

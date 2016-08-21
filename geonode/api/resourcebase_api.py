@@ -22,6 +22,7 @@ import re
 from django.db.models import Q
 from django.http import HttpResponse
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
@@ -536,6 +537,14 @@ class LayerResource(CommonModelApi):
         resource_name = 'layers'
         excludes = ['csw_anytext', 'metadata_xml']
 
+    def get_object_list(self, request):
+        group_id = request.GET.get('group', None)
+        if group_id:
+            group = get_object_or_404(GroupProfile, id=group_id)
+            return super(LayerResource, self).get_object_list(request).filter(group=group)
+        else:
+            return super(LayerResource, self).get_object_list(request).filter(status='ACTIVE')
+
 
 class MapResource(CommonModelApi):
 
@@ -569,6 +578,8 @@ class CommonFavorite(ModelResource):
                 bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
             except FavoriteResource.DoesNotExist:
                 bundle.data['favorite'] = False
+        bundle.data['owner'] = bundle.obj.owner
+        bundle.data['category'] = bundle.obj.category
 
         return bundle
 

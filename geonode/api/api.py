@@ -703,23 +703,25 @@ class MetaFavorite:
     allowed_methods = ['get']
     fields =  [
             'id',
-            'uuid',
-            'title',
-            'date',
-            'abstract',
-            'csw_wkt_geometry',
-            'csw_type',
-            'owner__username',
-            'share_count',
-            'popular_count',
-            'srid',
-            'category__gn_description',
-            'supplemental_information',
-            'thumbnail_url',
-            'detail_url',
-            'rating',
-            'featured',
-            'resource_type'
+            # 'uuid',
+            # 'title',
+            # 'date',
+            # 'abstract',
+            # 'csw_wkt_geometry',
+            # 'csw_type',
+            # 'owner__username',
+            # 'share_count',
+            # 'popular_count',
+            # 'srid',
+            # 'category__gn_description',
+            # 'supplemental_information',
+            # 'thumbnail_url',
+            # 'detail_url',
+            # 'rating',
+            # 'featured',
+            # 'resource_type',
+            'owner',
+            'category'
         ]
 
 
