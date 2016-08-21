@@ -40,8 +40,12 @@ def post_comment(request, content_type_id, object_id, form_class=CommentForm):
     form = form_class(request.POST, request=request, obj=obj, user=request.user)
     if form.is_valid():
         comment = form.save()
-        notify.send(request.user, recipient=obj.owner, actor=request.user,
-                verb='commented on your layer')
+        # notify document owner that someone have deleted the document
+        if request.user != obj.owner:
+            recipient = obj.owner
+            notify.send(request.user, recipient=recipient, actor=request.user,
+            target=obj, verb='commented on your {0}'.format(content_type.name))
+
         commented.send(sender=post_comment, comment=comment, request=request)
         if request.is_ajax():
             return HttpResponse(json.dumps({
