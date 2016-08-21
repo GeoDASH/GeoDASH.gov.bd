@@ -27,8 +27,8 @@
                                 </a>
                             </h4>
                             <div class="media-sub-heading">
-                                {{ item.category__gn_description }}
-                                {{ item.category__gn_description == null || item.category__gn_description == '' ? 'Not provided.' : '' }}
+                                {{ item.category }}
+                                {{ item.category == null || item.category == '' ? 'Not provided.' : '' }}
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -43,7 +43,7 @@
                   <li>
                       <a href="/people/profile/{{ item.owner__username }}">
                           <i class="fa fa-user"></i>
-                          {{ item.owner__username }}
+                          {{ item.owner }}
                       </a>
                   </li>
                   <li>
@@ -122,8 +122,8 @@
                           </a>
                       </div>
                       <div class="category">
-                          {{ item.category__gn_description }}
-                          {{ item.category__gn_description == null || item.category__gn_description == '' ? 'Not provided.' : '' }}
+                          {{ item.category }}
+                          {{ item.category == null || item.category == '' ? 'Not provided.' : '' }}
                       </div>
                       <div class="details">
                           {{ item.abstract | limitTo: 300 }}{{ item.abstract.length  > 300 ? '...' : ''}}
@@ -136,7 +136,7 @@
                               <li>
                                   <a href="/people/profile/{{ item.owner__username }}">
                                       <i class="fa fa-user"></i>
-                                      {{ item.owner__username }}
+                                      {{ item.owner }}
                                   </a>
                               </li>
                               <li>

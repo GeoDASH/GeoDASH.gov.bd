@@ -92,7 +92,7 @@
                   </div>
                   <div class="row">
                       <div class="col-md-12">
-                          <input id="id-layer-upload-title" class=" form-control" type="text" name="title" maxlength="255">
+                          <input id="id-layer-upload-title" class="form-control" type="text" name="title" maxlength="255">
                       </div>
                   </div>
                   <div class="block-separator"></div>
@@ -137,8 +137,6 @@
 
                   <form id="file-uploader" method="post" enctype="multipart/form-data">
                       <input class="btn btn-gd" id="file-input" type="file" multiple>
-                      <!--<input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM
-                      <input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM-->
                   </form>
 
                   <section class="widget">
@@ -203,13 +201,6 @@
 
 {% endautoescape %}
 
-</script>
-<script type="text/javascript" language="JavaScript">
-        $(document).ready(function(){
-            $(".osmlayer").click(function(){
-                alert("Are you sure make this as favorite ?");
-            });
-        });
 </script>
 {% if GEONODE_SECURITY_ENABLED %}
 {% with resource=layer %}
