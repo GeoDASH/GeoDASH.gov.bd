@@ -102,7 +102,7 @@
                         </div>
                   </div>
                   <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <select id= "id-select-organization" class="col-md-12">
                                 {% for organization in organizations %}
                                 <option  value={{ organization.id }} >{{ organization.title }}</option>
@@ -117,7 +117,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <select id= "id-select-category" class="col-md-12">
                             {% for category in categories %}
                             <option  value={{ category.gn_description }} >{{ category.gn_description }}</option>
@@ -148,22 +148,60 @@
                           <input type="checkbox" name="metadata_uploaded_preserve" id="id_metadata_uploaded_preserve"/>
                       </div>
                   </section>
-
+                  <section id="osmLayerSection" style="display: none;">
+                      <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Select the OSM Layer Type" %} </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                            <select id="osmLayerType" class="col-md-12">
+                              <option selected='selected' value="point">Point layer</option>
+                              <option value="line">Line layer</option>
+                              <option value="multi_line">Multi line layer</option>
+                              <option value="multipolygon">Multipolygon layer</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="block-separator"></div>
+                  </section>
+                <section id="csvLayerSection" style="display: none;">
+                      <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Select the CSV Column Name" %} </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                            <select id="csvColumnName" class="col-md-12"></select>
+                        </div>
+                      </div>
+                      <div class="block-separator"></div>
+                  </section>
                   <section class="charset">
-                      <p>{% trans "Select the charset or leave default" %}</p>
-                      <select id="charset">
-                          {% for charset in charsets %}
-                              {% if charset.0 == 'UTF-8' %}
-                                  <option selected='selected' value={{ charset.0 }}>{{ charset.1 }}</option>
-                              {% else %}
-                                  <option value={{ charset.0 }}>{{ charset.1 }}</option>
-                              {% endif %}
-                          {% endfor %}
-                      </select>
+                      <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label"> {% trans "Select the charset or leave default" %} </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                            <select id="charset" class="col-md-12">
+                              {% for charset in charsets %}
+                                  {% if charset.0 == 'UTF-8' %}
+                                      <option selected='selected' value={{ charset.0 }}>{{ charset.1 }}</option>
+                                  {% else %}
+                                      <option value={{ charset.0 }}>{{ charset.1 }}</option>
+                                  {% endif %}
+                              {% endfor %}
+                          </select>
+                        </div>
+                      </div>
                   </section>
               </div>
               {% if GEONODE_SECURITY_ENABLED %}
-                <div class="gd-content-body full-pad-20px">
+                <div class="gd-content-body full-pad-30px" style="padding-top: 0px;">
                   <div class="sidebar-title">{% trans "Permissions" %}</div>
                   <form id="permission_form">
                       {% include "_permissions.html" %}
@@ -188,7 +226,8 @@
 <script data-main="{% static 'geonode/js/upload/main' %}"
   src="{% static 'lib/js/require.js' %}">
 </script>
-<script type="text/javascript" src="{% static 'geonode/js/upload/cookie.js' %}"></script>
+{#<script type="text/javascript" src="{% static 'geonode/js/upload/cookie.js' %}"></script>#}
+{#<script type="text/javascript" src="{% static 'geonode/js/geo-dash/papaparse.min.js' %}"></script>#}
 <script type="text/javascript">
 {% autoescape off %}
 
