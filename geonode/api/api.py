@@ -508,20 +508,25 @@ class MakeFeatured(TypeFilteredResource):
         if request.method == 'POST':
             out = {'success': False}
             user = request.user
-            if user.is_authenticated() and user.is_superuser:
+            if user.is_authenticated() and user.is_manager_of_any_group:
                 status = json.loads(request.body).get('status')
                 resource_id = json.loads(request.body).get('resource_id')
 
                 try:
-                    resource = ResourceBase.objects.get(pk=resource_id)
+                    resource = Layer.objects.get(pk=resource_id)
                 except ResourceBase.DoesNotExist:
                     status_code = 404
                     out['errors'] = 'Layer does not exist'
                 else:
-                    resource.featured = status
-                    resource.save()
-                    out['success'] = 'True'
-                    status_code = 200
+                    if resource.group in user.group_list_all:
+                        resource.featured = status
+                        resource.save()
+                        out['success'] = 'True'
+                        status_code = 200
+                    else:
+                        out['error'] = 'Access denied'
+                        out['success'] = False
+                        status_code = 400
             else:
                 out['error'] = 'Access denied'
                 out['success'] = False
