@@ -148,9 +148,11 @@
       <div class="row">
             <div class="col-md-12">
                 <ul class="nav navbar-nav nav-pills">
-                  <li class="active"><a href="#userlist" data-toggle="tab"><i class=""></i>{% trans "User List" %}</a></li>
-                  <li><a href="#layerslist" id="layers_list" data-toggle="tab" ><i class="fa fa-square-o rotate-45"></i> {% trans "Layers List" %}</a></li>
+                  <li class="active"><a href="#layerslist" id="layers_list" data-toggle="tab" ><i class="fa fa-square-o rotate-45"></i> {% trans "Layers List" %}</a></li>
+                  <li ><a href="#userlist" data-toggle="tab"><i class=""></i>{% trans "User List" %}</a></li>
+                    {% if user.is_authenticated %}
                   <li><a href="#acitivity" id="qroup_activity" data-toggle="tab"><i class="fa fa-map-marker"></i> {% trans "Activity" %}</a></li>
+                    {% endif %}
                   <li><a href="#qtionanswer" id="qst_ans" data-target="#qtionanswer" data-toggle="tab"><i class="fa fa-comment-o"></i> {% trans "Question/Answer" %}</a></li>
                 </ul>
             </div>
@@ -158,20 +160,20 @@
       <div class="row">
             <div class="col-md-12">
                 <div class="tab-content activity-style-list">
-                    <article id="userlist" class="tab-pane active">
+                    <article id="layerslist" class="tab-pane active">
+                        <div class="no-style-list">
+                            <div class="gd-content-body transparent" id="search-content-layers">
+
+                              {% include 'search/_pagination.html' %}
+                          </div>
+                        </div>
+                    </article>
+                    <article id="userlist" class="tab-pane">
                         <div class="no-style-list">
                             <div class="gd-content-body transparent">
                               <div class="paginate paginate-auto" id="search-content">
                                 {% include 'people/_profile_list_item.html' %}
                               </div>
-                              {% include 'search/_pagination.html' %}
-                          </div>
-                        </div>
-                    </article>
-                    <article id="layerslist" class="tab-pane">
-                        <div class="no-style-list">
-                            <div class="gd-content-body transparent" id="search-content-layers">
-
                               {% include 'search/_pagination.html' %}
                           </div>
                         </div>
@@ -184,8 +186,6 @@
                     <article id="qtionanswer" class="tab-pane">
                         <div class="no-style-list">
                             <div id="showquestans">
-
-
                             </div>
                         </div>
                     </article>
@@ -208,7 +208,6 @@
 
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function(){
-            $("#layers_list").click(function(){
                 var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers' %}";
                 $.ajax({
                     cache: false,
@@ -304,7 +303,6 @@
                         console.log("error");
                     }
                  });
-            });
         });
 
     </script>

@@ -241,8 +241,15 @@ $(document).ready(function() {
             $("#show-notification").load(location.href+" #show-notification>*","");
         });
     });
-        $(document).ready(function() {
+    $(document).ready(function() {
         $('.gd-featurd-maps-container-dash').click(function() {
             $(".dash-load").load(location.href+" .dash-load>*","");
+        });
+    });
+    $(document).ready(function() {
+        $('#toolbar_remove').click(function() {
+            $("#toolbar_hide").remove();
+            //var a = window.navigator.appCodeName;
+            //alert(a);
         });
     });

@@ -513,12 +513,13 @@ class MakeFeatured(TypeFilteredResource):
                 resource_id = json.loads(request.body).get('resource_id')
 
                 try:
-                    resource = Layer.objects.get(pk=resource_id)
+                    layer = Layer.objects.get(pk=resource_id)
+                    resource = ResourceBase.objects.get(pk=resource_id)
                 except ResourceBase.DoesNotExist:
                     status_code = 404
                     out['errors'] = 'Layer does not exist'
                 else:
-                    if resource.group in user.group_list_all:
+                    if layer.group in user.group_list_all():
                         resource.featured = status
                         resource.save()
                         out['success'] = 'True'

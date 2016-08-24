@@ -1094,3 +1094,33 @@
   }
 
  }
+
+
+ .toolbar_right {
+  background: #eaeaed;
+  color: #666;
+  /*font: 14px/24px "Source Code Pro", Inconsolata, "Lucida Console", Terminal, "Courier New", Courier;*/
+  display: inline-block;
+  height: auto;
+  margin: 0 14px;
+  padding: 20px 5px 20px 5px;
+  text-align: center;
+  width: 280px;
+  margin-top:-50px;
+  z-index:99;
+  position:absolute;
+  left:50px;
+
+}
+toolbar_right .border-solid {
+  border: 2px solid #9799a7;
+}
+toolbar_right .border-double {
+  border: 6px double #9799a7;
+}
+toolbar_right .border-dashed {
+  border: 8px dashed #9799a7;
+}
+toolbar_right .border-dotted {
+  border: 4px dotted #9799a7;
+}

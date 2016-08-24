@@ -110,8 +110,9 @@ def ajax_lookup(request):
     groups = GroupProfile.objects.filter(Q(title__istartswith=keyword) |
                                          Q(description__icontains=keyword))
     json_dict = {
+
         'users': [({'username': u.username + ' ({0})'.format(u.email)}) for u in users],
-        'count': users.count(),
+
     }
 
     json_dict['groups'] = [({'name': g.slug, 'title': g.title}) for g in groups]

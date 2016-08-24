@@ -18,9 +18,7 @@
 <link href="{{ STATIC_URL }}geonode/css/style_common_feature.css?v={{ VERSION }}" rel="stylesheet" />
 <link href="{{ STATIC_URL }}geonode/css/style_feature.css?v={{ VERSION }}" rel="stylesheet" />
 {% endblock %}
-
 {% block body_class %}home js-Home{% endblock %}
-
 {% block middle %}
    {{ block.super }}
   {% block slider %}
@@ -131,6 +129,37 @@
         <div class="index-max-width">
             <div id="gd-stastic">
                 <div class="container">
+                        <div class="row" id="toolbar_hide">
+                            <div class="col-md-3 pull-right">
+                                <div class="toolbar_right ">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>
+                                            <span>An open source Geospatial data management and visualization platform.</span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="block-separator"></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                {% trans "Learn More" %}
+                                            </a>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                {% trans "Public List" %}
+                                            </a>
+                                        </div>
+                                        <div class="col-md-1">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <div class="gd-stastic-control">
                         {% with facet_type='home' %}
                         {% facets as facets %}

@@ -580,6 +580,7 @@ class CommonFavorite(ModelResource):
                 bundle.data['favorite'] = False
         bundle.data['owner'] = bundle.obj.owner
         bundle.data['category'] = bundle.obj.category
+        bundle.data['group'] = bundle.obj.group
 
         return bundle
 
