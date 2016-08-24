@@ -379,25 +379,22 @@ define(['underscore',
         var isThatCsv = false;
         var file = null;
         for(var i=0; i<files.length; i++){
-            var isThatOsm = isOsm(getExtension(files[i].name));
+            //var isThatOsm = isOsm(getExtension(files[i].name));
             var isThatCsv = isCsv(getExtension(files[i].name));
             if(isThatOsm || isThatCsv){
                 file = files[i];
                 break;
             }
         }
-        if(isThatOsm){
+        /*if(isThatOsm){
             $("#osmLayerSection").show();
             //$("#permissionListAndSubmitSection").hide();
             //sendOsmFile(files);
         } else {
             $("#osmLayerSection").hide();
-        }
+        }*/
         if(isThatCsv){
             readCsvHeader(file);
-            $("#csvLayerSection").show();
-        } else {
-            $("#csvLayerSection").hide();
         }
     };
 
@@ -441,6 +438,7 @@ define(['underscore',
             }
         }
         $("#csvColumnName").html(options);
+        $("#csvColumnName2").html(options);
     };
 
     readCsvHeader = function (file) {

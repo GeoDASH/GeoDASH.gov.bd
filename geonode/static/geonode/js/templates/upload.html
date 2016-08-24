@@ -12,8 +12,8 @@
 <script type='text/html' id='layerTemplate'>
   <div class='file-element' id='<%= selector %>-element'>
     <div class='row'>
-      <div class='col-md-6'><h3><%= name %></h3></div>
-      <div class='col-md-3'><h3><%= type %></h3></div>
+      <div class='col-md-6'><label class="control-label"><%= name %></label></div>
+      <div class='col-md-6'><label class="control-label"><%= type %></label></div>
     </div>
     <% if (format !== 'raster') { %>
     <div class='row'>
@@ -113,7 +113,7 @@
         <% } %>
     </div>
     <% } %>
-    <hr />
+    <hr style="margin: 0px;" />
     <div class="row">
         <div id="<%= name %>-files" class="col-md-8">
           <ul class='files'></ul>
