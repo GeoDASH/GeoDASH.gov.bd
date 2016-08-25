@@ -169,10 +169,10 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <select id="osmLayerType" class="col-md-12">
-                                        <option selected='selected' value="(Point)">Point layer</option>
-                                        <option value="(Line String)">Line layer</option>
-                                        <option value="(Multi Line String)">Multi line layer</option>
-                                        <option value="(Geometry Collection)">Multipolygon layer</option>
+                                        <option selected='selected' value="points">Point layer</option>
+                                        <option value="lines">Line layer</option>
+                                        <option value="multilinestrings">Multi line layer</option>
+                                        <option value="multipolygons">Multipolygon layer</option>
                                     </select>
                                 </div>
                             </div>
@@ -235,24 +235,47 @@
 
 
 
-                        <section id="csvLayerSection2" style="display: none;">
+
+                        <section id="csvLatLonLayerSection" style="display: none;">
                             <div class="block-separator"></div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select the CSV Column Name" %} </label>
+                                    <label class="control-label"> {% trans "Select the CSV Longitude Column Name" %} </label>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4" id="csvColumnBox">
-                                    <select id="csvColumnName" class="col-md-12"></select>
+                                <div class="col-md-4">
+                                    <select id="csvLongitudeColumnName" class="col-md-12"></select>
                                 </div>
-                                <div class="col-md-4" id="csvColumnBox2" style="display: none;">
-                                    <select id="csvColumnName2" class="col-md-12"></select>
+                            </div>
+                            <div class="block-separator"></div>
+                             <div class="row">
+                                <div class="col-md-12">
+                                    <label class="control-label"> {% trans "Select the CSV Lattitude Column Name" %} </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select id="csvLattitudeColumnName" class="col-md-12"></select>
                                 </div>
                             </div>
                             <div class="block-separator"></div>
                         </section>
 
+                        <section id="csvGeomLayerSection" style="display: none;">
+                            <div class="block-separator"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="control-label"> {% trans "Select the CSV Geom Column Name" %} </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" id="csvColumnBox">
+                                    <select id="csvGeomColumnName" class="col-md-12"></select>
+                                </div>
+                            </div>
+                            <div class="block-separator"></div>
+                        </section>
 
 
 
@@ -330,26 +353,33 @@
                 //shp osm csv
                 if(fileType == "osm"){
                     $("#osmLayerSection").show();
-                    $("#csvLayerSection, #csvLayerSection2").hide();
+                    $("#csvLayerSection, #csvLatLonLayerSection, #csvGeomLayerSection").hide();
                 } else if(fileType == "csv"){
-                    $("#csvLayerSection, #csvLayerSection2").show();
+                    var thegeoSelected = ($('#thegeo:checked').length > 0);
+                    if(thegeoSelected){
+                        $("#csvLayerSection, #csvGeomLayerSection").show();
+                        $("#csvLatLonLayerSection").hide();
+                    } else {
+                        $("#csvLayerSection, #csvLatLonLayerSection").show();
+                        $("#csvGeomLayerSection").hide();
+                    }
                     $("#osmLayerSection").hide();
                     csvLayerSectionCombo();
                 } else {
                     $("#osmLayerSection").hide();
-                    $("#csvLayerSection, #csvLayerSection2").hide();
+                    $("#csvLayerSection, #csvLatLonLayerSection, #csvGeomLayerSection").hide();
                 }
             });
             csvLayerSectionCombo();
         });
         function csvLayerSectionCombo(){
             $("#csvLayerSection #thegeo").click(function () {
-                $("#csvLayerSection2 #csvColumnBox").show();
-                $("#csvLayerSection2 #csvColumnBox2").hide();
+                $("#csvGeomLayerSection").show();
+                $("#csvLatLonLayerSection").hide();
             });
             $("#csvLayerSection #latlon").click(function () {
-                $("#csvLayerSection2 #csvColumnBox").show();
-                $("#csvLayerSection2 #csvColumnBox2").show();
+                $("#csvLatLonLayerSection").show();
+                $("#csvGeomLayerSection").hide();
             });
         }
     </script>

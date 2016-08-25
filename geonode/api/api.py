@@ -47,6 +47,7 @@ from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
+from guardian.models import UserObjectPermission
 
 from geonode.base.models import ResourceBase, FavoriteResource, DockedResource
 from geonode.base.models import TopicCategory
@@ -521,6 +522,12 @@ class MakeFeatured(TypeFilteredResource):
                 else:
                     if layer.group in user.group_list_all():
                         resource.featured = status
+                        if status == True:
+                            try:
+                                UserObjectPermission.objects.get(object_pk=resource_id, permission=141, user=-1).delete()
+                            except UserObjectPermission.DoesNotExist:
+                                pass
+
                         resource.save()
                         out['success'] = 'True'
                         status_code = 200

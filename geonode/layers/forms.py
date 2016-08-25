@@ -158,6 +158,7 @@ class LayerUploadForm(forms.Form):
         filename = file.name
         extension = os.path.splitext(filename)[1]
         if extension.lower() == '.osm':
+            osm_layer_type = self.cleaned_data['osm_layer_type']
             tempdir_osm = tempfile.mkdtemp()  # temporary directory for uploading .osm file
             temporary_file = open('%s/%s' % (tempdir_osm, filename), 'a+')
 
@@ -167,17 +168,19 @@ class LayerUploadForm(forms.Form):
             file_path = temporary_file.name
             from geonode.layers.utils import ogrinfo
             response = ogrinfo(file_path)
-            from plumbum.cmd import ogr2ogr
-            ogr2ogr[tempdir, file_path, 'points']()
-            files = os.listdir(tempdir)
-            for item in files:
-                if item.endswith('.shp'):
-                    absolute_base_file = os.path.join(tempdir, item)
+            if osm_layer_type in response:
+
+                from plumbum.cmd import ogr2ogr
+                ogr2ogr[tempdir, file_path, 'points']()
+                files = os.listdir(tempdir)
+                for item in files:
+                    if item.endswith('.shp'):
+                        absolute_base_file = os.path.join(tempdir, item)
 
         elif extension.lower() == '.csv':
-            the_geom = 'geom'
-            longitude = 'longitude' #longitude
-            lattitude = 'latitude' #latitude
+            the_geom = self.cleaned_data['the_geom']
+            longitude = self.cleaned_data['longitude'] #longitude
+            lattitude = self.cleaned_data['lattitude'] #latitude
             tempdir_csv = tempfile.mkdtemp()  # temporary directory for uploading .csv file
             temporary_file = open('%s/%s' % (tempdir_csv, filename), 'a+')
             for chnk in file.chunks():
@@ -214,7 +217,7 @@ class LayerUploadForm(forms.Form):
                 vrt_string_point = vrt_string_point.replace("111x_for_lattitude_values111", lattitude)
                 vrt_string_point = vrt_string_point.replace("333y_for_longitude_values333", longitude)
                 temp_vrt_file.write(vrt_string_point)
-            else:
+            elif the_geom:
                 vrt_string = vrt_string.replace("222ogr_vrt_layer_name222", layer_name)
                 vrt_string = vrt_string.replace("000path_to_the_imported_csv_file000", file_path)
                 vrt_string = vrt_string.replace("111the_field_name_geom_for_csv111", the_geom)
@@ -257,6 +260,10 @@ class NewLayerUploadForm(LayerUploadForm):
     charset = forms.CharField(required=False)
     category = forms.CharField(required=True)
     organization = forms.CharField(required=True)
+    the_geom = forms.CharField(required=False)
+    longitude = forms.CharField(required=False)
+    lattitude = forms.CharField(required=False)
+    osm_layer_type = forms.CharField(required=False)
     metadata_uploaded_preserve = forms.BooleanField(required=False)
 
     spatial_files = (

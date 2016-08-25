@@ -437,8 +437,7 @@ define(['underscore',
                 options += '<option value="'+csvHeaders[i]+'">'+csvHeaders[i]+'</option>';
             }
         }
-        $("#csvColumnName").html(options);
-        $("#csvColumnName2").html(options);
+        $("#csvLattitudeColumnName, #csvLongitudeColumnName, #csvGeomColumnName").html(options);
     };
 
     readCsvHeader = function (file) {

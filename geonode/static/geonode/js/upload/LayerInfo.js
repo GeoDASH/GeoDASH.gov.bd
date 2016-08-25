@@ -203,9 +203,13 @@ define(function (require, exports) {
             form_data.append('osm_layer_type', $('#osmLayerType').val());
         } else if(fileType == "csv"){
             var thegeoSelected = ($('#thegeo:checked').length > 0);
-            form_data.append('csv_layer_type', thegeoSelected ? 'thegeom' : 'latlon');
-            form_data.append('csv_layer_tvalue_1', $("#csvColumnName").val());
-            form_data.append('csv_layer_tvalue_2', $("#csvColumnName2").val());
+            form_data.append('csv_layer_type', thegeoSelected ? 'the_geom' : 'latlon');
+            if(thegeoSelected){
+                form_data.append('the_geom', $("#csvGeomColumnName").val()); // csvGeomColumnName csvLongitudeColumnName csvLattitudeColumnName
+            } else {
+                form_data.append('longitude', $("#csvLongitudeColumnName").val());
+                form_data.append('lattitude', $("#csvLattitudeColumnName").val());
+            }
         }
         form_data.append('layer_type', fileType);
 
