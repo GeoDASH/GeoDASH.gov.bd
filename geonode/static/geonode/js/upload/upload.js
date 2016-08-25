@@ -8,11 +8,12 @@ var layers = {};
 var geogig_stores = {};
 
 define(['underscore',
+        'geo-dash/papaparse.min',
         'upload/LayerInfo',
         'upload/FileTypes',
         'upload/path',
         'upload/common',
-        'text!templates/upload.html'], function (_, LayerInfo, fileTypes, path, common, uploadTemplate) {
+        'text!templates/upload.html'], function (_, Papa, LayerInfo, fileTypes, path, common, uploadTemplate) {
 
     var templates = {},
         findFileType,
@@ -30,6 +31,14 @@ define(['underscore',
         doSuccessfulUpload,
         attach_events,
         checkFiles,
+        processLayer,
+        getExtension,
+        isCsv,
+        isOsm,
+        readCsvHeader,
+        makeDropdownOptions,
+        csvRows = [],
+        sendOsmFile,
         fileTypes = fileTypes;
 
     $('body').append(uploadTemplate);
@@ -38,7 +47,7 @@ define(['underscore',
 
     templates.infoTemplate = _.template($('#infoTemplate').html());
 
-    /** Function to log errors to the #global-errors div 
+    /** Function to log errors to the #global-errors div
      *
      *  @params {options}
      *  @returns {string}
@@ -75,7 +84,7 @@ define(['underscore',
 
     /** Function to ...
      *
-     *  @params  
+     *  @params
      *  @returns
      */
     buildFileInfo = function (files) {
@@ -107,17 +116,17 @@ define(['underscore',
 
     /** Function to ...
      *
-     *  @params  
+     *  @params
      *  @returns
      */
     displayFiles = function (file_queue) {
         file_queue.empty();
-        
+
         var permission_edit = $("#permission-edit")
 
         permission_edit.show();
         var hasFullPermissionsWidget = false;
-        
+
         $.each(layers, function (name, info) {
             if (!info.type) {
                 log_error({
@@ -132,13 +141,13 @@ define(['underscore',
                 };
             }
         });
-        
+
         if(!hasFullPermissionsWidget){permission_edit.hide()};
     };
 
     /** Function to ...
      *
-     *  @params  
+     *  @params
      *  @returns
      */
     checkFiles = function(){
@@ -153,7 +162,7 @@ define(['underscore',
 
             var mosaic_is_valid = true;
             var is_granule = $('#' + base_name + '-mosaic').is(':checked');
-            
+
             var is_time_enabled = $('#' + base_name + '-timedim').is(':checked');
             var is_time_valid = is_time_enabled && !$('#' + base_name + '-timedim-value-valid').is(':visible');
 
@@ -163,12 +172,12 @@ define(['underscore',
 
             var is_adv_options_enabled = $('#' + base_name + '-timedim-presentation').is(':checked');
             var default_value = $('#' + base_name + '-timedim-defaultvalue-format-select').val();
-            
+
             if (default_value == 'NEAREST' || default_value == 'FIXED') {
                 var is_reference_value_valid = is_adv_options_enabled && !$('#' + base_name + '-timedim-defaultvalue-ref-value-valid').is(':visible')
                 mosaic_is_valid = is_time_valid && is_reference_value_valid;
             }
-            
+
             if (is_granule && !mosaic_is_valid) {
                 return false;
             }
@@ -257,7 +266,7 @@ define(['underscore',
                         }
                     });
                 } else if ('url' in data) {
-                    window.location = data.url; 
+                    window.location = data.url;
                 } else {
                     common.logError("unexpected response");
                 }
@@ -266,7 +275,7 @@ define(['underscore',
                 common.logError(resp);
            }
         });
-        return false; 
+        return false;
     };
 
 
@@ -304,13 +313,13 @@ define(['underscore',
             geogig_stores = JSON.parse(resp);
         }).fail(function (resp) {
             //
-        });        
+        });
     };
 
 
-    /** Initialization function. Called from main.js 
+    /** Initialization function. Called from main.js
      *
-     *  @params  
+     *  @params
      *  @returns
      */
     initialize = function (options) {
@@ -344,11 +353,15 @@ define(['underscore',
         dropZone.addEventListener('drop', function (e) {
             e.preventDefault();
             var files = e.dataTransfer.files;
+            processLayer(files);
             runUpload(files);
         });
 
         $(options.form).change(function (event) {
+            //console.log(event.target.files);
             // this is a mess
+            var files = event.target.files;
+            processLayer(files);
             buildFileInfo(_.groupBy(file_input.files, path.getName));
             displayFiles(file_queue);
         });
@@ -359,6 +372,131 @@ define(['underscore',
         if (geogig_enabled) {
             init_geogig_stores();
         }
+    };
+
+    processLayer = function (files) {
+        var isThatOsm = false;
+        var isThatCsv = false;
+        var file = null;
+        for(var i=0; i<files.length; i++){
+            //var isThatOsm = isOsm(getExtension(files[i].name));
+            var isThatCsv = isCsv(getExtension(files[i].name));
+            if(isThatOsm || isThatCsv){
+                file = files[i];
+                break;
+            }
+        }
+        /*if(isThatOsm){
+            $("#osmLayerSection").show();
+            //$("#permissionListAndSubmitSection").hide();
+            //sendOsmFile(files);
+        } else {
+            $("#osmLayerSection").hide();
+        }*/
+        if(isThatCsv){
+            readCsvHeader(file);
+        }
+    };
+
+    getExtension = function (filename) {
+        var parts = filename.split('.');
+        return parts[parts.length - 1];
+    };
+
+    isCsv = function (filename) {
+        var ext = getExtension(filename);
+        switch (ext.toLowerCase()) {
+            case 'csv':
+                //etc
+                return true;
+        }
+        return false;
+    };
+
+    isOsm = function (filename) {
+        var ext = getExtension(filename);
+        switch (ext.toLowerCase()) {
+            case 'osm':
+                //etc
+                return true;
+        }
+        return false;
+    };
+
+    makeDropdownOptions = function(csvRows){
+        //<option selected='selected' value="point">Point layer</option>
+        //<option value="line">Line layer</option>
+        //<option value="multi_line">Multi line layer</option>
+        //<option value="multipolygon">Multipolygon layer</option>
+        var csvHeaders = csvRows[0];
+        var options = '';
+        for(var i=0; i<csvHeaders.length; i++){
+            if(i==0){
+                options += '<option selected="selected" value="'+csvHeaders[i]+'">'+csvHeaders[i]+'</option>';
+            } else {
+                options += '<option value="'+csvHeaders[i]+'">'+csvHeaders[i]+'</option>';
+            }
+        }
+        $("#csvColumnName").html(options);
+        $("#csvColumnName2").html(options);
+    };
+
+    readCsvHeader = function (file) {
+        csvRows = [];
+        Papa.parse(file, {
+            //delimiter: ",",
+            //newline: "\n",
+            header: false,
+            //dynamicTyping: false,
+            //worker: false,
+            preview: 2,
+            step: function(results) {
+                if(results.data != undefined && results.data[0] != undefined ){
+                    csvRows.push(results.data[0]);
+                }
+                //console.log("Row:", results.data);
+                if(csvRows.length >= 2){
+                    makeDropdownOptions(csvRows);
+                }
+            }
+        });
+    };
+
+    sendOsmFile = function (file) {
+        var form_data = new FormData();
+        var prog = "";
+
+        var ext = getExtension(file.name);
+        form_data.append(ext + '_file', file);
+
+        $.ajaxQueue({
+            url: form_target,
+            async: true,
+            type: "POST",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            //xhr: function() {
+            //    var req = $.ajaxSettings.xhr();
+            //    if (req) {
+            //        req.upload.addEventListener('progress', function(evt) {
+            //            if(evt.lengthComputable) {
+            //                var pct = (evt.loaded / evt.total) * 100;
+            //                $('#prog > .progress-bar').css('width', pct.toPrecision(3) + '%');
+            //            }
+            //        }, false);
+            //    }
+            //    return req;
+            //},
+            beforeSend: function () {
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR);
+            },
+            success: function (resp, status) {
+                console.log(resp, status);
+            }
+        });
     };
 
     // public api

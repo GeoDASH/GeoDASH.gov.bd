@@ -192,9 +192,23 @@ define(function (require, exports) {
         }
 
         form_data.append('charset', $('#charset').val());
+        form_data.append('layer_title', $('#id-layer-upload-title').val());
+
+        // new field added
         form_data.append('category', $('#id-select-category').val());
         form_data.append('organization', $('#id-select-organization').val());
-        form_data.append('layer_title', $('#id-layer-upload-title').val());
+        // osm or csv file/layer uploaded
+        var fileType = $("#fileType").val();
+        if(fileType == "osm"){
+            form_data.append('osm_layer_type', $('#osmLayerType').val());
+        } else if(fileType == "csv"){
+            var thegeoSelected = ($('#thegeo:checked').length > 0);
+            form_data.append('csv_layer_type', thegeoSelected ? 'thegeom' : 'latlon');
+            form_data.append('csv_layer_tvalue_1', $("#csvColumnName").val());
+            form_data.append('csv_layer_tvalue_2', $("#csvColumnName2").val());
+        }
+        form_data.append('layer_type', fileType);
+
         if ($('#id_metadata_uploaded_preserve').prop('checked')) {
              form_data.append('metadata_uploaded_preserve', true);
         }
