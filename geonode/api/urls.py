@@ -22,8 +22,8 @@ from tastypie.api import Api
 
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
-        UndockResources, FavoriteUnfavoriteResources, OsmOgrInfo, LayerSource, FavoriteLayers, \
-    FavoriteMaps, FavoriteGroups, FavoriteDocuments
+        UndockResources, FavoriteUnfavoriteResources, OsmOgrInfo, LayerSourceServer, LayersWithFavoriteAndDoocked, \
+    MapsWithFavoriteAndDoocked, GroupsWithFavoriteAndDoocked, DocumentsWithFavoriteAndDoocked
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
@@ -51,11 +51,11 @@ api.register(MesseagesUnread()) # api for unread messages for an user
 api.register(UndockResources())
 api.register(FavoriteUnfavoriteResources())
 api.register(OsmOgrInfo())
-api.register(LayerSource())
-api.register(FavoriteLayers())
-api.register(FavoriteMaps())
-api.register(FavoriteGroups())
-api.register(FavoriteDocuments())
+api.register(LayerSourceServer())
+api.register(LayersWithFavoriteAndDoocked())
+api.register(MapsWithFavoriteAndDoocked())
+api.register(GroupsWithFavoriteAndDoocked())
+api.register(DocumentsWithFavoriteAndDoocked())
 api.register(LayerResourceWithFavorite())
 api.register(MapResourceWithFavorite())
 api.register(DocumentResourceWithFavorite())

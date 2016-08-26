@@ -700,7 +700,7 @@ class OsmOgrInfo(TypeFilteredResource):
 
 
 
-class LayerSource(TypeFilteredResource):
+class LayerSourceServer(TypeFilteredResource):
     """
     api for retrieving server info for layer source
     """
@@ -737,7 +737,7 @@ class MetaFavorite:
         ]
 
 
-class FavoriteLayers(TypeFilteredResource):
+class LayersWithFavoriteAndDoocked(TypeFilteredResource):
     class Meta(MetaFavorite):
         queryset = Layer.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
         if settings.RESOURCE_PUBLISHING:
@@ -746,12 +746,12 @@ class FavoriteLayers(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteLayers, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+        return super(LayersWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
 
 
-class FavoriteMaps(TypeFilteredResource):
+class MapsWithFavoriteAndDoocked(TypeFilteredResource):
     class Meta(MetaFavorite):
         queryset = Map.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
         if settings.RESOURCE_PUBLISHING:
@@ -761,11 +761,11 @@ class FavoriteMaps(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteMaps, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+        return super(MapsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
 
-class FavoriteGroups(TypeFilteredResource):
+class GroupsWithFavoriteAndDoocked(TypeFilteredResource):
     class Meta:
         queryset = GroupProfile.objects.filter(favoriteresource__active=True)
         if settings.RESOURCE_PUBLISHING:
@@ -775,10 +775,10 @@ class FavoriteGroups(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteGroups, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+        return super(GroupsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
-class FavoriteDocuments(TypeFilteredResource):
+class DocumentsWithFavoriteAndDoocked(TypeFilteredResource):
     class Meta(MetaFavorite):
         queryset = Document.objects.filter(favoriteresource__active=True, status='ACTIVE').order_by('-date')
         if settings.RESOURCE_PUBLISHING:
@@ -788,4 +788,4 @@ class FavoriteDocuments(TypeFilteredResource):
         allowed_methods = ['get']
 
     def get_object_list(self, request):
-        return super(FavoriteDocuments, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+        return super(DocumentsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
