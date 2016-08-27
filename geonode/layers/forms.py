@@ -23,6 +23,7 @@ import tempfile
 import zipfile
 import autocomplete_light
 import requests
+import shapefile
 
 from django import forms
 try:
@@ -123,6 +124,8 @@ class LayerUploadForm(forms.Form):
             raise forms.ValidationError(
                 "Only Shapefiles and GeoTiffs are supported. You uploaded a %s file" %
                 base_ext)
+        if base_ext.lower() == ".csv" and self.cleaned_data['the_geom'] != "geom":
+            raise forms.ValidationError("The field name of your .csv file which contains multilinestring coordinates should be 'geom' ")
         if base_ext.lower() == ".shp":
             if dbf_file is None or shx_file is None:
                 raise forms.ValidationError(
@@ -176,6 +179,9 @@ class LayerUploadForm(forms.Form):
                 for item in files:
                     if item.endswith('.shp'):
                         absolute_base_file = os.path.join(tempdir, item)
+            else:
+                raise forms.ValidationError('You are trying to upload {0} layer but the .osm file you provided contains'
+                                            '{1}'.format(osm_layer_type, response))
 
         elif extension.lower() == '.csv':
             the_geom = self.cleaned_data['the_geom']
@@ -232,7 +238,15 @@ class LayerUploadForm(forms.Form):
             files = os.listdir(tempdir)
             for item in files:
                 if item.endswith('.shp'):
-                    absolute_base_file = os.path.join(tempdir, item)
+                    shape_file = shapefile.Reader(os.path.join(tempdir, item))
+                    shapes = shape_file.shapes()
+                    names = [name for name in dir(shapes[1]) if not name.startswith('__')]
+                    if not 'bbox' in names:
+                        raise forms.ValidationError('The "geom" field of your .csv file does not contains valid multistring points'
+                                                    'or your uploaded file does not contains valid layer')
+                    else:
+                        absolute_base_file = os.path.join(tempdir, item)
+
 
         elif zipfile.is_zipfile(self.cleaned_data['base_file']):
             absolute_base_file = unzip_file(self.cleaned_data['base_file'], '.shp', tempdir=tempdir)
