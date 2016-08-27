@@ -207,8 +207,8 @@ class IndexClass(ListView):
                 context['is_feature_highlights'] = section.is_visible
             if section.section == 'interportability':
                 context['is_interportability'] = section.is_visible
-            if section.section == 'pretty_map':
-                context['make_pretty_maps_with_geodash'] = section.is_visible
+            if section.section == 'make_pretty_maps_with_geodash':
+                context['is_pretty'] = section.is_visible
             if section.section == 'view_your_maps_in_3d':
                 context['is_3dmap'] = section.is_visible
             if section.section == 'share_your_map':

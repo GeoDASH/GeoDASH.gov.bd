@@ -23,7 +23,7 @@
    {{ block.super }}
   {% block slider %}
       {% if is_slider or request.user.is_authenticated %}
-        <section class="gd-slider">
+        <section class="gd-slider" >
           <div id="carousel-home" class="carousel slide" data-ride="carousel">
               <!-- Indicators -->
               <!-- <ol class="carousel-indicators">
@@ -129,37 +129,41 @@
         <div class="index-max-width">
             <div id="gd-stastic">
                 <div class="container">
+                    {% if not request.user.is_authenticated %}
                         <div class="row" id="toolbar_hide">
                             <div class="col-md-3 pull-right">
-                                <div class="toolbar_right ">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>
-                                            <span>An open source Geospatial data management and visualization platform.</span>
+                                <div style="position: fixed;background: #eaeaed;">
+                                    <div class="toolbar_right">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>
+                                                <span>An open source Geospatial data management and visualization platform.</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="block-separator"></div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >
-                                                {% trans "Learn More" %}
-                                            </a>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >
-                                                {% trans "Public List" %}
-                                            </a>
-                                        </div>
-                                        <div class="col-md-1">
+                                        <div class="block-separator"></div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                    {% trans "Learn More" %}
+                                                </a>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                    {% trans "Public Layers" %}
+                                                </a>
+                                            </div>
+                                            <div class="col-md-1">
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
                     <div class="gd-stastic-control">
                         {% with facet_type='home' %}
                         {% facets as facets %}
@@ -546,7 +550,7 @@
       {% endblock %}
       <!-- Make Pretty -->
       {% block index_makepretty %}
-        {% if is_pretty_map or request.user.is_authenticated %}
+        {% if is_pretty or request.user.is_authenticated %}
             <div id="gd-makepretty" >
                 <div class="container">
                     <div class="gd-control">

@@ -285,7 +285,7 @@ define(['underscore',
      */
     doUploads = function () {
         if ($.isEmptyObject(layers)) {
-            common.logError('Please provide some files');
+            common.logError('Please provide layer files');
             return false;
         }
 

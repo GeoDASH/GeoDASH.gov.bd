@@ -32,12 +32,23 @@
             <div class="row">
                 <div class="col-md-12">
                     <div>Allowed layer types:</div>
-                    <div>
+                    <div class="block-separator"></div>
+                    <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                        &nbsp;Shape Layer :
                         <span class="label label-default">.shp</span>
                         <span class="label label-default">.shx</span>
                         <span class="label label-default">.dbf</span>
                         <span class="label label-default">.prj</span>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                        &nbsp;Open Street Map Layer :
                         <span class="label label-default">.osm</span>
+                    </div>
+                    <div class="block-separator"></div>
+                    <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                        &nbsp;Excel Format Data Layer :
+                        <span class="label label-default">.csv</span>
                     </div>
                 </div>
             </div>
@@ -128,21 +139,6 @@
                         </div>
                         <div class="block-separator"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <section id="fileTypeSection">
                             <div class="row">
                                 <div class="col-md-12">
@@ -178,29 +174,6 @@
                             </div>
                             <div class="block-separator"></div>
                         </section>
-                        <section id="csvLayerSection" style="display: none;">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select layer category" %} </label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input checked="checked" type="radio" name="csvcategory" id="thegeo" class="thegeo" value="thegeo"/>The Geom
-                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/>Latitude
-                                    and Longitude
-                                </div>
-                            </div>
-                            <div class="block-separator"></div>
-                        </section>
-
-
-
-
-
-
-
-
 
 
                         <div class="block-separator"></div>
@@ -229,36 +202,54 @@
                                        id="id_metadata_uploaded_preserve"/>
                             </div>
                         </section>
-
-
-
-
-
+                        <section id="csvLayerSection" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!--<label class="control-label"> {% trans "Select layer category" %} </label>-->
+                                    <label class="control-label"> {% trans "Select Geometry Definition" %} </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input checked="checked" type="radio" name="csvcategory" id="thegeo" class="thegeo" value="thegeo"/>
+                                        &nbsp;Well Known Text(WKT)
+                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/>Latitude
+                                        &nbsp;Point Coordinates
+                                </div>
+                            </div>
+                            <!--<div class="block-separator"></div>-->
+                        </section>
 
 
                         <section id="csvLatLonLayerSection" style="display: none;">
                             <div class="block-separator"></div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select the CSV Longitude Column Name" %} </label>
+                                <div class="col-md-4">
+                                    <label class="control-label"> {% trans "Select X-field" %} </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label"> {% trans "Select Y-field" %} </label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <select id="csvLongitudeColumnName" class="col-md-12"></select>
                                 </div>
-                            </div>
-                            <div class="block-separator"></div>
-                             <div class="row">
-                                <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select the CSV Lattitude Column Name" %} </label>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-4">
                                     <select id="csvLattitudeColumnName" class="col-md-12"></select>
                                 </div>
                             </div>
+                            <!--<div class="block-separator"></div>-->
+                             <!--<div class="row">-->
+                                <!--<div class="col-md-12">-->
+                                    <!--<label class="control-label"> {% trans "Select Y-field" %} </label>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<select id="csvLattitudeColumnName" class="col-md-12"></select>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="block-separator"></div>
                         </section>
 
@@ -266,17 +257,17 @@
                             <div class="block-separator"></div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select the CSV Geom Column Name" %} </label>
+                                    <label class="control-label"> {% trans "Select Coordinate" %} </label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4" id="csvColumnBox">
                                     <select id="csvGeomColumnName" class="col-md-12"></select>
+
                                 </div>
                             </div>
                             <div class="block-separator"></div>
                         </section>
-
 
 
 

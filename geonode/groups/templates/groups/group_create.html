@@ -32,13 +32,19 @@
                 <fieldset>
                     {{ form|as_bootstrap }}
                     <div class="form_block">
-                        <a href="{% url "create-user" %}" class="btn btn-gd-primary pull-left">
-                            {% trans "Or Create New Admin" %}
-                        </a>
-                        <br><br>
                         <input type="hidden" name="action" value="create" />
                         <input type="submit" class="btn btn-gd-primary" value="{% trans 'Create Organization' %}"/>
+                        <div style="float:right;">
+                            <a href="{% url "create-user" %}" class="">
+                            {% trans " Do You Want To Create New Organization Admin?" %}
+                            </a>
+                        </div>
                     </div>
+                    <!--<div class="form_block" style="float:right;">-->
+                        <!--<a href="{% url "create-user" %}" class="btn btn-gd-primary pull-left">-->
+                            <!--{% trans "Or Create New Admin" %}-->
+                        <!--</a>-->
+                    <!--</div>-->
                 </fieldset>
             </form>
           </div>

@@ -581,6 +581,10 @@ class CommonFavorite(ModelResource):
         bundle.data['owner'] = bundle.obj.owner
         bundle.data['category'] = bundle.obj.category
         bundle.data['group'] = bundle.obj.group
+        if bundle.request.user in bundle.obj.group.get_managers():
+            bundle.data['can_make_featured'] = True
+        else:
+            bundle.data['can_make_featured'] = False
 
         return bundle
 

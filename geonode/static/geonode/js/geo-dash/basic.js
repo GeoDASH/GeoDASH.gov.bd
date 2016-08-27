@@ -248,6 +248,7 @@ $(document).ready(function() {
     });
     $(document).ready(function() {
         $('#toolbar_remove').click(function() {
+        //alert("test");
             $("#toolbar_hide").remove();
             //var a = window.navigator.appCodeName;
             //alert(a);

@@ -3,7 +3,7 @@
 {% load base_tags %}
 
 {% load i18n %}
-{% block title %} {% trans "Favorites List" %} - {{ block.super }} {% endblock %}
+{% block title %} {% trans "Favorites" %} - {{ block.super }} {% endblock %}
 {% block extra_head %}
 <link href="{{ STATIC_URL }}geonode/css/style-index.css?v={{ VERSION }}" rel="stylesheet" />
 <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
@@ -26,12 +26,12 @@
                               {% trans "Layers" %}
                           </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_layers-fav"></span>
-                              {% trans "Favorites" %}
-                          </div>
-                      </div>
+                      <!--<div class="col-md-6">-->
+                          <!--<div class="text-right" style="font-size:20px;">-->
+                              <!--<span id="total_layers-fav"></span>-->
+                              <!--{% trans "Favorites" %}-->
+                          <!--</div>-->
+                      <!--</div>-->
                   </div>
                   <div class="hr"></div>
                 </div>
@@ -43,7 +43,7 @@
                                     <div class="container">
                                         <div class="gd-stastic">
                                             <div class="gd-featurd-maps-content-dash" >
-                                                <div id="carousel-home-dash-layer" style="background:#f4f8fb">
+                                                <div id="carousel-home-dash-layer" class="carousel slide" data-ride="carousel1" style="background:#f4f8fb">
                                                   <!-- Indicators -->
                                                   <!-- <ol class="carousel-indicators">
                                                       <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
@@ -53,7 +53,7 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div id="dash-layer-fav">
+                                                  <div class="carousel-inner " role="listbox" id="dash-layer-fav">
                                                       <!--<div class="item active">
                                                             <div class="grid-container-dash lmd" style="background:none;">
                                                                 <div class="avater">
@@ -85,12 +85,12 @@
                                                      <div class="item"></div>-->
                                                   </div>
                                                   <!-- Controls -->
-                                                  <!--<a class="left-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="prev">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true" ></span>-->
-                                                  <!--</a>-->
-                                                  <!--<a class="right-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="next">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"  ></span>-->
-                                                  <!--</a>-->
+                                                  <a class="left-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="prev">
+                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" ></span>
+                                                  </a>
+                                                  <a class="right-panel carousel-control" href="#carousel-home-dash-layer" role="button" data-slide="next">
+                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"  ></span>
+                                                  </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,12 +113,12 @@
                               {% trans "Maps" %}
                           </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_maps-fav"></span>
-                              {% trans "Favorites" %}
-                          </div>
-                      </div>
+                      <!--<div class="col-md-6">-->
+                          <!--<div class="text-right" style="font-size:20px;">-->
+                              <!--<span id="total_maps-fav"></span>-->
+                              <!--{% trans "Favorites" %}-->
+                          <!--</div>-->
+                      <!--</div>-->
                   </div>
                   <div class="hr"></div>
                 </div>
@@ -130,7 +130,7 @@
                                     <div class="container">
                                         <div class="gd-stastic">
                                             <div class="gd-featurd-maps-content-dash">
-                                                <div id="carousel-home-dash">
+                                                <div id="carousel-home-dash" class="carousel slide" data-ride="carousel2">
                                                   <!-- Indicators -->
                                                   <!-- <ol class="carousel-indicators">
                                                       <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
@@ -140,7 +140,7 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div id="dash-maps-fav">
+                                                  <div class="carousel-inner " role="listbox" id="dash-maps-fav">
                                                       <!--<div class="item active">-->
                                                         <!--<article class="gd-featurd-maps-container-dash" >-->
                                                             <!--<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">-->
@@ -177,12 +177,12 @@
                                                       <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
-                                                  <!--<a class="left-panel carousel-control" href="#carousel-home-dash" role="button" data-slide="prev">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
-                                                  <!--<a class="right-panel carousel-control" href="#carousel-home-dash" role="button" data-slide="next">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
+                                                  <a class="left-panel carousel-control" href="#carousel-home-dash" role="button" data-slide="prev">
+                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                  </a>
+                                                  <a class="right-panel carousel-control" href="#carousel-home-dash" role="button" data-slide="next">
+                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                  </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -205,12 +205,12 @@
                               {% trans "Documents" %}
                           </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_documents_fav"></span>
-                              {% trans " Favorites" %}
-                          </div>
-                      </div>
+                      <!--<div class="col-md-6">-->
+                          <!--<div class="text-right" style="font-size:20px;">-->
+                              <!--<span id="total_documents_fav"></span>-->
+                              <!--{% trans " Favorites" %}-->
+                          <!--</div>-->
+                      <!--</div>-->
                   </div>
                   <div class="hr"></div>
                 </div>
@@ -223,7 +223,7 @@
                                     <div class="container">
                                         <div class="gd-stastic">
                                             <div class="gd-featurd-maps-content-dash">
-                                                <div id="carousel-home-dash-doc">
+                                                <div id="carousel-home-dash-doc" class="carousel slide" data-ride="carousel3">
                                                   <!-- Indicators -->
                                                   <!-- <ol class="carousel-indicators">
                                                       <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
@@ -233,7 +233,7 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div id="dash-documents-fav">
+                                                  <div class="carousel-inner " role="listbox" id="dash-documents-fav">
                                                       <!--<div class="item active">-->
                                                         <!--<article class="gd-featurd-maps-container-dash" >-->
                                                             <!--&lt;!&ndash;-->
@@ -272,12 +272,12 @@
                                                       <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
-                                                  <!--<a class="left-panel carousel-control" href="#carousel-home-dash-doc" role="button" data-slide="prev">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
-                                                  <!--<a class="right-panel carousel-control" href="#carousel-home-dash-doc" role="button" data-slide="next">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
+                                                  <a class="left-panel carousel-control" href="#carousel-home-dash-doc" role="button" data-slide="prev">
+                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                  </a>
+                                                  <a class="right-panel carousel-control" href="#carousel-home-dash-doc" role="button" data-slide="next">
+                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                  </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -300,12 +300,12 @@
                               {% trans "Organizations" %}
                           </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_org-fav"></span>
-                              {% trans " Favorites" %}
-                          </div>
-                      </div>
+                      <!--<div class="col-md-6">-->
+                          <!--<div class="text-right" style="font-size:20px;">-->
+                              <!--<span id="total_org-fav"></span>-->
+                              <!--{% trans " Favorites" %}-->
+                          <!--</div>-->
+                      <!--</div>-->
                   </div>
                   <div class="hr"></div>
                 </div>
@@ -318,7 +318,7 @@
                                     <div class="container">
                                         <div class="gd-stastic">
                                             <div class="gd-featurd-maps-content-dash" style="background:#fff;">
-                                                <div id="carousel-home-dash-org">
+                                                <div id="carousel-home-dash-org" class="carousel slide" data-ride="carousel4">
                                                   <!-- Indicators -->
                                                   <!-- <ol class="carousel-indicators">
                                                       <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
@@ -328,7 +328,7 @@
                                                       <li data-target="#carousel-home" data-slide-to="4"></li>
                                                   </ol> -->
                                                   <!-- Wrapper for slides -->
-                                                  <div id="dash-org-fav">
+                                                  <div class="carousel-inner " role="listbox" id="dash-org-fav">
                                                       <!--<div class="item active">-->
                                                         <!--<article class="gd-featurd-maps-container-dash" >-->
                                                             <!--&lt;!&ndash;-->
@@ -367,12 +367,12 @@
                                                       <!--</div>-->
                                                   </div>
                                                   <!-- Controls -->
-                                                  <!--<a class="left-panel carousel-control" href="#carousel-home-dash-org" role="button" data-slide="prev">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
-                                                  <!--<a class="right-panel carousel-control" href="#carousel-home-dash-org" role="button" data-slide="next">-->
-                                                      <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-                                                  <!--</a>-->
+                                                  <a class="left-panel carousel-control" href="#carousel-home-dash-org" role="button" data-slide="prev">
+                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                  </a>
+                                                  <a class="right-panel carousel-control" href="#carousel-home-dash-org" role="button" data-slide="next">
+                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                  </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -391,7 +391,7 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='layers_with_favorite' %}?favorite=True';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='layers_with_favorite' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -407,7 +407,18 @@
             $("#total_layers-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
-                output += '<article class="gd-featurd-maps-container-dash">';
+                //console.log(i, (i%4));
+                if(item.favorite==true){
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
+
                 output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                 output +='<div class="avater">';
                 output +='<div class="avater-img">';
@@ -432,22 +443,29 @@
                 output +='<div class="contents">';
                 output +='<div class="title">';
                 output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                        if(item.title.length <= 20)
-                output +=''+item.title +'';
-                output +=''+ item.title.length  > 20 ? '..........' : ''  +'';
+                output +=''+ item.title  +'';
                 output +='</a>';
                 output +='</div>';
                 output +='</div>';
                 output +='</div></div>';
-                output +='</article>';
+                if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
+            }
            });
            $("#dash-layer-fav").append(output);
         }});
     });
+
+    function layerslice123(t_count){
+        //var make_favoriteStatus = undockStatus;
+        alert(t_count);
+    }
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritemaps' %}';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='maps_with_favorite' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -462,7 +480,17 @@
             $("#total_maps-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+            if(item.favorite==true){
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
@@ -478,7 +506,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="unfavourite('+item.id+',false);"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -492,7 +520,11 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                    output +='</article>';
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
+            }
            });
            $("#dash-maps-fav").append(output);
         }});
@@ -500,7 +532,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritedocuments' %}';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='documents_with_favorite' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -515,7 +547,17 @@
             $("#total_documents_fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+            if(item.favorite==true){
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
@@ -531,7 +573,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="#" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="unfavourite('+item.id+',false);"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -545,7 +587,11 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                    output +='</article>';
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
+            }
            });
            $("#dash-documents-fav").append(output);
         }});
@@ -553,7 +599,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritegroups' %}';
+      var url = '{% url 'api_dispatch_list' api_name='api' resource_name='groups_with_favorite' %}';
       $.ajax({
         url: url,
         type: 'GET',
@@ -568,7 +614,17 @@
             $("#total_org-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+            if(item.favorite==true){
+                    //console.log(i, (i%4));
+                if ( (i%4) == 0 && i == 0 ){
+                    //console.log('active', i, (i%4));
+                    output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                    //console.log('inactive', i, (i%4), t_count);
+                    output += '</div><div class="item">';
+                    output += '<article class="gd-featurd-maps-container-dash">';
+                }
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
@@ -584,7 +640,7 @@
                     output +='<div class="checkbox">';
                     output +='<label>';
                     output +='<span class="fa-stack fa-lg" >';
-                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times fa-stack-1x"></i></a>';
+                    output +='<a href="javascript:;" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="unfavouriteorg('+item.id+',false);"><i class="fa fa-times fa-stack-1x"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -598,7 +654,11 @@
                     output +='</div>';
                     output +='</div>';
                     output +='</div></div>';
-                    output +='</article>';
+                    if ((i+1) == t_count){
+                    //console.log('last', i, t_count);
+                    output +='</article></div>';
+                }
+            }
            });
            $("#dash-org-fav").append(output);
         }});
@@ -641,15 +701,16 @@
     </script>
     <script type="text/javascript" language="JavaScript">
 
-        function udockorg(undockID){
-        //var make_favoriteStatus = undockStatus;
+        function unfavouriteorg(undockID,undockStatus){
+        var make_favoriteStatus = undockStatus;
         //alert(undockID);
         //alert("Are you sure make this as undock ?");
             var url = '{% url 'api_dispatch_list' api_name='api' resource_name='undockit' %}';
                var makefavoriteID = undockID;
-               //var makefavoritesID = make_favoriteStatus;
+               var makefavoritesID = make_favoriteStatus;
                 var data = JSON.stringify({
-                "group_id": makefavoriteID
+                "group_id": makefavoriteID,
+                "status": makefavoritesID
             });
             $.ajax({
                 cache: false,

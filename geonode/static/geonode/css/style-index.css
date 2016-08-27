@@ -1124,3 +1124,11 @@ toolbar_right .border-dashed {
 toolbar_right .border-dotted {
   border: 4px dotted #9799a7;
 }
+
+.gd-username{
+    padding-left:7px;
+    padding-right:3px;
+    margin-top: 7px;
+    font-size:9px;
+    font-weight:normal;
+    }
