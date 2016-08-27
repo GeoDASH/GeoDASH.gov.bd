@@ -54,7 +54,8 @@ geonode-notification==1.1.1
 geonode-dialogos==0.4  
 gsconfig>=1.0.3  
 gsimporter==1.0.0  
-gisdata>=0.5.4  
+gisdata>=0.5.4
+pyshp==1.2.3
 
 # geopython dependencies
 OWSLib==0.11.0  
