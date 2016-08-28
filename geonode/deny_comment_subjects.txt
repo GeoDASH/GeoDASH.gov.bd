@@ -1,5 +1,1 @@
-Invalid Syntax
-Wrong information
-Inappropriate organization selection
-Invalid layer title
-this is not working
+Oops! Your layer haas been denied to publish on GeoDASH system.
