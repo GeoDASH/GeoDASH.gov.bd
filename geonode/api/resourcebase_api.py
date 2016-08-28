@@ -643,6 +643,7 @@ class GroupsResourceWithFavorite(ModelResource):
     class Meta:
         queryset = GroupProfile.objects.all()
         resource_name = 'groups_with_favorite'
+        ordering = ['title', 'date']
 
     def dehydrate(self, bundle):
 

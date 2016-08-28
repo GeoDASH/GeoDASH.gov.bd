@@ -75,6 +75,7 @@ class GroupProfile(models.Model):
         choices=GROUP_CHOICES,
         help_text=access_help_text)
     last_modified = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         group, created = Group.objects.get_or_create(name=self.slug)

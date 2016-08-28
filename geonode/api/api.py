@@ -714,6 +714,7 @@ class LayerSourceServer(TypeFilteredResource):
 class MetaFavorite:
     authorization = GeoNodeAuthorization()
     allowed_methods = ['get']
+    ordering = ['date', 'title', 'popular_count']
     fields =  [
             'id',
             'uuid',
