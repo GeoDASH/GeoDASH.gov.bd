@@ -599,6 +599,15 @@ class LayerResourceWithFavorite(CommonFavorite):
             queryset = queryset.filter(is_published=True)
         resource_name = 'layers_with_favorite'
         excludes = ['csw_anytext', 'metadata_xml']
+        filtering = {
+            'group': ALL
+        }
+    def get_object_list(self, request):
+        group = request.GET.get('group')
+        if group:
+            return super(LayerResourceWithFavorite, self).get_object_list(request).filter(group=group)
+        else:
+            return super(LayerResourceWithFavorite, self).get_object_list(request).filter(status='ACTIVE')
 
 
 class MapResourceWithFavorite(CommonFavorite):

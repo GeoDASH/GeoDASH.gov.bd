@@ -161,6 +161,7 @@
             <div class="col-md-12">
                 <div class="tab-content activity-style-list">
                     <article id="layerslist" class="tab-pane active">
+
                         <div class="no-style-list">
                             <div class="gd-content-body transparent" id="search-content-layers">
 
@@ -208,7 +209,7 @@
 
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function(){
-                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers' %}";
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers' %}"+ '?group='+ '{{ object.id }}';
                 $.ajax({
                     cache: false,
                     type: 'GET',

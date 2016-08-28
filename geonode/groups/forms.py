@@ -62,6 +62,9 @@ class GroupForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
 
         name = cleaned_data.get("title")
+        if not name:
+            return
+
         slug = slugify(name)
 
         cleaned_data["slug"] = slug
