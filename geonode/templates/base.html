@@ -232,16 +232,16 @@
                                 </a>
                             </div>
                         </div>
-                        <li class="notification">
+                        <!--<li class="notification">-->
                             <!--<a class="usi" href="{% url "_dashboard" %}" >-->
                                 <!--<button class="btn btn-default btn-link" >-->
                                     <!--<img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" title="Dashboard"  />-->
                                 <!--</button>-->
                             <!--</a>-->
-                            <div class="gd-username">{{ user.username }}</div>
-                        </li>
+                            <!--<div class="gd-username">{{ user.username }}</div>-->
+                        <!--</li>-->
                         <li class="profile_picture">
-                            <a href="javascript:;">
+                            <a href="javascript:;" title="{{ user.username }}">
                                 <div id="c-button--slide-right" class="c-button profile_pic">
                                     {% avatar user 50 %}
                                 </div>
