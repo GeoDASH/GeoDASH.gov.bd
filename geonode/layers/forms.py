@@ -124,7 +124,8 @@ class LayerUploadForm(forms.Form):
             raise forms.ValidationError(
                 "Only Shapefiles and GeoTiffs are supported. You uploaded a %s file" %
                 base_ext)
-        if base_ext.lower() == ".csv" and self.cleaned_data['the_geom'] != "geom":
+        if base_ext.lower() == ".csv" and self.cleaned_data['the_geom'] != "geom" and self.cleaned_data['the_geom'] != '':
+            import pdb;pdb.set_trace()
             raise forms.ValidationError("The field name of your .csv file which contains multilinestring coordinates should be 'geom' ")
         if base_ext.lower() == ".shp":
             if dbf_file is None or shx_file is None:
@@ -241,8 +242,8 @@ class LayerUploadForm(forms.Form):
                     shape_file = shapefile.Reader(os.path.join(tempdir, item))
                     shapes = shape_file.shapes()
                     names = [name for name in dir(shapes[1]) if not name.startswith('__')]
-                    if not 'bbox' in names:
-                        raise forms.ValidationError('The "geom" field of your .csv file does not contains valid multistring points'
+                    if not 'bbox' in names and the_geom:
+                        raise forms.ValidationError('The "geom" field of your .csv file does not contains valid multistring points '
                                                     'or your uploaded file does not contains valid layer')
                     else:
                         absolute_base_file = os.path.join(tempdir, item)
