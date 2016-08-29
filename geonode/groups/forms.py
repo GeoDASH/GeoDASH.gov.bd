@@ -106,9 +106,6 @@ class GroupMemberForm(forms.Form):
     def clean_user_identifiers(self):
         value = self.cleaned_data["user_identifiers"]
         new_members, errors = [], []
-        user = Profile.objects.get(username=value)
-        if not user.is_active:
-            errors.append("The user you selected is currently inactive")
 
         for ui in value.split(","):
             ui = ui.strip()
