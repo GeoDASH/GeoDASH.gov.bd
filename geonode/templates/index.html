@@ -190,6 +190,7 @@
                                     <div class="description">{% trans "Organizations" %}</div>
                                 </a>
                             </li>
+                            {% if user.is_authenticated %}
                             <li>
                                 <a href="{% url "profile_browse" %}">
                                     <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
@@ -198,6 +199,17 @@
                                     </div>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if not user.is_authenticated %}
+                            <li>
+                                <a style="cursor:pointer;" onclick="userspopup('SigninModal');">
+                                    <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
+                                    <div class="description">
+                                        {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
+                                    </div>
+                                </a>
+                            </li>
+                            {% endif %}
                         </ul>
                         {% endwith %}
                     </div>
@@ -526,7 +538,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="gd-interprobability-right">
-                                        <div class="title" style="text-align:center;">{% trans "interoperabity" %}</div>
+                                        <div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>
                                         <div class="description">
                                             {% trans "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content." %}
                                             {% trans "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces." %}
@@ -905,5 +917,9 @@ $(document).ready(function() {
         $('#SigninModal').modal('show');
         $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
     }
+    function userspopup(){
+            $('#SigninModal').modal('show');
+            $('#uploadsignlayer').attr('action', '/account/login/?next=/people');
+        }
 </script>
 {% endblock extra_script %}
