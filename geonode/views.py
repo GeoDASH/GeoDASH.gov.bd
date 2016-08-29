@@ -111,7 +111,7 @@ def ajax_lookup(request):
                                          Q(description__icontains=keyword))
     json_dict = {
 
-        'users': [({'username': u.username + ' ({0})'.format(u.email)}) for u in users],
+        'users': [({'username': u.username, 'eamil': u.email }) for u in users],
 
     }
 
