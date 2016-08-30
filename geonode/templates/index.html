@@ -406,7 +406,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div id="gd-latestnews-left">
-                                        <div class="news-title"><i class="fa fa-feed"></i>{% trans "Latest News" %}</div>
+                                        <div class="news-title"><i class="fa fa-feed"></i><a href="{% url "news-list" %}"> {% trans "Latest News" %}</a></div>
                                         <div id="accordion" >
                                             {% for news in latest_news_list %}
                                             <div class="accordion-section">
@@ -490,6 +490,14 @@
                                             {% trans "click on upload your layers/data," %}
                                             {% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}
                                             {% trans "Make sure your data projection is WGS 84 or BTM." %}
+                                        </div>
+                                        <div class="description" style="float:right;font-size:14px;">
+                                            {% if not user.is_authenticated %}
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                            <a href="{% url "layer_upload" %}">{% trans "Check Out Details" %}</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -582,6 +590,9 @@
                                             {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
                                             {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
                                             {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
+                                        </div>
+                                        <div class="description" style="float:right;font-size:14px;">
+                                            <a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>
                                         </div>
                                     </div>
                                 </div>
