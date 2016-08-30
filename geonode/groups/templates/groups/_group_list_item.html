@@ -3,7 +3,7 @@
     <table  class="table gd-list-table border-none">
         <tbody>
             <tr ng-repeat="group in results" ng-cloak>
-                <td width="60%">
+                <td width="50%">
                     <a href="{{ group.detail_url }}" class="media-list">
                         <div class="media">
                             <div class="media-left" style="width:50%;margin:0 auto;">
@@ -31,6 +31,22 @@
                                   <ng-pluralize count="group.manager_count" when="{'1': 'Manager', 'other': 'Managers'}"></ng-pluralize>
                                 </a>
                             </li>
+                            {% endverbatim %}
+                            {% if user.is_authenticated %}
+                            <li ng-if="group.favorite">
+                                <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteGroup(group.id,false);" style="background:#d0d0d0;border:none;color:#000;padding:7px 25px;" data-favouriteID="{{group.id}}" data-favouriteStatus="false">
+                                  <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                  Unfavorite
+                                </button>
+                            </li>
+                            <li ng-if="!group.favorite">
+                                <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteGroup(group.id,false);" data-favouriteID="{{group.id}}" data-favouriteStatus="false">
+                                  <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                  Add to favorite
+                                </button>
+                            </li>
+                            {% endif %}
+                            {% verbatim %}
                         </ul>
                     </div>
                 </td>
@@ -59,27 +75,51 @@
                       </a>
                   </div>
               </div>
-              <div class="bottom-content">
-                  <div class="profile-items text-center">
-                      <ul class="list-inline">
-                          <li>
-                            <a href="{{ group.detail_url }}">
-                              <strong>{{ group.member_count }}</strong>
-                              <ng-pluralize count="group.member_count" when="{'1': 'Member', 'other': 'Members'}"></ng-pluralize>
-                            </a>
-                          </li>
-                          <li>
-                              <a href="{{ group.detail_url }}">
-                                <strong>{{ group.manager_count }}</strong>
-                                <ng-pluralize count="group.manager_count" when="{'1': 'Manager', 'other': 'Managers'}"></ng-pluralize>
-                              </a>
-                          </li>
-                      </ul>
+              <div>
+                  <div class="bottom-content">
+                      <div class="row">
+                          <div class="profile-items text-center">
+                              <ul class="list-inline">
+                                  <li>
+                                    <a href="{{ group.detail_url }}">
+                                      <strong>{{ group.member_count }}</strong>
+                                      <ng-pluralize count="group.member_count" when="{'1': 'Member', 'other': 'Members'}"></ng-pluralize>
+                                    </a>
+                                  </li>
+                                  <li>
+                                      <a href="{{ group.detail_url }}">
+                                        <strong>{{ group.manager_count }}</strong>
+                                        <ng-pluralize count="group.manager_count" when="{'1': 'Manager', 'other': 'Managers'}"></ng-pluralize>
+                                      </a>
+                                  </li>
+                                  <div class="block-separator"></div>
+                                  {% endverbatim %}
+                                  {% if user.is_authenticated %}
+                                  {% verbatim %}
+                                  <li ng-if="group.favorite" class="col-md-12" >
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteGroup(group.id,false);" style="background:#d0d0d0;border:none;color:#000;" data-favouriteID="{{group.id}}" data-favouriteStatus="false">
+                                          <i class="fa fa-heart-o" style="border:none;color:#000;"></i>
+                                          Unfavorite
+                                      </button>
+                                  </li>
+                                  <li ng-if="!group.favorite" class="col-md-12">
+                                      <button class="btn col-md-12 btn-gd-primary" ng-click="favouriteGroup(group.id,true);" data-favouriteID="{{group.id}}" data-favouriteStatus="true">
+                                          <i class="fa fa-heart-o" ></i>
+                                          Add to favorite
+                                      </button>
+                                  </li>
+                                  {% endverbatim %}
+                                  {% endif %}
+                              </ul>
+                          </div>
+                      </div>
                   </div>
-              </div>
+              <div>
+              {% verbatim %}
           </div>
       </div>
     </article>
   </div>
 </div>
 {% endverbatim %}
+

@@ -26,6 +26,7 @@
       <link href="{{ STATIC_URL }}geonode/css/select2.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/menu.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/fixed-style.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/jquery.mCustomScrollbar.css?v={{ VERSION }}" rel="stylesheet" />
 
       <style type="text/css">[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}</style>
@@ -54,9 +55,8 @@
   </head>
 
   <body class="{% block body_class %}{% endblock %}">
-
     {% block header %}
-    <section id="gd-header" class="sticky">
+    <section id="gd-header" class="sticky" >
         <!-- <nav class="navbar navbar-default"> -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -149,7 +149,17 @@
                                 {% endif %}
                             </ul>
                         </li>
-                        <li><a href="/news/">{% trans "NEWS" %}</a></li>
+                        <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="notification">
+                            <a class="usi" href="{% url "_dashboard" %}" title="Dashboard">
+                                <button class="btn btn-default btn-link" >
+                                    <img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" style="margin-top:-15px;" title="Dashboard"  />
+                                </button>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -157,9 +167,9 @@
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
                                 <div class="input-group">
                                     {% if HAYSTACK_SEARCH %}
-                                        <input id="search_input" type="text" placeholder="" name="q" >
+                                        <input id="search_input" type="text" placeholder="" name="q" style="color:#5a5d63;">
                                     {% else %}
-                                        <input id="search_input" type="text" placeholder="" name="title__icontains">
+                                        <input id="search_input" type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
@@ -193,31 +203,47 @@
                         </li>
                         {% endif %}
                         {% if user.is_authenticated %}
-                        <!-- <li class="notification">
-                            <a href="javascript:;">
+
+                        <li class="notification">
+                            <a href="{% url "messages_inbox" %}" >
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
                                 </button>
-                                <span class="badge badge-notifymsg">3</span>
+                                <span class="badge badge-notifymsg">{{ request.user.message_unread }}</span>
                             </a>
                         </li>
-                        <li class="notification">
-                            <a href="javascript:;">
+                        <li class="notification" id="show-notification">
+                            <a href="javascript:;" id="a_href">
                                 <button class="btn btn-default btn-link">
-                                    <i class="fa fa-bell"></i>
+                                    <i class="fa fa-bell" ></i>
                                 </button>
-                                <span class="badge badge-notify">3</span>
+                                <span class="badge badge-notify" id="rload">{{ request.user.notifications.unread.count }}</span>
                             </a>
                         </li>
-                        <li class="notification">
-                            <a class="usi" href="javascript:;">
-                                <button class="btn btn-default btn-link">
-                                    <img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" />
-                                </button>
-                            </a>
-                        </li> -->
+                        <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
+                            <div class="notifications" style="height:250px;overflow:auto;">
+                                <ul class="text-center">
+                                    {% load notification_tags %}
+                                    {% include_notify_js_variables %}
+                                    {% user_notifications %}
+                                </ul>
+                            </div>
+                            <div style="padding:10px 0px 0px 20px;z-index:100">
+                                <a class="btn btn-gd-primary icon-btn-color" href="{% url "notifications_all" %}" target="_self">
+                                        Show All Notifications
+                                </a>
+                            </div>
+                        </div>
+                        <!--<li class="notification">-->
+                            <!--<a class="usi" href="{% url "_dashboard" %}" >-->
+                                <!--<button class="btn btn-default btn-link" >-->
+                                    <!--<img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" title="Dashboard"  />-->
+                                <!--</button>-->
+                            <!--</a>-->
+                            <!--<div class="gd-username">{{ user.username }}</div>-->
+                        <!--</li>-->
                         <li class="profile_picture">
-                            <a href="javascript:;">
+                            <a href="javascript:;" title="{{ user.username }}">
                                 <div id="c-button--slide-right" class="c-button profile_pic">
                                     {% avatar user 50 %}
                                 </div>
@@ -246,7 +272,6 @@
         </nav>
     </section>
     {% endblock header %}
-
     <div class="alert alert-danger alert-dismissible" role="alert" id="ieflag" style="display:none">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <h1>You are using an outdated browser that is not supported by GeoNode.</h1>
@@ -299,6 +324,7 @@
                         <li><a href="{% url "termsandcondition" %}">{% trans "Terms and Condition" %}</a></li>
                         <li><a href="{% url "policy" %}">{% trans "Privacy Policy" %}</a></li>
                         <li><a href="{% url "termsofuse" %}">{% trans "Terms of use" %}</a></li>
+                        <!--<li><a href="{% url "formtest" %}">{% trans "Test API" %}</a></li>-->
                     </ul>
                     <!--</div>-->
 
@@ -353,7 +379,7 @@
                           <span>{% trans "Sign in to your account" %}</span>
                           </div>
                       </div>
-                      <form class="form-signin" id ="uploadsignlayer" role="form" action="{% url "account_login" %}?next={{ request.path }}" method="post">
+                      <form class="form-signin" id ="uploadsignlayer" role="form" action="{% url "account_login" %}?next={{ '_dashboard' }}" method="post">
                         {% csrf_token %}
                           {% if redirect_field_value %}
                           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
@@ -552,9 +578,9 @@
                                 <div class="txt">{{ user.username }}</div>
                             </a>
                         </div>
-                        <div class="designation">
-                            {{ user.position | default:_('Not provided.') }}
-                        </div>
+                        <!--<div class="designation">-->
+                            <!--{{ user.position | default:_('Not provided.') }}-->
+                        <!--</div>-->
                     </div>
                 </div>
             </article>
@@ -563,20 +589,52 @@
             <li class="c-menu__item">
                 <a href="{% url "layer_upload" %}" class="c-menu__link">
                     <i class="fa fa-cloud-upload"></i>
-                    {% trans "Upload Layers" %}
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Upload Layers" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{{ user.get_absolute_url }}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/profile.png" alt="Profile">
-                    {% trans "Profile" %}
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-3px;">{% trans "Profile" %}</span>
                 </a>
             </li>
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "section-list-table" %}" class="c-menu__link">
+                    <i class="fa fa-tasks"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "topiccategory-list" %}" class="c-menu__link">
+                    <i class="fa fa-map-marker"></i> {% trans "Manage Category" %}
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "wms-server-list" %}" class="c-menu__link">
+                    <i class="fa fa-tasks"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-7px;">{% trans "Add Server" %}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "news-create" %}" class="c-menu__link">
+                    <i class="fa fa-file-text-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-6px;">{% trans "Add News" %}</span>
+                </a>
+            </li>
+            {% endif %}
             {% if request.user.is_authenticated %}
             {% if request.user.is_member_of_any_group or  request.user.is_manager_of_any_group or request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "member-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Member-Workspace" %}
+                    <i class="fa fa-building-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Member-Workspace" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -585,28 +643,30 @@
             {% if request.user.is_authenticated and request.user.is_manager_of_any_group %}
             <li class="c-menu__item">
                 <a href="{% url "admin-workspace-layer" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Admin-Workspace" %}
+                    <i class="fa fa-building-o"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Admin-Workspace" %}</span>
                 </a>
             </li>
             {% endif %}
             {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
               <li class="c-menu__item">
                   <a href="{% url "create-user" %}" class="c-menu__link">
-                    <i class="fa fa-fire"></i> {% trans "Create User" %}
+                    <i class="fa fa-fire"></i>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Create User" %}</span>
                   </a>
               </li>
             {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "recent-activity" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/recent-activity.png" alt="Recent Activity">
-                    {% trans "Recent Activity" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Recent Activity" %}</span>
                 </a>
             </li>
             {% if perms.announcements.can_manage %}
             <li class="c-menu__item">
                 <a href="{% url "announcements_list" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/announcements.png" alt="Announcements">
-                    {% trans "Announcements" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Announcements" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -614,19 +674,19 @@
             <li class="c-menu__item">
                 <a href="{% url "services" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/remote-services.png" alt="Remote Services">
-                    {% trans "Remote Services" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Remote Services" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "account_invite_user" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User">
-                    {% trans "Invite User" %}
+                    <span style="text-align:left;color:#fff;margin-left:-14px;">{% trans "Invite User" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{{ GEOSERVER_BASE_URL }}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/geo-server.png" alt="GeoServer">
-                    {% trans "GeoServer" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "GeoServer" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -643,7 +703,7 @@
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    {% trans "Help" %}
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Help" %}</span>
                 </a>
             </li>
             <li class="c-menu__item active">
@@ -652,7 +712,7 @@
                   <a class="c-menu__link" href="javascript:{}"
                      onclick="document.getElementById('logout_form').submit();">
                       <img src="{{ STATIC_URL }}geonode/images/user-icon/logout.png" alt="Logout">
-                      {% trans "Log out" %}
+                      <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Log out" %}</span>
                   </a>
                 </form>
             </li>
@@ -685,9 +745,12 @@
     <script src="{{ STATIC_URL }}geonode/js/base/base.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/menu.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/basic.js?v={{ VERSION }}"></script>
+    <script src="{{ STATIC_URL }}notify/notifyX.js?v={{ VERSION }}"></script>
     {% include 'autocomplete_light/static.html' %}
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
+
     {% block extra_script %}{% endblock extra_script %}
+
     <script type="text/javascript">
         var autocomplete = $('#search_input').yourlabsAutocomplete({
             url: '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}',
@@ -742,7 +805,37 @@
             $('#uploadsignlayer').attr('action', '/account/login/?next=/documents/upload');
         }
     </script>
+
     <script type="text/javascript" src="{% url "lang" %}"></script>
 
   </body>
 </html>
+<!-- Modal -->
+<div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="memberModalLabel">Thank you for signing in!</h4>
+      </div>
+      <div class="modal-body">
+        <p>However the account provided is not known.<BR>
+        If you just got invited to the group, please wait for a day to have the database synchronized.</p>
+
+        <p>You will now be shown the Demo site.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    <!--function loadmodal(){-->
+    <!--$(".home").load(function(){-->
+        <!--$('#memberModal').modal('show');-->
+    <!--});-->
+    <!--}-->
+    <!--('#body').attr({onload : "loadmodal();"});-->
+</script>

@@ -1,6 +1,8 @@
 {% include 'geonode/ext_header.html' %}
 {% include 'geonode/geo_header.html' %}
 <link href="{{ STATIC_URL}}geonode/css/geoexplorer/map_geoexplorer.css" rel="stylesheet"/>
+<script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/OpenLayers.Handler.RegularPolygon.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/sdsl.plugins.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/GeoNode-mixin.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/Geonode-CatalogueApiSearch.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/GeoNode-GeoExplorer.js"></script>
@@ -38,9 +40,30 @@ Ext.onReady(function() {
        }
     }, {{ config }});
 
-    console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ",config);
-    //console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ", JSON.stringify(config));
-    app = new GeoNode.Composer(config);
+     $.ajax({
+        url: "/api/layersource",
+        success: function(result){
+            //console.log(result);
+            var layerList = result.objects;
+
+            for(var i=0; i<layerList.length; i++){
+                var layer = layerList[i];
+                var layerObj = {
+                    ptype: layer.ptype,
+                    url: layer.url,
+                    title: layer.title
+                };
+                config.sources['GeonodeWMS'+layer.id+'Server'] = layerObj;
+            }
+            console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ",config);
+            app = new GeoNode.Composer(config);
+        },
+         error: function(){
+             console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ",config);
+            //console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ", JSON.stringify(config));
+            app = new GeoNode.Composer(config);
+         }
+    });
 {% endautoescape %}
 });
 </script>

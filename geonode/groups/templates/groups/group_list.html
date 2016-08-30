@@ -66,11 +66,11 @@
                                                   {% trans "Z - A" %}
                                                 </a>
                                               </li>
-                                              <li>
-                                                <a data-value="-popular_count" data-filter="order_by" ng-click="single_choice_listener($event)">
-                                                  {% trans "Most popular" %}
-                                                </a>
-                                              </li>
+                                              <!--<li>-->
+                                                <!--<a data-value="-popular_count" data-filter="order_by" ng-click="single_choice_listener($event)">-->
+                                                  <!--{% trans "Most popular" %}-->
+                                                <!--</a>-->
+                                              <!--</li>-->
                                           </ul>
                                       </div>
                                   </div>
@@ -98,7 +98,7 @@
 
 {% block extra_script %}
   <script type="text/javascript">
-    SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='groups' %}'
+    SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='groups_with_favorite' %}'
   </script>
   {% with include_spatial='false' %}
   {% include 'search/search_scripts.html' %}

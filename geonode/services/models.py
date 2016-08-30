@@ -25,7 +25,6 @@ from geoserver.catalog import FailedRequestError, Catalog
 
 from geonode.base.models import ResourceBase
 from geonode.services.enumerations import SERVICE_TYPES, SERVICE_METHODS, GXP_PTYPES
-from geonode.layers.models import Layer
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
 from geonode.people.enumerations import ROLE_VALUES
@@ -108,7 +107,7 @@ class ServiceProfileRole(models.Model):
 
 class ServiceLayer(models.Model):
     service = models.ForeignKey(Service)
-    layer = models.ForeignKey(Layer, null=True)
+    layer = models.ForeignKey('layers.Layer', null=True)
     typename = models.CharField(_("Layer Name"), max_length=255)
     title = models.CharField(_("Layer Title"), max_length=512)
     description = models.TextField(_("Layer Description"), null=True)

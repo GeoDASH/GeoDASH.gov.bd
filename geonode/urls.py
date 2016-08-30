@@ -27,8 +27,8 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 
 import geonode.proxy.urls
-
 from geonode.api.urls import api
+from geonode.views import IndexClass
 
 import autocomplete_light
 
@@ -57,15 +57,21 @@ urlpatterns = patterns('',
                        url(r'^termsandcondition/?$', TemplateView.as_view(template_name='termsandcondition.html'),name='termsandcondition'),
                        url(r'^policy/?$', TemplateView.as_view(template_name='policy.html'), name='policy'),
                        url(r'^termsofuse/?$', TemplateView.as_view(template_name='termsofuse.html'), name='termsofuse'),
-                       url(r'^news/?$', TemplateView.as_view(template_name='news/news_list.html'), name='news'),
-                       url(r'^news/details/?$', TemplateView.as_view(template_name='news/news_details.html'), name='news_details'),
-                       url(r'^/?$', TemplateView.as_view(template_name='index.html'), name='home'),
+                       # url(r'^/?$', TemplateView.as_view(template_name='index.html'), name='home'),
+                       url(r'^/?$', IndexClass.as_view(), name='home'),
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
                        url(r'^developer/$', TemplateView.as_view(template_name='developer.html'), name='developer'),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
 
+                       url(r'^formtest/$', TemplateView.as_view(template_name='formtest.html'), name='formtest'),
+                       url(r'^add_news/$', TemplateView.as_view(template_name='news/add_news.html'), name='add_news'),
+                       url(r'^notifications/$', TemplateView.as_view(template_name='notification/notifications_detail_page.html'), name='notifications_all'),
+
                        # Layer views
                        (r'^layers/', include('geonode.layers.urls')),
+
+                       # News views
+                       (r'^news/', include('geonode.news.urls')),
 
                        # workspace views
                        (r'^workspace/', include('geonode.workspace.urls')),
@@ -76,6 +82,9 @@ urlpatterns = patterns('',
                        # Catalogue views
                        (r'^catalogue/', include('geonode.catalogue.urls')),
 
+                       # dashboard views
+                       (r'^dashboard/', include('geonode.dashboard.urls')),
+
                        # data.json
                        url(r'^data.json$', 'geonode.catalogue.views.data_json', name='data_json'),
 
@@ -85,11 +94,14 @@ urlpatterns = patterns('',
                        # Search views
                        url(r'^search/$', TemplateView.as_view(template_name='search/search.html'), name='search'),
 
+                       # user notification url
+                       url(r'^notifications/', include('notify.urls', 'notifications')),
+
                        # Social views
                        (r"^account/", include("account.urls")),
                        (r'^people/', include('geonode.people.urls')),
                        (r'^avatar/', include('avatar.urls')),
-                       (r'^comments/', include('dialogos.urls')),
+                       (r'^comments/', include('geonode.dialogos.urls')),
                        (r'^ratings/', include('agon_ratings.urls')),
                        (r'^activity/', include('actstream.urls')),
                        (r'^announcements/', include('announcements.urls')),
@@ -102,6 +114,9 @@ urlpatterns = patterns('',
                        url(r'^account/ajax_lookup$', 'geonode.views.ajax_lookup', name='account_ajax_lookup'),
 
                        # Meta
+                       url(r'^topiccategory/create$', 'geonode.views.topiccategory_create', name='topiccategory-create'),
+                       url(r'^topiccategory/list$', 'geonode.views.topiccategory_list', name='topiccategory-list'),
+                       url(r'^topiccategory/delete$', 'geonode.views.topiccategory_delete', name='topiccategory-delete'),
                        url(r'^lang\.js$', TemplateView.as_view(template_name='lang.js', content_type='text/javascript'),
                            name='lang'),
 

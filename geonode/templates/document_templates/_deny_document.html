@@ -1,3 +1,4 @@
+{% load bootstrap_tags %}
 {% load i18n %}
     <div class="modal fade" id="_deny_document" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="width:500px;">
@@ -15,29 +16,14 @@
               <p class="message">}</p>
               <p class="extra_content"></p>
             </div>
+
+
+
               <form method="post" action="{% url "document-deny" resource.id %}">
               {% csrf_token %}
-                  <div class="form-group" style="padding:0px 50px 0px 50px;">
-                    <label >{% trans "Comment subject" %}</label>
-                      <select class="form-control" name="comment-subject" >
-                        {% for subject in deny_comment_subjects %}
-                            <option value="{{ subject }}">{{ subject }}</option>
-                        {% empty %}
-                            <option value="">No Subject</option>
-                        {% endfor %}
-                      </select>
-                  </div>
+
                  <div style="padding:0px 50px 0px 50px;">
-                      <div class="row">
-                          <div class="col-md-12">
-                              <label >{% trans "Please comment here" %}</label>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-md-12">
-                               <textarea name="comment" class="col-md-12" style="font-size:14px;"></textarea>
-                          </div>
-                       </div>
+                      {{ deny_form|as_bootstrap }}
                       <div class="block-separator"></div>
                   </div>
               <div class="modal-footer" style="padding:10px 50px 0px 50px;">
@@ -46,6 +32,14 @@
               </div>
               <div class="block-separator"></div>
               </form>
+
+
+
+
+
+
+
+
           </div>
         </div>
     </div>

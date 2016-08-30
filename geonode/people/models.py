@@ -24,6 +24,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db.models import signals
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from taggit.managers import TaggableManager
 
@@ -31,6 +32,7 @@ from geonode.base.enumerations import COUNTRIES
 from geonode.groups.models import GroupProfile
 
 from account.models import EmailAddress
+from user_messages.models import UserThread
 
 from .utils import format_address
 
@@ -126,6 +128,10 @@ class Profile(AbstractUser):
     def is_member_of_any_group(self):
         return GroupProfile.objects.filter(groupmember__user=self, groupmember__role="member").exists()
 
+    @property
+    def message_unread(self):
+        return UserThread.objects.filter(user=self, unread=True).count()
+
     def keyword_list(self):
         """
         Returns a list of the Profile's keywords.
@@ -167,6 +173,9 @@ def profile_post_save(instance, sender, **kwargs):
             defaults={'email': instance.email, 'verified': False})
         if not created:
             EmailAddress.objects.filter(user=instance, primary=True).update(email=instance.email)
+    default_group = get_object_or_404(GroupProfile, slug='default')
+    if not instance.is_superuser:
+        default_group.join(instance, role='member')
 
 
 def email_post_save(instance, sender, **kw):

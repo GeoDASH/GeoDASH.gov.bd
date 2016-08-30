@@ -38,6 +38,7 @@ from django.db.models import signals
 from django.core.files import File
 
 from mptt.models import MPTTModel, TreeForeignKey
+from taggit.managers import TaggableManager
 
 from polymorphic.models import PolymorphicModel
 from polymorphic.managers import PolymorphicManager
@@ -49,7 +50,8 @@ from geonode.base.enumerations import ALL_LANGUAGES, \
 from geonode.utils import bbox_to_wkt
 from geonode.utils import forward_mercator
 from geonode.security.models import PermissionLevelMixin
-from taggit.managers import TaggableManager
+from geonode.people.models import Profile
+from geonode.groups.models import GroupProfile
 
 from geonode.people.enumerations import ROLE_VALUES
 
@@ -98,9 +100,9 @@ class TopicCategory(models.Model):
     <CodeListDictionary gml:id="MD_MD_TopicCategoryCode">
     """
     identifier = models.CharField(max_length=255, default='location')
-    description = models.TextField(default='')
+    description = models.TextField(default='', verbose_name=_('Field description'))
     gn_description = models.TextField('GeoNode description', default='', null=True)
-    is_choice = models.BooleanField(default=True)
+    is_choice = models.BooleanField(default=True, verbose_name=_('Is active'))
 
     def __unicode__(self):
         return u"{0}".format(self.gn_description)
@@ -108,6 +110,25 @@ class TopicCategory(models.Model):
     class Meta:
         ordering = ("identifier",)
         verbose_name_plural = 'Metadata Topic Categories'
+
+    def is_used_in_any_resource(self):
+        from geonode.layers.models import Layer
+        layers = Layer.objects.all()
+        for layer in layers:
+            if layer.category == self:
+                return True, 'Layer resource'
+        from geonode.maps.models import Map
+        maps = Map.objects.all()
+        for map in maps:
+            if map.category == self:
+                return True, 'Map resource'
+        from geonode.documents.models import Document
+        documents = Document.objects.all()
+        for document in documents:
+            if document.category == self:
+                return True, 'Document resource'
+
+        return False, 'No resource'
 
 
 class SpatialRepresentationType(models.Model):
@@ -291,6 +312,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
                                                     limit_choices_to=Q(is_choice=True),
                                                     verbose_name=_("spatial representation type"),
                                                     help_text=spatial_representation_type_help_text)
+    resource_type = models.CharField(max_length=50, help_text=_('type of resource layer, map or document'), default='')
 
     # Section 5
     temporal_extent_start = models.DateTimeField(_('temporal extent start'), blank=True, null=True,
@@ -344,6 +366,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
 
     featured = models.BooleanField(_("Featured"), default=False,
                                    help_text=_('Should this resource be advertised in home page?'))
+
     is_published = models.BooleanField(_("Is Published"), default=True,
                                        help_text=_('Should this resource be published and searchable?'))
 
@@ -734,7 +757,8 @@ def resourcebase_post_save(instance, *args, **kwargs):
     ResourceBase.objects.filter(id=instance.id).update(
         thumbnail_url=instance.get_thumbnail_url(),
         detail_url=instance.get_absolute_url(),
-        csw_insert_date=datetime.datetime.now())
+        csw_insert_date=datetime.datetime.now(),
+        resource_type=instance.polymorphic_ctype.name)
     instance.set_missing_info()
 
     # we need to remove stale links
@@ -754,3 +778,31 @@ def rating_post_save(instance, *args, **kwargs):
     ResourceBase.objects.filter(id=instance.object_id).update(rating=instance.rating)
 
 signals.post_save.connect(rating_post_save, sender=OverallRating)
+
+
+
+class FavoriteResource(models.Model):
+    """
+    This model keeps information for favorite layers, maps, groups, documents
+    """
+
+    user = models.ForeignKey(Profile)
+    group = models.ForeignKey(GroupProfile, null=True, blank=True)
+    resource = models.ForeignKey(ResourceBase, null=True, blank=True)
+    active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+
+class DockedResource(models.Model):
+    """
+    This model keeps information for docked layers, maps, groups, documents
+    """
+
+    user = models.ForeignKey(Profile)
+    group = models.ForeignKey(GroupProfile, null=True, blank=True)
+    resource = models.ForeignKey(ResourceBase, null=True, blank=True)
+    active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)

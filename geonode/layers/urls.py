@@ -42,7 +42,7 @@ urlpatterns = patterns(
     #layer publish activity urls
     url(r'^(?P<layer_pk>[0-9]+)/publish$', 'layer_publish', name='layer-publish'),
     url(r'^(?P<layer_pk>[0-9]+)/approve$', 'layer_approve', name='layer-approve'),
-    url(r'^(?P<layer_pk>[0-9]+)/deney$', 'layer_deney', name='layer-deney'),
+    url(r'^(?P<layer_pk>[0-9]+)/deny$', 'layer_deny', name='layer-deny'),
     url(r'^(?P<layer_pk>[0-9]+)/delete$', 'layer_delete', name='layer-delete'),
 
     # url(r'^api/batch_permissions/?$', 'batch_permissions',

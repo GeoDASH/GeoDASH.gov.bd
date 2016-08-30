@@ -27,6 +27,7 @@ from django.contrib.auth import get_user_model
 
 from geonode.groups.models import GroupProfile
 from geonode.people.models import Profile
+from geonode.groups.models import QuestionAnswer
 
 
 class GroupForm(forms.ModelForm):
@@ -61,6 +62,9 @@ class GroupForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
 
         name = cleaned_data.get("title")
+        if not name:
+            return
+
         slug = slugify(name)
 
         cleaned_data["slug"] = slug
@@ -69,7 +73,7 @@ class GroupForm(forms.ModelForm):
 
     class Meta:
         model = GroupProfile
-        exclude = ['group']
+        exclude = ['group', 'favorite', 'docked']
 
 
 class GroupUpdateForm(forms.ModelForm):
@@ -86,7 +90,7 @@ class GroupUpdateForm(forms.ModelForm):
 
     class Meta:
         model = GroupProfile
-        exclude = ['group']
+        exclude = ['group', 'favorite', 'docked']
 
 
 class GroupMemberForm(forms.Form):
@@ -102,9 +106,6 @@ class GroupMemberForm(forms.Form):
     def clean_user_identifiers(self):
         value = self.cleaned_data["user_identifiers"]
         new_members, errors = [], []
-        user = Profile.objects.get(username=value)
-        if not user.is_active:
-            errors.append("The user you selected is currently inactive")
 
         for ui in value.split(","):
             ui = ui.strip()
@@ -170,3 +171,21 @@ class GroupInviteForm(forms.Form):
             raise forms.ValidationError(message)
 
         return invitees
+
+
+class QuestionForm(forms.ModelForm):
+    """
+    This form is for question and answer
+    """
+    class Meta:
+        model = QuestionAnswer
+        fields = ['question',]
+
+
+class AnsewerForm(forms.ModelForm):
+    """
+    This form is for answering question
+    """
+    class Meta:
+        model = QuestionAnswer
+        fields = ['answer',]

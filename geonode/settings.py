@@ -78,35 +78,35 @@ LANGUAGE_CODE = 'en'
 
 LANGUAGES = (
     ('en', 'English'),
-    ('es', 'Español'),
-    ('it', 'Italiano'),
-    ('fr', 'Français'),
-    ('de', 'Deutsch'),
-    ('el', 'Ελληνικά'),
-    ('id', 'Bahasa Indonesia'),
-    ('zh-cn', '中文'),
-    ('ja', '日本語'),
-    ('fa', 'Persian'),
-    ('ar', 'Arabic'),
+    # ('es', 'Español'),
+    # ('it', 'Italiano'),
+    # ('fr', 'Français'),
+    # ('de', 'Deutsch'),
+    # ('el', 'Ελληνικά'),
+    # ('id', 'Bahasa Indonesia'),
+    # ('zh-cn', '中文'),
+    # ('ja', '日本語'),
+    # ('fa', 'Persian'),
+    # ('ar', 'Arabic'),
     ('bn', 'Bengali'),
-    ('ne', 'Nepali'),
-    ('sq', 'Albanian'),
-    ('af', 'Afrikaans'),
-    ('sw', 'Swahili'),
-    ('pt', 'Portuguese'),
-    ('pt-br', 'Portuguese (Brazil)'),
-    ('ru', 'Russian'),
-    ('vi', 'Vietnamese'),
-    ('ko', '한국어'),
-    ('am', 'Amharic'),
-    ('km', 'Khmer'),
-    ('pl', 'Polish'),
-    ('sv', 'Swedish'),
-    ('th', 'ไทย'),
-    ('uk', 'Ukranian'),
-    ('si', 'Sinhala'),
-    ('ta', 'Tamil'),
-    ('tl', 'Tagalog'),
+    # ('ne', 'Nepali'),
+    # ('sq', 'Albanian'),
+    # ('af', 'Afrikaans'),
+    # ('sw', 'Swahili'),
+    # ('pt', 'Portuguese'),
+    # ('pt-br', 'Portuguese (Brazil)'),
+    # ('ru', 'Russian'),
+    # ('vi', 'Vietnamese'),
+    # ('ko', '한국어'),
+    # ('am', 'Amharic'),
+    # ('km', 'Khmer'),
+    # ('pl', 'Polish'),
+    # ('sv', 'Swedish'),
+    # ('th', 'ไทย'),
+    # ('uk', 'Ukranian'),
+    # ('si', 'Sinhala'),
+    # ('ta', 'Tamil'),
+    # ('tl', 'Tagalog'),
 )
 
 EXTRA_LANG_INFO = {
@@ -147,6 +147,9 @@ MODELTRANSLATION_LANGUAGES = ['en', ]
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('en',)
+
+# settings for notification update time interval
+NOTIFY_UPDATE_TIME_INTERVAL = 100
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -232,13 +235,16 @@ GEONODE_APPS = (
     'geonode.groups',
     'geonode.services',
     'geonode.workspace',
+    'geonode.news',
+    'geonode.dashboard',
 
     # GeoServer Apps
     # Geoserver needs to come last because
     # it's signals may rely on other apps' signals.
     'geonode.geoserver',
     'geonode.upload',
-    'geonode.tasks'
+    'geonode.tasks',
+    'geonode.dialogos'
 )
 
 GEONODE_CONTRIB_APPS = (
@@ -302,7 +308,7 @@ INSTALLED_APPS = (
     # Social
     'account',
     'avatar',
-    'dialogos',
+    # 'dialogos',
     'agon_ratings',
     'notification',
     'announcements',
@@ -311,6 +317,8 @@ INSTALLED_APPS = (
     'tastypie',
     'polymorphic',
     'guardian',
+    # user notification app
+    'notify',
     
 ) + GEONODE_APPS
 
@@ -542,6 +550,14 @@ UPLOADER = {
         'GEOGIG_ENABLED': False,
     }
 }
+
+# UPLOADER = {
+#     'BACKEND' : 'geonode.importer',
+#     'OPTIONS' : {
+#         'TIME_ENABLED': False,
+#         'GEOGIT_ENABLED': False,
+#     }
+# }
 
 # CSW settings
 CATALOGUE = {

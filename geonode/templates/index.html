@@ -7,7 +7,9 @@
 {% block title %} {% trans "Welcome!" %} - {{ block.super }} {% endblock %}
 
 {% block extra_head %}
-<meta property="og:title" content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}" />
+<meta property="og:title"
+      content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}"
+      xmlns="http://www.w3.org/1999/html"/>
 <meta property="og:site_name" content="{% trans "Welcome!" %} - {{ SITE_NAME }}" />
 <meta property="og:url" content="http{% if request.is_secure %}s{% endif %}://{{ SITE_DOMAIN }}" />
 <meta property="og:description" content="{% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>{% trans "MANAGEMENT & VISUALIZATION" %}<br>{% trans "PLATFORM" %}" />
@@ -16,715 +18,855 @@
 <link href="{{ STATIC_URL }}geonode/css/style_common_feature.css?v={{ VERSION }}" rel="stylesheet" />
 <link href="{{ STATIC_URL }}geonode/css/style_feature.css?v={{ VERSION }}" rel="stylesheet" />
 {% endblock %}
-
 {% block body_class %}home js-Home{% endblock %}
-
 {% block middle %}
    {{ block.super }}
   {% block slider %}
-    <section class="gd-slider">
-      <div id="carousel-home" class="carousel slide" data-ride="carousel">
-          <!-- Indicators -->
-          <!-- <ol class="carousel-indicators">
-              <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
-              <li data-target="#carousel-home" data-slide-to="1"></li>
-              <li data-target="#carousel-home" data-slide-to="2"></li>
-              <li data-target="#carousel-home" data-slide-to="3"></li>
-              <li data-target="#carousel-home" data-slide-to="4"></li>
-          </ol> -->
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner" role="listbox">
-              <div class="item active">
-                  <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                          <div class="gd-slider-msg">
-                              {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                              {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                              {% trans "PLATFORM" %}
+      {% if is_slider or request.user.is_authenticated %}
+        <section class="gd-slider" >
+          <div id="carousel-home" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+              <!-- <ol class="carousel-indicators">
+                  <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                  <li data-target="#carousel-home" data-slide-to="1"></li>
+                  <li data-target="#carousel-home" data-slide-to="2"></li>
+                  <li data-target="#carousel-home" data-slide-to="3"></li>
+                  <li data-target="#carousel-home" data-slide-to="4"></li>
+              </ol> -->
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner" role="listbox">
+                  <div class="item active">
+                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />
+                      <div class="container">
+                          <div class="carousel-caption">
+                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
+                              <div class="gd-slider-msg">
+                                  {% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>
+                                  {% trans "DATA MANAGEMENT AND" %}<br>
+                                  {% trans "VISUALIZATION PLATFORM" %}
+                              </div>
+                              <div class="gd-slider-btn">
+                                  <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                              </div>
                           </div>
-                          <div class="gd-slider-btn">
-                              <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                      </div>
+                  </div>
+                  <div class="item">
+                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />
+                      <div class="container">
+                          <div class="carousel-caption">
+                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
+                              <div class="gd-slider-msg">
+                                  {% trans "LAYERS ARE THE CONTENTS OF A" %}<br>
+                                  {% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>
+                                  {% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}
+                              </div>
+                              <div class="gd-slider-btn">
+                                  <a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="item">
+                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />
+                      <div class="container">
+                          <div class="carousel-caption">
+                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
+                              <div class="gd-slider-msg">
+                                  {% trans "AN OGC STANDARD INTEROPERABLE" %}<br>
+                                  {% trans "PLATFORM FOR MANAGING,SHARING" %}<br>
+                                  {% trans "& ANALYZING GEOSPATIAL CONTENT" %}
+                              </div>
+                              <div class="gd-slider-btn">
+                                  <a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="item">
+                      <img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />
+                      <div class="container">
+                          <div class="carousel-caption">
+                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
+                              <div class="gd-slider-msg">
+                                  {% trans "A MAPPING PLATFORM" %}<br>
+                                  {% trans "TO CREATE CUSTOM AND" %}<br>
+                                  {% trans "STYLISH MAPS" %}
+                              </div>
+                              <div class="gd-slider-btn">
+                                  <a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="item">
+                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />
+                      <div class="container">
+                          <div class="carousel-caption">
+                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
+                              <div class="gd-slider-msg">
+                                  {% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>
+                                  {% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>
+                                  {% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}
+                              </div>
+                              <div class="gd-slider-btn">
+                                  <a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                              </div>
                           </div>
                       </div>
                   </div>
               </div>
-              <div class="item">
-                  <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                          <div class="gd-slider-msg">
-                              {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                              {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                              {% trans "PLATFORM" %}
-                          </div>
-                          <div class="gd-slider-btn">
-                              <a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                          <div class="gd-slider-msg">
-                              {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                              {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                              {% trans "PLATFORM" %}
-                          </div>
-                          <div class="gd-slider-btn">
-                              <a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                          <div class="gd-slider-msg">
-                              {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                              {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                              {% trans "PLATFORM" %}
-                          </div>
-                          <div class="gd-slider-btn">
-                              <a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                          <div class="gd-slider-msg">
-                              {% trans "AN OPEN SOURCE GEOSPATIAL DATA" %}<br>
-                              {% trans "MANAGEMENT & VISUALIZATION" %}<br>
-                              {% trans "PLATFORM" %}
-                          </div>
-                          <div class="gd-slider-btn">
-                              <a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+              <!-- Controls -->
+              <a class="left-panel carousel-control" href="#carousel-home" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              </a>
+              <a class="right-panel carousel-control" href="#carousel-home" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              </a>
           </div>
-          <!-- Controls -->
-          <a class="left-panel carousel-control" href="#carousel-home" role="button" data-slide="prev">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-          </a>
-          <a class="right-panel carousel-control" href="#carousel-home" role="button" data-slide="next">
-              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          </a>
-      </div>
-    </section>
-    <!-- Summary List -->
-    <div class="index-max-width">
-        <div id="gd-stastic">
-            <div class="container">
-                <div class="gd-stastic-control">
-                    {% with facet_type='home' %}
-                    {% facets as facets %}
-                    <ul class="text-center">
-                        <li>
-                            <a href="{% url "layer_browse" %}">
-                                <div class="title animation_conuter">{{ facets.layer|default:_("0") }}</div>
-                                <div class="description">
-                                    {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
+        </section>
+        <!-- Summary List -->
+        <div class="index-max-width">
+            <div id="gd-stastic">
+                <div class="container">
+                    {% if not request.user.is_authenticated %}
+                        <div class="row" id="toolbar_hide">
+                            <div class="col-md-3 pull-right">
+                                <div style="position: fixed;background: #eaeaed;">
+                                    <div class="toolbar_right">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>
+                                                <span>An open source Geospatial data management and visualization platform.</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="block-separator"></div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                    {% trans "Learn More" %}
+                                                </a>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >
+                                                    {% trans "Public Layers" %}
+                                                </a>
+                                            </div>
+                                            <div class="col-md-1">
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url "maps_browse" %}">
-                                <div class="title animation_conuter">{{ facets.map|default:_("0") }}</div>
-                                <div class="description">
-                                    {% blocktrans count counter=facets.map %}Map{% plural %}Maps{% endblocktrans %}
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url "group_list" %}">
-                                <div class="title animation_conuter">{{ facets.group|default:_("0") }}</div>
-                                <div class="description">{% trans "Organizations" %}</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url "profile_browse" %}">
-                                <div class="title animation_conuter">{{ facets.user|default:_("0") }}</div>
-                                <div class="description">
-                                    {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    {% endwith %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="gd-stastic-control">
+                        {% with facet_type='home' %}
+                        {% facets as facets %}
+                        <ul class="text-center">
+                            <li>
+                                <a href="{% url "layer_browse" %}">
+                                    <div class="title animation_conuter" id="total_layers_home">{{ facets.layers|default:_("0") }}</div>
+                                    <div class="description">
+                                        {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="map-org-li-fixed">
+                                <a href="{% url "maps_browse" %}">
+                                    <div class="title animation_conuter_maps" id="total_maps_home">{{ facets.maps|default:_("0") }}</div>
+                                    <div class="description">
+                                        {% blocktrans count counter=facets.map %}Map{% plural %}Maps{% endblocktrans %}
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="map-org-li-fixed">
+                                <a href="{% url "group_list" %}">
+                                    <div class="title animation_conuter_orgs" id="total_orgs_home">{{ facets.groups|default:_("0") }}</div>
+                                    <div class="description">{% trans "Organizations" %}</div>
+                                </a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url "profile_browse" %}">
+                                    <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
+                                    <div class="description">
+                                        {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
+                                    </div>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if not user.is_authenticated %}
+                            <li>
+                                <a style="cursor:pointer;" onclick="userspopup('SigninModal');">
+                                    <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
+                                    <div class="description">
+                                        {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
+                                    </div>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endwith %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+      {% endif %}
   </div>
   {% endblock %}
     <div class="index-max-width">
       <!-- How It Works -->
       {% block index_howitworks %}
         {% if not request.user.is_authenticated %}
-        <div id="gd-howitworks">
-            <div class="block-separator"></div>
-            <div class="container">
-                <div class="gd-howitworks-control">
-                    <div class="text-center">
+          {% if is_how_it_works %}
+            <div id="gd-howitworks">
+                <div class="block-separator"></div>
+                <div class="container">
+                    <div class="gd-howitworks-control">
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="header-title">{% trans "How It Works" %}</div>
+                                    <div class="header-sub-title">{% trans "Just a few quick steps from creating your map to publishing it" %}</div>
+                                </div>
+                            </div>
+                            <div class="block-separator"></div>
+                            <div class="gd-howitworks-sharebtn">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="box">
+                                            {% if not user.is_authenticated and REGISTRATION_OPEN %}
+                                            <a data-toggle="modal" data-target="#SignupModal" role="button">
+                                            <div class="gd-signup">
+                                                <img src="{{ STATIC_URL }}geonode/images/icon/gd-signup.png" />
+                                            </div>
+                                            <div class="box-title">{% trans "Register" %}</div>
+                                            </a>
+                                            {% endif %}
+                                            <div class="box-sub-title"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="box">
+                                             {#{% if user.is_authenticated %}#}
+                                            <a onclick="layerpopup('SigninModal');">
+                                            <div class="gd-signup">
+                                                <img src="{{ STATIC_URL }}geonode/images/icon/upload-layer.png" />
+                                            </div>
+                                            <div class="box-title">{% trans "Upload Layers" %}</div>
+                                            </a>
+                                             {#{% endif %}#}
+                                            <div class="box-sub-title"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="box">
+                                             {#{% if user.is_authenticated %}#}
+                                            <a href="{% url "new_map" %}">
+                                            <div class="gd-signup">
+                                                <img src="{{ STATIC_URL }}geonode/images/icon/create-map.png" />
+                                            </div>
+                                            <div class="box-title">{% trans "Create a New Map" %}</div>
+                                            </a>
+                                             {#{% endif %}#}
+                                            <div class="box-sub-title"></div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="col-md-3">
+                                        <div class="box">
+                                            <div class="gd-signup">
+                                                <img src="{{ STATIC_URL }}geonode/images/icon/share.png" />
+                                            </div>
+                                            <div class="box-title">Share</div>
+                                            <div class="box-sub-title"></div>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="block-separator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+      <!-- Featurd Maps -->
+      {% block index_featurdmaps %}
+        {% if is_featured_layers or request.user.is_authenticated %}
+            <div id="gd-featurd-maps">
+                <div class="block-separator"></div>
+                <div class="container">
+                    <div class="gd-stastic">
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="header-title">{% trans "Featured layers" %}</div>
+                                    <div class="block-separator"></div>
+                                    <div class="header-sub-title">
+                                        {% trans "Check out some amazing layers uploaded on GeoDASH platform below" %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-separator"></div>
+                        <div class="block-separator"></div>
+                        <div class="gd-featurd-maps-content">
+                            <div id="carousel-home-fet" class="carousel slide" data-ride="carousel">
+                              <!-- Indicators -->
+                              <!-- <ol class="carousel-indicators">
+                                  <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                                  <li data-target="#carousel-home" data-slide-to="1"></li>
+                                  <li data-target="#carousel-home" data-slide-to="2"></li>
+                                  <li data-target="#carousel-home" data-slide-to="3"></li>
+                                  <li data-target="#carousel-home" data-slide-to="4"></li>
+                              </ol> -->
+                              <!-- Wrapper for slides -->
+                              <div class="carousel-inner " role="listbox">
+                                  {% for featured in featured_layer_list %}
+                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 == 0 %}
+                                            <div class="item active {{ forloop.counter0 }}">
+                                        {% endif %}
+                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured_layer_list.count %}
+                                            </div>
+                                            <div class="item {{ forloop.counter0 }} ">
+                                        {% endif %}
+                                        <article id="{{ forloop.counter }}">
+                                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                                                <div class="gd-featurd-maps-container view view-tenth">
+                                                    <div class="avater">
+                                                        <img height="180" width="240" src="{{ featured.thumbnail_url }}" alt="{{ group.title }}" class="img-circle" />
+                                                    </div>
+                                                    <div class="contents mask text-center" style="height:165px;">
+                                                        <div class="title">
+                                                            {% if featured.title|length >= 35 %}
+                                                            {{ featured.abstract|truncatechars:35 }}
+                                                            &nbsp;&nbsp;
+                                                            <span> <a href="javascript:;" title="{{ featured.title }}"> .... </a></span>
+                                                            {% else %}
+                                                                <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a></div>
+                                                            {% endif %}
+                                                        <div class="anchor-link">
+                                                            <!--<a href="javascript:;" class="info">-->
+                                                                 <span style="color:#6e6b6b;font-size:14px;font-weight:bold;">{{ featured.group }}</span>
+                                                            <!--</a>-->
+                                                        </div>
+                                                        <div class="details text-center">
+                                                            {% if featured.abstract|length >= 53 %}
+                                                            {{ featured.abstract|truncatechars:53 }}
+                                                            &nbsp;&nbsp;
+                                                            <span> <a href="javascript:;" title="{{ featured.abstract }}"> .... </a></span>
+                                                            {% else %}
+                                                                {{ featured.abstract }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        {% if forloop.counter == featured_layer_list.count %}
+                                            </div>
+                                        {% endif %}
+                                  {% endfor %}
+                              </div>
+                              <!-- Controls -->
+                              <a class="left-panel carousel-control" href="#carousel-home-fet" role="button" data-slide="prev">
+                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                              </a>
+                              <a class="right-panel carousel-control" href="#carousel-home-fet" role="button" data-slide="next">
+                                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- Latest News -->
+      {% block index_latestnews %}
+        {% if is_latest_news or request.user.is_authenticated %}
+            <div id="gd-latestnews">
+                <div class="block-separator"></div>
+                <div class="container">
+                    <div class="gd-control">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="header-title">{% trans "How It Works" %}</div>
-                                <div class="header-sub-title">{% trans "Just a few quick steps from creating your map to publishing it" %}</div>
+                                <div class="header-title text-center">{% trans "Latest news and updates" %}</div>
                             </div>
                         </div>
-                        <div class="block-separator"></div>
-                        <div class="gd-howitworks-sharebtn">
+                        <div id="gd-latestnews-content">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="box">
-                                        {% if not user.is_authenticated and REGISTRATION_OPEN %}
-                                        <a data-toggle="modal" data-target="#SignupModal" role="button">
-                                        <div class="gd-signup">
-                                            <img src="{{ STATIC_URL }}geonode/images/icon/gd-signup.png" />
+                                <div class="col-md-8">
+                                    <div id="gd-latestnews-left">
+                                        <div class="news-title"><i class="fa fa-feed"></i><a href="{% url "news-list" %}"> {% trans "Latest News" %}</a></div>
+                                        <div id="accordion" >
+                                            {% for news in latest_news_list %}
+                                            <div class="accordion-section">
+                                                <div class="accordion-section-heading" role="tab" id="headingOne">
+                                                        <div class="title">{{ news.title }} <i class="fa fa-chevron-right"></i></div>
+                                                        <div class="sub-title">{{ news.date_created }}</div>
+                                                </div>
+                                                <div id="collapseOne"  class="accordion-section-description collapse in">
+                                                    {% if news.description|length >= 300 %}
+                                                        {{ news.description|truncatechars:300 }}
+                                                        &nbsp;&nbsp;
+                                                        <span> <a href="{% url "news-details" news.id %}"> More </a></span>
+                                                    {% else %}
+                                                        {{ news.description }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+
                                         </div>
-                                        <div class="box-title">{% trans "Register" %}</div>
-                                        </a>
-                                        {% endif %}
-                                        <div class="box-sub-title"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="box">
-                                         {#{% if user.is_authenticated %}#}
-                                        <a onclick="layerpopup('SigninModal');">
-                                        <div class="gd-signup">
-                                            <img src="{{ STATIC_URL }}geonode/images/icon/upload-layer.png" />
+                                    <div id="gd-latestnews-tweets" >
+                                        <h4>{% trans "Recent Activities" %}</h4>
+                                        <hr />
+                                        <div class="gd-latestnews-tweets-scroll resent-activetiy gd-history" id="gd-latestnews-tweets-scroll">
+                                            <div class="tab-content activity-style-list">
+                                                <article class="tab-pane active">
+                                                    {% for action in action_list %}
+                                                        {% activity_item action %}
+                                                    {% empty %}
+                                                        <p>{% trans "No actions yet" %}</p>
+                                                    {% endfor %}
+                                                </article>
+                                            </div>
+                                            <a class="view-all-activity" href="{% url "recent-activity" %}">View all Activity</a>
                                         </div>
-                                        <div class="box-title">{% trans "Upload Layers" %}</div>
-                                        </a>
-                                         {#{% endif %}#}
-                                        <div class="box-sub-title"></div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="box">
-                                         {#{% if user.is_authenticated %}#}
-                                        <a href="{% url "new_map" %}">
-                                        <div class="gd-signup">
-                                            <img src="{{ STATIC_URL }}geonode/images/icon/create-map.png" />
+                                    <!-- <div id="gd-latestnews-tweets" >
+                                        <h4> <i class="fa fa-twitter-square"></i>Recent Activities</h4>
+                                        <hr />
+                                        <div class="gd-latestnews-tweets-scroll" id="gd-latestnews-tweets-scroll">
+                                            <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;"><a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> is an open source based layer and map sharing platform for Bangladesh government agencies and private sector.</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
+                                             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                            <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;">New user role management is being added to <a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> for better user and organization management.</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
+                                             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                            <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;"><a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> is coming soon with new look and better user experience .</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
+                                             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                                         </div>
-                                        <div class="box-title">{% trans "Create a New Map" %}</div>
-                                        </a>
-                                         {#{% endif %}#}
-                                        <div class="box-sub-title"></div>
-                                    </div>
+                                    </div> -->
                                 </div>
-                                <!--
-                                <div class="col-md-3">
-                                    <div class="box">
-                                        <div class="gd-signup">
-                                            <img src="{{ STATIC_URL }}geonode/images/icon/share.png" />
-                                        </div>
-                                        <div class="box-title">Share</div>
-                                        <div class="box-sub-title"></div>
-                                    </div>
-                                </div>
-                                -->
                             </div>
                         </div>
-                        <div class="block-separator"></div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- Feature Highlights -->
+      {% block index_featurehighlight %}
+        {% if is_feature_highlights or request.user.is_authenticated %}
+            <div id="gd-featurehighlight">
+                <div class="block-separator"></div>
+                <div class="container">
+                    <div class="gd-control">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>
+                            </div>
+                        </div>
+                        <div class="gd-featurehighlight-main">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="gd-featurehighlight-left">
+                                        <div class="title">{% trans "Import your own layers" %}</div>
+                                        <div class="description">
+                                            {% trans "Layers are the contents of a map." %}
+                                            {% trans "To get started adding layers," %}
+                                            {% trans "sign in to the site," %}
+                                            {% trans "click on upload your layers/data," %}
+                                            {% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}
+                                            {% trans "Make sure your data projection is WGS 84 or BTM." %}
+                                        </div>
+                                        <div class="description" style="float:right;font-size:14px;">
+                                            {% if not user.is_authenticated %}
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                            <a href="{% url "layer_upload" %}">{% trans "Check Out Details" %}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="gd-featurehighlight-right">
+                                        <!--<img src="{{ STATIC_URL }}geonode/images/highlightmap.png" class="img-responsive" /> -->
+                                        <section id="data" class="Section Section--datacards DataLibrary js-DataLibrary">
+                                            <div class="CardsData CardsData--home">
+                                                <ul class="CardsData-inner">
+                                                    <li class="CardsData-item CardsData-item--01">
+                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-1.1.png" alt="Data" width="300" height="300">
+                                                    </li>
+                                                    <li class="CardsData-item CardsData-item--02">
+                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-2.2.png" alt="Data" width="300" height="300">
+                                                    </li>
+                                                    <li class="CardsData-item CardsData-item--03">
+                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
+                                                    </li>
+
+                                                    <li class="CardsData-item CardsData-item--04">
+                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
+                                                    </li>
+
+                                                    <li class="CardsData-item CardsData-item--05">
+                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-4.4.png" alt="Data" width="300" height="300">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- Inter Probability -->
+      {% block index_interprobability %}
+        {% if is_interportability or request.user.is_authenticated %}
+            <div id="gd-interprobability">
+                <div class="container">
+                    <div class="gd-control">
+                        <div class="gd-interprobability-main">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="gd-interprobability-right">
+                                        <div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>
+                                        <div class="description">
+                                            {% trans "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content." %}
+                                            {% trans "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces." %}
+                                            {% trans "You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc." %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-9">
+                                    <div id="gd-interprobability-left">
+                                        <img src="{{ STATIC_URL }}geonode/images/Puzzle-1.png" style="height:380px;" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- Make Pretty -->
+      {% block index_makepretty %}
+        {% if is_pretty or request.user.is_authenticated %}
+            <div id="gd-makepretty" >
+                <div class="container">
+                    <div class="gd-control">
+                        <div class="gd-makepretty-main">
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-8">-->
+                                    <!--<div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div id="gd-makepretty-right">
+                                        <div class="description">
+                                            <div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>
+                                            {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
+                                            {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
+                                            {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
+                                            {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
+                                            {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
+                                        </div>
+                                        <div class="description" style="float:right;font-size:14px;">
+                                            <a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="gd-makepretty-left" style="float: right;">
+                                        <img src="{{ STATIC_URL }}geonode/images/geo/1_with_s.png" style="height:380px;" class="img-responsive" />
+                                        <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->
+                                            <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->
+                                            <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- Make 3d -->
+      {% block index_make3d %}
+        {% if is_3dmap or request.user.is_authenticated %}
+            <div id="gd-3dsection" >
+                <div class="container">
+                    <div class="gd-control">
+                        <div class="gd-3dsection-main">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div id="gd-3dsection-left" style="float: left;">
+                                        <img src="{{ STATIC_URL }}geonode/images/geo/im-3d.png" style="height:380px;" class="img-responsive" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="gd-3dsection-right">
+                                        <div class="description">
+                                            <div class="title">{% trans "View your maps in 3d" %}</div>
+                                            {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
+                                            {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
+                                            {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
+                                            {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
+                                            {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      <!-- What GeoDASH offer? -->
+      {% block index_geodashoffer %}
+        {% if is_what_geodash_offer or request.user.is_authenticated %}
+        <div id="gd-whatoffer">
+            <div class="block-separator"></div>
+            <div class="container">
+                <div class="gd-control">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="header-title text-center">{% trans "What GeoDASH offer ? " %}</div>
+                        </div>
+                    </div>
+                    <div class="gd-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="help-content-offer" class="gd-content-body-offer">
+                                    {% blocktrans %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul class="termsuseandcondition">
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Standard, facebook, google+ login.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload shape formatted polyline, polygon, point layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload OSM formatted polyline, polygon, point, raster layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload CSV formatted polyline, polygon, point layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload documents.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        List/ Grid view of layers, maps and documents.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Dock favourite layers, maps, documents and organizations.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Create map using single/ multiple layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Centroids and centers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Style layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Pan maps.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Get FeatureInfo.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Measure length.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true">
+                                                        </i>Measure Area
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="termsuseandcondition">
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Zoom in.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        zoom out.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        3D map view.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Print map.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Download layer and metadata.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Connect to other GeoServer(s).
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Filter / select by attribute.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Data classification.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Data chart view.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Buffer search.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Radius search.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Query on Map.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Cross joining of different layer columns.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Wiki documentation.
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endblocktrans %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         {% endif %}
       {% endblock %}
-      <!-- Featurd Maps -->
-      {% block index_featurdmaps %}
-        <div id="gd-featurd-maps">
-            <div class="block-separator"></div>
-            <div class="container">
-                <div class="gd-stastic">
-                    <div class="text-center">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="header-title">{% trans "Featured layers" %}</div>
-                                <div class="block-separator"></div>
-                                <div class="header-sub-title">
-                                    {% trans "Check out some amazing layers uploaded on GeoDASH platform below" %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block-separator"></div>
-                    <div class="block-separator"></div>
-                    <div class="gd-featurd-maps-content">
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map5.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Asubmarine_network_bcc"> Fiber Optics Line Network of Dhaka City</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                               <!-- Organized by:--> BCC
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                             Vector Polyline Data showing the Fiber Optics Network ...
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map6.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Arcl_504">Road Network Banani Gulshan Area</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                              <!--  Organized by:--> The World Bank
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                            Road Network Data of an area between Banani Graveyard
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map4.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Apip_504">Domestic Water Supply Pipeline DMA504</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                               <!-- Organized by:--> The World Bank
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                            This is a vector line data, showing the 'Pipeline layouts'
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map7.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Asaidabad_p_i_ii_project">Saidabad Project Area Road Network, Dhaka</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                              <!--  Organized by:--> Dhaka WASA
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                             Saidabad Project road network data by Dhaka WASA
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map3.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Adhaka_hospital"> Dhaka Hospitals </a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                              <!--  Organized by:--> DSCC
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                            Hospital locations in Dhaka. Source: RAJUK
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-maps2.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Adhaka_buildingcount_1">Dhaka Building Density</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                               <!-- Organized by:--> DSCC
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                             Number and density of buildings in Dhaka North and Dhaka South City Corporation jurisdiction by ward.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map8.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Adhaka_indices">Dhaka UDRI</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                               <!-- Organized by: ASTER ---> Dhaka
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                            Urban Disaster Risk Index of Dhaka to Madhupur M7.5 Earthquake Scenario. It is a combination of PRI and IFI
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        <article>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                <div class="gd-featurd-maps-container view view-tenth">
-                                    <div class="avater">
-                                        <img src="{{ STATIC_URL }}geonode/images/maps/gd-map1.png" class="img-circle" />
-                                    </div>
-                                    <div class="contents mask">
-                                        <div class="title"><a href="layers/geonode%3Adhaka_electricity">Access to Electricity</a></div>
-                                        <div class="anchor-link">
-                                            <a href="javascript:;" class="info">
-                                                <!--Organized by:--> DESCO
-                                            </a>
-                                        </div>
-                                        <div class="details">
-                                             Electricity network used in Dhaka Risk Atlas of Bangladesh Urban Earthquake Resilience Project, Phase-1
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
-      <!-- Latest News -->
-      {% block index_latestnews %}
-        <div id="gd-latestnews">
-            <div class="block-separator"></div>
-            <div class="container">
-                <div class="gd-control">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="header-title text-center">{% trans "Latest news and updates" %}</div>
-                        </div>
-                    </div>
-                    <div id="gd-latestnews-content">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div id="gd-latestnews-left">
-                                    <div class="news-title"><i class="fa fa-feed"></i>{% trans "Latest News" %}</div>
-                                    <div id="accordion" >
-                                        <div class="accordion-section">
-                                            <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">Welcome to GeoDASH <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Mon, 9 may 2016</div>
-                                            </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                Welcome to GeoDASH, the geo-spatial data storing and sharing initiative by Bangladesh Government.
-                                                GeoDASH is a web based platform for compiling, updating and sharing geospatial database of all the
-                                                government organizations which will allow facilitating the use, management, exchange and quality
-                                                control of geospatial data sets in a collaborative manner. &nbsp;&nbsp;
-                                                <span><a href="/news/"> More </a></span>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-section">
-                                            <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">GIS Day Observed in Bangladesh <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Sun, 8 may 2016</div>
-                                            </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                USAID/Bangladesh and the Department of Environmental Science and Management of North
-                                                South University organized a workshop on 18 November 2015 to celebrate GIS Day.
-                                                The purpose of the event was to raise awareness about the significance of
-                                                geographic information systems (GIS) and how they can benefit the development
-                                                community.&nbsp;&nbsp;<span><a href="/news/"> More </a></span>
-                                            </div>
-                                        </div>
-                                        <div class="accordion-section">
-                                            <div class="accordion-section-heading" role="tab" id="headingOne">
-                                                    <div class="title">Geographical Information Systems <i class="fa fa-chevron-right"></i></div>
-                                                    <div class="sub-title">Sun, 8 may 2016</div>
-                                            </div>
-                                            <div id="collapseOne"  class="accordion-section-description collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                Geographical Information Systems (GIS) are systems designed to store and manipulate data
-                                                relating to locations on the earth's surface. The major advantage of GIS is that it can read
-                                                and analyse different layers of spatial information in the form of maps and satellite images
-                                                easily and allows identifying the spatial relationships.
-                                                &nbsp;&nbsp;&nbsp;&nbsp;  <span><a href="/news/"> More </a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div id="gd-latestnews-tweets" >
-                                    <h4>{% trans "Recent Activities" %}</h4>
-                                    <hr />
-                                    <div class="gd-latestnews-tweets-scroll resent-activetiy gd-history" id="gd-latestnews-tweets-scroll">
-                                        <div class="tab-content activity-style-list">
-                                            <article class="tab-pane active">
-                                                {% for action in action_list %}
-                                                    {% activity_item action %}
-                                                {% empty %}
-                                                    <p>{% trans "No actions yet" %}</p>
-                                                {% endfor %}
-                                            </article>
-                                        </div>
-                                        <a class="view-all-activity" href="{% url "recent-activity" %}">View all Activity</a>
-                                    </div>
-                                </div>
-                                <!-- <div id="gd-latestnews-tweets" >
-                                    <h4> <i class="fa fa-twitter-square"></i>Recent Activities</h4>
-                                    <hr />
-                                    <div class="gd-latestnews-tweets-scroll" id="gd-latestnews-tweets-scroll">
-                                        <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;"><a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> is an open source based layer and map sharing platform for Bangladesh government agencies and private sector.</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
-                                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                                        <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;">New user role management is being added to <a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> for better user and organization management.</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
-                                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                                        <div class="twitter-tweet" data-lang="en" style="color:#;"><p lang="en" dir="ltr" style="color:#fff;text-align:justify;"><a href="https://t.co/KZwW1Pg7c7"> Geodash.gov.bd </a> is coming soon with new look and better user experience .</p>&mdash; BCC (@BCC_BD) <br><a href="https://twitter.com/BCC_BD/status/726676356881207296">May 1, 2016</a></div>
-                                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
-      <!-- Feature Highlights -->
-      {% block index_featurehighlight %}
-        <div id="gd-featurehighlight">
-            <div class="block-separator"></div>
-            <div class="container">
-                <div class="gd-control">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>
-                        </div>
-                    </div>
-                    <div class="gd-featurehighlight-main">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div id="gd-featurehighlight-left">
-                                    <div class="title">{% trans "Import your own layers" %}</div>
-                                    <div class="description">
-                                        {% trans "Layers are the contents of a map." %}
-                                        {% trans "To get started adding layers," %}
-                                        {% trans "sign in to the site," %}
-                                        {% trans "click on upload your layers/data," %}
-                                        {% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}
-                                        {% trans "Make sure your data projection is WGS 84 or BTM." %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="gd-featurehighlight-right">
-                                    <!--<img src="{{ STATIC_URL }}geonode/images/highlightmap.png" class="img-responsive" /> -->
-                                    <section id="data" class="Section Section--datacards DataLibrary js-DataLibrary">
-                                        <div class="CardsData CardsData--home">
-                                            <ul class="CardsData-inner">
-                                                <li class="CardsData-item CardsData-item--01">
-                                                    <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-1.1.png" alt="Data" width="300" height="300">
-                                                </li>
-
-                                                <li class="CardsData-item CardsData-item--02">
-                                                    <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-2.2.png" alt="Data" width="300" height="300">
-                                                </li>
-
-                                                <li class="CardsData-item CardsData-item--03">
-                                                    <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
-                                                </li>
-
-                                                <li class="CardsData-item CardsData-item--04">
-                                                    <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
-                                                </li>
-
-                                                <li class="CardsData-item CardsData-item--05">
-                                                    <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-4.4.png" alt="Data" width="300" height="300">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
-      <!-- Inter Probability -->
-      {% block index_interprobability %}
-        <div id="gd-interprobability">
-            <div class="container">
-                <div class="gd-control">
-                    <div class="gd-interprobability-main">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div id="gd-interprobability-left">
-                                    <img src="{{ STATIC_URL }}geonode/images/Puzzle-1.png" style="height:400px;" class="img-responsive" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="gd-interprobability-right">
-                                    <div class="title">{% trans "interoperabity" %}</div>
-                                    <div class="description">
-                                        {% trans "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content." %}
-                                        {% trans "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces." %}
-                                        {% trans "You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc." %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
-      <!-- Make Pretty -->
-      {% block index_makepretty %}
-        <div id="gd-makepretty" >
-            <div class="container">
-                <div class="gd-control">
-                    <div class="gd-makepretty-main">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div id="gd-makepretty-right">
-                                    <div class="description">
-                                        {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
-                                        {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
-                                        {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
-                                        {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
-                                        {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="gd-makepretty-left">
-                                    <img src="{{ STATIC_URL }}geonode/images/maps.png" class="img-responsive" />
-                                    <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->
-                                        <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->
-                                        <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->
-                                    <!--</div>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
       <!-- View Maps -->
-      {% block index_viewmaps %}
-        <div id="gd-viewmaps" >
-            <!--<iframe frameborder="0" height="732" width="1301" style="position: absolute; width: 1288px; height: 725px; left: 0px; top: -136px;" id="tubular-player" allowfullscreen="1" title="YouTube video player" src="https://www.youtube.com/embed/ab0TSkLe-E0?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1">3Gj_fVDhYG4</iframe>-->
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe id="tubular-player" frameborder="0" height="732" width="100%" src="https://www.youtube.com/embed/fjfzXK0DUZs?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1&loop=1&playlist=fjfzXK0DUZs&rel=0&autoBuffering:true" title="YouTube video player" allowfullscreen="1" style="overflow:hidden;position: absolute; width: 100%; height: 725px; left: 0px; top: -136px;">
-                </iframe>
-            </div>
-            <div class="container">
-                <div class="gd-control">
-                    <div class="gd-viewmaps-main">
-                        <div class="row">
-                            <div class="col-md-">
-                                <div id="gd-viewmaps-left">
-                                    <!--<img src="{{ STATIC_URL }}geonode/images/maps-monitor.png" class="img-responsive"  /> -->
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div id="gd-viewmaps-right">
-                                    <div class="title">{% trans "View your maps in 3d" %}</div>
-                                    <div class="description">
-                                        <!--Share your map via e-mail, LinkedIn, Twitter, Facebook etc.
-                                        to maximize data sharing and promote your work. You can also publish and embed your map right away.
-                                        -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      {% endblock %}
+      <!--{% block index_viewmaps %}-->
+        <!--{% if is_3dmap or request.user.is_authenticated %}-->
+            <!--<div id="gd-viewmaps" >-->
+                <!--&lt;!&ndash;<iframe frameborder="0" height="732" width="1301" style="position: absolute; width: 1288px; height: 725px; left: 0px; top: -136px;" id="tubular-player" allowfullscreen="1" title="YouTube video player" src="https://www.youtube.com/embed/ab0TSkLe-E0?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1">3Gj_fVDhYG4</iframe>&ndash;&gt;-->
+                <!--<div class="embed-responsive embed-responsive-16by9">-->
+                    <!--<iframe id="tubular-player" frameborder="0" height="732" width="100%" src="https://www.youtube.com/embed/fjfzXK0DUZs?controls=0&showinfo=0&modestbranding=1&wmode=transparent&enablejsapi=1&autoplay=1&loop=1&playlist=fjfzXK0DUZs&rel=0&autoBuffering:true" title="YouTube video player" allowfullscreen="1" style="overflow:hidden;position: absolute; width: 100%; height: 725px; left: 0px; top: -136px;">-->
+                    <!--</iframe>-->
+                <!--</div>-->
+                <!--<div class="container">-->
+                    <!--<div class="gd-control">-->
+                        <!--<div class="gd-viewmaps-main">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-">-->
+                                    <!--<div id="gd-viewmaps-left">-->
+                                        <!--&lt;!&ndash;<img src="{{ STATIC_URL }}geonode/images/maps-monitor.png" class="img-responsive"  /> &ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-12">-->
+                                    <!--<div id="gd-viewmaps-right">-->
+                                        <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
+                                        <!--<div class="description">-->
+                                            <!--&lt;!&ndash;Share your map via e-mail, LinkedIn, Twitter, Facebook etc.-->
+                                            <!--to maximize data sharing and promote your work. You can also publish and embed your map right away.-->
+                                            <!--&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--{% endif %}-->
+      <!--{% endblock %}-->
       <!-- Share Map -->
       {% block index_sharemap %}
-        <div id="gd-sharemap" >
-            <div class="container">
-                <div class="gd-sharemap-main">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="gd-makepretty-left" class="gd-sharemap-left-img">
-                                <img src="{{ STATIC_URL }}geonode/images/share-image.png" class="img-responsive"  />
+        {% if is_share_map or request.user.is_authenticated %}
+            <div id="gd-sharemap" >
+                <div class="container">
+                    <div class="gd-sharemap-main">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="gd-makepretty-left" class="gd-sharemap-left-img">
+                                    <img src="{{ STATIC_URL }}geonode/images/share-image.png" class="img-responsive"  />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-offset-1 col-md-4">
-                            <div id="gd-sharemap-content">
-                                <div class="title">{% trans "Share your map" %}</div>
-                                <div class="description">
-                                    {% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}
-                                    {% trans "to maximize data sharing and promote your work." %}
-                                    {% trans "You can also publish and embed your map right away." %}
+                            <div class="col-md-offset-1 col-md-4">
+                                <div id="gd-sharemap-content">
+                                    <div class="title">{% trans "Share your map" %}</div>
+                                    <div class="description">
+                                        {% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}
+                                        {% trans "to maximize data sharing and promote your work." %}
+                                        {% trans "You can also publish and embed your map right away." %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-offset-4 col-md-8">
-                            <div id="gd-sharemap-bottom">
-                                <div class="title">{% trans "Our Partners" %}</div>
-                                <div class="sponsor-image">
-                                    <a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>
-                                    <a href="http://www.bcc.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/BCC.png" class="bcc" ></a>
-                                    <a href="http://www.worldbank.org/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/wb-logo.png" class="wb" ></a>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <div id="gd-sharemap-bottom">
+                                    <div class="title">{% trans "Our Partners" %}</div>
+                                    <div class="sponsor-image">
+                                        <a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>
+                                        <a href="http://www.bcc.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/BCC.png" class="bcc" ></a>
+                                        <a href="http://www.worldbank.org/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/wb-logo.png" class="wb" ></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
       {% endblock %}
     </div>
 {% endblock %}
@@ -734,6 +876,7 @@
 <script src="{{ STATIC_URL }}lib/js/angular.js"></script>
 {% endif %}
 <script src="{{ STATIC_URL }}lib/js/jquery.mCustomScrollbar.concat.min.js?v={{ VERSION }}"></script>
+<!--<script src="http://bxslider.com/lib/jquery.bxslider.js"></script>-->
 <!--
 <script src="{{ STATIC_URL }}geonode/js/geo-dash/jquery.tubular.js?v={{ VERSION }}"></script>
 <script>
@@ -785,5 +928,9 @@ $(document).ready(function() {
         $('#SigninModal').modal('show');
         $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
     }
+    function userspopup(){
+            $('#SigninModal').modal('show');
+            $('#uploadsignlayer').attr('action', '/account/login/?next=/people');
+        }
 </script>
 {% endblock extra_script %}

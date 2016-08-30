@@ -40,6 +40,10 @@ from django.utils.html import strip_tags
 from django.db.models import F
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from notify.signals import notify
 
 from geonode.layers.models import Layer
 from geonode.maps.models import Map, MapLayer, MapSnapshot
@@ -62,6 +66,8 @@ from geonode.utils import num_encode, num_decode
 from geonode.utils import build_social_links
 from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
 from geonode.groups.models import GroupProfile
+from geonode.maps.models import WmsServer
+from geonode.maps.forms import WmsServerForm
 
 if 'geonode.geoserver' in settings.INSTALLED_APPS:
     # FIXME: The post service providing the map_status object
@@ -128,10 +134,8 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
 
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
-    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-    approve_comment_subjects = [line for line in approve_subjects_file ]
-    deny_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-    deny_comment_subjects = [line for line in deny_subjects_file ]
+    approve_form = ResourceApproveForm()
+    deny_form = ResourceDenyForm()
 
     context_dict = {
         'config': config,
@@ -142,9 +146,10 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
         "documents": get_related_documents(map_obj),
         "user_role": user_role,
         "status": map_obj.status,
-        "approve_comment_subjects": approve_comment_subjects,
+        "approve_form": approve_form,
+        "deny_form": deny_form,
         "denied_comments": MapAuditActivity.objects.filter(map_submission_activity__map=map_obj),
-        "deny_comment_subjects":deny_comment_subjects,
+
     }
 
     if settings.SOCIAL_ORIGINS:
@@ -286,6 +291,11 @@ def map_remove(request, mapid, template='maps/map_remove.html'):
                 print "Could not build slack message for delete map."
 
             delete_map.delay(object_id=map_obj.id)
+            # notify map owner that someone have deleted the map
+            if request.user != map_obj.owner:
+                recipient = map_obj.owner
+                notify.send(request.user, recipient=recipient, actor=request.user,
+                target=map_obj, verb='deleted your map')
 
             try:
                 from geonode.contrib.slack.utils import send_slack_messages
@@ -295,6 +305,11 @@ def map_remove(request, mapid, template='maps/map_remove.html'):
 
         else:
             delete_map.delay(object_id=map_obj.id)
+            # notify map owner that someone have deleted the map
+            if request.user != map_obj.owner:
+                recipient = map_obj.owner
+                notify.send(request.user, recipient=recipient, actor=request.user,
+                target=map_obj, verb='deleted your map')
 
         return HttpResponseRedirect(reverse("maps_browse"))
 
@@ -432,10 +447,16 @@ def new_map_json(request):
                 content_type="text/plain",
                 status=401
             )
+        data = json.loads(request.body)
+        title = data['about']['title']
+        category_id = int(data['about']['category'])
+        organization_id = int(data['about']['organization'])
+        group = GroupProfile.objects.get(id=organization_id)
+
 
         map_obj = Map(owner=request.user, zoom=0,
                       center_x=0, center_y=0,
-                      category=TopicCategory.objects.get(id=1), group=GroupProfile.objects.get(title='wasa')) #hardcoded for now
+                      category=TopicCategory.objects.get(id=category_id), group=group, title=title)
         map_obj.save()
         map_obj.set_default_permissions()
 
@@ -449,6 +470,13 @@ def new_map_json(request):
 
         try:
             map_obj.update_from_viewer(body)
+
+            # notify layer owners that this layer is used to create this map
+            layers = map_obj.layers
+            layer_owners = [layer.owner for layer in map_obj.local_layers]
+            notify.send(request.user, recipient_list=layer_owners, actor=request.user,
+                verb='created map using your layer', target=map_obj)
+
             MapSnapshot.objects.create(
                 config=clean_config(body),
                 map=map_obj,
@@ -928,6 +956,12 @@ def map_publish(request, map_pk):
             map.status = 'PENDING'
             map.current_iteration += 1
             map.save()
+
+            # notify organization admins about the new published map
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new map', target=map)
+
             map_submission_activity = MapSubmissionActivity(map=map, group=group, iteration=map.current_iteration)
             map_submission_activity.save()
 
@@ -960,6 +994,12 @@ def map_approve(request, map_pk):
                 map.status = 'ACTIVE'
                 map.last_auditor = request.user
                 map.save()
+
+                # notify map owner that someone have approved the map
+                if request.user != map.owner:
+                    recipient = map.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=map, verb='approved your map')
 
                 map_submission_activity.is_audited = True
                 map_submission_activity.save()
@@ -999,6 +1039,12 @@ def map_deny(request, map_pk):
                 map.status = 'DENIED'
                 map.last_auditor = request.user
                 map.save()
+
+                # notify map owner that someone have denied the map
+                if request.user != map.owner:
+                    recipient = map.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=map, verb='denied your map')
 
                 map_submission_activity.is_audited = True
                 map_submission_activity.save()
@@ -1042,3 +1088,46 @@ def map_delete(request, map_pk):
             return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
             return HttpResponseRedirect(reverse('member-workspace-map'))
+
+
+class WmsServerList(ListView):
+
+    template_name = 'wms_server/wms_server_list.html'
+    model = WmsServer
+
+    def get_queryset(self):
+        return WmsServer.objects.all()
+
+
+class WmsServerCreate(CreateView):
+
+    template_name = 'wms_server/wms_server_create.html'
+    model = WmsServer
+    form_class = WmsServerForm
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+
+class WmsServerUpdate(UpdateView):
+    template_name = 'wms_server/wms_server_create.html'
+    model = WmsServer
+    form_class = WmsServerForm
+
+    def get_object(self):
+        return WmsServer.objects.get(pk=self.kwargs['server_pk'])
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+
+class WmsServerDelete(DeleteView):
+    template_name = 'wms_server/wms_server_delete.html'
+    model = WmsServer
+
+    def get_success_url(self):
+        return reverse('wms-server-list')
+
+    def get_object(self):
+        return WmsServer.objects.get(pk=self.kwargs['server_pk'])
+

@@ -29,10 +29,28 @@ except ImportError:
     from django.utils import simplejson as json
 from django.db.models import Q
 from django.template.response import TemplateResponse
+from django.views.generic import ListView
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+
+from actstream.models import Action
 
 from geonode import get_version
 from geonode.base.templatetags.base_tags import facets
 from geonode.groups.models import GroupProfile
+from geonode.news.models import News
+from geonode.base.forms import TopicCategoryForm
+from geonode.base.libraries.decorators import superuser_check
+from geonode.base.models import TopicCategory
+from geonode.dashboard.models import SectionManagementTable
+from geonode.dashboard.views import add_sections_to_index_page
+from geonode.layers.models import Layer
 
 
 class AjaxLoginForm(forms.Form):
@@ -92,8 +110,9 @@ def ajax_lookup(request):
     groups = GroupProfile.objects.filter(Q(title__istartswith=keyword) |
                                          Q(description__icontains=keyword))
     json_dict = {
-        'users': [({'username': u.username}) for u in users],
-        'count': users.count(),
+
+        'users': [({'username': u.username, 'eamil': u.email }) for u in users],
+
     }
 
     json_dict['groups'] = [({'name': g.slug, 'title': g.title}) for g in groups]
@@ -140,3 +159,115 @@ def ident_json(request):
     json_data['counts'] = facets({'request': request, 'facet_type': 'home'})
 
     return HttpResponse(content=json.dumps(json_data), content_type='application/json')
+
+
+class IndexClass(ListView):
+    """
+    Renders Index.html and Returns recent public activity.
+    """
+    context_object_name = 'action_list'
+    queryset = Action.objects.filter(public=True)[:15]
+    template_name = 'index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListView, self).get_context_data(*args, **kwargs)
+
+        # add sections to index page when start the application
+        add_sections_to_index_page()
+
+        contenttypes = ContentType.objects.all()
+        for ct in contenttypes:
+            if ct.name == 'layer':
+                ct_layer_id = ct.id
+            if ct.name == 'map':
+                ct_map_id = ct.id
+            if ct.name == 'comment':
+                ct_comment_id = ct.id
+
+        context['action_list_layers'] = Action.objects.filter(
+            public=True,
+            action_object_content_type__id=ct_layer_id)[:15]
+        context['action_list_maps'] = Action.objects.filter(
+            public=True,
+            action_object_content_type__id=ct_map_id)[:15]
+        context['action_list_comments'] = Action.objects.filter(
+            public=True,
+            action_object_content_type__id=ct_comment_id)[:15]
+        context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        context['featured_layer_list'] = Layer.objects.filter(featured=True)
+        sections = SectionManagementTable.objects.all()
+        for section in sections:
+            if section.section == 'slider':
+                context['is_slider'] = section.is_visible
+            if section.section == 'featured_layers':
+                context['is_featured_layers'] = section.is_visible
+            if section.section == 'latest_news_and_updates':
+                context['is_latest_news'] = section.is_visible
+            if section.section == 'feature_highlights_of_geodash':
+                context['is_feature_highlights'] = section.is_visible
+            if section.section == 'interportability':
+                context['is_interportability'] = section.is_visible
+            if section.section == 'make_pretty_maps_with_geodash':
+                context['is_pretty'] = section.is_visible
+            if section.section == 'view_your_maps_in_3d':
+                context['is_3dmap'] = section.is_visible
+            if section.section == 'share_your_map':
+                context['is_share_map'] = section.is_visible
+            if section.section == 'how_it_works':
+                context['is_how_it_works'] = section.is_visible
+            if section.section == 'what_geodash_offer?':
+                context['is_what_geodash_offer'] = section.is_visible
+        return context
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_create(request):
+    """
+    This view is for adding topic category from web. Only super admin can add topic category
+    """
+
+    if request.method == 'POST':
+        form = TopicCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Added category successfully')
+            return HttpResponseRedirect(reverse('topiccategory-list'))
+    else:
+        form = TopicCategoryForm()
+    return render(request, "category/upload_category.html", {'form': form, })
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_list(request, template='category/category_list.html'):
+    """
+    This view is for listing topic category from web. Only super admin can list topic category
+    """
+    context_dict = {
+        "category_list": TopicCategory.objects.all(),
+    }
+    return render_to_response(template, RequestContext(request, context_dict))
+
+
+@login_required
+@user_passes_test(superuser_check)
+def topiccategory_delete(request):
+    """
+    This view is for deleting topic category from web. Only super admin can delete topic category
+    """
+
+    if request.method == 'POST':
+        cat_ids = request.POST.getlist('category_id')
+        for id in cat_ids:
+            cat_id = int(id)
+            category = get_object_or_404(TopicCategory, pk=cat_id)
+            status, resource = category.is_used_in_any_resource()
+            if status:
+                messages.info(request, 'Category "%s" cannot be deleted because this category is used in %s' %(category.gn_description, resource))
+            else:
+                category.delete()
+                messages.info(request, 'Deleted category "%s" successfully' %(category.gn_description))
+        return HttpResponseRedirect(reverse('topiccategory-list'))
+    else:
+        return HttpResponseRedirect(reverse('topiccategory-list'))

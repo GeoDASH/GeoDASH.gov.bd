@@ -24,7 +24,7 @@
 """
 import logging
 from collections import defaultdict
-from dialogos.models import Comment
+from geonode.dialogos.models import Comment
 
 from django.conf import settings
 from django.db.models import signals

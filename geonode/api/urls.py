@@ -21,9 +21,13 @@
 from tastypie.api import Api
 
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
-    GroupResource, RegionResource, OwnersResource
+    GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
+        UndockResources, FavoriteUnfavoriteResources, OsmOgrInfo, LayerSourceServer, LayersWithFavoriteAndDoocked, \
+    MapsWithFavoriteAndDoocked, GroupsWithFavoriteAndDoocked, DocumentsWithFavoriteAndDoocked
+
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
-    ResourceBaseResource, FeaturedResourceBaseResource
+    ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
+    DocumentResourceWithFavorite, GroupsResourceWithFavorite
 
 api = Api(api_name='api')
 
@@ -38,3 +42,22 @@ api.register(TopicCategoryResource())
 api.register(GroupResource())
 api.register(FeaturedResourceBaseResource())
 api.register(OwnersResource())
+
+# new apis
+api.register(UserOrganizationList())  # method=get. example: api/user-organization-list/?user__id=7
+api.register(LayerUpload())
+api.register(MakeFeatured())
+api.register(MesseagesUnread()) # api for unread messages for an user
+api.register(UndockResources())
+api.register(FavoriteUnfavoriteResources())
+api.register(OsmOgrInfo())
+api.register(LayerSourceServer())
+api.register(LayersWithFavoriteAndDoocked())
+api.register(MapsWithFavoriteAndDoocked())
+api.register(GroupsWithFavoriteAndDoocked())
+api.register(DocumentsWithFavoriteAndDoocked())
+api.register(LayerResourceWithFavorite())
+api.register(MapResourceWithFavorite())
+api.register(DocumentResourceWithFavorite())
+api.register(GroupsResourceWithFavorite())
+

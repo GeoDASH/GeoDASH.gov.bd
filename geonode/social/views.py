@@ -20,7 +20,7 @@
 
 from actstream.models import Action
 from django.views.generic import ListView
-
+from django.contrib.contenttypes.models import ContentType
 
 class RecentActivity(ListView):
     """
@@ -32,13 +32,22 @@ class RecentActivity(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ListView, self).get_context_data(*args, **kwargs)
+        contenttypes = ContentType.objects.all()
+        for ct in contenttypes:
+            if ct.name == 'layer':
+                ct_layer_id = ct.id
+            if ct.name == 'map':
+                ct_map_id = ct.id
+            if ct.name == 'comment':
+                ct_comment_id = ct.id
+
         context['action_list_layers'] = Action.objects.filter(
-            public=True
-            )[:15]
+            public=True,
+            action_object_content_type__id=ct_layer_id)[:15]
         context['action_list_maps'] = Action.objects.filter(
-            public=True
-            )[:15]
+            public=True,
+            action_object_content_type__id=ct_map_id)[:15]
         context['action_list_comments'] = Action.objects.filter(
-            public=True
-            )[:15]
+            public=True,
+            action_object_content_type__id=ct_comment_id)[:15]
         return context

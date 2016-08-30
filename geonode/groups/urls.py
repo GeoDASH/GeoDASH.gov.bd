@@ -38,4 +38,10 @@ urlpatterns = patterns('geonode.groups.views',
                        url(r'^group/[-\w]+/invite/(?P<token>[\w]{40})/$', 'group_invite_response',
                            name='group_invite_response'),
                        url(r'^group/(?P<slug>[-\w]+)/activity/$', GroupActivityView.as_view(), name='group_activity'),
+
+                       # group detail page, question and answer
+                       url(r'^group/(?P<slug>[-\w]+)/questionlist/$', 'question_answer_list_view', name='question-answer-list'),
+                       url(r'^group/(?P<slug>[-\w]+)/(?P<question_pk>[0-9]+)/answer/$', 'answer_view', name='create-answer'),
+                       url(r'^group/(?P<slug>[-\w]+)/(?P<question_pk>[0-9]+)/delete/$', 'delete_question', name='delete-question'),
+
                        )

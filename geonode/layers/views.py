@@ -23,6 +23,7 @@ import sys
 import logging
 import shutil
 import traceback
+import requests
 from guardian.shortcuts import get_perms
 
 from django.contrib import messages
@@ -43,6 +44,8 @@ from django.forms.models import inlineformset_factory
 from django.db import transaction
 from django.db.models import F
 from django.forms.util import ErrorList
+
+from notify.signals import notify
 
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
@@ -325,10 +328,8 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         except:
             granules = {"features": []}
             all_granules = {"features": []}
-    approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-    approve_comment_subjects = [line for line in approve_subjects_file ]
-    deney_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-    deney_comment_subjects = [line for line in deney_subjects_file ]
+    approve_form = ResourceApproveForm()
+    deny_form = ResourceDenyForm()
     context_dict = {
         "resource": layer,
         'perms_list': get_perms(request.user, layer.get_self_resource()),
@@ -341,8 +342,8 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "all_granules": all_granules,
         "filter": filter,
         "user_role": user_role,
-        "deney_comment_subjects":deney_comment_subjects,
-        "approve_comment_subjects": approve_comment_subjects,
+        "approve_form": approve_form,
+        "deny_form": deny_form,
         "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
         "status": layer.status
     }
@@ -625,6 +626,12 @@ def layer_remove(request, layername, template='layers/layer_remove.html'):
         try:
             with transaction.atomic():
                 delete_layer.delay(object_id=layer.id)
+
+                # notify layer owner that someone have deleted the layer
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=layer, verb='deleted your layer')
         except Exception as e:
             message = '{0}: {1}.'.format(_('Unable to delete layer'), layer.typename)
 
@@ -719,6 +726,11 @@ def layer_publish(request, layer_pk):
             layer_submission_activity = LayerSubmissionActivity(layer=layer, group=group, iteration=layer.current_iteration)
             layer_submission_activity.save()
 
+            # notify organization admins about the new published layer
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new layer', target=layer)
+
             # set all the permissions for all the managers of the group for this layer
             layer.set_managers_permissions()
 
@@ -750,6 +762,12 @@ def layer_approve(request, layer_pk):
                 layer.last_auditor = request.user
                 layer.save()
 
+                # notify layer owner that someone have approved the layer
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=layer, verb='approved your layer')
+
                 layer_submission_activity.is_audited = True
                 layer_submission_activity.save()
 
@@ -769,7 +787,7 @@ def layer_approve(request, layer_pk):
 
 
 @login_required
-def layer_deney(request, layer_pk):
+def layer_deny(request, layer_pk):
     if request.method == 'POST':
         form = ResourceDenyForm(data=request.POST)
         if form.is_valid():
@@ -781,7 +799,7 @@ def layer_deney(request, layer_pk):
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deney this layer")
+                    return HttpResponse("you are not allowed to deny this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -789,6 +807,12 @@ def layer_deney(request, layer_pk):
                 layer.status = 'DENIED'
                 layer.last_auditor = request.user
                 layer.save()
+
+                # notify layer owner that someone have denied the layer
+                if request.user != layer.owner:
+                    recipient = layer.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=layer, verb='denied your layer')
 
                 layer_submission_activity.is_audited = True
                 layer_submission_activity.save()
@@ -819,6 +843,7 @@ def layer_delete(request, layer_pk):
             if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
                 layer.status = "DELETED"
                 layer.save()
+
             else:
                 messages.info(request, 'you have no acces to delete the layer')
 

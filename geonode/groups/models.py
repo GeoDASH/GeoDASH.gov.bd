@@ -55,6 +55,10 @@ class GroupProfile(models.Model):
     slug = models.SlugField(unique=True)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
+    favorite = models.BooleanField(_("Favorite"), default=False,
+                                   help_text=_('Should this organization be in favorite list ?'))
+    docked = models.BooleanField(_("Docked"), default=False,
+                                   help_text=_('Should this organization be docked in home page?'))
     email = models.EmailField(
         _('Email'),
         null=True,
@@ -71,6 +75,7 @@ class GroupProfile(models.Model):
         choices=GROUP_CHOICES,
         help_text=access_help_text)
     last_modified = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         group, created = Group.objects.get_or_create(name=self.slug)
@@ -292,3 +297,18 @@ def group_pre_delete(instance, sender, **kwargs):
          not permitted as will break the geonode permissions system')
 
 signals.pre_delete.connect(group_pre_delete, sender=Group)
+
+
+class QuestionAnswer(models.Model):
+    """
+    This model is for question and answer in organization details page.
+    """
+    group = models.ForeignKey(GroupProfile, blank=True, null=True)
+    question = models.TextField(help_text=_('Ask a question'))
+    questioner = models.ForeignKey('people.Profile', blank=True, null=True, related_name='questioner')
+    answer = models.TextField(help_text=_('Answer the question'))
+    respondent = models.ForeignKey('people.Profile', blank=True, null=True, related_name='respondent')
+    answered = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+

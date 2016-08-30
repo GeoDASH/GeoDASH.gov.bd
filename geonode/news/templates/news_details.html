@@ -1,0 +1,35 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Log in" %}{% endblock %}
+
+{% block body_outer %}
+    <div class="gd-content-body-news">
+        <div class="changepass-news" id="changepass">
+            <div class="contents_news">
+                <div class="title">
+                    {{ news.title }}
+                </div>
+                <div class="anchor-link">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="javascript:;">
+                                {{ news.date_created }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details">
+                    {% if news.image %}
+                    <p>
+                        <img src="/uploaded/{{ news.image }}" width="600" height="500"/>
+                    </p><br />
+                    {% endif %}
+                    {{ news.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

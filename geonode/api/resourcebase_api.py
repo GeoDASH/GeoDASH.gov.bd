@@ -22,6 +22,7 @@ import re
 from django.db.models import Q
 from django.http import HttpResponse
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
@@ -33,6 +34,7 @@ from guardian.shortcuts import get_objects_for_user
 from django.conf.urls import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
+from django.core.urlresolvers import reverse
 
 from tastypie.utils.mime import build_content_type
 
@@ -40,6 +42,9 @@ from geonode.layers.models import Layer
 from geonode.maps.models import Map
 from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
+from geonode.api.api import MetaFavorite
+from geonode.base.models import FavoriteResource
+from geonode.groups.models import GroupProfile
 
 from .authorization import GeoNodeAuthorization
 
@@ -67,6 +72,8 @@ class CommonMetaApi:
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
+                 'resource_type':ALL,
+
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
@@ -464,6 +471,8 @@ class CommonModelApi(ModelResource):
             'thumbnail_url',
             'detail_url',
             'rating',
+            'featured',
+            'resource_type'
         ]
 
         if isinstance(
@@ -528,6 +537,14 @@ class LayerResource(CommonModelApi):
         resource_name = 'layers'
         excludes = ['csw_anytext', 'metadata_xml']
 
+    def get_object_list(self, request):
+        group_id = request.GET.get('group', None)
+        if group_id:
+            group = get_object_or_404(GroupProfile, id=group_id)
+            return super(LayerResource, self).get_object_list(request).filter(group=group)
+        else:
+            return super(LayerResource, self).get_object_list(request).filter(status='ACTIVE')
+
 
 class MapResource(CommonModelApi):
 
@@ -551,3 +568,97 @@ class DocumentResource(CommonModelApi):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'documents'
+
+
+class CommonFavorite(ModelResource):
+    def dehydrate(self, bundle):
+
+        if bundle.request.user.is_authenticated():
+            try:
+                bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
+            except FavoriteResource.DoesNotExist:
+                bundle.data['favorite'] = False
+        bundle.data['owner'] = bundle.obj.owner
+        bundle.data['category'] = bundle.obj.category
+        bundle.data['group'] = bundle.obj.group
+        if bundle.request.user in bundle.obj.group.get_managers():
+            bundle.data['can_make_featured'] = True
+        else:
+            bundle.data['can_make_featured'] = False
+
+        return bundle
+
+
+class LayerResourceWithFavorite(CommonFavorite):
+
+    """Layer API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Layer.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'layers_with_favorite'
+        excludes = ['csw_anytext', 'metadata_xml']
+        filtering = {
+            'group': ALL
+        }
+    def get_object_list(self, request):
+        group = request.GET.get('group')
+        if group:
+            return super(LayerResourceWithFavorite, self).get_object_list(request).filter(group=group)
+        else:
+            return super(LayerResourceWithFavorite, self).get_object_list(request).filter(status='ACTIVE')
+
+
+class MapResourceWithFavorite(CommonFavorite):
+
+    """Maps API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Map.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'maps_with_favorite'
+
+
+class DocumentResourceWithFavorite(CommonFavorite):
+
+    """Maps API with Favorite"""
+
+    class Meta(MetaFavorite):
+        queryset = Document.objects.distinct().order_by('-date').filter(status='ACTIVE')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'documents_with_favorite'
+
+
+class GroupsResourceWithFavorite(ModelResource):
+
+    """Grpups API with Favorite"""
+
+    detail_url = fields.CharField()
+    member_count = fields.IntegerField()
+    manager_count = fields.IntegerField()
+
+    def dehydrate_member_count(self, bundle):
+        return bundle.obj.member_queryset().count()
+
+    def dehydrate_manager_count(self, bundle):
+        return bundle.obj.get_managers().count()
+
+    def dehydrate_detail_url(self, bundle):
+        return reverse('group_detail', args=[bundle.obj.slug])
+
+    class Meta:
+        queryset = GroupProfile.objects.all()
+        resource_name = 'groups_with_favorite'
+        ordering = ['title', 'date']
+
+    def dehydrate(self, bundle):
+
+        if bundle.request.user.is_authenticated():
+            try:
+                bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, group=GroupProfile.objects.get(id=bundle.obj.id)).active
+            except FavoriteResource.DoesNotExist:
+                bundle.data['favorite'] = False
+        return bundle

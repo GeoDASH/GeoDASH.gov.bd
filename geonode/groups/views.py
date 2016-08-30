@@ -20,7 +20,7 @@
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
@@ -29,12 +29,15 @@ from django.views.generic import ListView
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
+from notify.signals import notify
 
 from geonode.groups.forms import GroupInviteForm, GroupForm, GroupUpdateForm, GroupMemberForm
 from geonode.groups.models import GroupProfile, GroupInvitation, GroupMember
 from geonode.people.models import Profile
 from geonode.base.libraries.decorators import superuser_check
 from geonode.layers.models import Layer
+from geonode.groups.models import QuestionAnswer
+from geonode.groups.forms import QuestionForm, AnsewerForm
 
 @login_required
 @user_passes_test(superuser_check)
@@ -226,7 +229,12 @@ def group_invite(request, slug):
             group.invite(
                 user,
                 request.user,
-                role=form.cleaned_data["invite_role"])
+                role=form.cleaned_data["invite_role"],
+            )
+
+            # notify user that he/she is invited by the group
+            notify.send(request.user, recipient=user, actor=request.user,
+            verb='invited you to join')
 
     return redirect("group_members", slug=group.slug)
 
@@ -297,16 +305,112 @@ class GroupActivityView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(GroupActivityView, self).get_context_data(**kwargs)
+        # for filtering contenttype as ContentType model in 1.8.7 does not contain name field
+        from django.contrib.contenttypes.models import ContentType
+        contenttypes = ContentType.objects.all()
+        for ct in contenttypes:
+            if ct.name == 'layer':
+                ct_layer_id = ct.id
+            if ct.name == 'map':
+                ct_map_id = ct.id
+            if ct.name == 'comment':
+                ct_comment_id = ct.id
         context['group'] = self.group
         # Additional Filtered Lists Below
         members = ([(member.user.id) for member in self.group.member_queryset()])
         context['action_list_layers'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members)[:15]
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_layer_id)[:15]
         context['action_list_maps'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members)[:15]
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_map_id)[:15]
         context['action_list_comments'] = Action.objects.filter(
             public=True,
-            actor_object_id__in=members)[:15]
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_comment_id)[:15]
         return context
+
+
+@login_required
+def question_answer_list_view(request, slug):
+
+    """
+    This view returns wuestions and answers for an organization.
+    """
+
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        group = get_object_or_404(GroupProfile, slug=slug)
+        if form.is_valid():
+            question = QuestionAnswer()
+            asked_question = form.cleaned_data["question"]
+            questioner = request.user
+            question.question = asked_question
+            question.questioner = questioner
+            question.group = group
+            question.save()
+            return redirect("group_detail", slug=slug)
+        else:
+            return redirect("group_detail", slug=slug)
+
+    else:
+        group = get_object_or_404(GroupProfile, slug=slug)
+        context_dict = {
+            'form': QuestionForm,
+            'slug': slug,
+            'answerform': AnsewerForm,
+            'group': group
+        }
+        managers = group.get_managers()
+        if request.user in managers:
+            context_dict['question_list'] = QuestionAnswer.objects.filter(group=group)
+        else:
+            context_dict['question_list'] = QuestionAnswer.objects.filter(group=group, answered=True)
+        return render_to_response(
+            "groups/question_answer.html",
+            RequestContext(request, context_dict))
+
+
+@login_required
+def answer_view(request, slug, question_pk):
+    """
+    This view is for answering an asked question. Only managers can answer a question.
+    """
+    if request.method == 'POST':
+        form = AnsewerForm(request.POST)
+        respondent = request.user
+        group = get_object_or_404(GroupProfile, slug=slug)
+        managers = group.get_managers()
+        if form.is_valid() and respondent in managers:
+            question = get_object_or_404(QuestionAnswer, pk=question_pk)
+            answer = form.cleaned_data["answer"]
+            question.answer = answer
+            question.group = group
+            question.respondent = respondent
+            question.answered = True
+            question.save()
+            return redirect("group_detail", slug=slug)
+        else:
+            return redirect("group_detail", slug=slug)
+    else:
+        return redirect("group_detail", slug=slug)
+
+
+
+def delete_question(request, slug, question_pk):
+    """
+    This view is for deleting a question with answer.
+    """
+    if request.method == 'POST':
+        group = get_object_or_404(GroupProfile, slug=slug)
+        managers = group.get_managers()
+        if request.user in managers:
+            question = get_object_or_404(QuestionAnswer, pk=question_pk)
+            question.delete()
+            return redirect("group_detail", slug=slug)
+        else:
+            return redirect("group_detail", slug=slug)
+    else:
+        return redirect("group_detail", slug=slug)

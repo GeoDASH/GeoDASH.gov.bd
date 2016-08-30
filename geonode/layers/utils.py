@@ -28,6 +28,7 @@ import os
 import glob
 import sys
 import tempfile
+import json
 
 from osgeo import gdal
 
@@ -338,6 +339,25 @@ def unzip_file(upload_file, extension='.shp', tempdir=None):
     return absolute_base_file
 
 
+def ogrinfo(file_path):
+    from plumbum.cmd import ogrinfo
+    output_string = ogrinfo(file_path)
+    point_layer = '(Point)'
+    line_layer = '(Line String)'
+    multi_line_layer = '(Multi Line String)'
+    multipolygon_layer = '(Geometry Collection)'
+    layers = []
+    if point_layer in output_string:
+        layers.append('points')
+    if line_layer in output_string:
+        layers.append('lines')
+    if multi_line_layer in output_string:
+        layers.append('multilinestrings')
+    if multipolygon_layer in output_string:
+        layers.append('multipolygons')
+    return layers
+
+
 def extract_tarfile(upload_file, extension='.shp', tempdir=None):
     """
     Extracts a tarfile into a temporary directory and returns the full path of the .shp file inside (if any)
@@ -358,7 +378,7 @@ def extract_tarfile(upload_file, extension='.shp', tempdir=None):
 def file_upload(filename, name=None, group=None, user=None, title=None, abstract=None,
                 keywords=[], category=None, regions=[], date=None,
                 skip=True, overwrite=False, charset='UTF-8',
-                metadata_uploaded_preserve=False):
+                metadata_uploaded_preserve=False, status=None):
     """Saves a layer in GeoNode asking as little information as possible.
        Only filename is required, user and title are optional.
     """
@@ -409,6 +429,8 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
     is_published = True
     if settings.RESOURCE_PUBLISHING:
         is_published = False
+    if not status:
+        status = 'DRAFT'
 
     defaults = {
         'upload_session': upload_session,
@@ -423,6 +445,7 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
         'is_published': is_published,
         'category': category,
         'group': group,
+        'status': status
     }
 
     # set metadata

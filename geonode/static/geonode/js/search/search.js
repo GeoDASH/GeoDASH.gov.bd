@@ -246,6 +246,51 @@
     };
     query_api($scope.query);
 
+    $scope.layerEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='layer'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'layer'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    $scope.layerEnableClass = ($scope.layerEnable() == true) ? "active" : "";
+    $scope.mapEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='map'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'map'){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    $scope.mapEnableClass = ($scope.mapEnable() == true) ? "active" : "";
+    $scope.docEnable = function(){
+        var resource_type = $scope.query['resource_type__in'];
+        if(typeof resource_type === 'string' && resource_type=='document'){
+            return true;
+        } else if(resource_type instanceof Array) {
+            for(var i=0;i<resource_type.length;i++){
+                if(resource_type[i] == 'document'){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    $scope.docEnableClass = ($scope.docEnable() == true) ? "active" : "";
+
     $scope.applyAdvancedSearch = function (){
         if($scope.text_query != ""){
             $scope.query['title__icontains'] = $scope.text_query;
@@ -755,9 +800,109 @@
           leafletData.getMap().then(function(map) {
             map.invalidateSize();
           });
-        } 
+        }
+
       });
     }
     $("#limitOfpage").html($scope.query.limit);
+
+    //featured section
+
+    $scope.featuredFunction = function(datalayerID,datastatusID){
+
+            var data_layerID = datalayerID;
+            var data_statusID = datastatusID;
+                var JS_STATIC_URL = "../api/make-featured/";
+                   var qID = data_layerID;
+                   var qsID = data_statusID;
+                    var data = JSON.stringify({
+                    "resource_id": qID,
+                    "status": qsID
+                });
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: JS_STATIC_URL,
+                    data: data,
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        var data = eval(jsondata.objects);
+                        $window.location.href = data;
+                        $window.location.reload();
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
+        return false;
+    }
+
+    //favourite section
+
+    $scope.favouriteFunction = function(datalayerID,datastatusID){
+
+            var data_layerID = datalayerID;
+            var data_statusID = datastatusID;
+                var JS_STATIC_URL = "../api/makefavorite/";
+                   var qID = data_layerID;
+                   var qsID = data_statusID;
+                    var data = JSON.stringify({
+                    "resource_id": qID,
+                    "status": qsID
+                });
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: JS_STATIC_URL,
+                    data: data,
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        var data = eval(jsondata.objects);
+                        $window.location.href = data;
+                        $window.location.reload();
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
+        return false;
+    }
+    // Organization add favorite section
+
+    $scope.favouriteGroup = function(datalayerID,datastatusID){
+
+            var data_layerID = datalayerID;
+            var data_statusID = datastatusID;
+                var JS_STATIC_URL = "../api/makefavorite/";
+                   var qID = data_layerID;
+                   var qsID = data_statusID;
+                    var data = JSON.stringify({
+                    "group_id": qID,
+                    "status": qsID
+                });
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: JS_STATIC_URL,
+                    data: data,
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        var data = eval(jsondata.objects);
+                        $window.location.href = data;
+                        $window.location.reload();
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
+        return false;
+    }
+
   });
 })();

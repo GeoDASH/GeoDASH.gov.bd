@@ -102,7 +102,7 @@ define(function (require, exports) {
 
 		var mosaic_is_valid = true;
 		var is_granule = $('#' + this.name + '-mosaic').is(':checked');
-        
+
         var is_time_enabled = $('#' + this.name + '-timedim').is(':checked');
 		var is_time_valid = is_time_enabled && !$('#' + this.name + '-timedim-value-valid').is(':visible');
 
@@ -123,7 +123,7 @@ define(function (require, exports) {
     };
 
     /** Function to get all the file extensions in
-     *  the current list of files being handled. 
+     *  the current list of files being handled.
      *
      *  @params {options}
      *  @returns {string}
@@ -145,7 +145,7 @@ define(function (require, exports) {
 
     /** Build a new FormData object from the current state of the
      *  LayerInfo object.
-     * 
+     *
      *  @returns {FromData}
      */
     LayerInfo.prototype.prepareFormData = function (form_data) {
@@ -178,7 +178,7 @@ define(function (require, exports) {
         if (time_enabled) {
             time = $('#' + base_name + '-time').is(':checked');
             form_data.append('time', time);
-        } 
+        }
 
         form_data.append('base_file', this.main);
         form_data.append('permissions', JSON.stringify(perm));
@@ -192,9 +192,27 @@ define(function (require, exports) {
         }
 
         form_data.append('charset', $('#charset').val());
+        form_data.append('layer_title', $('#id-layer-upload-title').val());
+
+        // new field added
         form_data.append('category', $('#id-select-category').val());
         form_data.append('organization', $('#id-select-organization').val());
-        form_data.append('layer_title', $('#id-layer-upload-title').val());
+        // osm or csv file/layer uploaded
+        var fileType = $("#fileType").val();
+        if(fileType == "osm"){
+            form_data.append('osm_layer_type', $('#osmLayerType').val());
+        } else if(fileType == "csv"){
+            var thegeoSelected = ($('#thegeo:checked').length > 0);
+            form_data.append('csv_layer_type', thegeoSelected ? 'the_geom' : 'latlon');
+            if(thegeoSelected){
+                form_data.append('the_geom', $("#csvGeomColumnName").val()); // csvGeomColumnName csvLongitudeColumnName csvLattitudeColumnName
+            } else {
+                form_data.append('longitude', $("#csvLongitudeColumnName").val());
+                form_data.append('lattitude', $("#csvLattitudeColumnName").val());
+            }
+        }
+        form_data.append('layer_type', fileType);
+
         if ($('#id_metadata_uploaded_preserve').prop('checked')) {
              form_data.append('metadata_uploaded_preserve', true);
         }
@@ -207,7 +225,10 @@ define(function (require, exports) {
      *  @returns {string}
      */
     LayerInfo.prototype.logStatus = function (options) {
-        options.element = this.element.find('#status');
+        if(this.element != null){
+            options.element = this.element.find('#status');
+
+        }
         common.logStatus(options);
     };
 
@@ -235,7 +256,7 @@ define(function (require, exports) {
             empty: 'true'
         });
     };
-   
+
     LayerInfo.prototype.doResume = function (event) {
         common.make_request({
             url: event.data.url,
@@ -244,7 +265,7 @@ define(function (require, exports) {
                 self.markError(resp.errors, status);
             },
             success: function (resp, status) {
-                window.location = resp.redirect_to; 
+                window.location = resp.redirect_to;
             },
         });
         return false;
@@ -279,7 +300,7 @@ define(function (require, exports) {
         }
     };
 
-    /** Function to deal with the final step in the upload process 
+    /** Function to deal with the final step in the upload process
      *
      *  @params {options}
      *  @returns {string}
@@ -301,7 +322,7 @@ define(function (require, exports) {
                 },
                 failure: function (resp, status) {
                     self.polling = false;
-                    self.markError(resp.errors, status); 
+                    self.markError(resp.errors, status);
                 },
                 success: function (resp, status) {
                     self.polling = false;
@@ -467,7 +488,7 @@ define(function (require, exports) {
     }
 
     /** Function to display the layers collected from the files
-     * selected for uploading 
+     * selected for uploading
      *
      *  @params {file_queue}
      *  @returns {string}
@@ -488,7 +509,7 @@ define(function (require, exports) {
         this.displayFiles();
         this.displayErrors();
         this.element = $(this.selector);
-		
+
 	    var time_re_txt = "[0-9]{8}";
 
         $('#' + this.name + '-mosaic').on('change', this.doImageMosaicToggle);
@@ -506,12 +527,12 @@ define(function (require, exports) {
 
 			 $('#' + base_name + '-timedim-value-valid').show();
         });
-        
+
         $('#' + this.name + '-timedim-presentation-format-select').on('change', function() {
              var input = $(this);
 
 			 var base_name = this.name.split('-timedim')[0];
-             
+
              if (input.val() === 'DISCRETE_INTERVAL') {
                 $('#' + base_name + '-mosaic-timedim-presentation-res-options').show();
              } else {
@@ -523,17 +544,17 @@ define(function (require, exports) {
              var input = $(this);
 
 			 var base_name = this.name.split('-timedim')[0];
-             
+
              if (input.val() === 'NEAREST' || input.val() === 'FIXED') {
                 $('#' + base_name + '-mosaic-timedim-defaultvalue-res-options').show();
              } else {
                 $('#' + base_name + '-mosaic-timedim-defaultvalue-res-options').hide();
              }
         });
-        
+
         $('#' + this.name + '-timedim-value').on('input', function() {
            var input = $(this);
-           	
+
            var re = new RegExp(time_re_txt, "g");
            var is_valid = re.test(input.val());
            if(is_valid){
@@ -542,7 +563,7 @@ define(function (require, exports) {
 		      $('#' + this.name + '-valid').show();
 	       }
         });
-        
+
         $('#' + this.name + '-timedim-defaultvalue-ref-value').on('input', function() {
            var input = $(this);
 
@@ -564,10 +585,10 @@ define(function (require, exports) {
         return li;
     };
 
-    /** Event handler to deal with user clicking on remove link 
+    /** Event handler to deal with user clicking on remove link
      *
      *  @params event
-     *  @returns none 
+     *  @returns none
      */
     LayerInfo.prototype.removeFileHandler = function (event) {
         var target = $(event.target),
@@ -597,7 +618,7 @@ define(function (require, exports) {
         }
     };
 
-    /** Function to display the files selected for uploading 
+    /** Function to display the files selected for uploading
      *
      *  @params
      *  @returns
@@ -635,10 +656,10 @@ define(function (require, exports) {
         });
     };
 
-    /** Function to display errors 
+    /** Function to display errors
      *
-     *  @params 
-     *  @returns 
+     *  @params
+     *  @returns
      */
     LayerInfo.prototype.displayErrors = function () {
         var ul = $('#' + LayerInfo.safeSelector(this.name) + '-element .errors').first();
@@ -647,13 +668,13 @@ define(function (require, exports) {
         $.each(this.errors, function (idx, error) {
             var li = $('<li/>', {text: error, 'class': 'alert alert-error'});
             li.appendTo(ul);
-            li.animate({opacity:1}, 5000, 'linear', function() { 
-                li.animate({opacity:0}, 1000, 'linear', function() {li.remove(); }); 
+            li.animate({opacity:1}, 5000, 'linear', function() {
+                li.animate({opacity:0}, 1000, 'linear', function() {li.remove(); });
             });
         });
     };
 
-    /** Function to refresh display after adding or removing files 
+    /** Function to refresh display after adding or removing files
      *
      *  @params {options}
      *  @returns {string}
@@ -689,7 +710,7 @@ define(function (require, exports) {
             $('#' + base_name + '-mosaic-options').hide();
         }
     };
-    
+
     LayerInfo.prototype.doImageMosaicTimedimOptionsToggle = function (event) {
         var target = event.target || event.srcElement;
         var id = target.id;
@@ -701,7 +722,7 @@ define(function (require, exports) {
             $('#' + base_name + '-mosaic-timedim-options').hide();
         }
     };
-    
+
     LayerInfo.prototype.doImageMosaicTimedimPresentationOptionsToggle = function (event) {
         var target = event.target || event.srcElement;
         var id = target.id;
@@ -713,7 +734,7 @@ define(function (require, exports) {
             $('#' + base_name + '-mosaic-timedim-presentation-options').hide();
         }
     };
-    
+
     LayerInfo.prototype.doImageMosaicGranuleOptionsToggle = function (event) {
         var target = event.target || event.srcElement;
         var id = target.id;
@@ -721,7 +742,7 @@ define(function (require, exports) {
         var mosaic_chkbox = $('#' + id).is(':checked');
         if (mosaic_chkbox) {
             $('#' + base_name + '-mosaic-granule-format-options').show();
-            
+
             var dropdown = $('#' + base_name + '-mosaic-granule-format-select');
             // Clear drop down list
             $(dropdown).empty();
@@ -737,7 +758,7 @@ define(function (require, exports) {
                     text: this.name
                 }).appendTo(dropdown);
             });
-            
+
         } else {
             $('#' + base_name + '-mosaic-granule-format-options').hide();
             $('#' + base_name + '-timedim').prop("checked", false);
@@ -750,7 +771,7 @@ define(function (require, exports) {
             $('#' + base_name + '-timedim-format-select').prop("disabled", false);
         }
     };
-    
+
     LayerInfo.prototype.doImageMosaicGranuleLayerSelect = function (event) {
         var target = event.target || event.srcElement;
         var id = target.id;
@@ -783,7 +804,7 @@ define(function (require, exports) {
             });
         }
     };
-    
+
     return LayerInfo;
 });
 

@@ -67,9 +67,9 @@
   {% endif %}
   <script type="text/javascript">
       {% if HAYSTACK_SEARCH %}
-          SEARCH_URL = '{% url 'api_get_search' api_name='api' resource_name='documents'%}'
+          SEARCH_URL = '{% url 'api_get_search' api_name='api' resource_name='documents_with_favorite'%}'
       {% else %}
-          SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='documents' %}';
+          SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='documents_with_favorite' %}';
       {% endif %}
       FILTER_TYPE = 'document';
       $(document).ready(function() {

@@ -36,6 +36,8 @@ from django.forms.util import ErrorList
 from django.views.generic import ListView
 from django.contrib import messages
 
+from notify.signals import notify
+
 from geonode.utils import resolve_object
 from geonode.security.views import _perms_info_json
 from geonode.people.forms import ProfileForm
@@ -119,10 +121,8 @@ def document_detail(request, docid):
 
         metadata = document.link_set.metadata().filter(
             name__in=settings.DOWNLOAD_FORMATS_METADATA)
-        approve_subjects_file = open("geonode/approve_comment_subjects.txt", "r")
-        approve_comment_subjects = [line for line in approve_subjects_file ]
-        deny_subjects_file = open("geonode/deny_comment_subject.txt", "r")
-        deny_comment_subjects = [line for line in deny_subjects_file ]
+        approve_form = ResourceApproveForm()
+        deny_form = ResourceDenyForm()
 
         context_dict = {
             'perms_list': get_perms(request.user, document.get_self_resource()),
@@ -133,9 +133,11 @@ def document_detail(request, docid):
             'related': related,
             "user_role": user_role,
             "status": document.status,
-            "approve_comment_subjects": approve_comment_subjects,
+            "approve_form": approve_form,
+            "deny_form": deny_form,
             "denied_comments": DocumentAuditActivity.objects.filter(document_submission_activity__document=document),
-            "deny_comment_subjects":deny_comment_subjects}
+
+        }
 
         if settings.SOCIAL_ORIGINS:
             context_dict["social_links"] = build_social_links(request, document)
@@ -482,6 +484,11 @@ def document_remove(request, docid, template='documents/document_remove.html'):
                     print "Could not build slack message for delete document."
 
                 document.delete()
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 try:
                     from geonode.contrib.slack.utils import send_slack_messages
@@ -490,6 +497,11 @@ def document_remove(request, docid, template='documents/document_remove.html'):
                     print "Could not send slack message for delete document."
             else:
                 document.delete()
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
             return HttpResponseRedirect(reverse("document_browse"))
         else:
@@ -533,8 +545,11 @@ def document_publish(request, document_pk):
             document.save()
             document_submission_activity = DocumentSubmissionActivity(document=document, group=group, iteration=document.current_iteration)
             document_submission_activity.save()
-
-            # set all the permissions for all the managers of the group for this document
+            # notify organization admins about the new published document
+            managers = list( group.get_managers())
+            notify.send(request.user, recipient_list = managers, actor=request.user,
+                        verb='published a new document', target=document)
+            # set all the permissions for all the managers of the group for this documentt
             document.set_managers_permissions()
 
             messages.info(request, 'published document succesfully')
@@ -563,6 +578,12 @@ def document_approve(request, document_pk):
                 document.status = 'ACTIVE'
                 document.last_auditor = request.user
                 document.save()
+
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 document_submission_activity.is_audited = True
                 document_submission_activity.save()
@@ -602,6 +623,12 @@ def document_deny(request, document_pk):
                 document.status = 'DENIED'
                 document.last_auditor = request.user
                 document.save()
+
+                # notify document owner that someone have deleted the document
+                if request.user != document.owner:
+                    recipient = document.owner
+                    notify.send(request.user, recipient=recipient, actor=request.user,
+                    target=document, verb='deleted your document')
 
                 document_submission_activity.is_audited = True
                 document_submission_activity.save()

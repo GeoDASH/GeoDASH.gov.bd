@@ -10,143 +10,151 @@
 {% endblock %}
 {% endcomment %}
 
-{% block body %}
-<div class="page-title">
-  <h2>{% trans "Member Workspace" %}</h2>
-</div>
-<div class="row">
-  <div class="col-md-12">
-        <ul class="nav nav-pills">
-        <li role="presentation" ><a href="{% url "member-workspace-layer" %}">{% trans "Layers" %}</a></li>
-        <li role="presentation" ><a href="{% url "member-workspace-map" %}"> {% trans "Maps" %}</a></li>
-        <li role="presentation" class="active"><a href="{% url "member-workspace-document" %}">{% trans "Documents" %}</a></li>
-        </ul>
-      <br>
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
-      <li><a href="#pending" data-toggle="tab">{% trans "Pending" %}</a></li>
-      <li><a href="#denied" data-toggle="tab">{% trans "Denied" %}</a></li>
-      <li><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
-    </ul>
-    <div class="tab-content">
-      <article id="draft" class="tab-pane active">
-        <ul class="no-style-list">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th>#</th>
-                <th>Document Title</th>
-                <th>Organization</th>
-                <th>Document creation date</th>
-                </tr>
-            </thead>
-            {% for draft in draft_list %}
-                <tbody>
-                    <tr>
-                    <td>{{ forloop.counter}}</td>
-                    <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
-                    <td>{{ draft.group }}</td>
-                    <td>{{ draft.date_created }}</td>
-                    <td><button type="button" class="btn btn-default btn-xs"><a href="{{ draft.detail_url }}?user_role=member"> {% trans "publish" %}</a></button></td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#_delete_document">{% trans "delete document" %}</button> <br>
-                        {% include "document_templates/_delete_document.html" %}
-                    </td>
-                    </tr>
-                </tbody>
-            {% empty %}
-                <p>{% trans "No drafts yet" %}</p>
-            {% endfor %}
-        </table>
-        </ul>
-      </article>
-      <article id="pending" class="tab-pane">
-        <ul class="no-style-list">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th>#</th>
-                <th>Document Title</th>
-                <th>Organization</th>
-                <th>Request date</th>
-                </tr>
-            </thead>
-            {% for pending in pending_list %}
-                <tbody>
-                    <tr>
-                    <td>{{ forloop.counter}}</td>
-                    <td>{{ pending.title }}</td>
-                    <td>{{ pending.group }}</td>
-                    <td>{{ pending.date_updated }}</td>
-                    </tr>
-                </tbody>
-            {% empty %}
-                <p>{% trans "No pendings yet" %}</p>
-            {% endfor %}
-        </table>
-        </ul>
-      </article>
-      <article id="denied" class="tab-pane">
-        <ul class="no-style-list">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th>#</th>
-                <th>Document Title</th>
-                <th>Organization</th>
-                <th>Who denied</th>
-                <th>Deney date</th>
-                </tr>
-            </thead>
-            {% for denied in denied_list %}
-                <tbody>
-                    <tr>
-                    <td>{{ forloop.counter}}</td>
-                    <td><a href="{{ denied.detail_url }}">{{ denied.title }}</a></td>
-                    <td>{{ denied.group }}</td>
-                    <td>{{ denied.last_auditor }}</td>
-                    <td>{{ denied.date_updated }}</td>
-                    <td><button type="button" class="btn btn-default btn-xs"><a href="{{ denied.detail_url }}?user_role=member"> {% trans "edit and publish again" %}</a></button></td>
-                    </tr>
-                </tbody>
-            {% empty %}
-                <p>{% trans "No denied documents yet" %}</p>
-            {% endfor %}
-        </table>
-        </ul>
-      </article>
-      <article id="active" class="tab-pane">
-        <ul class="no-style-list">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th>#</th>
-                <th>Document Title</th>
-                <th>Organization</th>
-                <th>Activator</th>
-                <th>Activation date</th>
-                </tr>
-            </thead>
-            {% for active in active_list %}
-                <tbody>
-                    <tr>
-                    <td>{{ forloop.counter}}</td>
-                    <td>{{ active.title }}</td>
-                    <td>{{ active.group }}</td>
-                    <td>{{ active.last_auditor }}</td>
-                    <td>{{ active.date_updated }}</td>
-                    <td><button type="button" class="btn btn-default btn-xs"><a href="{{ active.detail_url }}"> {% trans "edit" %}</a></button></td>
-                    </tr>
-                </tbody>
-            {% empty %}
-                <p>{% trans "No active documents yet" %}</p>
-            {% endfor %}
-        </table>
-        </ul>
-      </article>
+{% block body_outer %}
+    <div class="gd-content">
+        <div class="gd-content-heading">
+            <div class="title small-content">
+                {% trans "Member Workspace" %}
+            </div>
+            <div class="hr"></div>
+        </div>
+        <div class="gd-content-body gd-history transparent top-bottom-margin-20px">
+            <div class="row">
+              <div class="col-md-12">
+                    <ul class="nav nav-pills">
+                    <li role="presentation" ><a href="{% url "member-workspace-layer" %}">{% trans "Layers" %}</a></li>
+                    <li role="presentation" ><a href="{% url "member-workspace-map" %}"> {% trans "Maps" %}</a></li>
+                    <li role="presentation" class="active"><a href="{% url "member-workspace-document" %}">{% trans "Documents" %}</a></li>
+                    </ul>
+                  <br>
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
+                  <li><a href="#pending" data-toggle="tab">{% trans "Pending" %}</a></li>
+                  <li><a href="#denied" data-toggle="tab">{% trans "Denied" %}</a></li>
+                  <li><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <article id="draft" class="tab-pane active">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Document Title</th>
+                                    <th>Organization</th>
+                                    <th>Document creation date</th>
+                                </tr>
+                            </thead>
+                            {% for draft in draft_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
+                                        <td>{{ draft.group }}</td>
+                                        <td>{{ draft.date_created }}</td>
+                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue to Publish" %}</a></td>
+                                        <td>
+                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_document" style="color:#fff;">{% trans "Delete Document" %}</button> <br>
+                                            {% include "document_templates/_delete_document.html" %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No drafts yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                  <article id="pending" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Document Title</th>
+                                    <th>Organization</th>
+                                    <th>Request date</th>
+                                </tr>
+                            </thead>
+                            {% for pending in pending_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ pending.title }}</td>
+                                        <td>{{ pending.group }}</td>
+                                        <td>{{ pending.date_updated }}</td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No pendings yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                  <article id="denied" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Document Title</th>
+                                    <th>Organization</th>
+                                    <th>Who denied</th>
+                                    <th>Deny date</th>
+                                </tr>
+                            </thead>
+                            {% for denied in denied_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td><a href="{{ denied.detail_url }}">{{ denied.title }}</a></td>
+                                        <td>{{ denied.group }}</td>
+                                        <td>{{ denied.last_auditor }}</td>
+                                        <td>{{ denied.date_updated }}</td>
+                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and publish again" %}</a></td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No denied documents yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                  <article id="active" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Document Title</th>
+                                    <th>Organization</th>
+                                    <th>Activator</th>
+                                    <th>Activation date</th>
+                                    <th>Document Edit</th>
+                                </tr>
+                            </thead>
+                            {% for active in active_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ active.title }}</td>
+                                        <td>{{ active.group }}</td>
+                                        <td>{{ active.last_auditor }}</td>
+                                        <td>{{ active.date_updated }}</td>
+                                        <td><a href="{{ active.detail_url }}" class="btn btn-gd-primary"> {% trans "Edit" %}</a></td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No active documents yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block extra_script %}

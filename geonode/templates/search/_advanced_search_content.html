@@ -176,6 +176,50 @@
                             </fieldset>
                         </div>
                     {% endif %}
+                    <!--{% if SEARCH_FILTERS.OWNERS_ENABLED %}-->
+                        <div class="col-md-4">
+                            <div class="advanced-search-filter-box">
+                                <label for="layers-map-doc">{% trans "Search by layer,map,document" %}</label>
+                                <ul class="list-group advanced-search-list" id="layers-map-doc">
+                                    {% verbatim %}
+                                    <li class="list-group-item" >
+                                        <div class="gas checkbox">
+                                            <label>
+                                                <input data-value="{{ 'layer' }}" data-filter="resource_type__in"
+                                                ng-click="advanced_search_choice_listener($event)" ng-checked="layerEnable()"
+                                                class="{{layerEnableClass}}" type="checkbox">
+                                                layers
+                                                <span class="badge pull-right"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" >
+                                        <div class="gas checkbox">
+                                            <label>
+                                                <input data-value="{{ 'map' }}" data-filter="resource_type__in"
+                                                ng-click="advanced_search_choice_listener($event)" ng-checked="mapEnable()"
+                                                class="{{mapEnableClass}}" type="checkbox" >
+                                                maps
+                                                <span class="badge pull-right"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" >
+                                        <div class="gas checkbox">
+                                            <label>
+                                                <input data-value="{{ 'document' }}" data-filter="resource_type__in"
+                                                ng-click="advanced_search_choice_listener($event)" ng-checked="docEnable()"
+                                                class="{{docEnableClass}}" type="checkbox" >
+                                                document
+                                                <span class="badge pull-right"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    {% endverbatim %}
+                                </ul>
+                            </div>
+                        </div>
+                    <!--{% endif %}-->
                 </div>
                 <hr/>
                 <div class="block-separator"></div>
@@ -184,9 +228,9 @@
 
                     </div>
                     <div class="col-md-3">
-                        <a href="." id="clear-search" class="btn btn-gd-gray btn-lg col-md-12 col-sm-12 col-xs-12">
+                        <button type="reset" id="clear-search" class="btn btn-gd-gray btn-lg col-md-12 col-sm-12 col-xs-12">
                             {% trans "Clear" %} {% trans "Filters" %}
-                        </a>
+                        </button>
                     </div>
                     <div class="col-md-3">
                         <button ng-click="applyAdvancedSearch()" type="button" class="btn btn-gd-primary btn-lg col-md-12 col-sm-12 col-xs-12">

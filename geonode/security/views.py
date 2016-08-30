@@ -28,6 +28,8 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 
+from notify.signals import notify
+
 from geonode.utils import resolve_object
 from geonode.base.models import ResourceBase
 
@@ -130,6 +132,9 @@ def request_permissions(request):
             'request_download_resourcebase',
             {'from_user': request.user, 'resource': resource}
         )
+        # notify layer owners that this layer is used to create this map
+        notify.send(request.user, recipient=resource.owner, actor=request.user,
+            verb='requested to download your resource', target=resource)
         return HttpResponse(
             json.dumps({'success': 'ok', }),
             status=200,
