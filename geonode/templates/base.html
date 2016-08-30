@@ -150,6 +150,7 @@
                             </ul>
                         </li>
                         <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
+                        {% if user.is_authenticated %}
                         <li class="notification">
                             <a class="usi" href="{% url "_dashboard" %}" title="Dashboard">
                                 <button class="btn btn-default btn-link" >
@@ -157,6 +158,7 @@
                                 </button>
                             </a>
                         </li>
+                        {% endif %}
                         <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
                         {% endblock %}
                     </ul>

@@ -3,13 +3,13 @@
 <!-- Nav tabs for resources -->
 <ul class="nav nav-tabs resources-tabs filter" id="sort" role="tablist">
   <li role="presentation">
-    <a data-value="all" data-filter="type__in" class="selected" ng-click="single_choice_listener($event)">
+    <a data-value="all" data-filter="type__in" class="selected" ng-click="single_choice_listener($event)" style="cursor:pointer;">
       <i class="fa fa-list-alt"></i>
       {% trans "All contents" %}
     </a>
   </li>
   <li class="layer" role="presentation">
-    <a data-value="layer" data-filter="type__in" ng-click="single_choice_listener($event)">
+    <a data-value="layer" data-filter="type__in" ng-click="single_choice_listener($event)" style="cursor:pointer;">
       <span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;">
           <i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>
           <i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>
@@ -21,13 +21,13 @@
     </a>
   </li>
   <li role="presentation">
-    <a data-value="map" data-filter="type__in" ng-click="single_choice_listener($event)">
+    <a data-value="map" data-filter="type__in" ng-click="single_choice_listener($event)" style="cursor:pointer;">
       <i class="fa fa-map-marker"></i>
       {% trans "Maps" %}
     </a>
   </li>
   <li role="presentation">
-    <a data-value="document" data-filter="type__in" ng-click="single_choice_listener($event)">
+    <a data-value="document" data-filter="type__in" ng-click="single_choice_listener($event)" style="cursor:pointer;">
       <i class="fa fa-file-text-o"></i>
       {% trans "Documents" %}
     </a>

@@ -38,7 +38,7 @@
           </a>
         </div>
         {% elif resource.doc_file %}
-        <p><a href="{% url "document_download" resource.id %}" target="_blank">Download the {{ resource }} document</a></p><br>
+        <!--<p><a href="{% url "document_download" resource.id %}" target="_blank">Download the {{ resource }} document</a></p><br>-->
         {% elif  resource.doc_url %}
         <p><a href="{{ resource.doc_url }}" target="_blank">Download the {{ resource }} document.</a> <small>({% trans 'External Resource' %})</small></p>
         {%  endif %}

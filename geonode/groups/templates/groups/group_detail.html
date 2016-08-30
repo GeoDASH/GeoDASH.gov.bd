@@ -209,7 +209,9 @@
 
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function(){
-                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers' %}"+ '?group='+ '{{ object.id }}';
+
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers_with_favorite' %}"+ '?group='+ '{{ object.id }}';
+
                 $.ajax({
                     cache: false,
                     type: 'GET',
@@ -219,7 +221,7 @@
                     dataType: "json",
                     success: function(jsondata) {
                         console.log("success");
-                        console.log(JSON.stringify(jsondata));
+                        //console.log(JSON.stringify(jsondata));
 
                         var data = eval(jsondata.objects);
                         var output='';
@@ -243,7 +245,11 @@
                             output +='<div class="top-content text-center">';
                             output +='<div class="title">';
                             output +='<a href="' +item.detail_url+ '" title="' +item.title+ '">';
+                                    if (item.title.length >= 45){
+                            output +='.........';
+                                    }else{
                             output +=''+ item.title +'';
+                                    }
                             output +='</a>';
                             output +='</div>';
                             output +='<div class="category">';
@@ -255,16 +261,20 @@
                                     }
                             output +='</div>';
                             output +='<div class="details">';
+                                    if (item.abstract.length >= 250){
+                            output +=''+ item.abstract.length.innerHTML+ '';
+                                    }else{
                             output +=''+ item.abstract+ '';
+                                    }
                             output +='</div>';
                             output +='</div>';
                             output +='<div class="summery">';
                             output +='<div class="item-items">';
                             output +='<ul class="list-inline lmd">';
                             output +='<li>';
-                            output +='<a href="/people/profile/'+ item.owner__username +'">';
+                            output +='<a href="/people/profile/'+ item.owner +'">';
                             output +='<i class="fa fa-user"></i>';
-                            output +=''+ item.owner__username +'';
+                            output +=''+ item.owner +'';
                             output +='</a>';
                             output +='</li>';
                             output +='<li>';

@@ -41,7 +41,7 @@
                 {% endifequal %}
             </td>
             <td>
-                {{ thread.latest_message.content|slice:"50" }}<a href="{{ thread.get_absolute_url }}">...</a>
+                {{ thread.latest_message.content|slice:"50" }}<a href="{{ thread.get_absolute_url }}" title="{{ thread.latest_message.content }}">...</a>
             </td>
             <td>
                 <form id="thread_delete_{{ thread.pk }}" method="post" action="{% url "messages_thread_delete" thread.pk %}">
