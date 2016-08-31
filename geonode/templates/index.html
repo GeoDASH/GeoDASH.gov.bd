@@ -129,41 +129,41 @@
         <div class="index-max-width">
             <div id="gd-stastic">
                 <div class="container">
-                    {% if not request.user.is_authenticated %}
-                        <div class="row" id="toolbar_hide">
-                            <div class="col-md-3 pull-right">
-                                <div style="position: fixed;background: #eaeaed;">
-                                    <div class="toolbar_right">
-                                        <div class="row">
-                                            <div class="col-md-10">
-                                                <div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>
-                                                <span>An open source Geospatial data management and visualization platform.</span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>
-                                            </div>
-                                        </div>
-                                        <div class="block-separator"></div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >
-                                                    {% trans "Learn More" %}
-                                                </a>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >
-                                                    {% trans "Public Layers" %}
-                                                </a>
-                                            </div>
-                                            <div class="col-md-1">
+                    <!--{% if not request.user.is_authenticated %}-->
+                        <!--<div class="row" id="toolbar_hide">-->
+                            <!--<div class="col-md-3 pull-right">-->
+                                <!--<div style="position: fixed;background: #eaeaed;">-->
+                                    <!--<div class="toolbar_right">-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-md-10">-->
+                                                <!--<div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>-->
+                                                <!--<span>An open source Geospatial data management and visualization platform.</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-2">-->
+                                                <!--<i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="block-separator"></div>-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-md-6">-->
+                                                <!--<a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                    <!--{% trans "Learn More" %}-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-5">-->
+                                                <!--<a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                    <!--{% trans "Public Layers" %}-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-1">-->
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--{% endif %}-->
                     <div class="gd-stastic-control">
                         {% with facet_type='home' %}
                         {% facets as facets %}
@@ -848,6 +848,9 @@
                                         {% trans "to maximize data sharing and promote your work." %}
                                         {% trans "You can also publish and embed your map right away." %}
                                     </div>
+                                    <div class="description" style="float:right;font-size:14px;color:#fff;">
+                                        <a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -932,5 +935,182 @@ $(document).ready(function() {
             $('#SigninModal').modal('show');
             $('#uploadsignlayer').attr('action', '/account/login/?next=/people');
         }
+</script>
+{% if not request.user.is_authenticated %}
+<div class="modal fade" id="welcomeHelpModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content" style="background:rgb(211,211,211);">
+            <div class="welcomeHelpModalBox ehmb_1 activeitem" id="uploadlayerdoc" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Upload data layer!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can upload your data layer on following formats on GeoDASH platform:
+                        <br> <br><i class="fa fa-check home-modal"></i>Shape Layer : .shp .shx .dbf .prj
+                        <br> <i class="fa fa-check home-modal"></i>Zipped Shape Layer : .shp .shx .dbf .prj
+                        <br> <i class="fa fa-check home-modal"></i>Open Street Map Layer : .osm
+                        <br> <i class="fa fa-check home-modal"></i>Excel Format Data Layer : .csv
+                        <br> <i class="fa fa-check home-modal"></i>Image Layer : .tif
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_2" id="createmapdoc" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Create a new map!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can create your own map using single or multiple data layers from GeoDASH platform.
+                        You can also create map using data layer from other geonode/openstreet/
+                        server that supports WMS request based on your access level.
+                        You have the ability to edit/ update the style of your map.
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_3" id="uploaddoc" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Upload document!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can upload your data layer documents on GeoDASH platform and link it with the desired layer or map<br><br>
+                        Allowed document types:<br>
+                        .doc .docx .gif .jpg .jpeg .ods .odt .odp .pdf .png .ppt .pptx .rar<br>
+                        .sld .tif .tiff .txt .xls .xlsx .xml .zip .gz
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_4" id="downloadlayer" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Download layer!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can download any public layer or permitted privet layer(s) from GeoDASH platform.<br><br>
+                        Allowed download types are:<br>
+                        KML, GeoJSON, Excel, CSV, GML 3.1.1, GML<br> 2.0, Zipped Shapefile, PNG, PDF, JPEG
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_5" id="exporg" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Explore organizations!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can explore the list of registered organizations in GeoDASH platform and
+                        view the public layer list, User list and ask question to that organization admin.
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_6" id="expusers" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Explore users!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can explore the list of registered users of GeoDASH platform after login.
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_7" id="dockurfavorite" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Dock your favorite items!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can dock you favorite layers, maps, documents and organizations for quick access and to follow the activity.
+                    </p>
+                </div>
+            </div>
+            <div class="welcomeHelpModalBox ehmb_8" id="message_" style="height:220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Messageing!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You can communicate with any other users of GeoDASH system using message option for your requirement.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-body" class="do-show">
+                <p><input type="checkbox" id="helpmodal" value="0"/>  Do not show this message again!.</p>
+            </div>
+            <div class="modal-body text-center">
+                <p>
+                    <a href="javascript:;" onclick="previousItem()" title="Previous"> < </a>
+                    <a class="helpselector ehmbl_1 activeitem home-modal-limit" data-show-index="1" id="uploadlayerdocno">1</a>
+                    <a class="helpselector ehmbl_2 home-modal-limit" data-show-index="2" id="uploadmapdocno" >2</a>
+                    <a class="helpselector ehmbl_3 home-modal-limit" data-show-index="3" id="uploaddocno">3</a>
+                    <a class="helpselector ehmbl_4 home-modal-limit" data-show-index="4" id="downloadlayernno">4</a>
+                    <a class="helpselector ehmbl_5 home-modal-limit" data-show-index="5" id="exporgno" >5</a>
+                    <a class="helpselector ehmbl_6 home-modal-limit" data-show-index="6" id="expusersno" >6</a>
+                    <a class="helpselector ehmbl_7 home-modal-limit" data-show-index="7" id="dockurfavoriteno" >7</a>
+                    <a class="helpselector ehmbl_8 home-modal-limit" data-show-index="8" id="message_no">8</a>
+                    <a href="javascript:;" onclick="nextItem()" title="Next"> > </a>
+                </p>
+            <div class="modal-footer" style="margin-bottom:-20px;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+    function previousItem(){
+        var dataShowIndex = parseInt($(".helpselector.activeitem").attr('data-show-index'));
+        var previousItemIndex = (dataShowIndex-1);
+        if(previousItemIndex <= 0){
+            previousItemIndex = 1;
+        }
+        $('.welcomeHelpModalBox, .helpselector').removeClass('activeitem');
+        $('.welcomeHelpModalBox.ehmb_'+previousItemIndex).addClass('activeitem');
+        $('.helpselector.ehmbl_'+previousItemIndex).addClass('activeitem');
+    }
+    function nextItem(){
+        var dataShowIndex = parseInt($(".helpselector.activeitem").attr('data-show-index'));
+        var nextItemIndex = (dataShowIndex+1);
+        if(nextItemIndex >= 8){
+            nextItemIndex = 8;
+        }
+        console.log(dataShowIndex, nextItemIndex);
+        $('.welcomeHelpModalBox, .helpselector').removeClass('activeitem');
+        $('.welcomeHelpModalBox.ehmb_'+nextItemIndex).addClass('activeitem');
+        $('.helpselector.ehmbl_'+nextItemIndex).addClass('activeitem');
+    }
+    $(document).ready(function () {
+        // Store
+        var helpmodal = localStorage.getItem("helpmodal");
+        if (helpmodal == undefined || helpmodal === 'false' || helpmodal === false) {
+            $('#welcomeHelpModal').modal('show');
+        }
+
+        $("#helpmodal").click(function () {
+            var helpmodal = ($("#helpmodal:checked").length > 0);
+            localStorage.setItem("helpmodal", helpmodal);
+        });
+        $(".helpselector").click(function(){
+            var dataShowIndex = $(this).attr('data-show-index');
+            $('.welcomeHelpModalBox, .helpselector').removeClass('activeitem');
+            $('.welcomeHelpModalBox.ehmb_'+dataShowIndex).addClass('activeitem');
+            $('.helpselector.ehmbl_'+dataShowIndex).addClass('activeitem');
+        });
+    });
+
 </script>
 {% endblock extra_script %}

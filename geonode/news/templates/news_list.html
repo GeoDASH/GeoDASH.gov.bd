@@ -47,7 +47,7 @@
                 <div class="details">
                     {% if news.image %}
                     <p>
-                        <img src="/uploaded/{{ news.image }}" width="400" height="400" />
+                        <img src="/uploaded/{{ news.image }}"  style="max-width:400px;max-height:500px;"/>
                     </p><br />
                     {% endif %}
                     {% if news.description|length >= 500 %}

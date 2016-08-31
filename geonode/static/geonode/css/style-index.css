@@ -1131,4 +1131,33 @@ toolbar_right .border-dotted {
     margin-top: 7px;
     font-size:9px;
     font-weight:normal;
+}
+
+/* home page modal section */
+.welcomeHelpModalBox{
+        display: none;
     }
+    .welcomeHelpModalBox.activeitem{
+        display: block;
+    }
+    .helpselector.activeitem{
+        font-weight: bold;
+    }
+.home-modal{
+    color: #2ecc71;
+    padding-right:10px;
+    padding-left:20px;
+}
+
+ .home-modal-limit{
+    padding:0px 4px;
+    cursor:pointer;
+}
+.modal-fixed-height{
+    display:none;
+    height:220px;
+}
+.do-show{
+    text-align:left;
+    margin-top:-10px;
+ }
