@@ -700,6 +700,21 @@
 		    {% endif %}
             {% block extra_user_menu %}
             {% endblock %}
+
+            {% if request.user.is_superuser %}
+            <li class="c-menu__item">
+                <a href="{% url "metadata-backup" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Metadata Backup" %}</span>
+                </a>
+            </li>
+            <li class="c-menu__item">
+                <a href="{% url "data-backup" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Data Backup" %}</span>
+                </a>
+            </li>
+            {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">

@@ -62,6 +62,7 @@ from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
 from geonode.settings import MEDIA_ROOT
 from geonode.maps.models import WmsServer
+from geonode.security.views import _perms_info, _perms_info_json
 from .authorization import GeoNodeAuthorization
 
 
@@ -523,10 +524,15 @@ class MakeFeatured(TypeFilteredResource):
                     if layer.group in user.group_list_all():
                         resource.featured = status
                         if status == True:
-                            try:
-                                UserObjectPermission.objects.get(object_pk=resource_id, permission=141, user=-1).delete()
-                            except UserObjectPermission.DoesNotExist:
-                                pass
+                            permissions = _perms_info_json(layer)
+                            perm_dict = json.loads(permissions)
+                            if 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                                perm_dict['users']['AnonymousUser'].remove('download_resourcebase')
+                            if 'download_resourcebase' in perm_dict['groups']['anonymous']:
+                                perm_dict['groups']['anonymous'].remove('download_resourcebase')
+
+                            layer.set_permissions(perm_dict)
+
 
                         resource.save()
                         out['success'] = 'True'

@@ -125,7 +125,6 @@ class LayerUploadForm(forms.Form):
                 "Only Shapefiles and GeoTiffs are supported. You uploaded a %s file" %
                 base_ext)
         if base_ext.lower() == ".csv" and self.cleaned_data['the_geom'] != "geom" and self.cleaned_data['the_geom'] != '':
-            import pdb;pdb.set_trace()
             raise forms.ValidationError("The field name of your .csv file which contains multilinestring coordinates should be 'geom' ")
         if base_ext.lower() == ".shp":
             if dbf_file is None or shx_file is None:

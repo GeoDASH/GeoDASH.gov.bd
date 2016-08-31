@@ -1,3 +1,7 @@
+import tempfile
+import os
+
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
@@ -6,9 +10,11 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.http import Http404
 
 from geonode.base.libraries.decorators import superuser_check
 from geonode.dashboard.models import SectionManagementTable
+from geonode import local_settings
 
 # Create your views here.
 
@@ -67,3 +73,51 @@ def add_sections_to_index_page():
         for section in list_of_sections:
             new_section = SectionManagementTable(section=section)
             new_section.save()
+
+
+def metadatabackup(request):
+    """
+    This view is for database metadata backup.
+    Only super admin can do the job
+    :return:
+    """
+    if request.user.is_superuser:
+        database_name = local_settings.DATABASES['default']['NAME']
+        database_user = local_settings.DATABASES['default']['USER']
+        database_password = local_settings.DATABASES['default']['PASSWORD']
+
+        tempdir = tempfile.mkdtemp()
+        sudo_pass = local_settings.SUDO_PASSWORD
+        command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/metadata.backup'
+        os.system(command_string)
+        file_path = tempdir + '/metadata.backup'
+        fsock = open(file_path,"rb")
+        response = HttpResponse(fsock, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=metadata.backup'
+        return response
+    else:
+        raise Http404("You dont have permission")
+
+
+def databackup(request):
+    """
+    This view is for database data backup.
+    Only super admin can do the job
+    :return:
+    """
+    if request.user.is_superuser:
+        database_name = local_settings.DATABASES['datastore']['NAME']
+        database_user = local_settings.DATABASES['datastore']['USER']
+        database_password = local_settings.DATABASES['datastore']['PASSWORD']
+
+        tempdir = tempfile.mkdtemp()
+        sudo_pass = local_settings.SUDO_PASSWORD
+        command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/data.backup'
+        os.system(command_string)
+        file_path = tempdir + '/data.backup'
+        fsock = open(file_path,"rb")
+        response = HttpResponse(fsock, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=data.backup'
+        return response
+    else:
+        raise Http404('You dont have permission')

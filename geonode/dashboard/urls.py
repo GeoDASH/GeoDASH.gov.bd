@@ -10,4 +10,11 @@ urlpatterns = patterns(
     url(r'^_dashboard/?$', TemplateView.as_view(template_name='_dashboard.html'), name='_dashboard'),
     url(r'^favourite_list/?$', TemplateView.as_view(template_name='favourite_list.html'), name='favourite_list'),
 
+
+    #database backup and restore
+    url(r'^database-backup/metadata$', 'metadatabackup', name='metadata-backup'),
+    url(r'^database-backup/data$', 'databackup', name='data-backup'),
+
+
+
 )

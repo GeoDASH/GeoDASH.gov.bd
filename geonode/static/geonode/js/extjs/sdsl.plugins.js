@@ -48,6 +48,8 @@ SDSL.plugins.SearchByBoundBox = Ext.extend(gxp.plugins.Tool, {
 
     ptype: "sdsl_SearchByBoundBox",
 
+    boxLayerObj: {},
+
     addActions: function () {
         var map = this.target.mapPanel.map;
         this.boxLayer = new OpenLayers.Layer.Vector(null, {displayInLayerSwitcher: false});
@@ -58,7 +60,10 @@ SDSL.plugins.SearchByBoundBox = Ext.extend(gxp.plugins.Tool, {
             scope: this
         });
         var action = new GeoExt.Action({
-            text: "Search by bound box", // BoundBox //rectangle
+            //text: "Search by bound box", // BoundBox //rectangle
+            //menuText: this.queryMenuText,
+            iconCls: "gxp-icon-find",
+            tooltip: 'Search by bound box',
             toggleGroup: "draw",
             enableToggle: true,
             map: map,
@@ -91,6 +96,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
 
     addActions: function () {
 
+        var that = this;
         var map = this.target.mapPanel.map;
         this.boxLayer = new OpenLayers.Layer.Vector(null, {displayInLayerSwitcher: false});
         map.addLayers([this.boxLayer]);
@@ -99,11 +105,14 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             addlayer: this.raiseLayer,
             scope: this
         });
-        map.events.register("click", this, function (e) {
-            console.log('click', e.xy.x, e.xy.y);
-        });
+        //map.events.register("click", this, function (e) {
+        //    console.log('click', e.xy.x, e.xy.y);
+        //});
         var action = new GeoExt.Action({
-            text: "Search by radius", // Radius //rectangle
+            //text: "Search by radius", // Radius //rectangle
+            //menuText: this.queryMenuText,
+            iconCls: "gxp-icon-find",
+            tooltip: 'Search by radius',
             toggleGroup: "draw",
             enableToggle: true,
             map: map,
@@ -119,7 +128,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             )
         });
         action.control.events.register('featureadded', this, function (e) {
-            console.log('featureadded event fire', e);
+            //console.log('featureadded event fire', e);
             // DRY-principle not applied
             var f = e.feature;
             // ###############
@@ -149,7 +158,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             // #########################################################
             var len = Math.round(radius.getLength()).toString();
             var radiusInPixel = parseInt(len / f.layer.map.getResolution());
-            console.log('radiusInPixel', radiusInPixel);
+            //console.log('radiusInPixel', radiusInPixel);
             // ####################
             // Get Search Layer URL
             // Get Search Layer URL
@@ -191,7 +200,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
              var viewPixel = f.layer.map.getViewPortPxFromLonLat(coordinate);
              console.log([startPoint, centerPoint, pixel, viewPixel]);*/
             if (searchLayerList.length > 0) {
-                this.getFeatureInfo(searchLayerList, pixel, radiusInPixel);
+                this.getFeatureInfo(searchLayerList, pixel, radiusInPixel, centerPoint);
             }
             // ###############
             //style the radius
@@ -225,48 +234,82 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             // draw radius on selected circle
             // draw radius on selected circle
             // ##############################
-            this.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
+            //this.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
             //this.boxLayer.addFeatures([radiusLineDrawing]);
         });
-        /*action.control.handler.callbacks.move = function (e) {
+        action.control.handler.callbacks.move = function (e) {
+            //console.log('move event fire', e);
+            var linearRing = new OpenLayers.Geometry.LinearRing(e.components[0].components);
+            var geometry = new OpenLayers.Geometry.Polygon([linearRing]);
+            var polygonFeature = new OpenLayers.Feature.Vector(geometry, null);
+            var polybounds = polygonFeature.geometry.getBounds();
 
-         var linearRing = new OpenLayers.Geometry.LinearRing(e.components[0].components);
-         var geometry = new OpenLayers.Geometry.Polygon([linearRing]);
-         var polygonFeature = new OpenLayers.Feature.Vector(geometry, null);
-         var polybounds = polygonFeature.geometry.getBounds();
+            var minX = polybounds.left;
+            var minY = polybounds.bottom;
+            var maxX = polybounds.right;
+            var maxY = polybounds.top;
 
-         var minX = polybounds.left;
-         var minY = polybounds.bottom;
-         var maxX = polybounds.right;
-         var maxY = polybounds.top;
+            //calculate the center coordinates
 
-         //calculate the center coordinates
+            var startX = (minX + maxX) / 2;
+            var startY = (minY + maxY) / 2;
 
-         var startX = (minX + maxX) / 2;
-         var startY = (minY + maxY) / 2;
+            //make two points at center and at the edge
+            var startPoint = new OpenLayers.Geometry.Point(startX, startY);
+            var endPoint = new OpenLayers.Geometry.Point(maxX, startY);
+            var radius = new OpenLayers.Geometry.LineString([startPoint, endPoint]);
+            var len = Math.round(radius.getLength()).toString();
 
-         //make two points at center and at the edge
-         var startPoint = new OpenLayers.Geometry.Point(startX, startY);
-         var endPoint = new OpenLayers.Geometry.Point(maxX, startY);
-         var radius = new OpenLayers.Geometry.LineString([startPoint, endPoint]);
-         var len = Math.round(radius.getLength()).toString();
-
-         var laenge;
-         if (len > 1000) {
-         laenge = len / 1000;
-         einheit = "km";
-         } else {
-         laenge = len;
-         einheit = "m";
-         }
-         //document.getElementById("radius").innerHTML = laenge;
-         //document.getElementById("einheit").innerHTML = einheit;
-         console.log(laenge, einheit);
-         }*/
+            var laenge, einheit;
+            if (len > 1000) {
+             laenge = len / 1000;
+             laenge = laenge.toFixed(2);
+             einheit = "km";
+            } else {
+             laenge = len;
+             einheit = "m";
+            }
+            // ###############
+            //style the radius
+            //style the radius
+            // ###############
+            var punktstyle = {
+                strokeColor: "red",
+                strokeWidth: 1,
+                pointRadius: 4,
+                fillOpacity: 0.2
+            };
+            var styleLabel = laenge + " " + einheit;
+            var style = {
+                strokeColor: "#0500bd",
+                strokeWidth: 3,
+                label: styleLabel,
+                labelAlign: "left",
+                labelXOffset: "20",
+                labelYOffset: "10",
+                labelOutlineColor: "white",
+                labelOutlineWidth: 3
+            };
+            // ################################
+            //add radius feature to radii layer
+            //add radius feature to radii layer
+            // ################################
+            var centerPointDrawing = new OpenLayers.Feature.Vector(startPoint, {}, punktstyle);
+            var radiusLineDrawing = new OpenLayers.Feature.Vector(radius, {'length': len}, style);
+            // action control deactivate when draw done
+            //action.control.deactivate();
+            // ##############################
+            // draw radius on selected circle
+            // draw radius on selected circle
+            // ##############################
+            that.boxLayer.destroyFeatures();
+            that.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
+            //this.boxLayer.addFeatures([radiusLineDrawing]);
+        }
         return SDSL.plugins.SearchByRadius.superclass.addActions.apply(this, [action]);
     },
     getFeatureInfoRequestParams: function (layer, pixel) {
-        console.log('layer', layer);
+        //console.log('layer', layer);
         // ###################
         // get extent for bbox
         // ###################
@@ -316,7 +359,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         var uri = url.split('/wms');
         return uri[0] + '/wms';
     },
-    getFeatureInfo: function (searchLayerList, pixel, radiusInPixel) {
+    getFeatureInfo: function (searchLayerList, pixel, radiusInPixel, centerPoint) {
         for (var i = 0; i < searchLayerList.length; i++) {
             var layer = searchLayerList[i];
             var url = this.getFeatureInfoRequestUrl(layer);
@@ -332,7 +375,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
                 success: function (response, data) {
                     //console.log('success responseText');
                     //console.log(response.responseText);
-                    thatObj.addOutput(parameter, response.responseText);
+                    thatObj.addOutput(parameter, response.responseText, centerPoint);
                 },
                 failure: function (error) {
                     console.log('failure', error);
@@ -350,80 +393,214 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
     },
     /** api: method[addOutput]
      */
-    addOutput: function (parameter, response) {
-        console.log('out');
+    addOutput: function (parameter, response, centerPoint) {
+        //console.log('out');
         var gridTitle = parameter.LAYERS;
         var columnsLen = 0;
+        var tableHeaderIds = [];
         var tableHeader = [];
         var tableField = [];
         var tableRows = [];
         var loadGridData = false;
 
         var data = Ext.decode(response);
+        var isPointLayer = false;
+        var totalResult = 0;
         if (data.features != undefined) {
             var features = data.features;
             var len = features.length;
+            totalResult = len;
             if (len > 0) {
-
+                console.log('total len', len);
                 for (var i = 0; i < len; i++) {
-                    var properties = features[i].properties;
-                    if ((properties instanceof Object) && !(properties instanceof Array)) {
-                        var keys = Object.keys(properties);
-                        columnsLen = keys.length;
-                        var tableRow = [];
-                        for (var j = 0; j < columnsLen; j++) {
-                            var proName = keys[j];
-                            if (tableHeader.length != columnsLen) {
+                    var centerLat = centerPoint.y;
+                    var centerLon = centerPoint.x;
+                    var coordinates = [];
+                    if(features[i].geometry != undefined){
+                        var geometry = features[i].geometry;
+                        if(geometry.type != undefined && (geometry.type == 'Point' || geometry.type == 'point')){
+                            isPointLayer = true;
+                            if(isPointLayer && !(tableHeaderIds.indexOf('centerDistance') > -1)){
                                 var header = {
-                                    id: proName,
-                                    header: proName,
+                                    id: 'centerDistance',
+                                    header: 'Distance',
                                     sortable: true,
-                                    dataIndex: proName
+                                    dataIndex: 'centerDistance'
                                 };
+                                tableHeaderIds.push('centerDistance');
                                 tableHeader.push(header);
-                                var field = {
-                                    name: proName
-                                };
-                                tableField.push(field);
+                                tableField.push({name: 'centerDistance'});
                             }
-                            tableRow.push(properties[proName]);
-                            console.log('tableRow', tableRow);
+                            if(geometry.coordinates != undefined){
+                                coordinates = geometry.coordinates;
+                            }
                         }
-                        tableRows.push(tableRow);
+                    }
+                    if(features[i].properties != undefined){
+                        var properties = features[i].properties;
+                        if ((properties instanceof Object) && !(properties instanceof Array)) {
+                            var keys = Object.keys(properties);
+                            columnsLen = keys.length;
+                            var headerColumnsLen = columnsLen;
+                            //var tableRow = [];
+                            var tableRow = {};
+                            if(isPointLayer){
+                                var distance = 'N/A';
+                                if(coordinates[0] != undefined && coordinates[1] != undefined){
+                                    distance = this.getPointDistance(centerLat, centerLon, coordinates[1], coordinates[0]);
+                                    //console.log(centerLat, centerLon, coordinates[1], coordinates[0], distance);
+                                    //tableRow.push(distance);
+                                    tableRow.centerDistance = distance;
+                                } else {
+                                    //tableRow.push(distance);
+                                    tableRow.centerDistance = distance;
+                                }
+                                headerColumnsLen = headerColumnsLen+1;
+                            }
+                            for (var j = 0; j < columnsLen; j++) {
+                                var proName = keys[j];
+                                //tableRow.push(properties[proName]);
+                                tableRow['pro_'+proName+'_perty'] = properties[proName] + '';
+                                if (tableHeader.length < headerColumnsLen) {
+                                    var header = {
+                                        id: 'pro_'+proName+'_perty',
+                                        header: proName,
+                                        sortable: true,
+                                        dataIndex: 'pro_'+proName+'_perty'
+                                    };
+                                    tableHeaderIds.push(proName);
+                                    tableHeader.push(header);
+                                    var field = {
+                                        name: 'pro_'+proName+'_perty'
+                                    };
+                                    tableField.push(field);
+                                }
+                            }
+                            tableRows.push(tableRow);
+                        }
                     }
                 }
                 loadGridData = true;
             }
         }
 
+        //console.log('tableHeaderIds', tableHeaderIds);
+        //console.log('tableHeader', tableHeader);
+        //console.log('tableField', tableField);
+        //console.log('tableRows', tableRows.length);
+        //console.log('tableRows', tableRows[0]);
+        //console.log('tableRows', tableRows[2]);
+        //console.log('tableRows', tableRows[5]);
+
         if(loadGridData){
-            // create the data store
-            var store = new Ext.data.ArrayStore({
-                fields: tableField
+            /*tableRows = tableRows.sort(function(a, b){
+                if(parseFloat(a[0]) == NaN && typeof a[0] === 'string' || a[0] instanceof String)
+                    return false;
+                else
+                    return parseFloat(a[0]) - parseFloat(b[0]);
+            });*/
+            var PAGE_SIZE = 10;
+
+            // make MemoryProxy
+            var dataSet = {};
+            dataSet.records = tableRows;
+            dataSet.totalCount = tableRows.length;
+
+            // create the Data Store
+            var store = new Ext.data.JsonStore({
+                root: 'records',
+                totalProperty: 'totalCount',
+                //idProperty: 'centerDistance',
+                fields: tableField,
+                proxy: new Ext.data.MemoryProxy(dataSet)
             });
-
-            // manually load local data
-            store.loadData(tableRows);
-
+            //console.log(dataSet);
+            if(isPointLayer){
+                store.setDefaultSort('centerDistance', 'asc'); //desc
+            }
+            // trigger the data store load
+            store.load({params:{start:0, limit:PAGE_SIZE}});
             // create the Grid
             var grid = new Ext.grid.GridPanel({
                 store: store,
-                columns: tableHeader,
-                stripeRows: true,
-                height: 350,
-                width: 600,
+                header: true,
+                colModel: new Ext.grid.ColumnModel({
+                    default: {
+                        sortable: true
+                    },
+                    columns: tableHeader
+                }),
+                footer: true, //'Total result: '+totalResult,
+                autoScroll: true,
+                trackMouseOver:false,
+                disableSelection:true,
+                loadMask: true,
+                //stripeRows: true,
+                //maxHeight: 350,
+                //width: 600,
                 title: gridTitle,
                 // config options for stateful behavior
-                stateful: true,
-                stateId: 'grid'
+                //stateful: true,
+                //stateId: 'grid'
+                // paging bar on the bottom
+                // customize view config
+                bbar: new Ext.PagingToolbar({
+                    pageSize: PAGE_SIZE,
+                    store: store,
+                    displayInfo: true,
+                    displayMsg: 'Displaying topics {0} - {1} of {2}',
+                    emptyMsg: "No topics to display",
+                })
             });
+            // render it
+            //grid.render('records-grid');
+            // trigger the data store load
+            //store.load({params:{start:0, limit:PAGE_SIZE}});
 
             //return false;
             var config = Ext.apply(grid, config || {});
         }
-
+        //var tab = new Ext.TabPanel({
+        //    maxHeight: 350,
+        //    width: 600,
+        //    autoScroll: true,
+        //    frame: true,
+        //    defaults: {autoHeight:true},
+        //    items:[
+        //        title: "test",
+        //        xtype: 'grid',
+        //
+        //    ]
+        //});
         //return SDSL.plugins.SearchByRadius.superclass.addActions.apply(this, [action]);
         var queryForm = SDSL.plugins.SearchByRadius.superclass.addOutput.call(this, config);
+    },
+
+    getPointDistance: function (p1Lat, p1Lng, p2Lat, p2Lng) {
+        var R = 6378137; // Earth’s mean radius in meter
+        var dLat = this.getRad(p2Lat - p1Lat);
+        var dLong = this.getRad(p2Lng - p1Lng);
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(this.getRad(p1Lat)) * Math.cos(this.getRad(p2Lat)) *
+                Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        var km = (d/1000);
+        //var mile = this.getMeterToMiles(d);
+        return km.toFixed(2); // returns the distance in meter
+    },
+
+    getRad: function (x) {
+        return x * Math.PI / 180;
+    },
+
+    getMeterToMiles: function (meter) {
+        return meter * 0.000621371192;
+    },
+
+    getMileToMeters: function (mile) {
+        return mile * 1609.344;
     }
+
 });
 Ext.preg(SDSL.plugins.SearchByRadius.prototype.ptype, SDSL.plugins.SearchByRadius);

@@ -132,7 +132,7 @@ def request_permissions(request):
             'request_download_resourcebase',
             {'from_user': request.user, 'resource': resource}
         )
-        # notify layer owners that this layer is used to create this map
+        # notify layer owners that this layer is requested to download
         notify.send(request.user, recipient=resource.owner, actor=request.user,
             verb='requested to download your resource', target=resource)
         return HttpResponse(
