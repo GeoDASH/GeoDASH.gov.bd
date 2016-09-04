@@ -236,6 +236,10 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             // ##############################
             //this.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
             //this.boxLayer.addFeatures([radiusLineDrawing]);
+            var map = this.boxLayer && this.boxLayer.map;
+            if (map) {
+                map.setLayerZIndex(this.boxLayer, 500);
+            }
         });
         action.control.handler.callbacks.move = function (e) {
             //console.log('move event fire', e);
@@ -388,7 +392,9 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         this.boxLayer.destroyFeatures();
         var map = this.boxLayer && this.boxLayer.map;
         if (map) {
-            map.setLayerIndex(this.boxLayer, map.layers.length);
+            map.setLayerZIndex(this.boxLayer, 500);
+            //map.setLayerIndex(this.boxLayer, map.layers.length);
+            //map.raiseLayer(this.boxLayer, 500);
         }
     },
     /** api: method[addOutput]
@@ -406,7 +412,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         var data = Ext.decode(response);
         var isPointLayer = false;
         var totalResult = 0;
-        if (data.features != undefined) {
+        if (data != undefined && data.features != undefined) {
             var features = data.features;
             var len = features.length;
             totalResult = len;

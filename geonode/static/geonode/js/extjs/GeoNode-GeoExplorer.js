@@ -575,5 +575,5 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
 });
 
 if (GeoNode.Composer) {
-    Ext.override(GeoNode.Composer, GeoNode.ComposerMixin);
+    Ext.override(GeoNode.Composer, GeoNode.ComposerMixin) ;
 }
