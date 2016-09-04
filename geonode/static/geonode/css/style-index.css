@@ -1167,3 +1167,6 @@ toolbar_right .border-dotted {
 .home-modal-hbg{
     background:rgb(211,211,211);
 }
+.bcctestmap{
+        display: block;
+    }

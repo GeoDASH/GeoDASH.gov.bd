@@ -619,6 +619,9 @@ class MapResourceWithFavorite(CommonFavorite):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'maps_with_favorite'
+        filtering = {
+            'id': ALL
+        }
 
 
 class DocumentResourceWithFavorite(CommonFavorite):

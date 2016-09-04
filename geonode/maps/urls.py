@@ -29,6 +29,7 @@ js_info_dict = {
 
 urlpatterns = patterns('geonode.maps.views',
                        url(r'^$', TemplateView.as_view(template_name='maps/map_list.html'), name='maps_browse'),
+                       url(r'^bccviewmap$', TemplateView.as_view(template_name='maps/bccviewmap.html'), name='bccviewmap'),
                        url(r'^new$', 'new_map', name="new_map"),
                        url(r'^new/data$', 'new_map_json', name='new_map_json'),
                        url(r'^checkurl/?$', 'ajax_url_lookup'),
