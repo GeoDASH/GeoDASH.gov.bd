@@ -157,6 +157,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             //calculate length. WARNING! The EPSG:900913 lengths are meaningless except around the equator. Either use a local coordinate system like UTM, or geodesic calculations.
             // #########################################################
             var len = Math.round(radius.getLength()).toString();
+            var radiusInMeter = len;
             var radiusInPixel = parseInt(len / f.layer.map.getResolution());
             //console.log('radiusInPixel', radiusInPixel);
             // ####################
@@ -200,7 +201,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
              var viewPixel = f.layer.map.getViewPortPxFromLonLat(coordinate);
              console.log([startPoint, centerPoint, pixel, viewPixel]);*/
             if (searchLayerList.length > 0) {
-                this.getFeatureInfo(searchLayerList, pixel, radiusInPixel, centerPoint);
+                this.getFeatureInfo(searchLayerList, pixel, radiusInPixel, radiusInMeter, centerPoint);
             }
             // ###############
             //style the radius
@@ -312,7 +313,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         }
         return SDSL.plugins.SearchByRadius.superclass.addActions.apply(this, [action]);
     },
-    getFeatureInfoRequestParams: function (layer, pixel) {
+    getFeatureInfoRequestWMSParams: function (layer, pixel) {
         //console.log('layer', layer);
         // ###################
         // get extent for bbox
@@ -358,17 +359,51 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
 
         return requestParams;
     },
-    getFeatureInfoRequestUrl: function (layer) {
+    getFeatureInfoRequestWFSParams: function (layer, radiusInMeter, centerPoint) {
+        var centerLat = centerPoint.y;
+        var centerLon = centerPoint.x;
+        var drg = (radiusInMeter/111325);
+        var cqlFilter='DWithin(the_geom,POINT('+centerLon+' '+centerLat+'),'+drg+',meters)';
+        // ###################
+        // get params of layer
+        // ###################
+        var params = layer.params;
+
+        // ##############
+        // Make request params
+        // ##############
+        var requestParams = {};
+        requestParams.service = 'WFS';
+        requestParams.version = '1.0.0';
+        requestParams.request = 'GetFeature';
+        requestParams.outputFormat = 'JSON';
+        requestParams.srsName = 'EPSG:4326';
+        requestParams.typeNames = params.LAYERS || layer.name || '';
+        requestParams.cql_filter = cqlFilter;
+
+        return requestParams;
+    },
+    getFeatureInfoRequestWMSUrl: function (layer) {
         var url = layer.url;
         var uri = url.split('/wms');
         return uri[0] + '/wms';
     },
-    getFeatureInfo: function (searchLayerList, pixel, radiusInPixel, centerPoint) {
+    getFeatureInfoRequestWFSUrl: function (layer) {
+        var url = layer.url;
+        console.log(url);
+        var uri = url.split('/wms?');
+        return uri[0] + '/wfs';
+    },
+    getFeatureInfo: function (searchLayerList, pixel, radiusInPixel, radiusInMeter, centerPoint) {
         for (var i = 0; i < searchLayerList.length; i++) {
             var layer = searchLayerList[i];
-            var url = this.getFeatureInfoRequestUrl(layer);
-            var parameter = this.getFeatureInfoRequestParams(layer, pixel);
-            parameter.buffer = radiusInPixel;
+            // request for WMS
+            /*var url = this.getFeatureInfoRequestWMSUrl(layer);
+            var parameter = this.getFeatureInfoRequestWMSParams(layer, pixel);
+            parameter.buffer = radiusInPixel;*/
+            // request for WFS
+            var url = this.getFeatureInfoRequestWFSUrl(layer);
+            var parameter = this.getFeatureInfoRequestWFSParams(layer, radiusInMeter, centerPoint);
 
             var thatObj = this;
             // Basic request
@@ -543,7 +578,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
                 loadMask: true,
                 //stripeRows: true,
                 //maxHeight: 350,
-                //width: 600,
+                width: 600,
                 title: gridTitle,
                 // config options for stateful behavior
                 //stateful: true,
