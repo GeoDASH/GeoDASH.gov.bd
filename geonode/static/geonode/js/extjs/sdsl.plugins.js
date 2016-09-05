@@ -436,7 +436,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
      */
     addOutput: function (parameter, response, centerPoint) {
         //console.log('out');
-        var gridTitle = parameter.LAYERS;
+        var gridTitle = parameter.typeNames;
         var columnsLen = 0;
         var tableHeaderIds = [];
         var tableHeader = [];
