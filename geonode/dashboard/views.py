@@ -85,10 +85,15 @@ def metadatabackup(request):
         database_name = local_settings.DATABASES['default']['NAME']
         database_user = local_settings.DATABASES['default']['USER']
         database_password = local_settings.DATABASES['default']['PASSWORD']
+        database_host = local_settings.DATABASES['default']['HOST']
+        database_port = local_settings.DATABASES['default']['PORT']
+
 
         tempdir = tempfile.mkdtemp()
-        sudo_pass = local_settings.SUDO_PASSWORD
-        command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/metadata.backup'
+        #command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/metadata.backup'
+        command_string = 'pg_dump -h' + database_host + ' -p' + database_port + ' -U' + database_user + ' -c -Fc -w ' +\
+                         database_name + ' > ' + tempdir +'/metadata.backup'
+        os.putenv("PGPASSWORD", database_password)
         os.system(command_string)
         file_path = tempdir + '/metadata.backup'
         fsock = open(file_path,"rb")
@@ -109,10 +114,14 @@ def databackup(request):
         database_name = local_settings.DATABASES['datastore']['NAME']
         database_user = local_settings.DATABASES['datastore']['USER']
         database_password = local_settings.DATABASES['datastore']['PASSWORD']
+        database_host = str(local_settings.DATABASES['datastore']['HOST'])
+        database_port = str(local_settings.DATABASES['datastore']['PORT'])
 
         tempdir = tempfile.mkdtemp()
-        sudo_pass = local_settings.SUDO_PASSWORD
-        command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/data.backup'
+        command_string = 'pg_dump -h' + database_host + ' -p' + database_port + ' -U' + database_user + ' -c -Fc -w ' +\
+                         database_name + ' > ' + tempdir +'/data.backup'
+        #command_string = 'echo ' + sudo_pass + ' | sudo -S  -u postgres -i pg_dump -c -Fc ' + database_name +' > ' + tempdir + '/data.backup'
+        os.putenv("PGPASSWORD", database_password)
         os.system(command_string)
         file_path = tempdir + '/data.backup'
         fsock = open(file_path,"rb")
