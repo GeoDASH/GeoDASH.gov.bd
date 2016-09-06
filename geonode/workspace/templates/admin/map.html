@@ -57,7 +57,7 @@
                                         <td>{{ user_approval.current_iteration }}</td>
                                         <td>{{ user_approval.date_updated }}</td>
                                         <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
-                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deney" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -118,7 +118,7 @@
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "delete map" %}</button> <br>
+                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "Delete map" %}</button> <br>
                                             {% include "map_templates/_delete_map.html" %}
                                         </td>
                                     </tr>

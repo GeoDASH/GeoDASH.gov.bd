@@ -209,7 +209,7 @@
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
                                 </button>
-                                <span class="badge badge-notifymsg">{{ request.user.message_unread }}</span>
+                                <span class="badge badge-notifymsg">{% if user.message_unread %}{{ request.user.message_unread }}{% endif %}</span>
                             </a>
                         </li>
                         <li class="notification" id="show-notification">
@@ -217,7 +217,7 @@
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-bell" ></i>
                                 </button>
-                                <span class="badge badge-notify" id="rload">{{ request.user.notifications.unread.count }}</span>
+                                <span class="badge badge-notify" id="rload">{% if user.notifications.unread.count %}{{ request.user.notifications.unread.count }}{% endif %}</span>
                             </a>
                         </li>
                         <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
