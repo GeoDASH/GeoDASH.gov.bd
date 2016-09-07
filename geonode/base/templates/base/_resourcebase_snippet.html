@@ -41,9 +41,9 @@
                 </div>
                 <ul class="resources-summery">
                   <li>
-                      <a href="/people/profile/{{ item.owner }}">
+                      <a href="/people/profile/{{ item.owner__username}}">
                           <i class="fa fa-user"></i>
-                          {{ item.owner }}
+                          {{ item.owner__username }}
                       </a>
                   </li>
                   <li>
@@ -217,9 +217,9 @@
                       <div class="item-items">
                           <ul class="list-inline lmd">
                               <li>
-                                  <a href="/people/profile/{{ item.owner }}">
+                                  <a href="/people/profile/{{ item.owner__username }}">
                                       <i class="fa fa-user"></i>
-                                      {{ item.owner }}
+                                      {{ item.owner__username }}
                                   </a>
                               </li>
                               <li>

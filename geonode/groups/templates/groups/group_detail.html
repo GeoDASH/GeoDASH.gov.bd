@@ -231,7 +231,7 @@
                             output +='<div class="grid-container lmd">';
                             output +='<div class="avater">';
                             output +='<div class="avater-img">';
-                            output +='<a class="avater-img-mid" href="' +item.detail_url+ '" >';
+                            output +='<a class="avater-img-mid" href="'+item.detail_url+'" target="_self">';
                                     if(item.thumbnail_url){
                             output +='<img src="' +item.thumbnail_url+ '" alt="" class="group-logo" />';
                                     }
@@ -244,7 +244,7 @@
                             output +='<div class="information">';
                             output +='<div class="top-content text-center">';
                             output +='<div class="title">';
-                            output +='<a href="' +item.detail_url+ '" title="' +item.title+ '">';
+                            output +='<a href="'+item.detail_url+'" target="_self" title="' +item.title+ '">';
                                     if (item.title.length >= 45){
                             output +='.........';
                                     }else{
@@ -272,9 +272,9 @@
                             output +='<div class="item-items">';
                             output +='<ul class="list-inline lmd">';
                             output +='<li>';
-                            output +='<a href="/people/profile/'+ item.owner +'">';
+                            output +='<a href="/people/profile/'+ item.owner__username +'">';
                             output +='<i class="fa fa-user"></i>';
-                            output +=''+ item.owner +'';
+                            output +=''+ item.owner__username +'';
                             output +='</a>';
                             output +='</li>';
                             output +='<li>';

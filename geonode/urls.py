@@ -169,3 +169,8 @@ urlpatterns += patterns('',
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/$', 'geonode.maps.views.featured_map'),
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/info$', 'geonode.maps.views.featured_map_info'),
                         )
+
+#Overpass-turbo Files
+urlpatterns += patterns('',
+                url(r'^overpass_turbo/?$', TemplateView.as_view(template_name='overpass_turbo.html'), name='overpass_turbo'),
+                        )
