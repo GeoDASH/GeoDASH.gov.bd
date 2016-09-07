@@ -578,7 +578,7 @@ class CommonFavorite(ModelResource):
                 bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
             except FavoriteResource.DoesNotExist:
                 bundle.data['favorite'] = False
-        bundle.data['owner'] = bundle.obj.owner
+        bundle.data['owner__username'] = bundle.obj.owner.username
         bundle.data['category'] = bundle.obj.category
         bundle.data['group'] = bundle.obj.group
         if bundle.request.user in bundle.obj.group.get_managers():
