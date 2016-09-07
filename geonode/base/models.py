@@ -278,7 +278,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='owned_resource',
                               verbose_name=_("Owner"))
     contacts = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ContactRole')
-    title = models.CharField(_('title'), max_length=255, help_text=_('name by which the cited resource is known'))
+    title = models.CharField( max_length=255, help_text=_('name by which the cited resource is known'), verbose_name=_('* Title'))
     date = models.DateTimeField(_('date'), default=datetime.datetime.now, help_text=date_help_text)
     date_type = models.CharField(_('date type'), max_length=255, choices=VALID_DATE_TYPES, default='publication',
                                  help_text=date_type_help_text)

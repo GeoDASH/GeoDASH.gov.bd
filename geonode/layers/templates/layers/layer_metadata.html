@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="lead">
-                    <span style="color:red;">*</span> Marks are required field
+                    * Marked fields are mandatory
                 </div>
                 <div class="lead">
                     {% blocktrans with layer.typename as layer_title %}
@@ -104,7 +104,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <label class="control-label required-field">{% trans "Category" %}&nbsp;<span style="color:red;">*</span></label>
+                            <label class="control-label required-field">{% trans "* Category" %}&nbsp;</label>
                             <fieldset id="category_form">
                                 {% autoescape off %}
                                     {% for choice in category_form.category_choice_field.field.choices %}
