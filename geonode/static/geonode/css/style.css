@@ -2863,3 +2863,12 @@ ul.termsuseandcondition li {
 .grid-container.lmd .information .title a:hover{
     color: #337ab7;
 }
+.modal.fade.google-earth{
+    transform: none !important;
+}
+.modal.in.google-earth .modal-dialog {
+    transform: none !important;
+}
+.modal.google-earth .modal-content{
+    border-radius: 0;
+}

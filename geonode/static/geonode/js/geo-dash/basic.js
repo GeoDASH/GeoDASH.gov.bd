@@ -77,6 +77,20 @@ $(window).scroll(function() {
     }
 });
 $(document).ready(function() {
+    if( $(".modal").length > 0){
+        $('.modal').on('shown.bs.modal', function () {
+            if($('.gxp-icon-googleearth').length > 0){
+                var googleEarthActive = $('.gxp-icon-googleearth').closest('table.x-btn').hasClass('x-btn-pressed');
+                if(googleEarthActive){
+                    $(this).addClass('google-earth');
+                } else {
+                    $(this).removeClass('google-earth');
+                }
+            } else {
+                $(this).removeClass('google-earth');
+            }
+        });
+    }
     if( $(".animation_conuter").length){
         var JS_STATIC_URL = '../api/layers';
         $.ajax({
