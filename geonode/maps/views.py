@@ -460,6 +460,15 @@ def new_map_json(request):
         map_obj.save()
         map_obj.set_default_permissions()
 
+        permissions = _perms_info_json(map_obj)
+        perm_dict = json.loads(permissions)
+        if 'download_resourcebase' in perm_dict['groups']['anonymous']:
+            perm_dict['groups']['anonymous'].remove('download_resourcebase')
+        if 'view_resourcebase' in perm_dict['groups']['anonymous']:
+            perm_dict['groups']['anonymous'].remove('view_resourcebase')
+        #
+        map_obj.set_permissions(perm_dict)
+
         # If the body has been read already, use an empty string.
         # See https://github.com/django/django/commit/58d555caf527d6f1bdfeab14527484e4cca68648
         # for a better exception to catch when we move to Django 1.7.
@@ -994,6 +1003,28 @@ def map_approve(request, map_pk):
                 map.status = 'ACTIVE'
                 map.last_auditor = request.user
                 map.save()
+
+                permissions = _perms_info_json(map)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+
+                map.set_permissions(perm_dict)
+
+
 
                 # notify map owner that someone have approved the map
                 if request.user != map.owner:

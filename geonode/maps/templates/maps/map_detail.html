@@ -440,7 +440,7 @@
 {% block extra_script %}
     <script type="text/javascript">
         var GD_WRAPPER__HEIGHT = 400;
-        function resetWrapperHight() {
+        /*function resetWrapperHight() {
             var bodyHeight = $("body").height();
             console.log("bodyHeight", bodyHeight);
             var documentHeight = $("document").height();
@@ -450,6 +450,13 @@
             GD_WRAPPER__HEIGHT = wrapperHeight;
             $("#gd-wrapper .map-details-information, #gd-wrapper .map-details-info").css("height", wrapperHeight + "px");
             console.log("wrapperHeight", wrapperHeight);
+        }*/
+        function resetWrapperHight() {
+            var bodyHeight = $("body").height();
+            bodyHeight = parseInt(parseInt(bodyHeight) - 53);
+            console.log("bodyHeight", bodyHeight);
+            GD_WRAPPER__HEIGHT = bodyHeight;
+            $("#gd-wrapper .map-details-information, #gd-wrapper .map-details-info").css("height", bodyHeight + "px");
         }
         $(document).ready(function () {
             // wrapper
@@ -550,5 +557,11 @@
     $('#edit-map').modal('toggle');
   });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        {% if status != 'ACTIVE' %}
+            anyonePermissionDisable();
+        {% endif %}
+    });
+</script>
 {% endblock %}

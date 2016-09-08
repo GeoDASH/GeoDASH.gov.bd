@@ -579,6 +579,26 @@ def document_approve(request, document_pk):
                 document.last_auditor = request.user
                 document.save()
 
+                permissions = _perms_info_json(document)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                document.set_permissions(perm_dict)
+
+
                 # notify document owner that someone have deleted the document
                 if request.user != document.owner:
                     recipient = document.owner

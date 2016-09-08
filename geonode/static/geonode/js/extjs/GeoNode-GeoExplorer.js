@@ -84,12 +84,15 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             // store config
             autoLoad: true,
             autoDestroy: true,
-            url: '/api/groups',
+            url: '/api/user-organization-list?user='+GEODASH_USER_ID,
             storeId: 'organizationStore',
             // render
             root: 'objects',
             idProperty: 'id',
-            fields: ['id', 'title']
+            fields: [
+                {name:'id', mapping: 'group.id'},
+                {name:'title', mapping: 'group.title'}
+            ]
         });
 
         var categoryField = new Ext.form.ComboBox({

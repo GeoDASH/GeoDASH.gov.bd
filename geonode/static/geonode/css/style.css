@@ -2872,3 +2872,6 @@ ul.termsuseandcondition li {
 .modal.google-earth .modal-content{
     border-radius: 0;
 }
+#_approve_layer .checkbox{
+    padding-left: 0px;
+}

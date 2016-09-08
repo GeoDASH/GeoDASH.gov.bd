@@ -69,6 +69,10 @@
 {% include "_permissions_form_js.html" %}
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        anyonePermissionDisable();
+    });
+
     $('#id_doc_file').on('change', function(){
         if($('#id_title').val() == ''){
             $('#id_title').val($('#id_doc_file').val().replace("C:\\fakepath\\", ""));

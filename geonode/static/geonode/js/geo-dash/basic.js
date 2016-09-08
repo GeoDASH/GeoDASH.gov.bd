@@ -76,6 +76,30 @@ $(window).scroll(function() {
         //$('#gd-header').removeClass("sticky");
     }
 });
+
+function anyonePermissionDisable(){
+    if($('#perms_view_anyone').length>0){
+        $('#perms_view_anyone').attr('disabled', 'disabled');
+        $('input#perms_view_anyone').filter(':checkbox').prop('checked',false);
+
+        $('#perms_download_resourcebase_anyone').attr('disabled', 'disabled');
+        $('input#perms_download_resourcebase_anyone').filter(':checkbox').prop('checked',false);
+    }
+}
+function anyonePermissionEnabel(){
+    if($('#perms_view_anyone').length>0){
+        $('#perms_view_anyone').removeAttr('disabled');
+        $('#perms_download_resourcebase_anyone').removeAttr('disabled', 'disabled');
+    }
+}
+function approvePermission(){
+    if($('#perms_view_anyone').length>0){
+        $('#perms_view_anyone').removeAttr('disabled');
+        $('input#perms_view_anyone').filter(':checkbox').prop('checked',true);
+        $('#perms_download_resourcebase_anyone').removeAttr('disabled', 'disabled');
+        $('input#perms_download_resourcebase_anyone').filter(':checkbox').prop('checked',true);
+    }
+}
 $(document).ready(function() {
     if( $(".modal").length > 0){
         $('.modal').on('shown.bs.modal', function () {

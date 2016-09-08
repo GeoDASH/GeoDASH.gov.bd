@@ -1,8 +1,9 @@
 {% extends "layers/layer_base.html" %}
 {% load bootstrap_tags %}
 {% load base_tags %}
-
 {% load i18n %}
+{% load i18n announcements_tags %}
+{% announcements as site_wide_announcements %}
 {% block title %} {% trans "Dashboard" %} - {{ block.super }} {% endblock %}
 {% block extra_head %}
 <link href="{{ STATIC_URL }}geonode/css/style-index.css?v={{ VERSION }}" rel="stylesheet" />
@@ -398,6 +399,11 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
+
+        {% if site_wide_announcements %}
+            $("#GDAnnouncementsModel").modal('show');
+        {% endif %}
+
       var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritelayers' %}';
       $.ajax({
         url: url,

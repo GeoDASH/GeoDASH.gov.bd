@@ -45,13 +45,13 @@ django-notify-x
 # GeoNode org maintained apps.
 django-geoexplorer>=4.0.5  
 geonode-user-messages==0.1.2  
-geonode-avatar==2.1.4  
-geonode-announcements==1.0.7  
+geonode-avatar==2.1.4
+#geonode-announcements==1.0.7
 geonode-agon-ratings==0.3.4  
 geonode-user-accounts==1.0.10  
 geonode-arcrest==10.2  
 geonode-notification==1.1.1  
-geonode-dialogos==0.4  
+#geonode-dialogos==0.4
 gsconfig>=1.0.3  
 gsimporter==1.0.0  
 gisdata>=0.5.4

@@ -762,6 +762,27 @@ def layer_approve(request, layer_pk):
                 layer.last_auditor = request.user
                 layer.save()
 
+                permissions = _perms_info_json(layer)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+
+                layer.set_permissions(perm_dict)
+
+
                 # notify layer owner that someone have approved the layer
                 if request.user != layer.owner:
                     recipient = layer.owner

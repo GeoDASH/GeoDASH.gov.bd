@@ -1,4 +1,6 @@
 {% load i18n avatar_tags %}
+{% load i18n announcements_tags %}
+{% announcements as site_wide_announcements %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,11 +47,13 @@
     <![endif]-->
     <!--<link rel="search" type="application/opensearchdescription+xml" href="/catalogue/opensearch" title="GeoNode Search"/>-->
       <script type="text/javascript">
+        var GEODASH_USER_ID = 0;
         var JS_STATIC_URL = '{{ STATIC_URL }}';
         var IS_LAYERS_PAGE_FOR_CART = false;
         var IS_AUTHENTICATED_USER_FOR_CART = false;
         {% if user.is_authenticated %}
             IS_AUTHENTICATED_USER_FOR_CART = true;
+            GEODASH_USER_ID = {{ user.id }};
         {% endif %}
       </script>
   </head>
@@ -365,6 +369,24 @@
 
 
     <!-- Modal must stay outside the navbar -->
+    <section id="gd-announcements-model">
+        <div class="container">
+            <div class="modal fade" id="GDAnnouncementsModel"  tabindex="-1" role="dialog" aria-labelledby="GDAnnouncementsModel">
+              <div class="modal-dialog" role="document" >
+                <div class="modal-content" style="min-height: 200px;">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <div style="text-align:center;">
+                        <h4 class="modal-title" id="exampleModalLabel"></h4>
+                        <span>{% trans "Announcement(s)" %}</span>
+                      </div>
+                  </div>
+                  {% include "_announcements.html" %}
+                </div>
+              </div>
+            </div>
+        </div>
+    </section>
     {% if not user.is_authenticated %}
     <section id="gd-model">
         <div class="container">
@@ -715,6 +737,14 @@
                 </a>
             </li>
             {% endif %}
+            {% if request.user.is_authenticated %}
+                <li class="c-menu__item">
+                <a href="{% url "overpass_turbo" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Overpass-turbo" %}</span>
+                </a>
+            </li>
+            {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
@@ -783,6 +813,11 @@
             }
         });
         $(document).ready(function (){
+            {% if not user.is_authenticated %}
+                {% if site_wide_announcements %}
+                    $("#GDAnnouncementsModel").modal('show');
+                {% endif %}
+            {% endif %}
             $("#lang-selection").click(function(){
                 var lang = $("#set-language-of-site #langOfSite").val();
                 if(lang == 'bn'){
