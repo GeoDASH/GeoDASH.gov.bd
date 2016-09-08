@@ -62,7 +62,8 @@ urlpatterns = patterns('',
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
                        url(r'^developer/$', TemplateView.as_view(template_name='developer.html'), name='developer'),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-
+                       # Overpass-turbo Files
+                       url(r'^overpass_turbo/?$', TemplateView.as_view(template_name='overpass_turbo.html'), name='overpass_turbo'),
                        url(r'^formtest/$', TemplateView.as_view(template_name='formtest.html'), name='formtest'),
                        url(r'^add_news/$', TemplateView.as_view(template_name='news/add_news.html'), name='add_news'),
                        url(r'^notifications/$', TemplateView.as_view(template_name='notification/notifications_detail_page.html'), name='notifications_all'),
@@ -170,7 +171,3 @@ urlpatterns += patterns('',
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/info$', 'geonode.maps.views.featured_map_info'),
                         )
 
-#Overpass-turbo Files
-urlpatterns += patterns('',
-                url(r'^overpass_turbo/?$', TemplateView.as_view(template_name='overpass_turbo.html'), name='overpass_turbo'),
-                        )
