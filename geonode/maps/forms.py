@@ -48,4 +48,4 @@ class MapForm(ResourceBaseForm):
 class WmsServerForm(ModelForm):
     class Meta:
         model = WmsServer
-        fields = ('title', 'ptype', 'url',)
+        fields = ('title', 'url',)
