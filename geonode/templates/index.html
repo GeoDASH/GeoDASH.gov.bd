@@ -3,7 +3,8 @@
 {% load staticfiles %}
 {% load base_tags %}
 {% load activity_tags social_tags %}
-
+{% load i18n announcements_tags %}
+{% announcements as site_wide_announcements %}
 {% block title %} {% trans "Welcome!" %} - {{ block.super }} {% endblock %}
 
 {% block extra_head %}
@@ -1093,7 +1094,12 @@ $(document).ready(function() {
         $('.welcomeHelpModalBox.ehmb_'+nextItemIndex).addClass('activeitem');
         $('.helpselector.ehmbl_'+nextItemIndex).addClass('activeitem');
     }
-    $(document).ready(function () {
+    $(document).ready(function (){
+        {% if not user.is_authenticated %}
+            {% if site_wide_announcements %}
+                $("#GDAnnouncementsModel").modal('show');
+            {% endif %}
+        {% endif %}
         // Store
         var helpmodal = localStorage.getItem("helpmodal");
         if (helpmodal == undefined || helpmodal === 'false' || helpmodal === false) {

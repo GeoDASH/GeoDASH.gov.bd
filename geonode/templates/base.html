@@ -1,6 +1,4 @@
 {% load i18n avatar_tags %}
-{% load i18n announcements_tags %}
-{% announcements as site_wide_announcements %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -434,31 +432,31 @@
                                 <div class="block-separator"></div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button  class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">
+                                        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <i class="fa fa-facebook fbicon" aria-hidden="true" style=""></i>
                                                 </div>
                                                 <div class="col-md-8 text-center">
-                                                    <span class="fbsign"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">{% trans "Sign in with Facebook" %}</a></span>
+                                                    <span class="fbsign">{% trans "Sign in with Facebook" %}</span>
                                                 </div>
                                             </div>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="block-separator"></div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">
+                                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <i class="fa fa-google-plus golicon" aria-hidden="true" style=""></i>
                                                 </div>
                                                 <div class="col-md-8 text-center">
-                                                    <span class="fbsign"><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">{% trans "Sign in with Google Plus" %}</a></span>
+                                                    <span class="fbsign">{% trans "Sign in with Google Plus" %}</span>
                                                 </div>
                                             </div>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="block-separator"></div>
@@ -813,11 +811,6 @@
             }
         });
         $(document).ready(function (){
-            {% if not user.is_authenticated %}
-                {% if site_wide_announcements %}
-                    $("#GDAnnouncementsModel").modal('show');
-                {% endif %}
-            {% endif %}
             $("#lang-selection").click(function(){
                 var lang = $("#set-language-of-site #langOfSite").val();
                 if(lang == 'bn'){
