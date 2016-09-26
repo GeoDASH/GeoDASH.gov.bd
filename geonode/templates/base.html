@@ -54,6 +54,11 @@
             GEODASH_USER_ID = {{ user.id }};
         {% endif %}
       </script>
+	  <script type="text/javascript"> //<![CDATA[ 
+		var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
+		document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+		//]]>
+	  </script>
   </head>
 
   <body class="{% block body_class %}{% endblock %}">
@@ -313,7 +318,7 @@
     <footer id="gd-footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#gd-footer-navbar-collapse" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
@@ -331,7 +336,15 @@
                     <!--</div>-->
 
                 </div>
-                <div class="col-md-4">
+				<div class="col-md-1">
+					<div style="margin-top:15px;">
+							<script language="JavaScript" type="text/javascript">
+							TrustLogo("https://geodash.gov.bd/static/geonode/images/comodo_secure_seal_113x59_transp.png", "CL1", "none");
+							</script>
+							<a  href="https://ssl.comodo.com" id="comodoTL">Comodo SSL</a>
+					</div>
+				</div>
+                <div class="col-md-offset-1 col-md-4">
                     <div class="gd-footer-language">
                         <label class="hidden">{% trans "Language" %}</label>
                         {% if csrf_token != "NOTPROVIDED" %}

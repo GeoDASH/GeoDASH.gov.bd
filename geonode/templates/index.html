@@ -1095,11 +1095,12 @@ $(document).ready(function() {
         $('.helpselector.ehmbl_'+nextItemIndex).addClass('activeitem');
     }
     $(document).ready(function (){
-        {% if not user.is_authenticated %}
-            {% if site_wide_announcements %}
-                $("#GDAnnouncementsModel").modal('show');
-            {% endif %}
-        {% endif %}
+		// is that ok
+		{% if not user.is_authenticated %}
+			if($('#GDAnnouncementsModel #site_wide_announcements').length > 0){
+				$("#GDAnnouncementsModel").modal('show');
+			}
+		{% endif %}
         // Store
         var helpmodal = localStorage.getItem("helpmodal");
         if (helpmodal == undefined || helpmodal === 'false' || helpmodal === false) {
