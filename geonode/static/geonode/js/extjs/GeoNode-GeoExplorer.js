@@ -552,6 +552,16 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
             ptype: "sdsl_SearchByRadius",
             actionTarget: "map.tbar"
         }, {
+            ptype: 'gxp_crosslayerqueryform',
+            featureManager: "featuremanager",
+            actionTarget: {
+                index: 0,
+                target: "layers.contextMenu"
+            },
+            outputConfig: {
+                width: 620
+            }
+        }, {
             ptype: 'gn_save',
             actions: []
         }, {
