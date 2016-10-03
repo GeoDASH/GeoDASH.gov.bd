@@ -1149,10 +1149,10 @@ var ide = new(function() {
       queryWithMapCSS += "{{data:"+queryParser.getStatement("data")+"}}";
     else if (settings.server !== configs.defaultServer)
       queryWithMapCSS += "{{data:overpass,server="+settings.server+"}}";
-    $("#export-dialog a#export-interactive-map")[0].href = baseurl+"map.html?Q="+encodeURIComponent(queryWithMapCSS);
+    //$("#export-dialog a#export-interactive-map")[0].href = baseurl+"map.html?Q="+encodeURIComponent(queryWithMapCSS);
     // encoding exclamation marks for better command line usability (bash)
-    $("#export-dialog a#export-overpass-api")[0].href = server+"interpreter?data="+encodeURIComponent(query).replace(/!/g,"%21").replace(/\(/g,"%28").replace(/\)/g,"%29");
-    $("#export-dialog a#export-text")[0].href = "data:text/plain;charset="+(document.characterSet||document.charset)+";base64,"+Base64.encode(query,true);
+    //$("#export-dialog a#export-overpass-api")[0].href = server+"interpreter?data="+encodeURIComponent(query).replace(/!/g,"%21").replace(/\(/g,"%28").replace(/\)/g,"%29");
+    //$("#export-dialog a#export-text")[0].href = "data:text/plain;charset="+(document.characterSet||document.charset)+";base64,"+Base64.encode(query,true);
     var dialog_buttons= {};
     dialog_buttons[i18n.t("dialog.done")] = function() {$(this).dialog("close");};
     $("#export-dialog a#export-map-state").unbind("click").bind("click",function() {
@@ -1385,9 +1385,9 @@ var ide = new(function() {
       }
       return false;
     });
-    $("#export-dialog a#export-convert-xml")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=xml";
-    $("#export-dialog a#export-convert-ql")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=mapql";
-    $("#export-dialog a#export-convert-compact")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=compact";
+    //$("#export-dialog a#export-convert-xml")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=xml";
+    //$("#export-dialog a#export-convert-ql")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=mapql";
+    //$("#export-dialog a#export-convert-compact")[0].href = server+"convert?data="+encodeURIComponent(query)+"&target=compact";
 
     // OSM editors
     // first check for possible mistakes in query.
@@ -1401,33 +1401,33 @@ var ide = new(function() {
                 server+"interpreter?data="+encodeURIComponent(query)
               );
     }
-    if (validEditorQuery) {
-      exportToLevel0[0].href = constructLevel0Link(query);
-    } else {
-      exportToLevel0[0].href = "";
-      exportToLevel0.bind("click", function() {
-        var dialog_buttons= {};
-        dialog_buttons[i18n.t("dialog.repair_query")] = function() {
-          ide.repairQuery("xml+metadata");
-          var message_dialog = $(this);
-          ide.getQuery(function(query) {
-            exportToLevel0.unbind("click");
-            exportToLevel0[0].href = constructLevel0Link(query);
-            message_dialog.dialog("close");
-          });
-        };
-        dialog_buttons[i18n.t("dialog.continue_anyway")] = function() {
-          exportToLevel0.unbind("click");
-          exportToLevel0[0].href = constructLevel0Link(query);
-          $(this).dialog("close");
-        };
-        $('<div title="'+i18n.t("warning.incomplete.title")+'"><p>'+i18n.t("warning.incomplete.remote.expl.1")+'</p><p>'+i18n.t("warning.incomplete.remote.expl.2")+'</p></div>').dialog({
-          modal:true,
-          buttons: dialog_buttons,
-        });
-        return false;
-      });
-    }
+//    if (validEditorQuery) {
+//      exportToLevel0[0].href = constructLevel0Link(query);
+//    } else {
+//      exportToLevel0[0].href = "";
+//      exportToLevel0.bind("click", function() {
+//        var dialog_buttons= {};
+//        dialog_buttons[i18n.t("dialog.repair_query")] = function() {
+//          ide.repairQuery("xml+metadata");
+//          var message_dialog = $(this);
+//          ide.getQuery(function(query) {
+//            exportToLevel0.unbind("click");
+//            exportToLevel0[0].href = constructLevel0Link(query);
+//            message_dialog.dialog("close");
+//          });
+//        };
+//        dialog_buttons[i18n.t("dialog.continue_anyway")] = function() {
+//          exportToLevel0.unbind("click");
+//          exportToLevel0[0].href = constructLevel0Link(query);
+//          $(this).dialog("close");
+//        };
+//        $('<div title="'+i18n.t("warning.incomplete.title")+'"><p>'+i18n.t("warning.incomplete.remote.expl.1")+'</p><p>'+i18n.t("warning.incomplete.remote.expl.2")+'</p></div>').dialog({
+//          modal:true,
+//          buttons: dialog_buttons,
+//        });
+//        return false;
+//      });
+//    }
     // * JOSM
     $("#export-dialog a#export-editors-josm").unbind("click").on("click", function() {
       var export_dialog = $(this).parents("div.ui-dialog-content").first();

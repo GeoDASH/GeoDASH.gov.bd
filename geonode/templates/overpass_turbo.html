@@ -8,8 +8,23 @@
   <title>overpass turbo</title>
 
   <link rel="icon" href="turbo.png" type="image/png" />
-  <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
-  <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+    {% if DEBUG_STATIC %}
+      <link href="{{ STATIC_URL }}lib/css/jquery.dataTables.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}lib/css/select2.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/jquery-ui.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
+      {% else %}
+      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/font-awesome.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
+      {% endif %}
+    <link href="{{ STATIC_URL }}geonode/css/ext-compatibility.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/gd-asset.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/select2.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/menu.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/fixed-style.css?v={{ VERSION }}" rel="stylesheet" />
   <script type="text/javascript">
     var STATIC_FOLDER_URL = '{{ STATIC_URL }}overpass_turbo/';
   </script>
@@ -19,6 +34,7 @@
   <!--lodash-->
   <script src="{{ STATIC_URL }}overpass_turbo/libs/lodash/lodash-2.4.1.js"></script>
   <!--CodeMirror-->
+  <link rel="stylesheet" href="{{ STATIC_URL }}overpass_turbo/css/turbo.css" />
   <link rel="stylesheet" href="{{ STATIC_URL }}overpass_turbo/libs/CodeMirror/lib/codemirror.css" />
   <script src="{{ STATIC_URL }}overpass_turbo/libs/CodeMirror/lib/codemirror.js"></script>
   <script src="{{ STATIC_URL }}overpass_turbo/libs/CodeMirror/mode/javascript/javascript.js"></script>
@@ -87,7 +103,9 @@
   <script src="{{ STATIC_URL }}overpass_turbo/libs/togpx/togpx.js"></script>
 
 </head>
-<body class="loading">
+<body class="loading" >
+
+ <div id="gd-wrapper">
   <!--layout-->
     <section id="gd-header" class="sticky">
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -127,6 +145,9 @@
                                       <a href="{% url "layer_upload" %}">{% trans "Upload Layers" %}</a>
                                     </li>
                                 {% endif %}
+                                <li id="nav_layers">
+                                  <a href="{% url "overpass_turbo" %}">{% trans "OSM Layer Wizard" %}</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -292,7 +313,6 @@
                                 </a>
                             </div> -->
                            <span>
-
                                <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}">
                                    {% trans "LANGUAGE" %}
                                </a>
@@ -304,37 +324,28 @@
         </nav>
     </section>
 
-  <!--<div style="background:#000;height:100px;margin-bottom:100px;position:absolute;">-->
-    <!--<div class="row">-->
-      <!--<div class="md-col-6">Test</div>-->
-      <!--<div class="md-col-6">Test2</div>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-      <!--<div class="md-col-6">Test3</div>-->
-      <!--<div class="md-col-6">Test4</div>-->
-    <!--</div>-->
-  <!--</div>-->
               <div id="navs" >
                 <div class="nav">
                   <div class="buttons">
                     <div class="group">
-                      <a class="t button" accesskey="1" onclick="ide.onRunClick();"      title="" data-t="[title]nav.run_tt;nav.run"          >Run</a>
-                      <a class="t button" accesskey="2" onclick="ide.onShareClick();"    title="" data-t="[title]nav.share_tt;nav.share"      >Share</a>
-                      <a class="t button" accesskey="3" onclick="ide.onExportClick();"   title="" data-t="[title]nav.export_tt;nav.export"    >Export</a>
+                      <a class="t button" accesskey="4" onclick="ide.onFfsClick();"      title="" data-t="[title]nav.wizard_tt;nav.wizard">Wizard</a>
                     </div>
                     <div class="group">
-                      <a class="t button" accesskey="4" onclick="ide.onFfsClick();"      title="" data-t="[title]nav.wizard_tt;nav.wizard"    >Wizard</a>
+                      <a class="t button" accesskey="1" onclick="ide.onRunClick();"      title="" data-t="[title]nav.run_tt;nav.run">Run</a>
+                      <!--<a class="t button" accesskey="2" onclick="ide.onShareClick();"    title="" data-t="[title]nav.share_tt;nav.share">Share</a>-->
+                      <!--<a class="t button" accesskey="3" onclick="ide.onExportClick();"   title="" data-t="[title]nav.export_tt;nav.export">Export</a>-->
                     </div>
                     <div class="group">
-                      <a class="t button" accesskey="5" onclick="ide.onSaveClick();"     title="" data-t="[title]nav.save_tt;nav.save"        >Save</a>
-                      <a class="t button" accesskey="6" onclick="ide.onLoadClick();"     title="" data-t="[title]nav.load_tt;nav.load"        >Load</a>
+                      <!--<a class="t button" accesskey="5" onclick="ide.onSaveClick();"     title="" data-t="[title]nav.save_tt;nav.save">Save</a>-->
+                      <!--<a class="t button" accesskey="6" onclick="ide.onLoadClick();"     title="" data-t="[title]nav.load_tt;nav.load">Load</a>-->
+                        <a class="t button" accesskey="3" onclick="ide.onExportClick();"   title="" data-t="[title]nav.export_tt;nav.export">Export</a>
                     </div>
-                    <div class="group">
-                      <a class="t button" accesskey="9" onclick="ide.onSettingsClick();" title="" data-t="[title]nav.settings_tt;nav.settings">Settings</a>
-                      <a class="t button" accesskey="0" onclick="ide.onHelpClick();"     title="" data-t="[title]nav.help_tt;nav.help"        >Help</a>
-                    </div>
+                    <!--<div class="group">-->
+                      <!--<a class="t button" accesskey="9" onclick="ide.onSettingsClick();" title="" data-t="[title]nav.settings_tt;nav.settings">Settings</a>-->
+                      <!--<a class="t button" accesskey="0" onclick="ide.onHelpClick();"     title="" data-t="[title]nav.help_tt;nav.help">Help</a>-->
+                    <!--</div>-->
                   </div>
-                  <div class="title"><a href="index.html" class="disabled">overpass turbo <img src="turbo.png" style="opacity:0.35; margin-left:2px;" alt="" /></a></div>
+                  <!--<div class="title text-center"><a href="index.html" class="disabled">overpass turbo <img src="turbo.png" style="opacity:0.35; margin-left:2px;" alt="" /></a></div>-->
                   <div class="tabs">
                     <a class="t button Map active" title="" data-t="[title]tabs.map_tt;tabs.map"  >Map</a>
                     <a class="t button Data"       title="" data-t="[title]tabs.data_tt;tabs.data">Data</a>
@@ -347,7 +358,9 @@
                 <textarea></textarea>
               </div>
               <div id="dataviewer">
-                <div id="map"></div>
+                <div id="map"><leaflet class="filter-map-container" center="map_center" defaults="defaults"
+                                             layers="layers" id="filter-map">
+                                    </leaflet></div>
                 <div id="data"></div>
               </div>
 
@@ -485,39 +498,39 @@
               <div title="" id="export-dialog" class="t dialog" data-t="[title]export.title">
                 <h4 class="t" data-t="export.section.data"></h4>
                 <div>
-                <p class="t" data-t="[html]export.as_geoJSON"></p>
-                <p class="t" data-t="[html]export.as_GPX"></p>
-                <p class="t" data-t="[html]export.as_KML"></p>
+                <!--<p class="t" data-t="[html]export.as_geoJSON"></p>-->
+                <!--<p class="t" data-t="[html]export.as_GPX"></p>-->
+                <!--<p class="t" data-t="[html]export.as_KML"></p>-->
                 <p class="t" data-t="[html]export.raw"></p>
-                <p class="t" data-t="[html]export.raw_interpreter"></p>
-                <p><span class="t" data-t="export.editors"></span> <a id="export-editors-josm" href="">JOSM</a>, <a id="export-editors-level0" href="" target="_blank" class="external">Level0</a></p>
-                <p class="t" data-t="[html]export.save_geoJSON_gist"></p>
+                <!--<p class="t" data-t="[html]export.raw_interpreter"></p>-->
+                <!--<p><span class="t" data-t="export.editors"></span> <a id="export-editors-josm" href="">JOSM</a>, <a id="export-editors-level0" href="" target="_blank" class="external">Level0</a></p>-->
+                <!--<p class="t" data-t="[html]export.save_geoJSON_gist"></p>-->
                 </div>
-                <h4 class="t" data-t="export.section.map"></h4>
-                <div>
-                <p class="t" data-t="[html]export.as_png"></p>
-                <p class="t" data-t="[html]export.as_interactive_map"></p>
-                <p><span class="t" data-t="[html]export.current_map_view"></span> <small>(<span class="t" data-t="export.map_view_expl"></span>)</small></p>
-                </div>
-                <h4 class="t" data-t="export.section.query"></h4>
-                <div>
-                <p class="t" data-t="[html]export.as_text"></p>
-                <p class="t" data-t="[html]export.to_xml"></p>
-                <p class="t" data-t="[html]export.to_ql"></p>
-                </div>
+                <!--<h4 class="t" data-t="export.section.map"></h4>-->
+                <!--<div>-->
+                <!--<p class="t" data-t="[html]export.as_png"></p>-->
+                <!--<p class="t" data-t="[html]export.as_interactive_map"></p>-->
+                <!--<p><span class="t" data-t="[html]export.current_map_view"></span> <small>(<span class="t" data-t="export.map_view_expl"></span>)</small></p>-->
+                <!--</div>-->
+                <!--<h4 class="t" data-t="export.section.query"></h4>-->
+                <!--<div>-->
+                <!--<p class="t" data-t="[html]export.as_text"></p>-->
+                <!--<p class="t" data-t="[html]export.to_xml"></p>-->
+                <!--<p class="t" data-t="[html]export.to_ql"></p>-->
+                <!--</div>-->
               </div>
-              <div title="" id="export-geojson-dialog" class="t dialog" data-t="[title]export.geoJSON.title">
-                <p class="t" data-t="export.geoJSON.expl"></p>
-                <textarea style="width:100%" rows="16" readonly></textarea>
-              </div>
-              <div title="" id="export-gpx-dialog" class="t dialog" data-t="[title]export.GPX.title">
-                <p class="t" data-t="export.GPX.expl"></p>
-                <textarea style="width:100%" rows="16" readonly></textarea>
-              </div>
-              <div title="" id="export-kml-dialog" class="t dialog" data-t="[title]export.KML.title">
-                <p class="t" data-t="export.KML.expl"></p>
-                <textarea style="width:100%" rows="16" readonly></textarea>
-              </div>
+              <!--<div title="" id="export-geojson-dialog" class="t dialog" data-t="[title]export.geoJSON.title">-->
+                <!--<p class="t" data-t="export.geoJSON.expl"></p>-->
+                <!--<textarea style="width:100%" rows="16" readonly></textarea>-->
+              <!--</div>-->
+              <!--<div title="" id="export-gpx-dialog" class="t dialog" data-t="[title]export.GPX.title">-->
+                <!--<p class="t" data-t="export.GPX.expl"></p>-->
+                <!--<textarea style="width:100%" rows="16" readonly></textarea>-->
+              <!--</div>-->
+              <!--<div title="" id="export-kml-dialog" class="t dialog" data-t="[title]export.KML.title">-->
+                <!--<p class="t" data-t="export.KML.expl"></p>-->
+                <!--<textarea style="width:100%" rows="16" readonly></textarea>-->
+              <!--</div>-->
               <div title="" id="export-raw-dialog" class="t dialog" data-t="[title]export.raw.title">
                 <p class="t" data-t="export.raw.expl"></p>
                 <textarea style="width:100%" rows="16" readonly></textarea>
@@ -564,7 +577,7 @@
     <section id="gd-model">
         <div class="container">
             <div style="">
-                <div class="modal fade" id="SigninModalturbo"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal fade" id="SigninModalturbo" style="z-index:2001;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                   <div class="modal-dialog" role="document" >
                     <div class="modal-content" >
                       <div class="modal-header">
@@ -655,7 +668,7 @@
     <section id="gd-model">
         <div class="container">
             <div style="">
-                <div class="modal fade" id="SignupModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal fade" id="SignupModal" style="z-index:2001;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                   <div class="modal-dialog" role="document" >
                     <div class="modal-content" >
                       <div class="modal-header">
@@ -939,6 +952,7 @@
     // initialize ide on document ready
     $(document).ready(ide.init);
   </script>
+     </div>
     <script src="{{ STATIC_URL }}lib/js/jquery.min.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/jquery.dataTables.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/jquery.timeago.js?v={{ VERSION }}"></script>
@@ -1021,5 +1035,6 @@
     </script>
 
     <script type="text/javascript" src="{% url "lang" %}"></script>
+
 </body>
 </html>

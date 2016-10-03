@@ -600,7 +600,8 @@ class LayerResourceWithFavorite(CommonFavorite):
         resource_name = 'layers_with_favorite'
         excludes = ['csw_anytext', 'metadata_xml']
         filtering = {
-            'group': ALL
+            'group': ALL,
+            'featured': ALL
         }
     def get_object_list(self, request):
         group = request.GET.get('group')

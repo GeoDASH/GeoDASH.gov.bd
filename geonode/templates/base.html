@@ -102,6 +102,9 @@
                                       <a href="{% url "layer_upload" %}">{% trans "Upload Layers" %}</a>
                                     </li>
                                 {% endif %}
+                                <li id="nav_layers">
+                                  <a href="{% url "overpass_turbo" %}">{% trans "OSM Layer Wizard" %}</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -745,14 +748,6 @@
                 <a href="{% url "data-backup" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
                     <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Data Backup" %}</span>
-                </a>
-            </li>
-            {% endif %}
-            {% if request.user.is_authenticated %}
-                <li class="c-menu__item">
-                <a href="{% url "overpass_turbo" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Overpass-turbo" %}</span>
                 </a>
             </li>
             {% endif %}

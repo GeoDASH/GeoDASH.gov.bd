@@ -55,7 +55,7 @@
                                         <td>{{ user_approval.current_iteration }}</td>
                                         <td>{{ user_approval.date_updated }}</td>
                                         <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
-                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deney" %}</a></td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -104,6 +104,7 @@
                                     <th>Serial No</th>
                                     <th>Document Title</th>
                                     <th>Organization</th>
+                                    <th>User Name</th>
                                     <th>Document creation date</th>
                                     <th>Document Delete</th>
                                 </tr>
@@ -114,6 +115,7 @@
                                         <td>{{ forloop.counter}}</td>
                                         <td>{{ draft.title }}</td>
                                         <td>{{ draft.group }}</td>
+                                        <td>{{ draft.owner.username }}</td>
                                         <td>{{ draft.date_created }}</td>
                                         <td>
                                             <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_document" style="color:#fff;">{% trans "Delete Document" %}</button> <br>

@@ -9,6 +9,7 @@ urlpatterns = patterns(
     url(r'^section-update$', 'section_update', name='section-update'),
     url(r'^_dashboard/?$', TemplateView.as_view(template_name='_dashboard.html'), name='_dashboard'),
     url(r'^favourite_list/?$', TemplateView.as_view(template_name='favourite_list.html'), name='favourite_list'),
+    url(r'^_featured_list/?$', TemplateView.as_view(template_name='_featured_list.html'), name='_featured_list'),
 
 
     #database backup and restore

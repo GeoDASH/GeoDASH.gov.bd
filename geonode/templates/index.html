@@ -312,8 +312,11 @@
                                     <div class="header-title">{% trans "Featured layers" %}</div>
                                     <div class="block-separator"></div>
                                     <div class="header-sub-title">
-                                        {% trans "Check out some amazing layers uploaded on GeoDASH platform below" %}
+                                        <a href="{% url "_featured_list" %}">{% trans "Check out some amazing layers uploaded on GeoDASH platform below" %}</a>
                                     </div>
+                                    <!--<div class="description" style="float:center;font-size:14px;">-->
+                                        <!--<a href="{% url "_featured_list" %}" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
@@ -683,6 +686,10 @@
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
+                                                        Upload TIF formatted layers.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
                                                         Upload documents.
                                                     </li>
                                                     <li>
@@ -691,7 +698,7 @@
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Dock favourite layers, maps, documents and organizations.
+                                                        Dock favorite layers, maps, documents and organizations.
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
@@ -1035,7 +1042,7 @@ $(document).ready(function() {
             <div class="welcomeHelpModalBox ehmb_8" id="message_" style="height:220px;">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center" id="memberModalLabel">Messageing!</h4>
+                    <h4 class="modal-title text-center" id="memberModalLabel">Messaging!</h4>
                 </div>
                 <div class="modal-body">
                     <p>

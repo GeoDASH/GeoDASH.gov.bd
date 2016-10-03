@@ -149,7 +149,7 @@
             <div class="col-md-12">
                 <ul class="nav navbar-nav nav-pills">
                   <li class="active"><a href="#layerslist" id="layers_list" data-toggle="tab" ><i class="fa fa-square-o rotate-45"></i> {% trans "Layers List" %}</a></li>
-                  <li ><a href="#userlist" data-toggle="tab"><i class=""></i>{% trans "User List" %}</a></li>
+                  <li ><a href="#userlist" data-toggle="tab"><i class="fa fa-square-o rotate-45"></i> {% trans "User List" %}</a></li>
                     {% if user.is_authenticated %}
                   <li><a href="#acitivity" id="qroup_activity" data-toggle="tab"><i class="fa fa-map-marker"></i> {% trans "Activity" %}</a></li>
                     {% endif %}
@@ -305,6 +305,86 @@
                             output +='</div>';
                             output +='</div>';
                             output +='</div>';
+
+                            output +='<div class="bottom-content">';
+                            output +='<div class="row">';
+                            output +='<div class="profile-items text-center">';
+                            output +='<ul class="list-inline">';
+                              {% if request.user.is_manager_of_any_group %}
+                              if(item.can_make_featured){
+                              if(item.featured){
+                            output +='<li ng-click=""class="col-md-6">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
+                            output +='data-layerID="'+item.id+'" dataname="'+item.can_make_featured+'" data-statusID="false" onclick="featuredorgpage('+item.id+',false);" >';
+                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output +='Unfeatured';
+                            output +='</button>';
+                            output +='</li>';
+                                }else{
+                            output +='<li class="col-md-6" id="featured_chng">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" dataname="{{item.group}}" onclick="featuredorgpage('+item.id+',true);" data-layerID="'+item.id+'" data-statusID="true">';
+                            output +='<i class="fa fa-heart-o"></i>';
+                            output +='Make Featured';
+                            output +='</button>';
+                            output +='</li>';
+                                }
+                                if(item.favorite){
+                            output +='<li class="col-md-6">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
+                            output +='data-favouriteID="{{item.id}}" data-favouriteStatus="false">';
+                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output +='Unfavorite';
+                            output +='</button>';
+                            output +='</li>';
+                                }else{
+                            output +='<li class="col-md-6">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
+                            output +='<i class="fa fa-heart-o"></i>';
+                            output +='Add to favorite';
+                            output +='</button>';
+                            output +='</li>';
+                                }
+                              }
+                              else{
+                              if(item.favorite){
+                            output +='<li class="col-md-12">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="'+item.id+'" data-favouriteStatus="false">';
+                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output +='Unfavorite';
+                            output +='</button>';
+                            output +='</li>';
+                              }else{
+                            output +='<li class="col-md-12">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
+                            output +='  <i class="fa fa-heart-o"></i>';
+                            output +=' Add to favorite';
+                            output +=' </button>';
+                            output +='</li>';
+                              }
+                              }
+                            {% else %}
+                            {% if user.is_authenticated %}
+                              if(item.favorite){
+                            output +='<li class="col-md-12">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="'+item.id+'" data-favouriteStatus="false">';
+                            output +='    <i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output +='    Unfavorite';
+                            output +='</button>';
+                            output +='</li>';
+                              }else{
+                            output +='<li class="col-md-12">';
+                            output +='<button class="btn col-md-12 btn-gd-primary-all" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
+                            output +='  <i class="fa fa-heart-o"></i>';
+                            output +=' Add to favorite';
+                            output +=' </button>';
+                            output +='</li>';
+                              }
+                            {% endif %}
+                            {% endif %}
+                            output +='</ul>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
                             output +='</div>';
                             output +='</div>';
                       });
@@ -317,7 +397,76 @@
         });
 
     </script>
+    <script type="text/javascript" language="JavaScript">
 
+        function featuredorgpage(featuredID,featuredStatus){
+        var make_featuredID = featuredID;
+        var make_featuredStatus = featuredStatus;
+        //alert(make_favoriteStatus);
+            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='make-featured' %}';
+               var makefavoriteID = make_featuredID;
+               var makefavoritesID = make_featuredStatus;
+                var data = JSON.stringify({
+                "resource_id": makefavoriteID,
+                "status": makefavoritesID
+            });
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(jsondata) {
+                    console.log("success");
+                    //console.log(JSON.stringify(jsondata));
+                    //location.reload(true);
+
+                    var data = eval(jsondata.objects);
+                        window.location.href = data;
+                        window.location.reload();
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+             });
+        }
+    </script>
+    <script type="text/javascript" language="JavaScript">
+
+        function favoriteorgpage(favoriteID,favoriteStatus){
+        var make_favoriteID = favoriteID;
+        var make_favoriteStatus = favoriteStatus;
+        //alert(make_favoriteStatus);
+            var url = '{% url 'api_dispatch_list' api_name='api' resource_name='makefavorite' %}';
+               var makefavoriteID = make_favoriteID;
+               var makefavoritesID = make_favoriteStatus;
+                var data = JSON.stringify({
+                "resource_id": makefavoriteID,
+                "status": makefavoritesID
+            });
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(jsondata) {
+                    console.log("success");
+                    //console.log(JSON.stringify(jsondata));
+                    //location.reload(true);
+
+                    var data = eval(jsondata.objects);
+                        window.location.href = data;
+                        window.location.reload();
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+             });
+        }
+    </script>
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function(){
             $("#qst_ans").click(function(){

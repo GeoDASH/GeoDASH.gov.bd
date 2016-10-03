@@ -2538,7 +2538,7 @@ ul#global-errors li{
 .grid-container.lmd .information .title {
     font-size: 20px;
     font-weight: bold;
-    min-height:60px;
+    /*min-height:60px;*/
 }
 .grid-container.lmd .information .title a,
 .grid-container.lmd .information .title a:hover{
@@ -2875,12 +2875,17 @@ ul.termsuseandcondition li {
 #_approve_layer .checkbox{
     padding-left: 0px;
 }
+
 #gd-wrapper .gd-content-body-news .changepass-news .contents_news .details{
-    white-space: pre-line;
+    /*white-space: pre-line;*/
 }
 #gd-latestnews-content #accordion .accordion-section .accordion-section-description{
     white-space: pre-line;
 }
 #gd-model .modal-body span.fbsign{
     color: #FFFFFF;
+}
+
+#crossLayerQueryFromAddIcon tr:first-child{
+    display: none;
 }

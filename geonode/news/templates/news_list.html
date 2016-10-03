@@ -40,15 +40,15 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <!--<img src="{{ STATIC_URL }}geonode/images/news-img/news3.png"/>-->
-                </div>
-                <div class="block-separator"></div>
+                <!--<div>-->
+                    <!--&lt;!&ndash;<img src="{{ STATIC_URL }}geonode/images/news-img/news3.png"/>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="block-separator"></div>-->
                 <div class="details">
                     {% if news.image %}
                     <p>
                         <img src="/uploaded/{{ news.image }}"  style="max-width:400px;max-height:500px;"/>
-                    </p><br />
+                    </p>
                     {% endif %}
                     {% if news.description|length >= 500 %}
                         {{ news.description|truncatechars:500 }}
