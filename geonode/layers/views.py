@@ -330,6 +330,22 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
             all_granules = {"features": []}
     approve_form = ResourceApproveForm()
     deny_form = ResourceDenyForm()
+    metadata_field_list = ['owner', 'title', 'date', 'date_type', 'edition', 'abstract', 'purpose',
+                           'maintenance_frequency', 'regions', 'restriction_code_type', 'constraints_other', 'license',
+                           'language', 'spatial_representation_type', 'resource_type', 'temporal_extent_start',
+                           'temporal_extent_end', 'supplemental_information', 'data_quality_statement', 'thumbnail_url',
+                            'elevation_regex', 'time_regex', 'keywords',
+                           'category']
+    if request.user == layer.owner or request.user in layer.group.get_managers():
+        if not layer.attributes:
+            messages.info(request, 'Please update layer metadata, missing some informations')
+        elif not layer.metadata_author:
+            messages.info(request, 'Please update layer metadata, missing some informations')
+        else:
+            for field in metadata_field_list:
+                if not getattr(layer, layer._meta.get_field(field).name):
+                    messages.info(request, 'Please update layer metadata, missing some informations')
+                    break
     context_dict = {
         "resource": layer,
         'perms_list': get_perms(request.user, layer.get_self_resource()),
