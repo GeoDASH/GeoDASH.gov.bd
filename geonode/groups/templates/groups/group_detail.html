@@ -470,7 +470,7 @@
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function(){
             $("#qst_ans").click(function(){
-                var url = "{% url "question-answer-list" 'wasa' %}";
+                var url = "{% url "question-answer-list" object.slug %}";
                     $.ajax({
                         cache: false,
                         type: 'GET',
