@@ -37,6 +37,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 
 from actstream.models import Action
@@ -58,6 +59,7 @@ class AjaxLoginForm(forms.Form):
     username = forms.CharField()
 
 
+@csrf_exempt
 def ajax_login(request):
     if request.method != 'POST':
         return HttpResponse(
