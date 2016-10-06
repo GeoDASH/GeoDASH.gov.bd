@@ -53,10 +53,10 @@
         {% endif %}
     {% endfor %}
     {{ answer }}
-{#<form action="{% url "question-answer-list" slug%}" method="post">#}
-{#    {% csrf_token %}#}
-{#    {{ form |as_bootstrap}}#}
-{#    <input type="submit" value="Submit" class="btn btn-gd-primary"/>#}
-{#</form>#}
+<form action="{% url "question-answer-list" slug%}" method="post">
+    {% csrf_token %}
+    {{ form |as_bootstrap}}
+    <input type="submit" value="Submit" class="btn btn-gd-primary"/>
+</form>
 </body>
 </html>
