@@ -180,6 +180,10 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = QuestionAnswer
         fields = ['question',]
+        widgets = {
+            'question': forms.Textarea(attrs={'placeholder': 'Ask a question'}),
+        }
+
 
 
 class AnsewerForm(forms.ModelForm):
@@ -189,3 +193,6 @@ class AnsewerForm(forms.ModelForm):
     class Meta:
         model = QuestionAnswer
         fields = ['answer',]
+        widgets = {
+            'answer': forms.Textarea(attrs={'placeholder': 'Answer this question'}),
+        }

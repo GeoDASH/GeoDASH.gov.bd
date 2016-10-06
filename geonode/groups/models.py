@@ -304,9 +304,9 @@ class QuestionAnswer(models.Model):
     This model is for question and answer in organization details page.
     """
     group = models.ForeignKey(GroupProfile, blank=True, null=True)
-    question = models.TextField(help_text=_('Ask a question'))
+    question = models.TextField()
     questioner = models.ForeignKey('people.Profile', blank=True, null=True, related_name='questioner')
-    answer = models.TextField(help_text=_('Answer the question'))
+    answer = models.TextField()
     respondent = models.ForeignKey('people.Profile', blank=True, null=True, related_name='respondent')
     answered = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)

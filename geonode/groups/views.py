@@ -25,7 +25,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
@@ -38,6 +38,7 @@ from geonode.base.libraries.decorators import superuser_check
 from geonode.layers.models import Layer
 from geonode.groups.models import QuestionAnswer
 from geonode.groups.forms import QuestionForm, AnsewerForm
+from geonode.settings import ANONYMOUS_USER_ID
 
 @login_required
 @user_passes_test(superuser_check)
@@ -333,7 +334,6 @@ class GroupActivityView(ListView):
         return context
 
 
-@login_required
 def question_answer_list_view(request, slug):
 
     """
@@ -346,7 +346,10 @@ def question_answer_list_view(request, slug):
         if form.is_valid():
             question = QuestionAnswer()
             asked_question = form.cleaned_data["question"]
-            questioner = request.user
+            if request.user.is_authenticated():
+                questioner = request.user
+            else:
+                questioner = Profile.objects.get(id=ANONYMOUS_USER_ID)
             question.question = asked_question
             question.questioner = questioner
             question.group = group
@@ -398,7 +401,7 @@ def answer_view(request, slug, question_pk):
         return redirect("group_detail", slug=slug)
 
 
-
+@login_required
 def delete_question(request, slug, question_pk):
     """
     This view is for deleting a question with answer.
@@ -414,3 +417,17 @@ def delete_question(request, slug, question_pk):
             return redirect("group_detail", slug=slug)
     else:
         return redirect("group_detail", slug=slug)
+
+
+class AnswerUpdate(UpdateView):
+    """
+    This view is for updating an existing answer
+    """
+    model = QuestionAnswer
+    form_class = AnsewerForm
+
+    def get_object(self):
+        return QuestionAnswer.objects.get(pk=self.kwargs['answer_pk'])
+
+    def get_success_url(self):
+        return reverse('group_detail', kwargs={'slug': self.kwargs['slug']})
