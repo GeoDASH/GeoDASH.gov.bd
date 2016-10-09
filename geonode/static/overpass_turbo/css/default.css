@@ -245,7 +245,7 @@ body.loading .modal {
 
 .leaflet-control-buttons a:hover {
   background-color: #FFFFFF;
-  color: #777777; 
+  color: #777777;
 }
 .leaflet-control-buttons a {
   display: block;

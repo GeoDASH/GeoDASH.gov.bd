@@ -350,10 +350,10 @@
                                                     </div>
                                                     <div class="contents mask text-center" style="height:165px;">
                                                         <div class="title">
-                                                            {% if featured.title|length >= 35 %}
-                                                            {{ featured.abstract|truncatechars:35 }}
+                                                            {% if featured.title|length >= 40 %}
+                                                            {{ featured.abstract|truncatechars:40 }}
                                                             &nbsp;&nbsp;
-                                                            <span> <a href="javascript:;" title="{{ featured.title }}"> .... </a></span>
+                                                            <span> <a href="{{ featured.detail_url }}" title="{{ featured.title }}"> .... </a></span>
                                                             {% else %}
                                                                 <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a></div>
                                                             {% endif %}
@@ -486,7 +486,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div id="gd-featurehighlight-left">
-                                        <div class="title">{% trans "Import your own layers" %}</div>
+                                        <div class="title">
+                                            {% if not user.is_authenticated %}
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;color:#6e6b6b;">{% trans "Import your own layers" %}</a>
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                            <a href="{% url "layer_upload" %}" style="cursor:pointer;color:#6e6b6b;">{% trans "Import your own layers" %}</a>
+                                            {% endif %}
+                                        </div>
                                         <div class="description">
                                             {% trans "Layers are the contents of a map." %}
                                             {% trans "To get started adding layers," %}
@@ -495,14 +502,14 @@
                                             {% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}
                                             {% trans "Make sure your data projection is WGS 84 or BTM." %}
                                         </div>
-                                        <div class="description" style="float:right;font-size:14px;">
-                                            {% if not user.is_authenticated %}
-                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" %}">{% trans "Check Out Details" %}</a>
-                                            {% endif %}
-                                        </div>
+                                        <!--<div class="description" style="float:right;font-size:14px;">-->
+                                            <!--{% if not user.is_authenticated %}-->
+                                            <!--<a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->
+                                            <!--{% endif %}-->
+                                            <!--{% if user.is_authenticated %}-->
+                                            <!--<a href="{% url "layer_upload" %}">{% trans "Check Out Details" %}</a>-->
+                                            <!--{% endif %}-->
+                                        <!--</div>-->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -588,16 +595,16 @@
                                 <div class="col-md-5">
                                     <div id="gd-makepretty-right">
                                         <div class="description">
-                                            <div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>
+                                            <div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>
                                             {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
                                             {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
                                             {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
                                             {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
                                             {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
                                         </div>
-                                        <div class="description" style="float:right;font-size:14px;">
-                                            <a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>
-                                        </div>
+                                        <!--<div class="description" style="float:right;font-size:14px;">-->
+                                            <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->
+                                        <!--</div>-->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -670,63 +677,63 @@
                                                 <ul class="termsuseandcondition">
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Standard, facebook, google+ login.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SignIn">Standard, facebook, google+ login.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Upload shape formatted polyline, polygon, point layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload shape formatted polyline, polygon, point layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Upload OSM formatted polyline, polygon, point, raster layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload OSM formatted polyline, polygon, point, raster layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Upload CSV formatted polyline, polygon, point layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload CSV formatted polyline, polygon, point layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Upload TIF formatted layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload TIF formatted layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Upload documents.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadDocument">Upload documents.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        List/ Grid view of layers, maps and documents.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features">List/ Grid view of layers, maps and documents.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Dock favorite layers, maps, documents and organizations.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DockingAndFavorite">Dock favorite layers, maps, documents and organizations.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Create map using single/ multiple layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">Create map using single/ multiple layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Centroids and centers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">Centroids and centers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Style layers.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/LayerStyles">Style layers.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Pan maps.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PanMap">Pan maps.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Get FeatureInfo.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/GetFeatureInfo">Get FeatureInfo.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Measure length.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureLength">Measure length.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true">
-                                                        </i>Measure Area
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureArea"></i>Measure Area</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -734,59 +741,59 @@
                                                 <ul class="termsuseandcondition">
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Zoom in.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">Zoom in.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        zoom out.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">zoom out.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        3D map view.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SwitchTo3DViewer">3D map view.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Print map.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PrintMap">Print map.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Download layer and metadata.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DownloadLayer">Download layer and metadata.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Connect to other GeoServer(s).
+                                                        <a class="what-offer-text-color" target="_blank" href="">Connect to other GeoServer(s).</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Filter / select by attribute.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/AdvancedSearch">Filter / select by attribute.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Data classification.
+                                                        <a class="what-offer-text-color" target="_blank" href="">Data classification.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Data chart view.
+                                                        <a class="what-offer-text-color" target="_blank" href="">Data chart view.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Buffer search.
+                                                        <a class="what-offer-text-color" target="_blank" href="">Buffer search.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Radius search.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SearchByRadius">Radius search.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Query on Map.
+                                                        <a class="what-offer-text-color" target="_blank" href="">Query on Map.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Cross joining of different layer columns.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DataLayersCrossJoining">Cross joining of different layer columns.</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        Wiki documentation.
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/">Wiki documentation.</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -850,15 +857,15 @@
                             </div>
                             <div class="col-md-offset-1 col-md-4">
                                 <div id="gd-sharemap-content">
-                                    <div class="title">{% trans "Share your map" %}</div>
+                                    <div class="title"><a href="" %}" style="color:#fff;">{% trans "Share your map" %}</a></div>
                                     <div class="description">
                                         {% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}
                                         {% trans "to maximize data sharing and promote your work." %}
                                         {% trans "You can also publish and embed your map right away." %}
                                     </div>
-                                    <div class="description" style="float:right;font-size:14px;color:#fff;">
-                                        <a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>
-                                    </div>
+                                    <!--<div class="description" style="float:right;font-size:14px;color:#fff;">-->
+                                        <!--<a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
