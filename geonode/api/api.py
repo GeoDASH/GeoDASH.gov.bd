@@ -25,6 +25,7 @@ import sys
 import logging
 import traceback
 import shutil
+import datetime
 
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
@@ -48,6 +49,7 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from guardian.models import UserObjectPermission
+from notify.models import Notification
 
 from geonode.base.models import ResourceBase, FavoriteResource, DockedResource
 from geonode.base.models import TopicCategory
@@ -796,3 +798,17 @@ class DocumentsWithFavoriteAndDoocked(TypeFilteredResource):
 
     def get_object_list(self, request):
         return super(DocumentsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+
+
+class UserNotifications(TypeFilteredResource):
+    class Meta:
+        queryset = Notification.objects.filter(read=False, deleted=False)
+        resource_name = 'admin_notifications'
+
+    def get_object_list(self, request):
+        timestamp = request.GET.get('timestamp')
+        if timestamp:
+            date = datetime.datetime.fromtimestamp(float(timestamp))
+            return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gt = date.date())
+        else:
+            return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gte=datetime.datetime.now()-datetime.timedelta(days=7))
