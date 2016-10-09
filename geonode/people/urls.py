@@ -21,6 +21,8 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
+from account.views import InviteUserView
+
 from geonode.people.views import CreateUser, activateuser, UserSignup
 
 urlpatterns = patterns('geonode.people.views',
@@ -33,4 +35,7 @@ urlpatterns = patterns('geonode.people.views',
                        url(r'^create/$', CreateUser.as_view(), name='create-user'),
                        url(r'^active-inactive-user/(?P<username>[^/]*)$', activateuser, name='active-inactive-user'),
                        url(r"^signup/$", UserSignup.as_view(), name="user_signup"),
+
+                       #invite user
+                       url(r"^invite_user/$", InviteUserView.as_view(), name="invite_user"),
                        )

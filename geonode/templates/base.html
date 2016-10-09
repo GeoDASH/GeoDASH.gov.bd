@@ -713,16 +713,19 @@
                     <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Remote Services" %}</span>
                 </a>
             </li>
-            <li class="c-menu__item">
-                <a href="{% url "account_invite_user" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User">
-                    <span style="text-align:left;color:#fff;margin-left:-14px;">{% trans "Invite User" %}</span>
-                </a>
-            </li>
+
             <li class="c-menu__item">
                 <a href="{{ GEOSERVER_BASE_URL }}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/geo-server.png" alt="GeoServer">
                     <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "GeoServer" %}</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if user.is_manager_of_any_group %}
+                <li class="c-menu__item">
+                <a href="{% url "invite_user" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User">
+                    <span style="text-align:left;color:#fff;margin-left:-14px;">{% trans "Invite User" %}</span>
                 </a>
             </li>
             {% endif %}
