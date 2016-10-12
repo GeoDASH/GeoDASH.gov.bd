@@ -255,7 +255,7 @@
                                     <div class="col-md-4">
                                         <div class="box">
                                              {#{% if user.is_authenticated %}#}
-                                            <a onclick="layerpopup('SigninModal');">
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">
                                             <div class="gd-signup">
                                                 <img src="{{ STATIC_URL }}geonode/images/icon/upload-layer.png" />
                                             </div>
@@ -351,12 +351,13 @@
                                                     <div class="contents mask text-center" style="height:165px;">
                                                         <div class="title">
                                                             {% if featured.title|length >= 40 %}
-                                                            {{ featured.abstract|truncatechars:40 }}
+                                                            <!--{{ featured.title|truncatechars:40 }}-->
                                                             &nbsp;&nbsp;
-                                                            <span> <a href="{{ featured.detail_url }}" title="{{ featured.title }}"> .... </a></span>
+                                                            <span> <a href="{{ featured.detail_url }}" title="{{ featured.title }}"> {{ featured.title|truncatechars:17 }}.... </a></span>
                                                             {% else %}
-                                                                <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a></div>
+                                                                <a href="{{ featured.detail_url }}" title="{{ featured.title }}">{{ featured.title }}</a>
                                                             {% endif %}
+                                                        </div>
                                                         <div class="anchor-link">
                                                             <!--<a href="javascript:;" class="info">-->
                                                                  <span style="color:#6e6b6b;font-size:14px;font-weight:bold;">{{ featured.group }}</span>
@@ -364,9 +365,9 @@
                                                         </div>
                                                         <div class="details text-center">
                                                             {% if featured.abstract|length >= 53 %}
-                                                            {{ featured.abstract|truncatechars:53 }}
+                                                            <!--{{ featured.abstract|truncatechars:53 }}-->
                                                             &nbsp;&nbsp;
-                                                            <span> <a href="javascript:;" title="{{ featured.abstract }}"> .... </a></span>
+                                                            <span> <a href="javascript:;" title="{{ featured.abstract }}">{{ featured.abstract|truncatechars:53 }} .... </a></span>
                                                             {% else %}
                                                                 {{ featured.abstract }}
                                                             {% endif %}

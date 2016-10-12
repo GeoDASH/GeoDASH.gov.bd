@@ -415,7 +415,7 @@
                           <span>{% trans "Sign in to your account" %}</span>
                           </div>
                       </div>
-                      <form class="form-signin" id ="uploadsignlayer" role="form" action="{% url "account_login" %}?next={{ '_dashboard' }}" method="post">
+                      <form class="form-signin" id ="uploadsignlayer" role="form" action="{% url "account_login" %}?next={{ 'layer_browse' }}" method="post">
                         {% csrf_token %}
                           {% if redirect_field_value %}
                           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>

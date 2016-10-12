@@ -41,31 +41,31 @@
                 </div>
                 <ul class="resources-summery">
                   <li>
-                      <a href="/people/profile/{{ item.owner__username}}">
+                      <a href="/people/profile/{{ item.owner__username}}" title="{{item.resource_type}} owner">
                           <i class="fa fa-user"></i>
                           {{ item.owner__username }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#info">
+                      <a href="{{ item.detail_url }}#info" title="{{item.resource_type}} information">
                           <i class="fa fa-calendar-o"></i>
                           {{ item.date|date:'d MMM y' }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}">
+                      <a href="{{ item.detail_url }}" title="{{item.resource_type}} popular count">
                           <i class="fa fa-eye"></i>
                           {{ item.popular_count }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#share">
+                      <a href="{{ item.detail_url }}#share" title="{{item.resource_type}} share count">
                           <i class="fa fa-share"></i>
                           {{ item.share_count }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#rate">
+                      <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating">
                           <i class="fa fa-star"></i>
                           {{ item.rating }}
                       </a>
@@ -217,31 +217,31 @@
                       <div class="item-items">
                           <ul class="list-inline lmd">
                               <li>
-                                  <a href="/people/profile/{{ item.owner__username }}">
+                                  <a href="/people/profile/{{ item.owner__username }}" title="{{item.resource_type}} owner">
                                       <i class="fa fa-user"></i>
                                       {{ item.owner__username }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#info">
+                                  <a href="{{ item.detail_url }}#info" title="{{item.resource_type}} information">
                                       <i class="fa fa-calendar-o"></i>
                                       {{ item.date|date:'d MMM y' }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}">
+                                  <a href="{{ item.detail_url }}" title="{{item.resource_type}} popular count">
                                       <i class="fa fa-eye"></i>
                                       {{ item.popular_count }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#share">
+                                  <a href="{{ item.detail_url }}#share" title="{{item.resource_type}} share count">
                                       <i class="fa fa-share"></i>
                                       {{ item.share_count }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#rate">
+                                  <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating">
                                       <i class="fa fa-star"></i>
                                       {{ item.rating }}
                                   </a>
