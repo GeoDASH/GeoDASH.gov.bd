@@ -311,7 +311,7 @@ INSTALLED_APPS = (
     # 'dialogos',
     'agon_ratings',
     'notification',
-    'geonode.announcements',
+    'announcements',
     'actstream',
     'user_messages',
     'tastypie',
