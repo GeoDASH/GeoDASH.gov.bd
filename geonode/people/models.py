@@ -46,7 +46,7 @@ if 'notification' in settings.INSTALLED_APPS:
 
 
 def get_anonymous_user():
-    return get_user_model().objects.get(username = 'nmn')
+    return get_user_model().objects.get(username = 'AnonymousUser')
 
 class Profile(AbstractUser):
 
