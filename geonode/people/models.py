@@ -25,6 +25,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import signals
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from django.core import validators
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, Http404
 
 from taggit.managers import TaggableManager
 
@@ -35,10 +39,14 @@ from account.models import EmailAddress
 from user_messages.models import UserThread
 
 from .utils import format_address
+from geonode.settings import ANONYMOUS_USER_ID, REMOVE_ANONYMOUS_USER
 
 if 'notification' in settings.INSTALLED_APPS:
     from notification import models as notification
 
+
+def get_anonymous_user():
+    return get_user_model().objects.get(username = 'nmn')
 
 class Profile(AbstractUser):
 
@@ -176,6 +184,8 @@ def profile_post_save(instance, sender, **kwargs):
     default_group = get_object_or_404(GroupProfile, slug='default')
     if not instance.is_superuser:
         default_group.join(instance, role='member')
+    else:
+        default_group.join(instance, role='manager')
 
 
 def email_post_save(instance, sender, **kw):
@@ -191,6 +201,11 @@ def profile_pre_save(instance, sender, **kw):
             'notification' in settings.INSTALLED_APPS:
         notification.send([instance, ], "account_active")
 
+def profile_pre_delete(instance, sender, **kw):
+    if instance == get_anonymous_user() and REMOVE_ANONYMOUS_USER == False:
+        # raise PermissionDenied
+        raise Http404('Please dont try to delete "Anonymous User". This may break the system.')
 signals.pre_save.connect(profile_pre_save, sender=Profile)
 signals.post_save.connect(profile_post_save, sender=Profile)
 signals.post_save.connect(email_post_save, sender=EmailAddress)
+signals.pre_delete.connect(profile_pre_delete, sender=Profile)
