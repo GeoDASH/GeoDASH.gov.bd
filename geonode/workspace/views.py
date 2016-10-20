@@ -3,6 +3,11 @@ import requests
 from actstream.models import Action
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth import get_user_model
+from django.http import HttpResponseForbidden
+
+from guardian.models import UserObjectPermission
 
 from geonode.layers.models import Layer
 from geonode.documents.models import Document
@@ -10,6 +15,7 @@ from geonode.maps.models import Map
 from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.people.models import Profile
+from geonode.groups.models import GroupProfile, GroupMember
 
 
 class MemberWorkspaceLayer(ListView):
@@ -142,3 +148,22 @@ class AdminWorkspaceUserList(ListView):
         context['user_list'] = group_member_list
 
         return context
+
+
+@login_required
+def remove_group_member(request, slug, username):
+    group = get_object_or_404(GroupProfile, slug=slug)
+    user = get_object_or_404(get_user_model(), username=username)
+
+    if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    else:
+        group_member = GroupMember.objects.get(group=group, user=user)
+        if group_member.role == 'manager':
+            permissions = UserObjectPermission.objects.filter(user=user)
+            for layer in Layer.objects.filter(group=group):
+                if layer.owner != user:
+                    permissions.filter(object_pk=layer.pk).delete()
+        group_member.delete()
+        user.groups.remove(group.group)
+        return redirect("admin-workspace-user-list")

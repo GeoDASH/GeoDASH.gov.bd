@@ -126,7 +126,7 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <form style="display: inline;" method="POST" action="{% url "group_member_remove" key.slug user.username %}">
+                                                                <form style="display: inline;" method="POST" action="{% url "remove-group-member" key.slug user.username %}">
                                                                 {% csrf_token %}
                                                                 <button class="btn btn-danger btn-gd-remove btn-xs" type="submit" >
                                                                     Remove
