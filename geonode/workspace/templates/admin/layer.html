@@ -25,145 +25,150 @@
                     <li role="presentation" class="active"><a href="{% url "admin-workspace-layer" %}">{% trans "Layers" %}</a></li>
                     <li role="presentation"><a href="{% url "admin-workspace-map" %}"> {% trans "Maps" %}</a></li>
                     <li role="presentation"><a href="{% url "admin-workspace-document" %}">{% trans "Documents" %}</a></li>
+                    <li role="presentation"><a href="{% url "admin-workspace-user-list" %}"  >{% trans "User List" %}</a></li>
+                    <li role="presentation"><a href="{% url "create-user" %}" >{% trans "Create User" %}</a></li>
                   </ul>
                   <br>
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User approval request" %}</a></li>
-                  <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
-                  <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
-                  <li><a href="#denied-layers" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
-                </ul>
-                <div class="tab-content">
-                  <article id="user-approval-request" class="tab-pane active">
-                    <ul class="no-style-list">
-                        <table class="table table-hover" style="background:#ffffff;">
-                            <thead>
-                                <tr>
-                                    <th>Serial No</th>
-                                    <th>Layer Title</th>
-                                    <th>Organization</th>
-                                    <th>Tried</th>
-                                    <th>Date of request</th>
-                                    <th>Approve Layer</th>
-                                    <th>Denied Layer</th>
-                                </tr>
-                            </thead>
-                            {% for user_approval in user_approval_request_list %}
-                                <tbody>
-                                    <tr>
-                                        <td>{{ forloop.counter}}</td>
-                                        <td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>
-                                        <td>{{ user_approval.group }}</td>
-                                        <td>{{ user_approval.current_iteration }}</td>
-                                        <td>{{ user_approval.date_updated }}</td>
-                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
-                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
-                                    </tr>
-                                </tbody>
-                            {% empty %}
-                                <p>{% trans "No pending requests yet" %}</p>
-                            {% endfor %}
-                        </table>
-                    </ul>
-                  </article>
-                  <article id="approved" class="tab-pane">
-                    <ul class="no-style-list">
-                        <table class="table table-hover" style="background:#ffffff;">
-                            <thead>
-                                <tr>
-                                    <th>Serial No</th>
-                                    <th>Layer Title</th>
-                                    <th>Organization</th>
-                                    <th>Who requested</th>
-                                    <th>Who approved</th>
-                                    <th>Approve date</th>
-                                    <th>Layer Edit</th>
-                                </tr>
-                            </thead>
-                            {% for approved in approved_list %}
-                                <tbody>
-                                    <tr>
-                                        <td>{{ forloop.counter}}</td>
-                                        <td>{{ approved.title }}</td>
-                                        <td>{{ approved.group }}</td>
-                                        <td>{{ approved.owner }}</td>
-                                        <td>{{ approved.last_auditor }}</td>
-                                        <td>{{ approved.date_updated }}</td>
-                                        <td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>
-                                    </tr>
-                                </tbody>
-                            {% empty %}
-                                <p>{% trans "No approved layers yet" %}</p>
-                            {% endfor %}
-                        </table>
-                    </ul>
-                  </article>
-                  <article id="user-drafts" class="tab-pane">
-                    <ul class="no-style-list">
-                        <table class="table table-hover" style="background:#ffffff;">
-                            <thead>
-                                <tr>
-                                    <th>Serial No</th>
-                                    <th>Layer Title</th>
-                                    <th>Organization</th>
-                                    <th>User Name</th>
-                                    <th>Layer creation date</th>
-                                    <th>Layer Delete</th>
-                                </tr>
-                            </thead>
-                            {% for draft in user_draft_list %}
-                                <tbody>
-                                    <tr>
-                                        <td>{{ forloop.counter}}</td>
-                                        <td>{{ draft.title }}</td>
-                                        <td>{{ draft.group }}</td>
-                                        <td>{{ draft.owner.username }}</td>
-                                        <td>{{ draft.date_created }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>
-                                            {% include "layer_templates/_delete_layer.html" %}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            {% empty %}
-                                <p>{% trans "No user drafts yet" %}</p>
-                            {% endfor %}
-                        </table>
-                    </ul>
-                  </article>
+                  <div id="viewuserlist"></div>
 
-                  <article id="denied-layers" class="tab-pane" style="background:#ffffff;">
-                    <ul class="no-style-list">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Serial No</th>
-                                    <th>Layer Title</th>
-                                    <th>Organization</th>
-                                    <th>Who requested</th>
-                                    <th>Who denied</th>
-                                    <th>Denied date</th>
-                                </tr>
-                            </thead>
-                            {% for deny in denied_list %}
-                                <tbody>
+                  <div id="viewuserlist_none">
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User Approval Request" %}</a></li>
+                          <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
+                          <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
+                          <li><a href="#denied-layers" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
+                        </ul>
+                    <div class="tab-content">
+                      <article id="user-approval-request" class="tab-pane active">
+                        <ul class="no-style-list">
+                            <table class="table table-hover" style="background:#ffffff;">
+                                <thead>
                                     <tr>
-                                        <td>{{ forloop.counter}}</td>
-                                        <td>{{ deny.title}}</td>
-                                        <td>{{ deny.group}}</td>
-                                        <td>{{ deny.owner }}</td>
-                                        <td>{{ deny.last_auditor }}</td>
-                                        <td>{{ deny.date_updated }}</td>
+                                        <th>Serial No</th>
+                                        <th>Layer Title</th>
+                                        <th>Organization</th>
+                                        <th>Tried</th>
+                                        <th>Date of Request</th>
+                                        <th>Approve Layer</th>
+                                        <th>Denied Layer</th>
                                     </tr>
-                                </tbody>
-                            {% empty %}
-                                <p>{% trans "No denied layers yet" %}</p>
-                            {% endfor %}
-                        </table>
-                    </ul>
-                  </article>
+                                </thead>
+                                {% for user_approval in user_approval_request_list %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ forloop.counter}}</td>
+                                            <td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>
+                                            <td>{{ user_approval.group }}</td>
+                                            <td>{{ user_approval.current_iteration }}</td>
+                                            <td>{{ user_approval.date_updated }}</td>
+                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
+                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
+                                        </tr>
+                                    </tbody>
+                                {% empty %}
+                                    <p>{% trans "No pending requests yet" %}</p>
+                                {% endfor %}
+                            </table>
+                        </ul>
+                      </article>
+                      <article id="approved" class="tab-pane">
+                        <ul class="no-style-list">
+                            <table class="table table-hover" style="background:#ffffff;">
+                                <thead>
+                                    <tr>
+                                        <th>Serial No</th>
+                                        <th>Layer Title</th>
+                                        <th>Organization</th>
+                                        <th>Who requested</th>
+                                        <th>Who approved</th>
+                                        <th>Approve date</th>
+                                        <th>Layer Edit</th>
+                                    </tr>
+                                </thead>
+                                {% for approved in approved_list %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ forloop.counter}}</td>
+                                            <td>{{ approved.title }}</td>
+                                            <td>{{ approved.group }}</td>
+                                            <td>{{ approved.owner }}</td>
+                                            <td>{{ approved.last_auditor }}</td>
+                                            <td>{{ approved.date_updated }}</td>
+                                            <td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>
+                                        </tr>
+                                    </tbody>
+                                {% empty %}
+                                    <p>{% trans "No approved layers yet" %}</p>
+                                {% endfor %}
+                            </table>
+                        </ul>
+                      </article>
+                      <article id="user-drafts" class="tab-pane">
+                        <ul class="no-style-list">
+                            <table class="table table-hover" style="background:#ffffff;">
+                                <thead>
+                                    <tr>
+                                        <th>Serial No</th>
+                                        <th>Layer Title</th>
+                                        <th>Organization</th>
+                                        <th>User Name</th>
+                                        <th>Layer creation date</th>
+                                        <th>Layer Delete</th>
+                                    </tr>
+                                </thead>
+                                {% for draft in user_draft_list %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ forloop.counter}}</td>
+                                            <td>{{ draft.title }}</td>
+                                            <td>{{ draft.group }}</td>
+                                            <td>{{ draft.owner }}</td>
+                                            <td>{{ draft.date_created }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>
+                                                {% include "layer_templates/_delete_layer.html" %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                {% empty %}
+                                    <p>{% trans "No user drafts yet" %}</p>
+                                {% endfor %}
+                            </table>
+                        </ul>
+                      </article>
 
-                </div>
+                      <article id="denied-layers" class="tab-pane" style="background:#ffffff;">
+                        <ul class="no-style-list">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Serial No</th>
+                                        <th>Layer Title</th>
+                                        <th>Organization</th>
+                                        <th>Who requested</th>
+                                        <th>Who denied</th>
+                                        <th>Denied date</th>
+                                    </tr>
+                                </thead>
+                                {% for deny in denied_list %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ forloop.counter}}</td>
+                                            <td>{{ deny.title}}</td>
+                                            <td>{{ deny.group}}</td>
+                                            <td>{{ deny.owner }}</td>
+                                            <td>{{ deny.last_auditor }}</td>
+                                            <td>{{ deny.date_updated }}</td>
+                                        </tr>
+                                    </tbody>
+                                {% empty %}
+                                    <p>{% trans "No denied layers yet" %}</p>
+                                {% endfor %}
+                            </table>
+                        </ul>
+                      </article>
+                    </div>
+                  </div>
               </div>
             </div>
         </div>
@@ -171,14 +176,118 @@
 {% endblock %}
 
 {% block extra_script %}
+
 {{ block.super }}
-<script>
-$(function () {
-    $("#follow_button, #unfollow_button").click(function () {
-        $.post($(this).attr("href"), {});
-        $(this).parent().find("#follow_button, #unfollow_button").toggle();
-        return false
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#user_list").click(function(){
+                $("#viewuserlist_none").css("display", "none");
+                //url = '{% url 'api_dispatch_list' api_name='api' resource_name='profiles' %}'+ '?group={{gg}}';
+                url = '{% url 'api_dispatch_list' api_name='api' resource_name='profiles' %}';
+                 $.ajax({
+                        cache: false,
+                        type: 'GET',
+                        url: url,
+                        data: {},
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(jsondata) {
+                            console.log("success");
+                            //console.log(JSON.stringify(jsondata));
+                            var data = eval(jsondata.objects);
+                        var output='';
+                            output +='<hr />';
+                      $.each(data, function(i, profile) {
+                        //alert(profile.id);
+                            output +='<article>';
+                            output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">';
+                            output +='<div class="grid-container">';
+                            output +='<div class="top-content text-center">';
+                            output +='<div class="avater">';
+                            output +='<a href="'+ profile.profile_detail_url +'?content=layers">';
+                            output +='<div class="avater-img">';
+                            output +='<div class="avater-img-mid">';
+                            output +='<div class="text-center">';
+                            output +='<img height="100" class="img-circle" src="'+ profile.avatar_100 +'" alt="Profile Image"/>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='<div class="txt" style="min-height: 60px;">';
+                                if(profile.first_name != ''){
+                            output +=''+ profile.first_name+' '+  profile.last_name +' ';
+                                }else{
+                            output +=''+ profile.username +' ';
+                                }
+                            output +='</div>';
+                            output +='</a>';
+                            output +='</div>';
+                            output +='<div class="details pro-org" title="'+profile.organization+'">';
+                                    if(profile.organization){
+                            output +='<div>';
+                            output +=''+ profile.organization +'';
+                            output +='</div>';
+                                    }else{
+                            output +='<div>';
+                            output +='No Organization info';
+                            output +='</div>';
+                                    }
+                            output +='</div>';
+                            output +='</div>';
+                            output +='<div class="bottom-content">';
+                            output +='<div class="row">';
+                            output +='<div class="profile-items text-center">';
+                            output +='<ul class="list-inline">';
+                            output +='<li>';
+                            output +='<a href="'+ profile.profile_detail_url +'?content=layers" >';
+                            output +='<span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;">';
+                            output +='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>';
+                            output +='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>';
+                            output +='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>';
+                            output +='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>';
+                            output +='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>';
+                            output +='</span>';
+                            output +=''+ profile.layers_count +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="'+ profile.profile_detail_url +'?content=documents">';
+                            output +='<i class="fa fa-file-text-o"></i> ';
+                            output +=''+ profile.documents_count +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='<li>';
+                            output +='<a href="'+ profile.profile_detail_url +'?content=maps">';
+                            output +='<i class="fa fa-map-marker"></i> ';
+                            output +=''+ profile.maps_count +'';
+                            output +='</a>';
+                            output +='</li>';
+                            output +='</ul>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</div>';
+                            output +='</article>';
+                        });
+                        $("#viewuserlist").append(output);
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            console.log("error");
+                        }
+                 });
+            });
+        });
+    </script>
+    <script>
+    $(function () {
+        $("#follow_button, #unfollow_button").click(function () {
+            $.post($(this).attr("href"), {});
+            $(this).parent().find("#follow_button, #unfollow_button").toggle();
+            return false
+        });
     });
-});
-</script>
+    </script>
+
 {% endblock %}
+
+

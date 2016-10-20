@@ -489,10 +489,10 @@
                                     <div id="gd-featurehighlight-left">
                                         <div class="title">
                                             {% if not user.is_authenticated %}
-                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;color:#6e6b6b;">{% trans "Import your own layers" %}</a>
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Import your own layers" %}</a>
                                             {% endif %}
                                             {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" %}" style="cursor:pointer;color:#6e6b6b;">{% trans "Import your own layers" %}</a>
+                                            <a href="{% url "layer_upload" %}" style="cursor:pointer;">{% trans "Import your own layers" %}</a>
                                             {% endif %}
                                         </div>
                                         <div class="description">
@@ -858,7 +858,7 @@
                             </div>
                             <div class="col-md-offset-1 col-md-4">
                                 <div id="gd-sharemap-content">
-                                    <div class="title"><a href="" %}" style="color:#fff;">{% trans "Share your map" %}</a></div>
+                                    <div class="title"><a href="{{ item.thumbnail_url }}" style="color:#fff;">{% trans "Share your map" %}</a></div>
                                     <div class="description">
                                         {% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}
                                         {% trans "to maximize data sharing and promote your work." %}

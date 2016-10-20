@@ -138,7 +138,7 @@ class AdminWorkspaceUserList(ListView):
         for group in groups:
             url = "http://localhost:8000/api/profiles/?group=" + group.slug
             users = requests.get(url).json()
-            group_member_list[group.title] = users['objects']
+            group_member_list[group] = users['objects']
         context['user_list'] = group_member_list
 
         return context

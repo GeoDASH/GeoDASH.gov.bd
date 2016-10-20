@@ -35,9 +35,25 @@
                           </div>
                       </div>
                       <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_layers-fav"></span>
-                              {% trans "Docked" %}
+                          <div class="pull-right">
+                              <ul class="search-type">
+                                  <li>
+                                      <a href="{% url "_dashboard" %}" title="List View">
+                                          <i class="fa fa-bars fa-stack-1-5x"></i>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="{% url "_dashboard_grid" %}" title="Grid View">
+                                          <i class="fa fa-th-large fa-stack-1-5x"></i>
+                                      </a>
+                                  </li>
+                                  <li style="margin-top:-4px;">
+                                      <span style="font-size:20px;">{% trans "Docked" %}</span>
+                                  </li>
+                                  <li style="margin-top:-4px; padding-left:10px;">
+                                      <span style="font-size:20px;" id="total_layers-fav"></span>
+                                  </li>
+                              </ul>
                           </div>
                       </div>
                   </div>
@@ -433,13 +449,13 @@
                 output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                 output +='<div class="avater">';
                 output +='<div class="avater-img">';
-                output +='<a class="avater-img-mid" href="#" >';
+                output +='<div class="avater-img-mid" href="#" >';
                             if(item.thumbnail_url)
                 output +='<img src="'+ item.thumbnail_url +'" alt="'+ item.title +'" class="group-logo" />';
                             else{
                 output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="'+ item.title +'" class="group-logo" />';
                             }
-                output +='</a>';
+                output +='</div>';
                 output +='</div>';
                 output +='<div class="checkbox-overlay">';
                 output +='<div class="checkbox">';
@@ -454,7 +470,11 @@
                 output +='<div class="contents">';
                 output +='<div class="title">';
                 output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                output +=''+ item.title  +'';
+                if (item.title.length >= 25){
+                output +='.........';
+                        }else{
+                output +=''+ item.title +'';
+                        }
                 output +='</a>';
                 output +='</div>';
                 output +='</div>';
@@ -503,13 +523,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.thumbnail_url)
                     output +='<img src="'+ item.thumbnail_url +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -524,7 +544,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +='.........';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -568,13 +592,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.thumbnail_url)
                     output +='<img src="'+ item.thumbnail_url +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -589,7 +613,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +='.........';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -633,13 +661,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.logo)
                     output +='<img src="'+ item.logo +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -654,7 +682,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +='.........';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -668,7 +700,7 @@
         }});
     });
   </script>
-  <script type="text/javascript" language="JavaScript">
+    <script type="text/javascript" language="JavaScript">
 
         function udock(undockID){
         //var make_favoriteStatus = undockStatus;
