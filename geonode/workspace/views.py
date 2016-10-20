@@ -1,3 +1,5 @@
+import requests
+
 from actstream.models import Action
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -7,6 +9,7 @@ from geonode.documents.models import Document
 from geonode.maps.models import Map
 from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
+from geonode.people.models import Profile
 
 
 class MemberWorkspaceLayer(ListView):
@@ -117,4 +120,25 @@ class AdminWorkspaceMap(ListView):
         context['approved_list'] = Map.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')[:15]
         context['user_draft_list'] = Map.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
         context['denied_list'] = Map.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')[:15]
+        return context
+
+
+class AdminWorkspaceUserList(ListView):
+    """
+
+    """
+
+    model = Profile
+    template_name = 'admin/userlist.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListView, self).get_context_data(*args, **kwargs)
+        groups = GroupProfile.objects.filter(groupmember__user=self.request.user, groupmember__role='manager')
+        group_member_list = {}
+        for group in groups:
+            url = "http://localhost:8000/api/profiles/?group=" + group.slug
+            users = requests.get(url).json()
+            group_member_list[group.title] = users['objects']
+        context['user_list'] = group_member_list
+
         return context

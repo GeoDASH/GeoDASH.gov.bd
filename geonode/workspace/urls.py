@@ -23,7 +23,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 
 from geonode.workspace.views import MemberWorkspaceLayer, MemberWorkspaceDocument, MemberWorkspaceMap
-from geonode.workspace.views import AdminWorkspaceLayer, AdminWorkspaceDocument, AdminWorkspaceMap
+from geonode.workspace.views import AdminWorkspaceLayer, AdminWorkspaceDocument, AdminWorkspaceMap, AdminWorkspaceUserList
 
 js_info_dict = {
     'packages': ('geonode.layers',),
@@ -37,5 +37,6 @@ urlpatterns = patterns(
     url(r'^manager/layer$',AdminWorkspaceLayer.as_view(), name='admin-workspace-layer'),
     url(r'^manager/document$', AdminWorkspaceDocument.as_view(), name='admin-workspace-document'),
     url(r'^manager/map$', AdminWorkspaceMap.as_view(), name='admin-workspace-map'),
+    url(r'^manager/userlist', AdminWorkspaceUserList.as_view(), name='admin-workspace-user-list'),
 
 )

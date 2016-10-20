@@ -1,0 +1,197 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Admin Workspace" %}{% endblock %}
+
+{% comment %}
+{% block subnav %}
+<li><a href="{% url "actstream_object_feed" content_type_id=ctype.pk  object_id=actor.pk %}">RSS</a></li>
+<li><a href="{% url "actstream_object_feed_atom" content_type_id=ctype.pk  object_id=actor.pk %}">ATOM</a></li>
+{% endblock %}
+{% endcomment %}
+
+{% block body_outer %}
+    <div class="gd-content">
+        <div class="gd-content-heading">
+            <div class="title small-content">
+                {% trans "Admin Workspace" %}
+            </div>
+            <div class="hr"></div>
+        </div>
+        <div class="gd-content-body gd-history transparent top-bottom-margin-20px">
+            <div class="row">
+              <div class="col-md-12">
+                  <ul class="nav nav-pills">
+                    <li role="presentation" ><a href="{% url "admin-workspace-layer" %}">{% trans "Layers" %}</a></li>
+                    <li role="presentation" class="active"><a href="{% url "admin-workspace-map" %}"> {% trans "Maps" %}</a></li>
+                    <li role="presentation"><a href="{% url "admin-workspace-document" %}">{% trans "Documents" %}</a></li>
+                  </ul>
+                  <br>
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User approval request" %}</a></li>
+                  <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
+                  <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
+                  <li><a href="#denied-maps" data-toggle="tab">{% trans "Denied Maps" %}</a></li>
+                </ul>
+
+              {% for key, value in user_list.items %}
+                {{key}} <br>
+                    {% for user in value %}
+{#                        <li> {{ user }}</li>#}
+                        {% for i, j in user.items %}
+                            <li> ---------{{ i }} {{ j }}<br></li>
+                            {% endfor %}
+                        <br><br><br>
+                        {% endfor %}
+
+              {% endfor %}
+{#                {{ user_list }}#}
+                <div class="tab-content">
+                  <article id="user-approval-request" class="tab-pane active">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Map Title</th>
+                                    <th>Organization</th>
+                                    <th>Tried</th>
+                                    <th>Date of request</th>
+                                    <th>Approve Map</th>
+                                    <th>Denied Map</th>
+                                </tr>
+                            </thead>
+                            {% for user_approval in user_approval_request_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>
+                                        <td>{{ user_approval.group }}</td>
+                                        <td>{{ user_approval.current_iteration }}</td>
+                                        <td>{{ user_approval.date_updated }}</td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
+                                        <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No pending requests yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                  <article id="approved" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Map Title</th>
+                                    <th>Organization</th>
+                                    <th>Who requested</th>
+                                    <th>Who approved</th>
+                                    <th>Approve date</th>
+                                    <th>Map Edit</th>
+                                </tr>
+                            </thead>
+                            {% for approved in approved_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ approved.title }}</td>
+                                        <td>{{ approved.group }}</td>
+                                        <td>{{ approved.owner }}</td>
+                                        <td>{{ approved.last_auditor }}</td>
+                                        <td>{{ approved.date_updated }}</td>
+                                        <td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No approved maps yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+                  <article id="user-drafts" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Map Title</th>
+                                    <th>Organization</th>
+                                    <th>User Name</th>
+                                    <th>Map creation date</th>
+                                    <th>Map Delete</th>
+                                </tr>
+                            </thead>
+                            {% for draft in user_draft_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ draft.title }}</td>
+                                        <td>{{ draft.group }}</td>
+                                        <td>{{ draft.owner.username }}</td>
+                                        <td>{{ draft.date_created }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "Delete map" %}</button> <br>
+                                            {% include "map_templates/_delete_map.html" %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No user drafts yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+
+                  <article id="denied-maps" class="tab-pane">
+                    <ul class="no-style-list">
+                        <table class="table table-hover" style="background:#ffffff;">
+                            <thead>
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Map Title</th>
+                                    <th>Organization</th>
+                                    <th>Who requested</th>
+                                    <th>Who denied</th>
+                                    <th>Denied date</th>
+                                </tr>
+                            </thead>
+                            {% for deny in denied_list %}
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter}}</td>
+                                        <td>{{ deny.title}}</td>
+                                        <td>{{ deny.group}}</td>
+                                        <td>{{ deny.owner }}</td>
+                                        <td>{{ deny.last_auditor }}</td>
+                                        <td>{{ deny.date_updated }}</td>
+                                    </tr>
+                                </tbody>
+                            {% empty %}
+                                <p>{% trans "No denied maps yet" %}</p>
+                            {% endfor %}
+                        </table>
+                    </ul>
+                  </article>
+
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+<script>
+$(function () {
+    $("#follow_button, #unfollow_button").click(function () {
+        $.post($(this).attr("href"), {});
+        $(this).parent().find("#follow_button, #unfollow_button").toggle();
+        return false
+    });
+});
+</script>
+{% endblock %}
