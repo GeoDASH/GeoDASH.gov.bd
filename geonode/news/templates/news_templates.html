@@ -1,0 +1,50 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Log in" %}{% endblock %}
+
+{% block body_outer %}
+    <div class="gd-content">
+    <div class="gd-content-heading">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="title small-content ">
+                  {% trans "Trending" %}
+                  <button class="btn btn-default btn-link">
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </button>
+                  <div class="trending-container">
+			<div class="container clearfix">
+
+								<h5 class="trending-title main-font pull-left">
+					Trending				</h5><!-- .trending-title -->
+
+				<div class="trending-items">
+					<ul id="trending" class="bxslider list-unstyled">
+											<li><h4 class="entry-title"><a href="http://demo.themesharbor.com/thebreakingnews/2016/10/13/best-places-to-hike-in-north-america/" rel="bookmark">Hikes &#038; Trails: Best Places to go Hiking with Friends in North America</a></h4></li>
+											<li><h4 class="entry-title"><a href="http://demo.themesharbor.com/thebreakingnews/2016/06/02/the-ultimate-checklist-for-travelers/" rel="bookmark">The Ultimate Checklist for Travelers</a></h4></li>
+										</ul><!-- #trending -->
+				</div><!-- .trending-items -->
+			</div><!-- .container -->
+		</div><!-- .trending-container -->
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="small-content text-right">
+              </div>
+          </div>
+      </div>
+      <div class="hr"></div>
+    </div>
+    <div class="gd-content-body transparent top-bottom-margin-20px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gd-content-body full-pad-40px">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
