@@ -374,10 +374,10 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     thumbnail_url = models.TextField(null=True, blank=True)
     detail_url = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(default=0, null=True, blank=True)
-    a_group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    a_last_auditor = models.ForeignKey('people.Profile', related_name='a_last_auditor', blank=True, null=True)
-    a_current_iteration = models.IntegerField(default=0)
-    a_status = models.CharField(max_length=10, choices=[
+    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    last_auditor = models.ForeignKey('people.Profile', related_name='a_last_auditor', blank=True, null=True)
+    current_iteration = models.IntegerField(default=0)
+    status = models.CharField(max_length=10, choices=[
         ("DRAFT", _("Draft")),
         ("PENDING", _("Pending")),
         ("ACTIVE", _("Active")),
@@ -386,8 +386,8 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
         ("DELETED", _("Deleted")),
         ("CANCELED", _("Canceled"))],
         default="DRAFT")
-    a_date_created = models.DateTimeField(auto_now_add=True)
-    a_date_updated = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.title
