@@ -16,6 +16,7 @@ from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.people.models import Profile
 from geonode.groups.models import GroupProfile, GroupMember
+from geonode import settings
 
 
 class MemberWorkspaceLayer(ListView):
@@ -142,7 +143,8 @@ class AdminWorkspaceUserList(ListView):
         groups = GroupProfile.objects.filter(groupmember__user=self.request.user, groupmember__role='manager')
         group_member_list = {}
         for group in groups:
-            url = "http://localhost:8000/api/profiles/?group=" + group.slug
+            url = settings.SITEURL
+            url = url + "api/profiles/?group=" + group.slug
             users = requests.get(url).json()
             group_member_list[group] = users['objects']
         context['user_list'] = group_member_list

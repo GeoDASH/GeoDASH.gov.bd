@@ -29,7 +29,7 @@ autocomplete_light.register(Region,
                             autocomplete_js_attributes={'placeholder': 'Region/Country ..', },)
 
 autocomplete_light.register(ResourceBase,
-                            search_fields=['title'],
+                            search_fields=['title', 'group__title'],
                             autocomplete_js_attributes={'placeholder': 'Resource name..', },)
 
 autocomplete_light.register(Tag,
