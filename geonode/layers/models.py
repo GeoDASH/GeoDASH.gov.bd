@@ -123,20 +123,20 @@ class Layer(ResourceBase):
         null=True,
         blank=True,
         related_name='layer_set')
-    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
-    current_iteration = models.IntegerField(default=0)
-    status = models.CharField(max_length=10, choices=[
-        ("DRAFT", _("Draft")),
-        ("PENDING", _("Pending")),
-        ("ACTIVE", _("Active")),
-        ("INACTIVE", _("Inactive")),
-        ("DENIED", _("Denied")),
-        ("DELETED", _("Deleted")),
-        ("CANCELED", _("Canceled"))],
-        default="DRAFT")
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
+    # group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    # last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    # current_iteration = models.IntegerField(default=0)
+    # status = models.CharField(max_length=10, choices=[
+    #     ("DRAFT", _("Draft")),
+    #     ("PENDING", _("Pending")),
+    #     ("ACTIVE", _("Active")),
+    #     ("INACTIVE", _("Inactive")),
+    #     ("DENIED", _("Denied")),
+    #     ("DELETED", _("Deleted")),
+    #     ("CANCELED", _("Canceled"))],
+    #     default="DRAFT")
+    # date_created = models.DateTimeField(auto_now_add=True)
+    # date_updated = models.DateTimeField(auto_now=True)
 
     def is_vector(self):
         return self.storeType == 'dataStore'

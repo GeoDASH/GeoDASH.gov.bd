@@ -86,20 +86,20 @@ class Map(ResourceBase, GXPMapBase):
         max_length=255,
         blank=True)
     # Full URL for featured map view, ie http://domain/someview
-    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
-    current_iteration = models.IntegerField(default=0)
-    status = models.CharField(max_length=10, choices=[
-        ("DRAFT", _("Draft")),
-        ("PENDING", _("Pending")),
-        ("ACTIVE", _("Active")),
-        ("INACTIVE", _("Inactive")),
-        ("DENIED", _("Denied")),
-        ("DELETED", _("Deleted")),
-        ("CANCELED", _("Canceled"))],
-        default="DRAFT")
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
+    # group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    # last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    # current_iteration = models.IntegerField(default=0)
+    # status = models.CharField(max_length=10, choices=[
+    #     ("DRAFT", _("Draft")),
+    #     ("PENDING", _("Pending")),
+    #     ("ACTIVE", _("Active")),
+    #     ("INACTIVE", _("Inactive")),
+    #     ("DENIED", _("Denied")),
+    #     ("DELETED", _("Deleted")),
+    #     ("CANCELED", _("Canceled"))],
+    #     default="DRAFT")
+    # date_created = models.DateTimeField(auto_now_add=True)
+    # date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return '%s by %s' % (
