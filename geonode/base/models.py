@@ -375,7 +375,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     detail_url = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(default=0, null=True, blank=True)
     a_group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    a_last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    a_last_auditor = models.ForeignKey('people.Profile', related_name='a_last_auditor', blank=True, null=True)
     a_current_iteration = models.IntegerField(default=0)
     a_status = models.CharField(max_length=10, choices=[
         ("DRAFT", _("Draft")),
