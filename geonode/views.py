@@ -52,6 +52,7 @@ from geonode.base.models import TopicCategory
 from geonode.dashboard.models import SectionManagementTable
 from geonode.dashboard.views import add_sections_to_index_page
 from geonode.layers.models import Layer
+from geonode.dashboard.models import SliderImages
 
 
 class AjaxLoginForm(forms.Form):
@@ -219,6 +220,9 @@ class IndexClass(ListView):
                 context['is_how_it_works'] = section.is_visible
             if section.section == 'what_geodash_offer?':
                 context['is_what_geodash_offer'] = section.is_visible
+
+            # context for section updates
+            context['sliders'] = SliderImages.objects.filter(is_visible=True)
         return context
 
 

@@ -11,10 +11,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import Http404
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from geonode.base.libraries.decorators import superuser_check
 from geonode.dashboard.models import SectionManagementTable
 from geonode import local_settings
+from geonode.dashboard.models import SliderImages
+from geonode.dashboard.forms import SliderImageUpdateForm
 
 # Create your views here.
 
@@ -130,3 +135,55 @@ def databackup(request):
         return response
     else:
         raise Http404('You dont have permission')
+
+
+class SliderImageList(ListView):
+    """
+    This view lists all the slider images
+    """
+    template_name = 'slider_image_list.html'
+    model = SliderImages
+
+    def get_queryset(self):
+        return SliderImages.objects.all().order_by('-date_created')[:15]
+
+
+class SliderImageCreate(CreateView):
+    """
+    This view is for creating new news
+    """
+    template_name = 'slider_image_crate.html'
+    model = SliderImages
+    form_class = SliderImageUpdateForm
+
+    def get_success_url(self):
+        return reverse('slider-image-list')
+
+
+class SliderImageUpdate(UpdateView):
+    """
+    This view is for updating an existing news
+    """
+    template_name = 'slider_image_crate.html'
+    model = SliderImages
+    form_class = SliderImageUpdateForm
+
+    def get_object(self):
+        return SliderImages.objects.get(pk=self.kwargs['image_pk'])
+
+    def get_success_url(self):
+        return reverse('slider-image-list', kwargs={'image_pk': self.object.id})
+
+
+class SliderImageDelete(DeleteView):
+    """
+    This view is for deleting an existing news
+    """
+    template_name = 'slider_image_delete.html'
+    model = SliderImages
+
+    def get_success_url(self):
+        return reverse('slider-image-list')
+
+    def get_object(self):
+        return SliderImages.objects.get(pk=self.kwargs['image_pk'])
