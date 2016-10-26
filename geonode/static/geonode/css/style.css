@@ -2889,3 +2889,22 @@ ul.termsuseandcondition li {
 #crossLayerQueryFromAddIcon tr:first-child{
     display: none;
 }
+
+.contents_news .title{
+    color: #5a5d63;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.contents_news .details {
+    color: #5a5d63;
+    font-size: 15px;
+    font-weight: normal;
+    text-decoration: none;
+    padding:5px 5px 15px 0px;
+}
+.contents_news .anchor-link {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    text-align: left;
+}

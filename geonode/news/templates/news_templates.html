@@ -14,20 +14,6 @@
                   <button class="btn btn-default btn-link">
                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                   </button>
-                  <div class="trending-container">
-			<div class="container clearfix">
-
-								<h5 class="trending-title main-font pull-left">
-					Trending				</h5><!-- .trending-title -->
-
-				<div class="trending-items">
-					<ul id="trending" class="bxslider list-unstyled">
-											<li><h4 class="entry-title"><a href="http://demo.themesharbor.com/thebreakingnews/2016/10/13/best-places-to-hike-in-north-america/" rel="bookmark">Hikes &#038; Trails: Best Places to go Hiking with Friends in North America</a></h4></li>
-											<li><h4 class="entry-title"><a href="http://demo.themesharbor.com/thebreakingnews/2016/06/02/the-ultimate-checklist-for-travelers/" rel="bookmark">The Ultimate Checklist for Travelers</a></h4></li>
-										</ul><!-- #trending -->
-				</div><!-- .trending-items -->
-			</div><!-- .container -->
-		</div><!-- .trending-container -->
               </div>
           </div>
           <div class="col-md-6">
@@ -41,7 +27,78 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="gd-content-body full-pad-40px">
+                    <div class="row">
+                        <div class="col-md-9">
+                            {% for news in object_list %}
+                            <div id="gd-latestnews-left">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="news-title">
+                                            <a href="{% url "news-list" %}">
+                                                <img src="/uploaded/sohan_CUidfSy.jpg" alt="Data" width="250" height="320">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="contents_news">
+                                            <div class="title">
+                                                {{ news.title }}
+                                            </div>
+                                            <div class="anchor-link">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <a href="javascript:;">
+                                                            <!--Aug. 20, 2016, 3:36 a.m.-->
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-6 gd-txt-right">
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="details">
+                                                <p>
+                                                <!--Test There are many variations of passages of Lorem Ipsum available,-->
+                                                <!--but the majority have suffered alteration in some form, by injected humour,-->
+                                                <!--or randomised words which don't look even slightly believable.-->
+                                                <!--If you are going to use a passage of Lorem Ipsum, you need to be sure-->
+                                                <!--there isn't anything embarrassing hidden in the middle of text. All the-->
+                                                <!--Lorem Ipsum generators on the Internet tend to repeat predefined chunks as-->
+                                                <!--necessary, making this the first true generator on the Internet. It uses...-->
+                                                </p>
+                                            </div>
+                                            <span>
+                                                <a href="">
+                                                         Continue Reading <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-3" style="border-left: 1px solid #eee;">
+                            <div id="gd-latestnews-tweets" >
+                                <h4>{% trans "Recent Posts" %}</h4>
+                                <hr />
+                                <div class="gd-latestnews-tweets-scroll resent-activetiy gd-history" id="gd-latestnews-tweets-scroll">
+                                    <div class="tab-content activity-style-list">
+                                        <article class="tab-pane active">
+                                            {% for action in action_list %}
+
+                                            {% empty %}
+                                                <p>{% trans "No actions yet" %}</p>
+                                            {% endfor %}
+                                        </article>
+                                    </div>
+                                    <a class="view-all-activity" href="{% url "recent-activity" %}">View all Activity</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
