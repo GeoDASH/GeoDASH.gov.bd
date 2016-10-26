@@ -29,10 +29,11 @@ autocomplete_light.register(Region,
                             autocomplete_js_attributes={'placeholder': 'Region/Country ..', },)
 
 autocomplete_light.register(ResourceBase,
-                            search_fields=['title', 'group__title'],
+                            search_fields=['title', 'group__title', 'owner__username'],
                             autocomplete_js_attributes={'placeholder': 'Resource name..', },)
 
 autocomplete_light.register(Tag,
                             search_fields=['name', 'slug'],
                             autocomplete_js_attributes={'placeholder':
                                                         'A space or comma-separated list of keywords', },)
+
