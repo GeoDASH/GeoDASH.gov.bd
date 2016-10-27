@@ -367,7 +367,7 @@
                                                             {% if featured.abstract|length >= 53 %}
                                                             <!--{{ featured.abstract|truncatechars:53 }}-->
                                                             &nbsp;&nbsp;
-                                                            <span> <a href="javascript:;" title="{{ featured.abstract }}">{{ featured.abstract|truncatechars:53 }} .... </a></span>
+                                                            <span title="{{ featured.abstract }}" style="cursor:pointer;">{{ featured.abstract|truncatechars:53 }} </span>
                                                             {% else %}
                                                                 {{ featured.abstract }}
                                                             {% endif %}
