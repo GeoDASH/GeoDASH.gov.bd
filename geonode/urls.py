@@ -28,7 +28,7 @@ from django.contrib import admin
 
 import geonode.proxy.urls
 from geonode.api.urls import api
-from geonode.views import IndexClass
+from geonode.cms.views import IndexClass
 
 import autocomplete_light
 
@@ -79,6 +79,9 @@ urlpatterns = patterns('',
 
                        # Map views
                        (r'^maps/', include('geonode.maps.urls')),
+
+                       # cms
+                       (r'^cms/', include('geonode.cms.urls')),
 
                        # Catalogue views
                        (r'^catalogue/', include('geonode.catalogue.urls')),

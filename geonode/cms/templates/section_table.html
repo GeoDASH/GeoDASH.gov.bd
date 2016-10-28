@@ -41,16 +41,24 @@
                             {{ forloop.counter }}
                         </div>
                         <div class="col-md-6">
-                             {{ section.section |replace_underscores }}
+                             {{ section.slug |replace_dashes }}
                         </div>
                         {% if section.is_visible %}
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <input type="checkbox" checked value="{{ section.id }}" name="section_id" id="section_id{{ section.id }}">
                             </div>
                         {% else %}
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <input type="checkbox"  value="{{ section.id }}" name="section_id" id="section_id{{ section.id }}">
                             </div>
+                        {% endif %}
+
+                        {% if section.should_update %}
+                        <div class="col-md-2">
+                            <a href="{% url "section-update-view"  section.id %}"> Edit </a>
+                        </div>
+                        {% else %}
+                            Not Editable
                         {% endif %}
                     </div>
                       {%endfor %}
