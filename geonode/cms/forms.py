@@ -183,12 +183,3 @@ class OurPartnersImagesUploadForm(forms.ModelForm):
         model = SliderImages
         fields = ['image', 'is_active']
 
-    def clean_image(self):
-         image = self.cleaned_data.get('image',False)
-         if image:
-             w, h = get_image_dimensions(image)
-             if w != 300 or h != 80:
-                   raise ValidationError("Please upload image with dimension(w * h = 300 * 80)")
-             return image
-         else:
-             raise ValidationError("Couldn't read uploaded image")
