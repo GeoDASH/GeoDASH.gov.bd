@@ -91,8 +91,7 @@ class IndexClass(ListView):
             if section.slug == 'what_geodash_offer?':
                 context['is_what_geodash_offer'] = section.is_visible
 
-            # context for section updates
-            context['sliders'] = SliderImages.objects.filter(is_visible=True)
+            
         return context
 
 @login_required
