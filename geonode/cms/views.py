@@ -295,6 +295,7 @@ class SectionUpdate(UpdateView):
         slug = section.slug
         base_section = SectionManagementModel.objects.get(slug=slug)
         context['base_section'] = base_section
+        context['images'] = SliderImages.objects.filter( section=section)
 
         return context
 

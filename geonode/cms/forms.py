@@ -168,7 +168,7 @@ class ShareMapSectionManagementForm(forms.ModelForm):
 class OurPartnersSectionManagementForm(forms.ModelForm):
 
     class Meta:
-        model = SliderImages
+        model = SectionManagementModel
         fields = ['title', 'background_color']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
