@@ -23,8 +23,9 @@ class SliderImages(models.Model):
     """
     title = models.CharField(max_length=100)
     descripton = models.TextField(max_length=300)
-    is_visible = models.BooleanField(default=False, verbose_name=_('Add to slider'))
+    is_active = models.BooleanField(default=False, verbose_name=_('Add to slider'))
     image = models.ImageField(help_text=_('Image dimension (w * h = 220 * 600)'))
+    section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -37,7 +38,7 @@ class IndexPageImagesModel(models.Model):
     descripton = models.TextField(max_length=300, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     image = models.ImageField()
-    section = models.ForeignKey('SectionManagementModel', null=True, blank=True)
+    section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

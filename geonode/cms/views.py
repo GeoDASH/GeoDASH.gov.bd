@@ -260,21 +260,21 @@ class SectionUpdate(UpdateView):
         section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
         context['section'] = section
         slug = section.slug
-        
+
         if slug == 'slider-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = SliderImages.objects.filter(is_active=True, section=section)
         elif slug == 'feature-highlights-of-geodash-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
         elif slug == 'interportability-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
         elif slug == 'make-pretty-maps-with-geodash-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
         elif slug == 'view-your-maps-in-3d-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
         elif slug == 'share-your-map-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
         elif slug == 'our-partners-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
+            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
 
         return context
 
@@ -285,20 +285,22 @@ class IndexPageImageCreateView(CreateView):
     """
     template_name = 'slider_image_crate.html'
     model = IndexPageImagesModel
-    form_class = IndexPageImageUploadForm
 
-    def get_object(self, queryset=None):
-        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
-        self.slug = slug
-        return object
-
-    def post(self, request, *args, **kwargs):
-        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
-        self.slug = slug
-        return super(IndexPageImageCreateView, self).post(request, *args, **kwargs)
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
+
+    def get_form_class(self):
+        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
+        if slug == 'slider-section':
+            return SliderImageUpdateForm
+        else:
+            return IndexPageImageUploadForm
 
 
 class IndexPageImageListView(ListView):
@@ -315,6 +317,22 @@ class IndexPageImageListView(ListView):
 class IndexPageImageDelete(DeleteView):
     """
     This view is for deleting an image
+    """
+    model = IndexPageImagesModel
+
+    def get_success_url(self):
+        return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
+
+    def get_object(self):
+        return IndexPageImagesModel.objects.get(pk=self.kwargs['image_pk'])
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+
+class IndexPageImageUpdate(UpdateView):
+    """
+
     """
     model = IndexPageImagesModel
 

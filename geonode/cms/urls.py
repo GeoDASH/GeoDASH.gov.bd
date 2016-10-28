@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, url
 
 from views import SliderImageList, SliderImageCreate, SliderImageUpdate, SliderImageDelete, \
-    SectionList, SectionUpdate, IndexPageImageCreateView, IndexPageImageListView, IndexPageImageDelete
+    SectionList, SectionUpdate, IndexPageImageCreateView, IndexPageImageListView, IndexPageImageDelete, \
+    IndexPageImageUpdate
 
 urlpatterns = patterns(
     'geonode.cms.views',
@@ -28,5 +29,6 @@ urlpatterns = patterns(
     url(r'^index-page-image/list$', IndexPageImageListView.as_view(), name='index-page-image-list'),
     url(r'^index-page-image/(?P<section_pk>[0-9]+)/create$', IndexPageImageCreateView.as_view(), name='index-page-image-create'),
     url(r'^index-page-image/(?P<image_pk>[0-9]+)/(?P<section_pk>[0-9]+)/delete$', IndexPageImageDelete.as_view(), name='Index-page-image-delete'),
+    url(r'^index-page-image/(?P<image_pk>[0-9]+)/(?P<section_pk>[0-9]+)/update$', IndexPageImageUpdate.as_view(), name='index-page-image-update'),
 
 )
