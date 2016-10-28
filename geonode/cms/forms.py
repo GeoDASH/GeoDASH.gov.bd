@@ -52,7 +52,7 @@ class FeatureHighlightsSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title', 'section_sub_title', 'description', 'background_color']
+        fields = ['title', 'section_sub_title', 'description', 'background_color', 'image1', 'image2', 'image3', 'image4', 'image5']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
@@ -60,12 +60,63 @@ class FeatureHighlightsSectionManagementForm(forms.ModelForm):
         super(FeatureHighlightsSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
+    def clean_image1(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 300:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
+
+    def clean_image2(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 300:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
+
+    def clean_image3(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 300:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
+
+    def clean_image4(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 300:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
+
+    def clean_image5(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 300:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
+
+
 
 class InterPortabilitySectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title', 'description', 'background_color']
+        fields = ['title', 'description', 'background_color', 'image1']
         widgets = {
             'background_color': HTML5Input(input_type='color', attrs={'size': 10}),
         }
@@ -79,7 +130,7 @@ class PrettyMapsSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title', 'description', 'background_color']
+        fields = ['title', 'description', 'background_color', 'image1']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
@@ -92,7 +143,7 @@ class Maps3DSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title', 'description', 'background_color']
+        fields = ['title', 'description', 'background_color', 'image1']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
@@ -105,7 +156,7 @@ class ShareMapSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title', 'description', 'background_color']
+        fields = ['title', 'description', 'background_color', 'image1']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
@@ -117,7 +168,7 @@ class ShareMapSectionManagementForm(forms.ModelForm):
 class OurPartnersSectionManagementForm(forms.ModelForm):
 
     class Meta:
-        model = SectionManagementModel
+        model = SliderImages
         fields = ['title', 'background_color']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
@@ -125,3 +176,19 @@ class OurPartnersSectionManagementForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(OurPartnersSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
+
+class OurPartnersImagesUploadForm(forms.ModelForm):
+    class Meta:
+        model = SliderImages
+        fields = ['image', 'is_active']
+
+    def clean_image(self):
+         image = self.cleaned_data.get('image',False)
+         if image:
+             w, h = get_image_dimensions(image)
+             if w != 300 or h != 80:
+                   raise ValidationError("Please upload image with dimension(w * h = 300 * 80)")
+             return image
+         else:
+             raise ValidationError("Couldn't read uploaded image")
