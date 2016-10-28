@@ -72,24 +72,39 @@ class IndexClass(ListView):
         for section in sections:
             if section.slug == 'slider-section':
                 context['is_slider'] = section.is_visible
-            if section.slug == 'featured_layers':
+                context['sliders'] = SliderImages.objects.filter(is_active=True, section=section)
+            if section.slug == 'featured-layers-section':
                 context['is_featured_layers'] = section.is_visible
-            if section.slug == 'latest_news_and_updates':
+            if section.slug == 'latest-news-and-updates-section':
                 context['is_latest_news'] = section.is_visible
-            if section.slug == 'feature_highlights_of_geodash':
+            if section.slug == 'feature-highlights-of-geodash-section':
                 context['is_feature_highlights'] = section.is_visible
-            if section.slug == 'interportability':
+                context['feature_highlights_of_geodash_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['feature_highlights_of_geodash_section_images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)[:5]
+            if section.slug == 'interportability-section':
                 context['is_interportability'] = section.is_visible
-            if section.slug == 'make_pretty_maps_with_geodash':
+                context['is_interportability_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['is_interportability_section_image'] = IndexPageImagesModel.objects.get(is_active=True, section=section)
+            if section.slug == 'make-pretty-maps-with-geodash-section':
                 context['is_pretty'] = section.is_visible
-            if section.slug == 'view_your_maps_in_3d':
+                context['make_pretty_maps_with_geodash_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['make_pretty_maps_with_geodash_image'] = IndexPageImagesModel.objects.get(is_active=True, section=section)
+            if section.slug == 'view-your-maps-in-3d-section':
                 context['is_3dmap'] = section.is_visible
-            if section.slug == 'share_your_map':
+                context['view_your_maps_in_3d_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['view_your_maps_in_3d_image'] = IndexPageImagesModel.objects.get(is_active=True, section=section)
+            if section.slug == 'share-your-map-section':
                 context['is_share_map'] = section.is_visible
-            if section.slug == 'how_it_works':
+                context['share_your_map_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['share_your_map_section_image'] = IndexPageImagesModel.objects.get(is_active=True, section=section)
+            if section.slug == 'how-it-works-section':
                 context['is_how_it_works'] = section.is_visible
-            if section.slug == 'what_geodash_offer?':
+            if section.slug == 'what-geodash-offer-section':
                 context['is_what_geodash_offer'] = section.is_visible
+            if section.slug == 'our-partners-section':
+                context['is_our_partners'] = section.is_visible
+                context['our_partners_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['our_partners_section_images'] = IndexPageImagesModel.objects.get(is_active=True, section=section)
 
 
         return context
@@ -297,7 +312,14 @@ class IndexPageImageCreateView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
+        section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
+        if section.slug != 'slider-section':
+            active_image = IndexPageImagesModel.objects.filter(is_active=True).exists()
+            if active_image and self.object.is_active:
+                messages.info(self.request, 'You already have an active image, first inactive that and then save another as active image')
+                return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
+
+        self.object.section = section
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 

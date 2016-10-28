@@ -38,13 +38,13 @@ class SliderSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['background_image', 'background_color']
-        widgets = {
-            'background_color': HTML5Input(input_type='color'),
-        }
-    def __init__(self, *args, **kwargs):
-        super(SliderSectionManagementForm, self).__init__(*args, **kwargs)
-        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+        fields = ['title']
+    #     widgets = {
+    #         'background_color': HTML5Input(input_type='color'),
+    #     }
+    # def __init__(self, *args, **kwargs):
+    #     super(SliderSectionManagementForm, self).__init__(*args, **kwargs)
+    #     self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 
