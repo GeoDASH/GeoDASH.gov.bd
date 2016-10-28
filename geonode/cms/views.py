@@ -186,7 +186,6 @@ class SliderImageCreate(CreateView):
     """
     template_name = 'slider_image_crate.html'
     model = SliderImages
-    form_class = SliderImageUpdateForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -203,6 +202,13 @@ class SliderImageCreate(CreateView):
         self.object.section = section
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_form_class(self):
+        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
+        if slug == 'slider-section':
+            return SliderImageUpdateForm
+        elif slug == 'our-partners-section':
+            return OurPartnersImagesUploadForm
 
 
 class SliderImageUpdate(UpdateView):

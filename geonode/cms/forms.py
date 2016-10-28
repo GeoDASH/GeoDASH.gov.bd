@@ -19,7 +19,7 @@ class SliderImageUpdateForm(forms.ModelForm):
          if image:
              w, h = get_image_dimensions(image)
              if w != 1920 or h != 600:
-                   raise ValidationError("Please upload image with dimension(w * h = 220 * 600)")
+                   raise ValidationError("Please upload image with dimension(w * h = 1920 * 600)")
              return image
          else:
              raise ValidationError("Couldn't read uploaded image")
