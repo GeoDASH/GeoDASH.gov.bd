@@ -23,8 +23,8 @@ class SliderImages(models.Model):
     """
     title = models.CharField(max_length=100)
     descripton = models.TextField(max_length=300)
-    is_active = models.BooleanField(default=False, verbose_name=_('Add to slider'))
-    image = models.ImageField(help_text=_('Image dimension (w * h = 220 * 600)'))
+    is_active = models.BooleanField(default=False)
+    image = models.ImageField(help_text=_('Image dimension (w * h = 1920 * 600)'))
     section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
