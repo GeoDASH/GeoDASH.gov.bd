@@ -91,7 +91,7 @@ class IndexClass(ListView):
             if section.slug == 'what_geodash_offer?':
                 context['is_what_geodash_offer'] = section.is_visible
 
-            
+
         return context
 
 @login_required
@@ -178,8 +178,14 @@ class SliderImageCreate(CreateView):
     model = SliderImages
     form_class = SliderImageUpdateForm
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse('slider-image-list')
+        return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
 
 
 class SliderImageUpdate(UpdateView):
@@ -205,10 +211,13 @@ class SliderImageDelete(DeleteView):
     model = SliderImages
 
     def get_success_url(self):
-        return reverse('slider-image-list')
+        return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
 
     def get_object(self):
         return SliderImages.objects.get(pk=self.kwargs['image_pk'])
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
 
 
 class SectionList(ListView):
@@ -284,6 +293,7 @@ class IndexPageImageCreateView(CreateView):
     """
     template_name = 'slider_image_crate.html'
     model = IndexPageImagesModel
+    form_class = IndexPageImageUploadForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -293,13 +303,6 @@ class IndexPageImageCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
-
-    def get_form_class(self):
-        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
-        if slug == 'slider-section':
-            return SliderImageUpdateForm
-        else:
-            return IndexPageImageUploadForm
 
 
 class IndexPageImageListView(ListView):
