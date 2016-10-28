@@ -42,6 +42,9 @@ class SliderSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(SliderSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 
@@ -53,6 +56,9 @@ class FeatureHighlightsSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(FeatureHighlightsSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 class InterPortabilitySectionManagementForm(forms.ModelForm):
@@ -61,8 +67,12 @@ class InterPortabilitySectionManagementForm(forms.ModelForm):
         model = SectionManagementModel
         fields = ['title', 'description', 'background_color']
         widgets = {
-            'background_color': HTML5Input(input_type='color'),
+            'background_color': HTML5Input(input_type='color', attrs={'size': 10}),
         }
+    def __init__(self, *args, **kwargs):
+        super(InterPortabilitySectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
 
 
 class PrettyMapsSectionManagementForm(forms.ModelForm):
@@ -73,6 +83,9 @@ class PrettyMapsSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(PrettyMapsSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 class Maps3DSectionManagementForm(forms.ModelForm):
@@ -83,6 +96,9 @@ class Maps3DSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(Maps3DSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 class ShareMapSectionManagementForm(forms.ModelForm):
@@ -93,6 +109,9 @@ class ShareMapSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(ShareMapSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 class OurPartnersSectionManagementForm(forms.ModelForm):
@@ -103,3 +122,6 @@ class OurPartnersSectionManagementForm(forms.ModelForm):
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
+    def __init__(self, *args, **kwargs):
+        super(OurPartnersSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'

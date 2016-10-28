@@ -257,7 +257,10 @@ class SectionUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(SectionUpdate, self).get_context_data(**kwargs)
-        slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
+        section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
+        context['section'] = section
+        slug = section.slug
+        
         if slug == 'slider-section':
             context['images'] = IndexPageImagesModel.objects.filter(is_active=True)
         elif slug == 'feature-highlights-of-geodash-section':
