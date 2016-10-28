@@ -31,7 +31,7 @@ class IndexPageImageUploadForm(forms.ModelForm):
     """
     class Meta:
         model = IndexPageImagesModel
-        fields = ['title', 'descripton', 'is_active', 'image']
+        fields = ['title', 'descripton', 'image']
 
 
 class SliderSectionManagementForm(forms.ModelForm):

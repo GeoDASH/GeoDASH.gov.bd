@@ -36,7 +36,7 @@ class IndexPageImagesModel(models.Model):
     """
     title = models.CharField(max_length=100, null=True, blank=True)
     descripton = models.TextField(max_length=300, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     image = models.ImageField()
     section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
