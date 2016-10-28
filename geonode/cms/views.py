@@ -296,21 +296,6 @@ class SectionUpdate(UpdateView):
         base_section = SectionManagementModel.objects.get(slug=slug)
         context['base_section'] = base_section
 
-        if slug == 'slider-section':
-            context['images'] = SliderImages.objects.filter(is_active=True, section=section)
-        elif slug == 'feature-highlights-of-geodash-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-        elif slug == 'interportability-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-        elif slug == 'make-pretty-maps-with-geodash-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-        elif slug == 'view-your-maps-in-3d-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-        elif slug == 'share-your-map-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-        elif slug == 'our-partners-section':
-            context['images'] = IndexPageImagesModel.objects.filter(is_active=True, section=section)
-
         return context
 
 
