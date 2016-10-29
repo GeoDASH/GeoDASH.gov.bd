@@ -61,54 +61,54 @@ class FeatureHighlightsSectionManagementForm(forms.ModelForm):
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
     def clean_image1(self):
-         image = self.cleaned_data.get('image',False)
+         image = self.cleaned_data.get('image1',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 300 or h != 300:
+             if w != 300 or h != 330:
                    raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
              return image
          else:
-             raise ValidationError("Couldn't read uploaded image")
+             raise ValidationError("Please select an image")
 
     def clean_image2(self):
-         image = self.cleaned_data.get('image',False)
+         image = self.cleaned_data.get('image2',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 300 or h != 300:
+             if w != 300 or h != 330:
                    raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
              return image
          else:
-             raise ValidationError("Couldn't read uploaded image")
+             raise ValidationError("Please select an image")
 
     def clean_image3(self):
-         image = self.cleaned_data.get('image',False)
+         image = self.cleaned_data.get('image3',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 300 or h != 300:
+             if w != 300 or h != 330:
                    raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
              return image
          else:
-             raise ValidationError("Couldn't read uploaded image")
+             raise ValidationError("Please select an image")
 
     def clean_image4(self):
-         image = self.cleaned_data.get('image',False)
+         image = self.cleaned_data.get('image4',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 300 or h != 300:
+             if w != 300 or h != 330:
                    raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
              return image
          else:
-             raise ValidationError("Couldn't read uploaded image")
+             raise ValidationError("Please select an image")
 
     def clean_image5(self):
-         image = self.cleaned_data.get('image',False)
+         image = self.cleaned_data.get('image5',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 300 or h != 300:
+             if w != 300 or h != 330:
                    raise ValidationError("Please upload image with dimension(w * h = 300 * 300)")
              return image
          else:
-             raise ValidationError("Couldn't read uploaded image")
+             raise ValidationError("Please select an image")
 
 
 
@@ -124,6 +124,11 @@ class InterPortabilitySectionManagementForm(forms.ModelForm):
         super(InterPortabilitySectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
+    def clean_image1(self):
+         image = self.cleaned_data.get('image1',False)
+         if not image:
+             raise ValidationError("Please select an image")
+
 
 
 class PrettyMapsSectionManagementForm(forms.ModelForm):
@@ -138,6 +143,11 @@ class PrettyMapsSectionManagementForm(forms.ModelForm):
         super(PrettyMapsSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
+    def clean_image1(self):
+         image = self.cleaned_data.get('image1',False)
+         if not image:
+             raise ValidationError("Please select an image")
+
 
 class Maps3DSectionManagementForm(forms.ModelForm):
 
@@ -151,6 +161,11 @@ class Maps3DSectionManagementForm(forms.ModelForm):
         super(Maps3DSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
+    def clean_image1(self):
+         image = self.cleaned_data.get('image1',False)
+         if not image:
+             raise ValidationError("Please select an image")
+
 
 class ShareMapSectionManagementForm(forms.ModelForm):
 
@@ -163,6 +178,11 @@ class ShareMapSectionManagementForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ShareMapSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
+    def clean_image1(self):
+         image = self.cleaned_data.get('image1',False)
+         if not image:
+             raise ValidationError("Please select an image")
 
 
 class OurPartnersSectionManagementForm(forms.ModelForm):

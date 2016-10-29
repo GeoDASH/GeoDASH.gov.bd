@@ -48,15 +48,15 @@ class SectionManagementModel(models.Model):
     This model is for managing sections in index page. Only super-admin can
     manage this.
     """
-    title = models.CharField(max_length=500, default='')
+    title = models.CharField(max_length=500)
     slug = models.SlugField(max_length=100, null=True, blank=True)
-    section_sub_title = models.CharField(max_length=500, default='')
+    section_sub_title = models.CharField(max_length=500)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    image1 = models.ImageField()
-    image2 = models.ImageField()
-    image3 = models.ImageField()
-    image4 = models.ImageField()
-    image5 = models.ImageField()
+    image1 = models.ImageField(blank=True, null=True)
+    image2 = models.ImageField(blank=True, null=True)
+    image3 = models.ImageField(blank=True, null=True)
+    image4 = models.ImageField(blank=True, null=True)
+    image5 = models.ImageField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     background_image = models.ImageField(null=True, blank=True)
     background_color = models.CharField(max_length=20, blank=True, null=True)
