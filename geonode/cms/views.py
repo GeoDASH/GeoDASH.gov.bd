@@ -222,7 +222,7 @@ class SliderImageUpdate(UpdateView):
         return SliderImages.objects.get(pk=self.kwargs['image_pk'])
 
     def get_success_url(self):
-        return reverse('slider-image-list', kwargs={'image_pk': self.object.id})
+        return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
 
     def get_form_class(self):
         slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
