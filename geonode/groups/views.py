@@ -268,12 +268,12 @@ def group_remove(request, slug):
         return render_to_response(
             "groups/group_remove.html", RequestContext(request, {"group": group}))
     if request.method == 'POST':
-
-        if not group.user_is_role(request.user, role="manager")and not request.user.is_superuser:
+        if  request.user.is_superuser:
+            group.delete()
+            return HttpResponseRedirect(reverse("group_list"))
+        else:
             return HttpResponseForbidden()
 
-        group.delete()
-        return HttpResponseRedirect(reverse("group_list"))
     else:
         return HttpResponseNotAllowed()
 
