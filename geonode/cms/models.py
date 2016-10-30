@@ -25,6 +25,7 @@ class SliderImages(models.Model):
     descripton = models.TextField(max_length=300)
     is_active = models.BooleanField(default=False)
     image = models.ImageField()
+    logo_url = models.URLField(blank=True, null=True)
     section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
