@@ -128,6 +128,8 @@ class InterPortabilitySectionManagementForm(forms.ModelForm):
          image = self.cleaned_data.get('image1',False)
          if not image:
              raise ValidationError("Please select an image")
+         return image
+
 
 
 
@@ -147,6 +149,7 @@ class PrettyMapsSectionManagementForm(forms.ModelForm):
          image = self.cleaned_data.get('image1',False)
          if not image:
              raise ValidationError("Please select an image")
+         return image
 
 
 class Maps3DSectionManagementForm(forms.ModelForm):
@@ -165,6 +168,7 @@ class Maps3DSectionManagementForm(forms.ModelForm):
          image = self.cleaned_data.get('image1',False)
          if not image:
              raise ValidationError("Please select an image")
+         return image
 
 
 class ShareMapSectionManagementForm(forms.ModelForm):
@@ -183,6 +187,7 @@ class ShareMapSectionManagementForm(forms.ModelForm):
          image = self.cleaned_data.get('image1',False)
          if not image:
              raise ValidationError("Please select an image")
+         return image
 
 
 class OurPartnersSectionManagementForm(forms.ModelForm):
