@@ -684,12 +684,10 @@ def document_delete(request, document_pk):
                 messages.info(request, 'you have no acces to delete the document')
 
         messages.info(request, 'document deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-document'))
-        else:
+        if request.user == document.owner:
             return HttpResponseRedirect(reverse('member-workspace-document'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-document'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-document'))
+        return HttpResponseRedirect(reverse('member-workspace-document'))

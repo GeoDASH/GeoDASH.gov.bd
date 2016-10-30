@@ -885,12 +885,10 @@ def layer_delete(request, layer_pk):
                 messages.info(request, 'you have no acces to delete the layer')
 
         messages.info(request, 'layer deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-layer'))
-        else:
+        if request.user == layer.owner:
             return HttpResponseRedirect(reverse('member-workspace-layer'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-layer'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-layer'))
+        return HttpResponseRedirect(reverse('member-workspace-layer'))

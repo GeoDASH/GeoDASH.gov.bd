@@ -1110,15 +1110,13 @@ def map_delete(request, map_pk):
                 messages.info(request, 'you have no acces to delete the map')
 
         messages.info(request, 'map deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-map'))
-        else:
+        if request.user == map.owner:
             return HttpResponseRedirect(reverse('member-workspace-map'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-map'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-map'))
+        return HttpResponseRedirect(reverse('member-workspace-map'))
 
 
 class WmsServerList(ListView):
