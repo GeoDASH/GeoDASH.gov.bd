@@ -508,7 +508,8 @@
                     <div class="gd-control">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>
+                                <div class="header-title text-center">{{ feature_highlights_of_geodash_section.title }}</div>
+                                <!--<div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>-->
                             </div>
                         </div>
                         <div class="gd-featurehighlight-main">
@@ -548,23 +549,31 @@
                                         <section id="data" class="Section Section--datacards DataLibrary js-DataLibrary">
                                             <div class="CardsData CardsData--home">
                                                 <ul class="CardsData-inner">
+                                                    {% if feature_highlights_of_geodash_section.image1 %}
                                                     <li class="CardsData-item CardsData-item--01">
                                                         <img src="/uploaded/{{ feature_highlights_of_geodash_section.image1 }}" alt="Data" width="300" height="300">
                                                     </li>
+                                                    {% endif %}
+                                                    {% if feature_highlights_of_geodash_section.image2 %}
                                                     <li class="CardsData-item CardsData-item--02">
                                                         <img src="/uploaded/{{ feature_highlights_of_geodash_section.image2 }}" alt="Data" width="300" height="300">
                                                     </li>
+                                                    {% endif %}
+                                                    {% if feature_highlights_of_geodash_section.image3 %}
                                                     <li class="CardsData-item CardsData-item--03">
                                                         <img src="/uploaded/{{ feature_highlights_of_geodash_section.image3 }}" alt="Data" width="300" height="300">
                                                     </li>
-
+                                                    {% endif %}
+                                                    {% if feature_highlights_of_geodash_section.image4 %}
                                                     <li class="CardsData-item CardsData-item--04">
                                                         <img src="/uploaded/{{ feature_highlights_of_geodash_section.image4 }}" alt="Data" width="300" height="300">
                                                     </li>
-
+                                                    {% endif %}
+                                                    {% if feature_highlights_of_geodash_section.image5 %}
                                                     <li class="CardsData-item CardsData-item--05">
                                                         <img src="/uploaded/{{ feature_highlights_of_geodash_section.image5 }}" alt="Data" width="300" height="300">
                                                     </li>
+                                                    {% endif %}
                                                 </ul>
                                             </div>
                                         </section>
@@ -587,7 +596,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="gd-interprobability-right">
-                                        <div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>
+                                        <div class="title" style="text-align:center;">{{ is_interportability_section.title }}</div>
+                                        <!--<div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>-->
                                         <div class="description">
                                             {{ is_interportability_section.description }}
                                         </div>
@@ -625,7 +635,8 @@
                                 <div class="col-md-5">
                                     <div id="gd-makepretty-right">
                                         <div class="description">
-                                            <div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>
+                                            <div class="title"><a href="{% url "new_map" %}">{{ make_pretty_maps_with_geodash_section.title }}</a></div>
+                                            <!--<div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>-->
                                             {{ make_pretty_maps_with_geodash_section.description }}
                                         </div>
                                         <!--<div class="description" style="float:right;font-size:14px;">-->
@@ -669,7 +680,8 @@
                                 <div class="col-md-6">
                                     <div id="gd-3dsection-right">
                                         <div class="description">
-                                            <div class="title">{% trans "View your maps in 3d" %}</div>
+                                            <div class="title">{{ view_your_maps_in_3d_section.title }}</div>
+                                            <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
                                             {{ view_your_maps_in_3d_section.description }}
                                         </div>
                                     </div>
@@ -883,7 +895,8 @@
                             </div>
                             <div class="col-md-offset-1 col-md-4">
                                 <div id="gd-sharemap-content">
-                                    <div class="title">{% trans "Share your map" %}</div>
+                                    <div class="title">{{ share_your_map_section.title }}</div>
+                                    <!--<div class="title">{% trans "Share your map" %}</div>-->
                                     <div class="description">
                                         {{ share_your_map_section.description }}
                                     </div>
