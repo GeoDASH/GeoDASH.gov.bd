@@ -36,86 +36,114 @@
               </ol> -->
               <!-- Wrapper for slides -->
               <div class="carousel-inner" role="listbox">
-                  <div class="item active">
-                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />
-                      <div class="container">
-                          <div class="carousel-caption">
-                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                              <div class="gd-slider-msg">
-                                  {% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>
-                                  {% trans "DATA MANAGEMENT AND" %}<br>
-                                  {% trans "VISUALIZATION PLATFORM" %}
+                  {% for slider in sliders %}
+                        {% if forloop.counter0|divisibleby:1 and forloop.counter0 == 0 %}
+                            <div class="item active {{ forloop.counter0 }}">
+                        {% endif %}
+                        {% if forloop.counter0|divisibleby:1 and forloop.counter0 != 0 and forloop.counter != slider.count %}
+                            </div>
+                            <div class="item {{ forloop.counter0 }} ">
+                        {% endif %}
+                            <div id="{{ forloop.counter }}" >
+                              <img src="/uploaded/{{ slider.image }}" alt="" style="height:402px;"/>
+                              <div class="container">
+                                  <div class="carousel-caption">
+                                      <div class="gd-slider-title">{{ slider.title }}</div>
+                                      <div class="gd-slider-msg">
+                                          {{ slider.descripton|slice:"0:32" }}<br>
+                                          {{ slider.descripton|slice:"32:62" }}<br>
+                                          {{ slider.descripton|slice:"62:95" }}
+                                      </div>
+                                      <div class="gd-slider-btn">
+                                          <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                                      </div>
+                                  </div>
                               </div>
-                              <div class="gd-slider-btn">
-                                  <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="item">
-                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />
-                      <div class="container">
-                          <div class="carousel-caption">
-                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                              <div class="gd-slider-msg">
-                                  {% trans "LAYERS ARE THE CONTENTS OF A" %}<br>
-                                  {% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>
-                                  {% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}
-                              </div>
-                              <div class="gd-slider-btn">
-                                  <a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="item">
-                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />
-                      <div class="container">
-                          <div class="carousel-caption">
-                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                              <div class="gd-slider-msg">
-                                  {% trans "AN OGC STANDARD INTEROPERABLE" %}<br>
-                                  {% trans "PLATFORM FOR MANAGING,SHARING" %}<br>
-                                  {% trans "& ANALYZING GEOSPATIAL CONTENT" %}
-                              </div>
-                              <div class="gd-slider-btn">
-                                  <a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="item">
-                      <img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />
-                      <div class="container">
-                          <div class="carousel-caption">
-                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                              <div class="gd-slider-msg">
-                                  {% trans "A MAPPING PLATFORM" %}<br>
-                                  {% trans "TO CREATE CUSTOM AND" %}<br>
-                                  {% trans "STYLISH MAPS" %}
-                              </div>
-                              <div class="gd-slider-btn">
-                                  <a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="item">
-                      <img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />
-                      <div class="container">
-                          <div class="carousel-caption">
-                              <div class="gd-slider-title">GEODASH.GOV.BD</div>
-                              <div class="gd-slider-msg">
-                                  {% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>
-                                  {% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>
-                                  {% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}
-                              </div>
-                              <div class="gd-slider-btn">
-                                  <a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                        {% if forloop.counter == sliders.count %}
+                            </div>
+                        {% endif %}
+                  {% endfor %}
+                  <!--<div class="item active">-->
+                      <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />-->
+                      <!--<div class="container">-->
+                          <!--<div class="carousel-caption">-->
+                              <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                              <!--<div class="gd-slider-msg">-->
+                                  <!--{% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>-->
+                                  <!--{% trans "DATA MANAGEMENT AND" %}<br>-->
+                                  <!--{% trans "VISUALIZATION PLATFORM" %}-->
+                              <!--</div>-->
+                              <!--<div class="gd-slider-btn">-->
+                                  <!--<a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="item">-->
+                      <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />-->
+                      <!--<div class="container">-->
+                          <!--<div class="carousel-caption">-->
+                              <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                              <!--<div class="gd-slider-msg">-->
+                                  <!--{% trans "LAYERS ARE THE CONTENTS OF A" %}<br>-->
+                                  <!--{% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>-->
+                                  <!--{% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}-->
+                              <!--</div>-->
+                              <!--<div class="gd-slider-btn">-->
+                                  <!--<a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="item">-->
+                      <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />-->
+                      <!--<div class="container">-->
+                          <!--<div class="carousel-caption">-->
+                              <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                              <!--<div class="gd-slider-msg">-->
+                                  <!--{% trans "AN OGC STANDARD INTEROPERABLE" %}<br>-->
+                                  <!--{% trans "PLATFORM FOR MANAGING,SHARING" %}<br>-->
+                                  <!--{% trans "& ANALYZING GEOSPATIAL CONTENT" %}-->
+                              <!--</div>-->
+                              <!--<div class="gd-slider-btn">-->
+                                  <!--<a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="item">-->
+                      <!--<img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />-->
+                      <!--<div class="container">-->
+                          <!--<div class="carousel-caption">-->
+                              <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                              <!--<div class="gd-slider-msg">-->
+                                  <!--{% trans "A MAPPING PLATFORM" %}<br>-->
+                                  <!--{% trans "TO CREATE CUSTOM AND" %}<br>-->
+                                  <!--{% trans "STYLISH MAPS" %}-->
+                              <!--</div>-->
+                              <!--<div class="gd-slider-btn">-->
+                                  <!--<a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="item">-->
+                      <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />-->
+                      <!--<div class="container">-->
+                          <!--<div class="carousel-caption">-->
+                              <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                              <!--<div class="gd-slider-msg">-->
+                                  <!--{% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>-->
+                                  <!--{% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>-->
+                                  <!--{% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}-->
+                              <!--</div>-->
+                              <!--<div class="gd-slider-btn">-->
+                                  <!--<a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--</div>-->
               </div>
               <!-- Controls -->
               <a class="left-panel carousel-control" href="#carousel-home" role="button" data-slide="prev">
@@ -474,7 +502,7 @@
       <!-- Feature Highlights -->
       {% block index_featurehighlight %}
         {% if is_feature_highlights or request.user.is_authenticated %}
-            <div id="gd-featurehighlight">
+            <div id="gd-featurehighlight" style="background:{{ feature_highlights_of_geodash_section.background_color }}">
                 <div class="block-separator"></div>
                 <div class="container">
                     <div class="gd-control">
@@ -489,26 +517,27 @@
                                     <div id="gd-featurehighlight-left">
                                         <div class="title">
                                             {% if not user.is_authenticated %}
-                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Import your own layers" %}</a>
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{{ feature_highlights_of_geodash_section.section_sub_title }}</a>
                                             {% endif %}
                                             {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" %}" style="cursor:pointer;">{% trans "Import your own layers" %}</a>
+                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{{ feature_highlights_of_geodash_section.section_sub_title }}</a>
                                             {% endif %}
                                         </div>
                                         <div class="description">
-                                            {% trans "Layers are the contents of a map." %}
-                                            {% trans "To get started adding layers," %}
-                                            {% trans "sign in to the site," %}
-                                            {% trans "click on upload your layers/data," %}
-                                            {% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}
-                                            {% trans "Make sure your data projection is WGS 84 or BTM." %}
+                                            {{ feature_highlights_of_geodash_section.description }}
+                                            <!--{% trans "Layers are the contents of a map." %}-->
+                                            <!--{% trans "To get started adding layers," %}-->
+                                            <!--{% trans "sign in to the site," %}-->
+                                            <!--{% trans "click on upload your layers/data," %}-->
+                                            <!--{% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}-->
+                                            <!--{% trans "Make sure your data projection is WGS 84 or BTM." %}-->
                                         </div>
                                         <!--<div class="description" style="float:right;font-size:14px;">-->
                                             <!--{% if not user.is_authenticated %}-->
                                             <!--<a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->
                                             <!--{% endif %}-->
                                             <!--{% if user.is_authenticated %}-->
-                                            <!--<a href="{% url "layer_upload" %}">{% trans "Check Out Details" %}</a>-->
+                                            <!--<a href="{% url "layer_upload" 'member' %}">{% trans "Check Out Details" %}</a>-->
                                             <!--{% endif %}-->
                                         <!--</div>-->
                                     </div>
@@ -520,21 +549,21 @@
                                             <div class="CardsData CardsData--home">
                                                 <ul class="CardsData-inner">
                                                     <li class="CardsData-item CardsData-item--01">
-                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-1.1.png" alt="Data" width="300" height="300">
+                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image1 }}" alt="Data" width="300" height="300">
                                                     </li>
                                                     <li class="CardsData-item CardsData-item--02">
-                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-2.2.png" alt="Data" width="300" height="300">
+                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image2 }}" alt="Data" width="300" height="300">
                                                     </li>
                                                     <li class="CardsData-item CardsData-item--03">
-                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
+                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image3 }}" alt="Data" width="300" height="300">
                                                     </li>
 
                                                     <li class="CardsData-item CardsData-item--04">
-                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-3.3.png" alt="Data" width="300" height="300">
+                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image4 }}" alt="Data" width="300" height="300">
                                                     </li>
 
                                                     <li class="CardsData-item CardsData-item--05">
-                                                        <img src="{{ STATIC_URL }}geonode/images/feature/Feature-Highlight-4.4.png" alt="Data" width="300" height="300">
+                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image5 }}" alt="Data" width="300" height="300">
                                                     </li>
                                                 </ul>
                                             </div>
@@ -551,7 +580,7 @@
       <!-- Inter Probability -->
       {% block index_interprobability %}
         {% if is_interportability or request.user.is_authenticated %}
-            <div id="gd-interprobability">
+            <div id="gd-interprobability" style="background:{{ is_interportability_section.background_color }}">
                 <div class="container">
                     <div class="gd-control">
                         <div class="gd-interprobability-main">
@@ -560,9 +589,7 @@
                                     <div id="gd-interprobability-right">
                                         <div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>
                                         <div class="description">
-                                            {% trans "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content." %}
-                                            {% trans "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces." %}
-                                            {% trans "You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc." %}
+                                            {{ is_interportability_section.description }}
                                         </div>
                                     </div>
                                 </div>
@@ -570,7 +597,9 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div id="gd-interprobability-left">
-                                        <img src="{{ STATIC_URL }}geonode/images/Puzzle-1.png" style="height:380px;" class="img-responsive" />
+                                        {% if is_interportability_section.image1 %}
+                                        <img src="/uploaded/{{ is_interportability_section.image1 }}" style="height:380px;" class="img-responsive" />
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -583,7 +612,7 @@
       <!-- Make Pretty -->
       {% block index_makepretty %}
         {% if is_pretty or request.user.is_authenticated %}
-            <div id="gd-makepretty" >
+            <div id="gd-makepretty" style="background:{{ make_pretty_maps_with_geodash_section.background_color }}">
                 <div class="container">
                     <div class="gd-control">
                         <div class="gd-makepretty-main">
@@ -597,11 +626,7 @@
                                     <div id="gd-makepretty-right">
                                         <div class="description">
                                             <div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>
-                                            {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
-                                            {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
-                                            {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
-                                            {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
-                                            {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
+                                            {{ make_pretty_maps_with_geodash_section.description }}
                                         </div>
                                         <!--<div class="description" style="float:right;font-size:14px;">-->
                                             <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->
@@ -610,7 +635,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div id="gd-makepretty-left" style="float: right;">
-                                        <img src="{{ STATIC_URL }}geonode/images/geo/1_with_s.png" style="height:380px;" class="img-responsive" />
+                                        {% if make_pretty_maps_with_geodash_section.image1 %}
+                                        <img src="/uploaded/{{ make_pretty_maps_with_geodash_section.image1 }}" style="height:380px;" class="img-responsive" />
+                                        {% endif %}
                                         <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->
                                             <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->
                                             <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->
@@ -627,25 +654,23 @@
       <!-- Make 3d -->
       {% block index_make3d %}
         {% if is_3dmap or request.user.is_authenticated %}
-            <div id="gd-3dsection" >
+            <div id="gd-3dsection" style="background:{{ view_your_maps_in_3d_section.background_color }}">
                 <div class="container">
                     <div class="gd-control">
                         <div class="gd-3dsection-main">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div id="gd-3dsection-left" style="float: left;">
-                                        <img src="{{ STATIC_URL }}geonode/images/geo/im-3d.png" style="height:380px;" class="img-responsive" />
+                                        {% if view_your_maps_in_3d_section.image1 %}
+                                        <img src="/uploaded/{{ view_your_maps_in_3d_section.image1 }}" style="height:380px;" class="img-responsive" />
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div id="gd-3dsection-right">
                                         <div class="description">
                                             <div class="title">{% trans "View your maps in 3d" %}</div>
-                                            {% trans "To create a new map go to your contributed or existing layers and click the “create map” link." %}
-                                            {% trans "This will take you to the “Map Composer” with a base layer loaded." %}
-                                            {% trans "To add data layers from GeoDASH click on the plus button located upper left side of the screen." %}
-                                            {% trans "This will open a dialog listing all the layers available on the GeoDASH." %}
-                                            {% trans "Select the layers you wish to add, then hit the Add Layers button. " %}
+                                            {{ view_your_maps_in_3d_section.description }}
                                         </div>
                                     </div>
                                 </div>
@@ -847,37 +872,64 @@
       <!-- Share Map -->
       {% block index_sharemap %}
         {% if is_share_map or request.user.is_authenticated %}
-            <div id="gd-sharemap" >
+            <div id="gd-sharemap">
                 <div class="container">
                     <div class="gd-sharemap-main">
                         <div class="row">
                             <div class="col-md-6">
                                 <div id="gd-makepretty-left" class="gd-sharemap-left-img">
-                                    <img src="{{ STATIC_URL }}geonode/images/share-image.png" class="img-responsive"  />
+                                    <img src="/uploaded/{{ share_your_map_section.image1 }}" class="img-responsive"  />
                                 </div>
                             </div>
                             <div class="col-md-offset-1 col-md-4">
                                 <div id="gd-sharemap-content">
-                                    <div class="title"><a href="{{ item.thumbnail_url }}" style="color:#fff;">{% trans "Share your map" %}</a></div>
+                                    <div class="title">{% trans "Share your map" %}</div>
                                     <div class="description">
-                                        {% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}
-                                        {% trans "to maximize data sharing and promote your work." %}
-                                        {% trans "You can also publish and embed your map right away." %}
+                                        {{ share_your_map_section.description }}
                                     </div>
+                                    <!--<div class="title">{% trans "Share your map" %}</div>-->
+                                    <!--<div class="description">-->
+                                        <!--{% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}-->
+                                        <!--{% trans "to maximize data sharing and promote your work." %}-->
+                                        <!--{% trans "You can also publish and embed your map right away." %}-->
+                                    <!--</div>-->
                                     <!--<div class="description" style="float:right;font-size:14px;color:#fff;">-->
                                         <!--<a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>-->
                                     <!--</div>-->
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+      {% endblock %}
+      {% block index_partners %}
+        {% if is_our_partners or request.user.is_authenticated %}
+            <div id="gd-partners" style="background:{{ our_partners_section.background_color }}">
+                <div class="container">
+                    <div class="gd-partners-main">
                         <div class="row">
-                            <div class="col-md-offset-4 col-md-8">
-                                <div id="gd-sharemap-bottom">
+                            <div class="col-md-12">
+                                <div id="gd-partners-bottom">
                                     <div class="title">{% trans "Our Partners" %}</div>
                                     <div class="sponsor-image">
-                                        <a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>
-                                        <a href="http://www.bcc.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/BCC.png" class="bcc" ></a>
-                                        <a href="http://www.worldbank.org/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/wb-logo.png" class="wb" ></a>
+                                        {% for our_partners_section_images_view in our_partners_section_images %}
+                                        <a href="{{ our_partners_section_images_view.logo_url }}" target="_blank"><img src="/uploaded/{{ our_partners_section_images_view.image }}" class="bd-gov"/></a>
+                                        {% endfor %}
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bangladesh.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/bd-gov-logo.png" class="bd-gov"/></a>-->
+                                        <!--<a href="http://www.bcc.gov.bd/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/BCC.png" class="bcc" ></a>-->
+                                        <!--<a href="http://www.worldbank.org/" target="_blank"><img src="{{ STATIC_URL }}geonode/images/wb-logo.png" class="wb" ></a>-->
                                     </div>
                                 </div>
                             </div>

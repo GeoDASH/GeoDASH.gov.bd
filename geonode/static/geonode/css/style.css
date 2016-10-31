@@ -1049,7 +1049,7 @@ fieldset[disabled] .btn-gd-yellow.focus {
 /* start wrapper or contenter or body of page */
 #gd-wrapper{
     background:#f7f7f7;
-    padding-bottom: 120px;
+    padding-bottom: 100px; /* 120 */
 }
 .gd-content {
 
@@ -2885,10 +2885,17 @@ ul.termsuseandcondition li {
 #gd-model .modal-body span.fbsign{
     color: #FFFFFF;
 }
+/*
 
 #crossLayerQueryFromAddIcon tr:first-child{
     display: none;
-}
+}*/
+
+#crossLayerQueryFromAddIcon tr:first-child,
+ #buttonHelpQuery tr:first-child,
+ #buttonHelpColor tr:first-child{
+  display: none;
+ }
 
 .contents_news .title{
     color: #5a5d63;
