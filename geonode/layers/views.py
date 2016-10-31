@@ -136,7 +136,7 @@ def _resolve_layer(request, typename, permission='base.view_resourcebase',
 
 @login_required
 @user_passes_test(manager_or_member)
-def layer_upload(request, template='upload/layer_upload.html'):
+def layer_upload(request, user_type, template='upload/layer_upload.html'):
     if request.method == 'GET':
         mosaics = Layer.objects.filter(is_mosaic=True).order_by('name')
         ctx = {
@@ -186,6 +186,11 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
+
+                if request.user in group.get_managers() and user_type == 'admin':
+                    saved_layer.status = 'ACTIVE'
+                    saved_layer.save()
+
             except Exception as e:
                 exception_type, error, tb = sys.exc_info()
                 logger.exception(e)
@@ -759,6 +764,7 @@ def layer_publish(request, layer_pk):
 @login_required
 def layer_approve(request, layer_pk):
     if request.method == 'POST':
+        import pdb;pdb.set_trace()
         form = ResourceApproveForm(request.POST)
         if form.is_valid():
 
@@ -892,3 +898,28 @@ def layer_delete(request, layer_pk):
 
     else:
         return HttpResponseRedirect(reverse('member-workspace-layer'))
+
+
+def approve_layer_when_uploads(layer):
+    """
+    This method executes if an organization admin uploads layer and wants to approve directly
+    :param layer_pk:
+    :return:
+    """
+    # group = organization
+    # layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
+    # layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
+    layer.status = 'ACTIVE'
+    # layer.last_auditor = user
+    layer.save()
+
+    # permissions = _perms_info_json(layer)
+    # perm_dict = json.loads(permissions)
+    # layer_submission_activity.is_audited = True
+    # layer_submission_activity.save()
+    #
+    # layer_audit_activity.comment_subject = comment_subject
+    # layer_audit_activity.comment_body = comment_body
+    # layer_audit_activity.result = 'APPROVED'
+    # layer_audit_activity.auditor = request.user
+    # layer_audit_activity.save()

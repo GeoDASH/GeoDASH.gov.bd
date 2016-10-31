@@ -29,7 +29,7 @@ js_info_dict = {
 urlpatterns = patterns(
     'geonode.layers.views',
     url(r'^$', TemplateView.as_view(template_name='layers/layer_list.html'), {'is_layer': True}, name='layer_browse'),
-    url(r'^upload$', 'layer_upload', name='layer_upload'),
+    url(r'^upload/(?P<user_type>[^/]*)$', 'layer_upload', name='layer_upload'),
     url(r'^(?P<layername>[^/]*)$', 'layer_detail', name="layer_detail"),
     url(r'^(?P<layername>[^/]*)/metadata$', 'layer_metadata', name="layer_metadata"),
     url(r'^(?P<layername>[^/]*)/remove$', 'layer_remove', name="layer_remove"),

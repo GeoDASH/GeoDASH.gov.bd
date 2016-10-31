@@ -32,7 +32,7 @@ def geoserver_urls(request):
             'UPLOADER',
             dict()).get(
             'BACKEND',
-            'geonode.rest') == 'geonode.importer' else reverse('layer_upload'),
+            'geonode.rest') == 'geonode.importer' else reverse('layer_upload', args=['member']),
         MAPFISH_PRINT_ENABLED=ogc_server_settings.MAPFISH_PRINT_ENABLED,
         PRINT_NG_ENABLED=ogc_server_settings.PRINT_NG_ENABLED,
         GEONODE_SECURITY_ENABLED=ogc_server_settings.GEONODE_SECURITY_ENABLED,
