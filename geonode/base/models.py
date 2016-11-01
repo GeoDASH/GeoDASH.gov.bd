@@ -557,7 +557,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
         """Return Link for legend or None if it does not exist.
         """
         try:
-            legends_link = self.link_set.get(name='Legend')
+            legends_link = self.link_set.filter(name='Legend')[0]
         except Link.DoesNotExist:
             return None
         else:
