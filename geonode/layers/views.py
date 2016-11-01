@@ -68,6 +68,7 @@ from geonode.geoserver.helpers import cascading_delete, gs_catalog
 from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.base.libraries.decorators import manager_or_member
+from geonode.base.models import KeywordIgnoreListModel
 
 CONTEXT_LOG_FILE = None
 
@@ -167,6 +168,12 @@ def layer_upload(request, user_type, template='upload/layer_upload.html'):
             else:
                 name_base, __ = os.path.splitext(
                     form.cleaned_data["base_file"].name)
+                keywords = name_base.split()
+            ignore_keys = KeywordIgnoreListModel.objects.values_list('key', flat=True)
+            for key in keywords:
+                if any(c.isalpha() for c in key):
+                    if key in ignore_keys or key.isdigit() or len(key)==1:
+                        keywords.remove(key)
             name = slugify(name_base.replace(".", "_"))
             try:
                 # Moved this inside the try/except block because it can raise

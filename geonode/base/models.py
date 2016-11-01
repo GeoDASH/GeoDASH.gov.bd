@@ -283,7 +283,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     date_type = models.CharField(_('date type'), max_length=255, choices=VALID_DATE_TYPES, default='publication',
                                  help_text=date_type_help_text)
     edition = models.CharField(_('edition'), max_length=255, blank=True, null=True, help_text=edition_help_text)
-    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text, default='Layer abstract is very important! You are requested to update it now.')
+    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text, default='Abstract is very important! You are requested to update it now.')
     purpose = models.TextField(_('purpose'), null=True, blank=True, help_text=purpose_help_text)
     maintenance_frequency = models.CharField(_('maintenance frequency'), max_length=255, choices=UPDATE_FREQUENCIES,
                                              blank=True, null=True, help_text=maintenance_frequency_help_text)
@@ -821,3 +821,17 @@ class DockedResource(models.Model):
     active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+
+class KeywordIgnoreListModel(models.Model):
+    """
+    This model keeps keyword ignore list
+    when keywords are generating from resource title
+    """
+    key = models.CharField(null=True, blank=True, max_length=100)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u"{0}".format(self.key)

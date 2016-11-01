@@ -187,7 +187,7 @@ def pre_save_document(instance, sender, **kwargs):
     instance.csw_type = 'document'
 
     if instance.abstract == '' or instance.abstract is None:
-        instance.abstract = 'Layer abstract is very important! You are requested to update it now.'
+        instance.abstract = 'Document abstract is very important! You are requested to update it now.'
 
     if instance.title == '' or instance.title is None:
         instance.title = instance.doc_file.name
