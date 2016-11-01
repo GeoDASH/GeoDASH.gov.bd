@@ -489,7 +489,7 @@ def pre_save_layer(instance, sender, **kwargs):
         instance.bbox_y1 = instance.resourcebase_ptr.bbox_y1
 
     if instance.abstract == '' or instance.abstract is None:
-        instance.abstract = unicode(_('No abstract provided'))
+        instance.abstract = unicode(_('Layer abstract is very important! You are requested to update it now.'))
     if instance.title == '' or instance.title is None:
         instance.title = instance.name
 

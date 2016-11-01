@@ -283,7 +283,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     date_type = models.CharField(_('date type'), max_length=255, choices=VALID_DATE_TYPES, default='publication',
                                  help_text=date_type_help_text)
     edition = models.CharField(_('edition'), max_length=255, blank=True, null=True, help_text=edition_help_text)
-    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text)
+    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text, default='Layer abstract is very important! You are requested to update it now.')
     purpose = models.TextField(_('purpose'), null=True, blank=True, help_text=purpose_help_text)
     maintenance_frequency = models.CharField(_('maintenance frequency'), max_length=255, choices=UPDATE_FREQUENCIES,
                                              blank=True, null=True, help_text=maintenance_frequency_help_text)
