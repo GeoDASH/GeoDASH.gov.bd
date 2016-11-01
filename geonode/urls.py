@@ -124,6 +124,11 @@ urlpatterns = patterns('',
                        url(r'^lang\.js$', TemplateView.as_view(template_name='lang.js', content_type='text/javascript'),
                            name='lang'),
 
+                       #keywords
+                       url(r'^keyword/create$', 'geonode.views.keyword_create', name='keyword-create'),
+                       url(r'^keyword/list$', 'geonode.views.keyword_list', name='keyword-list'),
+                       url(r'^keyword/delete$', 'geonode.views.keyword_delete', name='keyword-delete'),
+
                        url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='jscat'),
                        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps},
                            name='sitemap'),

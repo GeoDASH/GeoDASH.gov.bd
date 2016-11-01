@@ -38,14 +38,16 @@ from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from taggit.models import Tag
 
 
 from geonode import get_version
 from geonode.base.templatetags.base_tags import facets
 from geonode.groups.models import GroupProfile
-from geonode.base.forms import TopicCategoryForm
+from geonode.base.forms import TopicCategoryForm, TagForm
 from geonode.base.libraries.decorators import superuser_check
 from geonode.base.models import TopicCategory
+
 
 
 class AjaxLoginForm(forms.Form):
@@ -211,3 +213,53 @@ def topiccategory_delete(request):
         return HttpResponseRedirect(reverse('topiccategory-list'))
     else:
         return HttpResponseRedirect(reverse('topiccategory-list'))
+
+
+
+@login_required
+@user_passes_test(superuser_check)
+def keyword_create(request):
+    """
+    This view is for adding keyword from web. Only super admin can add keywords
+    """
+
+    if request.method == 'POST':
+        form = TagForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Added keyword successfully')
+            return HttpResponseRedirect(reverse('keyword-list'))
+    else:
+        form = TagForm()
+    return render(request, "keywords/upload_keyword.html", {'form': form, })
+
+
+@login_required
+@user_passes_test(superuser_check)
+def keyword_list(request, template='keywords/keyword_list.html'):
+    """
+    This view is for listing keywords from web. Only super admin can list keywords
+    """
+    context_dict = {
+        "keyword_list": Tag.objects.all().order_by('name'),
+    }
+    return render_to_response(template, RequestContext(request, context_dict))
+
+
+@login_required
+@user_passes_test(superuser_check)
+def keyword_delete(request):
+    """
+    This view is for deleting keyword from web. Only super admin can delete keyword
+    """
+
+    if request.method == 'POST':
+        cat_ids = request.POST.getlist('keyword_id')
+        for id in cat_ids:
+            cat_id = int(id)
+            keyword = get_object_or_404(Tag, pk=cat_id)
+            keyword.delete()
+            messages.info(request, 'Deleted keyword "%s" successfully' %(keyword.name))
+        return HttpResponseRedirect(reverse('keyword-list'))
+    else:
+        return HttpResponseRedirect(reverse('keyword-list'))

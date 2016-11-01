@@ -27,6 +27,7 @@ from django.utils.translation import ugettext as _
 from mptt.forms import TreeNodeMultipleChoiceField
 from bootstrap3_datetime.widgets import DateTimePicker
 from modeltranslation.forms import TranslationModelForm
+from taggit.models import Tag
 
 from geonode.base.models import TopicCategory, Region
 from geonode.people.models import Profile
@@ -202,3 +203,10 @@ class TopicCategoryForm(forms.ModelForm):
     class Meta:
         model = TopicCategory
         fields = ['identifier', 'description', 'gn_description', 'is_choice']
+
+
+class TagForm(forms.ModelForm):
+
+    class Meta:
+        model = Tag
+        fields = ['name']
