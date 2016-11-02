@@ -11,6 +11,15 @@
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/GoogleEarthExt.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/CapabilitiesGrid.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/CrossLayerQueryForm.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/PointExternalSymbolizer.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL}}geonode/js/extjs/RulePabel.js"></script>
+<style type="text/css">
+	#crossLayerQueryFromAddIcon tr:first-child,
+	#buttonHelpQuery tr:first-child,
+	#buttonHelpColor tr:first-child{
+		display: none;
+	}
+</style>
 <script type="text/javascript">
 OpenLayers.ImgPath = "{{ STATIC_URL }}geoexplorer/externals/openlayers/theme/default/img";
 OpenLayers.Request.DEFAULT_CONFIG.headers = {
