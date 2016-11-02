@@ -55,7 +55,7 @@
                                                 </li>
                                                 {% endif %}
                                                 <li class="list-group-item">
-                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_map">{% trans "Publish Map" %}</button>
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_map">{% trans "Push for approve Map" %}</button>
                                                         {% include "map_templates/_publish_map.html" %}
                                                     {% endif %}
                                                 </li>
@@ -69,7 +69,7 @@
                                                         {% include "map_templates/_approve_map.html" %}
                                                 </li>
                                                 <li class="list-group-item">
-                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_map">{% trans "Deney Map" %}</button>
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_map">{% trans "Deny Map" %}</button>
                                                         {% include "map_templates/_deny_map.html" %}
                                                     {% endif %}
                                                 </li>
@@ -191,6 +191,30 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if "change_resourcebase_permissions" in perms_list %}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading3">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse"
+                                               data-parent="#accordion3-per" href="#collapse4" aria-expanded="true"
+                                               aria-controls="collapse4">
+                                                {% trans "Permissions" %}
+                                                <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse4-per" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="heading3">
+                                        <div class="panel-body">
+                                            <p>{% trans "Specify which users can view or modify this map" %}</p>
+                                            <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal"
+                                                data-target="#_permissions">{% trans "Change Permissions of this Map" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% include "_permissions_form.html" %}
+                            {% endif %}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading1">
                                     <h4 class="panel-title">
@@ -249,30 +273,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% endif %}
-                            {% if "change_resourcebase_permissions" in perms_list %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading3">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse"
-                                               data-parent="#accordion3-per" href="#collapse4" aria-expanded="true"
-                                               aria-controls="collapse4">
-                                                {% trans "Permissions" %}
-                                                <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                                                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapse4-per" class="panel-collapse collapse in" role="tabpanel"
-                                         aria-labelledby="heading3">
-                                        <div class="panel-body">
-                                            <p>{% trans "Specify which users can view or modify this map" %}</p>
-                                            <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal"
-                                                data-target="#_permissions">{% trans "Change Permissions of this Map" %}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% include "_permissions_form.html" %}
                             {% endif %}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading4">

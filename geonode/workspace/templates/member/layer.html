@@ -28,13 +28,13 @@
                   </ul>
                   <br>
                 <ul class="nav nav-tabs">
-                  <li><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
+                  <li class="active"><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
                   <li><a href="#pending" data-toggle="tab">{% trans "Pending" %}</a></li>
                   <li><a href="#denied" data-toggle="tab">{% trans "Denied" %}</a></li>
-                  <li class="active"><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
+                  <li ><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
                 </ul>
                 <div class="tab-content">
-                  <article id="draft" class="tab-pane">
+                  <article id="draft" class="tab-pane active">
                     <ul class="no-style-list">
                         <table class="table table-hover" style="background:#ffffff;">
                             <thead>
@@ -52,7 +52,7 @@
                                         <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
-                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue to Publish" %}</a></td>
+                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for approval" %}</a></td>
                                         <td>
                                             <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" class="btn btn-gd-primary">{% trans "Delete Layer" %}</button> <br>
                                             {% include "layer_templates/_delete_layer.html" %}
@@ -120,7 +120,7 @@
                         </table>
                     </ul>
                   </article>
-                  <article id="active" class="tab-pane active">
+                  <article id="active" class="tab-pane">
                     <ul class="no-style-list">
                         <table class="table table-hover" style="background:#ffffff;">
                             <thead>

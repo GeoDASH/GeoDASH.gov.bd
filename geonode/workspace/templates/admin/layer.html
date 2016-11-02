@@ -49,8 +49,8 @@
                                         <th>Organization</th>
                                         <th>Tried</th>
                                         <th>Date of Request</th>
-                                        <th>Approve Layer</th>
-                                        <th>Denied Layer</th>
+                                        <th>Approve Layer/Denied Layer</th>
+                                        <!--<th>Denied Layer</th>-->
                                     </tr>
                                 </thead>
                                 {% for user_approval in user_approval_request_list %}
@@ -61,8 +61,8 @@
                                             <td>{{ user_approval.group }}</td>
                                             <td>{{ user_approval.current_iteration }}</td>
                                             <td>{{ user_approval.date_updated }}</td>
-                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Approve" %}</a></td>
-                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>
+                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue To Approve/Deny" %}</a></td>
+                                            <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>-->
                                         </tr>
                                     </tbody>
                                 {% empty %}

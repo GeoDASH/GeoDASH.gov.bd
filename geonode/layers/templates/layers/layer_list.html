@@ -32,8 +32,8 @@
                     </a>
                   {% endif %}
                   {% if user.is_authenticated %}
-                    <a href="{% url "layer_upload" %}" class="btn btn-gd-primary pull-right icon-btn-color">
-                        {% trans "Upload Layers" %} <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                    <a href="{% url "layer_upload" 'member' %}" class="btn btn-gd-primary pull-right icon-btn-color">
+                        {% trans "Upload Layers"  %} <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                     </a>
                   {% endif %}
               </div>

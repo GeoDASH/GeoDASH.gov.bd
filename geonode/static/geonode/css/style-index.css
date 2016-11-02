@@ -760,7 +760,7 @@
 .sponsor-image img.bd-gov{
     text-align:right;
     border:none;
-    width:150px;
+    /*width:150px;*/
     margin-left:20px;
     padding-bottom:10px;
     height:80px;

@@ -111,7 +111,7 @@
                         <div id="upload-status"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Title" %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Title" %} </label>
                             </div>
                         </div>
                         <div class="row">
@@ -123,12 +123,13 @@
                         <div class="block-separator"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Select Organization " %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Select Organization " %} </label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <select id="id-select-organization" class="col-md-12">
+                                    <option value='' selected="selected">.......................</option>
                                     {% for organization in organizations %}
                                         <option value={{ organization.id }}>{{ organization.title }}</option>
                                     {% endfor %}
@@ -138,7 +139,7 @@
                         <div class="block-separator"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Select Category " %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Select Category " %} </label>
                             </div>
                         </div>
                         <div class="row">
@@ -155,7 +156,7 @@
                         <section id="fileTypeSection">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select uploaded file type" %} </label>
+                                    <label class="control-label"><span style="color:red;"> * </span> {% trans "Select uploaded file type" %} </label>
                                 </div>
                             </div>
                             <div class="row">
@@ -164,7 +165,7 @@
                                         <option selected='selected' value="shp">.shp .shx .dbf .prj</option>
                                         <option value="osm">.osm</option>
                                         <option value="csv">.csv</option>
-                                        <option value="csv">.tif</option>
+                                        <option value="tif">.tif</option>
                                     </select>
                                 </div>
                             </div>
@@ -353,7 +354,6 @@
     </script>
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function () {
-            anyonePermissionDisable();
             $("#fileType").change(function () {
                 var fileType = $(this).val();
                 //shp osm csv

@@ -69,7 +69,7 @@
                     <article id="org-profile" class="tab-pane active">
                       <div class="gd-content-body transparent top-bottom-margin-20px">
                           <div class="row">
-                              <div class="col-md-9">
+                              <div class="col-md-8">
                                   <div class="description">
                                       {{ object.description }}
                                   </div>
@@ -90,24 +90,26 @@
                                     {% endif %}
                                   </div>
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-4">
                                 {% if is_manager or request.user.is_superuser %}
                                   <ul class="list-group gd-link-style">
                                       <li class="list-group-item">
                                           <a href="{% url "group_update" object.slug %}">
-                                            {% trans "Edit Group Details" %}
+                                            {% trans "Edit Organization Details" %}
                                           </a>
                                       </li>
                                       <li class="list-group-item">
                                           <a href="{% url "group_members" object.slug %}">
-                                            {% trans "Manage Group Members" %}
+                                            {% trans "Manage Organization Members" %}
                                           </a>
                                       </li>
+                                      {% if request.user.is_superuser %}
                                       <li class="list-group-item">
                                           <a href="{% url "group_remove" object.slug %}">
                                             {% trans "Delete this Group" %}
                                           </a>
                                       </li>
+                                      {% endif %}
                                   </ul>
                                 {% endif %}
                                 <!-- <div class="row">
