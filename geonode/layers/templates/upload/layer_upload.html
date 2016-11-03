@@ -199,7 +199,7 @@
                             </div>
                         </section>
 
-                        <div>{% trans " or select them one by one:" %}</div>
+                        <div><span style="color:red;"> * </span> {% trans " or select them one by one:" %}</div>
 
                         <form id="file-uploader" method="post" enctype="multipart/form-data">
                             <input class="btn btn-gd" id="file-input" type="file" multiple>
@@ -283,12 +283,6 @@
                             </div>
                             <div class="block-separator"></div>
                         </section>
-
-
-
-
-
-
                         <section class="charset">
                             <div class="row">
                                 <div class="col-md-12">
@@ -354,6 +348,7 @@
     </script>
     <script type="text/javascript" language="JavaScript">
         $(document).ready(function () {
+        anyonePermissionDisable();
             $("#fileType").change(function () {
                 var fileType = $(this).val();
                 //shp osm csv

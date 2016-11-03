@@ -95,7 +95,7 @@
                                 </li>
                                 {% if not user.is_authenticated %}
                                     <li id="nav_maps">
-                                      <a  onclick="layerpopup('SigninModal');">{% trans "Upload Layers" %}</a>
+                                      <a  onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Layers" %}</a>
                                     </li>
                                 {% endif %}
                                 {% if user.is_authenticated %}
@@ -129,11 +129,11 @@
                             <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
                             <ul class="dropdown-menu">
                                 <li id="nav_layers">
-                                  <a href="{% url "document_browse" %}">{% trans "Explore Documents" %}</a>
+                                  <a href="{% url "document_browse" %}" >{% trans "Explore Documents" %}</a>
                                 </li>
                                 {% if not user.is_authenticated %}
                                 <li id="nav_maps">
-                                  <a onclick="documentpopup('SigninModal');">{% trans "Upload Documents" %}</a>
+                                  <a onclick="documentpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Documents" %}</a>
                                 </li>
                                 {% endif %}
                                 {% if user.is_authenticated %}
@@ -853,11 +853,11 @@
     <script>
         function layerpopup(){
             $('#SigninModal').modal('show');
-            $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
+            $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload/member');
         }
         function documentpopup(){
             $('#SigninModal').modal('show');
-            $('#uploadsignlayer').attr('action', '/account/login/?next=/documents/upload');
+            $('#uploadsignlayer').attr('action', '/account/login/?next=/documents/upload/');
         }
     </script>
 
