@@ -24,6 +24,8 @@ import logging
 import shutil
 import traceback
 import requests
+import xmltodict
+
 from guardian.shortcuts import get_perms
 
 from django.contrib import messages
@@ -358,10 +360,14 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
                 if not getattr(layer, layer._meta.get_field(field).name):
                     messages.info(request, 'Please update layer metadata, missing some informations')
                     break
-    legend_clolor_str = ''
-    for i in layer.default_style.sld_body.splitlines():
-        if 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://chart?' in i:
-            legend_clolor_str = i
+    link = ''
+    try:
+        d = xmltodict.parse(layer.default_style.sld_body)
+        dd = d['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
+        ['sld:Rule']['sld:PointSymbolizer']
+        link = dd['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
+    except:
+        pass
 
     context_dict = {
         "resource": layer,
@@ -379,7 +385,7 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "deny_form": deny_form,
         "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
         "status": layer.status,
-        "legend_clolor_str" : legend_clolor_str
+        "chart_link" : link
     }
 
     context_dict["viewer"] = json.dumps(
