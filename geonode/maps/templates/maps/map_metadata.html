@@ -29,6 +29,9 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="lead">
+                    <span style="color:red;"> * Marked fields are mandatory </span>
+                </div>
+                <div class="lead">
                     {% blocktrans with map.title as map_title %}
                         Editing details for {{ map_title }}
                     {% endblocktrans %}
@@ -81,7 +84,7 @@
                         <button type='button' class="modal-cloose-btn btn btn-gd-primary">Done</button>
                     </fieldset>
                     <fieldset id="category_form">
-                        <label class="control-label required-field">{% trans "Category" %}</label><br/>
+                        <label class="control-label required-field"><span style="color:red;"> * </span>{% trans "Category" %}</label><br/>
                         {% autoescape off %}
                             <div style="clear:both;padding-left:15px;">
                                 {% for choice in category_form.category_choice_field.field.choices %}

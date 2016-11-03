@@ -39,10 +39,13 @@ msgstr ""
 
 #: Add New Item for GeoDASH
 msgid "LANGUAGE"
-msgstr "ভাষা"
+msgstr "ENGLISH"
 
 msgid "Organizations"
 msgstr "সংগঠন"
+
+msgid "OSM Layer Wizard"
+msgstr "OSM লেয়ার উইজার্ড"
 
 msgid "AN OPEN SOURCE GEOSPATIAL DATA"
 msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা"
@@ -107,25 +110,10 @@ msgstr "আপনার নিজের স্তর ইম্পোর্ট  "
 msgid "Our Partners"
 msgstr "আমাদের অংশীদার"
 
-msgid "Layers are the contents of a map."
-msgstr "স্তরসমূহ একটি মানচিত্র বিষয়বস্তু "
+msgid "Layers are the contents of a map. To get started adding layers, sign in to the site, click on upload your layers/data, choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img). Make sure your data projection is WGS 84 or BTM."
+msgstr "স্তরসমূহ একটি মানচিত্র বিষয়বস্তু. লেয়ার যোগ শুরু করার জন্য,সাইটে সাইন ইন,আপনার স্তর / ডাটা আপলোড এ ক্লিক করুন,ভেক্টর জন্য ডেটা বিন্যাস চয়ন (উদাহরণ: .shp, .shx, .dbf, .prj) বা রাস্টার (.TIFF, .image). নিশ্চিত করুন যে আপনার তথ্য অভিক্ষেপ WGS84 বা BTM করুন."
 
-msgid "To get started adding layers,"
-msgstr "লেয়ার যোগ শুরু করার জন্য,"
-
-msgid "sign in to the site,"
-msgstr "সাইটে সাইন ইন,"
-
-msgid "click on upload your layers/data,"
-msgstr "আপনার স্তর / ডাটা আপলোড এ ক্লিক করুন,"
-
-msgid "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)."
-msgstr "ভেক্টর জন্য ডেটা বিন্যাস চয়ন (উদাহরণ: .shp, .shx, .dbf, .prj) বা রাস্টার (.TIFF, .image)."
-
-msgid "Make sure your data projection is WGS 84 or BTM."
-msgstr "নিশ্চিত করুন যে আপনার তথ্য অভিক্ষেপ WGS84 বা BTM করুন."
-
-msgid "interoperabity"
+msgid "Interoperability"
 msgstr "আন্তক্রিয়া"
 
 msgid "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content."
@@ -1089,7 +1077,7 @@ msgstr "ডকুমেন্ট অনুমতি পরিবর্তন ক
 #: documents/templates/documents/document_metadata.html:16
 #: documents/templates/documents/document_upload_base.html:11
 msgid "Explore Documents"
-msgstr "ডকুমেন্টস এবং পুরুষ"
+msgstr "ডকুমেন্টস এক্সপ্লোর"
 
 #: documents/templates/documents/document_list.html:12
 #: documents/templates/documents/document_upload_base.html:12
@@ -2945,7 +2933,7 @@ msgstr "সমস্ত বিষয়বস্তু"
 #: people/templates/people/_profile_filters.html:7 templates/500.html:61
 #: templates/base.html:62
 msgid "Documents"
-msgstr "কাগজপত্র"
+msgstr "ডকুমেন্টস"
 
 #: people/templates/people/forgot_username_form.html:6
 msgid "Forgot Username"

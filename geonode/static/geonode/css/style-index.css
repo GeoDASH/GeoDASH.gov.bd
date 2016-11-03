@@ -678,7 +678,7 @@
 /*--- Geo dash share maps start --*/
 
 #gd-sharemap{
-    background:url('../images/shear-footer.png') no-repeat;
+    /*background:url('../images/shear-footer.png') no-repeat;*/
     padding-top:30px;
     min-height:500px;
     margin:0 auto;

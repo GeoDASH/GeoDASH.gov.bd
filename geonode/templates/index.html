@@ -508,7 +508,7 @@
                     <div class="gd-control">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="header-title text-center">{{ feature_highlights_of_geodash_section.title }}</div>
+                                <div class="header-title text-center"> {% trans feature_highlights_of_geodash_section.title %} </div>
                                 <!--<div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>-->
                             </div>
                         </div>
@@ -518,14 +518,14 @@
                                     <div id="gd-featurehighlight-left">
                                         <div class="title">
                                             {% if not user.is_authenticated %}
-                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{{ feature_highlights_of_geodash_section.section_sub_title }}</a>
+                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
                                             {% endif %}
                                             {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{{ feature_highlights_of_geodash_section.section_sub_title }}</a>
+                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
                                             {% endif %}
                                         </div>
                                         <div class="description">
-                                            {{ feature_highlights_of_geodash_section.description }}
+                                            {% trans feature_highlights_of_geodash_section.description %}
                                             <!--{% trans "Layers are the contents of a map." %}-->
                                             <!--{% trans "To get started adding layers," %}-->
                                             <!--{% trans "sign in to the site," %}-->
@@ -596,10 +596,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="gd-interprobability-right">
-                                        <div class="title" style="text-align:center;">{{ is_interportability_section.title }}</div>
+                                        <div class="title" style="text-align:center;">{% trans is_interportability_section.title %}</div>
                                         <!--<div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>-->
                                         <div class="description">
-                                            {{ is_interportability_section.description }}
+                                            {% trans is_interportability_section.description %}
                                         </div>
                                     </div>
                                 </div>
@@ -635,9 +635,9 @@
                                 <div class="col-md-5">
                                     <div id="gd-makepretty-right">
                                         <div class="description">
-                                            <div class="title"><a href="{% url "new_map" %}">{{ make_pretty_maps_with_geodash_section.title }}</a></div>
+                                            <div class="title"><a href="{% url "new_map" %}">{% trans make_pretty_maps_with_geodash_section.title %}</a></div>
                                             <!--<div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>-->
-                                            {{ make_pretty_maps_with_geodash_section.description }}
+                                            {% trans make_pretty_maps_with_geodash_section.description %}
                                         </div>
                                         <!--<div class="description" style="float:right;font-size:14px;">-->
                                             <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->
@@ -680,9 +680,9 @@
                                 <div class="col-md-6">
                                     <div id="gd-3dsection-right">
                                         <div class="description">
-                                            <div class="title">{{ view_your_maps_in_3d_section.title }}</div>
+                                            <div class="title">{% trans view_your_maps_in_3d_section.title %}</div>
                                             <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
-                                            {{ view_your_maps_in_3d_section.description }}
+                                            {% trans view_your_maps_in_3d_section.description %}
                                         </div>
                                     </div>
                                 </div>
@@ -709,69 +709,68 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div id="help-content-offer" class="gd-content-body-offer">
-                                    {% blocktrans %}
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <ul class="termsuseandcondition">
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SignIn">Standard, facebook, google+ login.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SignIn">{% trans "Standard, facebook, google+ login." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload shape formatted polyline, polygon, point layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">{% trans "Upload shape formatted polyline, polygon, point layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload OSM formatted polyline, polygon, point, raster layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">{% trans "Upload OSM formatted polyline, polygon, point, raster layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload CSV formatted polyline, polygon, point layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">{% trans "Upload CSV formatted polyline, polygon, point layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">Upload TIF formatted layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadLayer">{% trans "Upload TIF formatted layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadDocument">Upload documents.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/UploadDocument">{% trans "Upload documents." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features">List/ Grid view of layers, maps and documents.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features">{% trans "List/ Grid view of layers, maps and documents." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DockingAndFavorite">Dock favorite layers, maps, documents and organizations.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DockingAndFavorite">{% trans "Dock favorite layers, maps, documents and organizations." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">Create map using single/ multiple layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">{% trans "Create map using single/ multiple layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">Centroids and centers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/CreateMaps">{% trans "Centroids and centers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/LayerStyles">Style layers.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/LayerStyles">{% trans "Style layers." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PanMap">Pan maps.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PanMap">{% trans "Pan maps." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/GetFeatureInfo">Get FeatureInfo.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/GetFeatureInfo">{% trans "Get FeatureInfo." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureLength">Measure length.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureLength">{% trans "Measure length." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true">
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureArea"></i>Measure Area</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/MeasureArea"></i>{% trans "Measure Area" %}</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -779,64 +778,63 @@
                                                 <ul class="termsuseandcondition">
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">Zoom in.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">{% trans "Zoom in." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">zoom out.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/ZoomInOut">{% trans "zoom out." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SwitchTo3DViewer">3D map view.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SwitchTo3DViewer">{% trans "3D map view." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PrintMap">Print map.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/PrintMap">{% trans "Print map." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DownloadLayer">Download layer and metadata.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DownloadLayer">{% trans "Download layer and metadata." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="">Connect to other GeoServer(s).</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="">{% trans "Connect to other GeoServer(s)." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/AdvancedSearch">Filter / select by attribute.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/AdvancedSearch">{% trans "Filter / select by attribute." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="">Data classification.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="">{% trans "Data classification." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="">Data chart view.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="">{% trans "Data chart view." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="">Buffer search.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="">{% trans "Buffer search." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SearchByRadius">Radius search.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/SearchByRadius">{% trans "Radius search." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="">Query on Map.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="">{% trans "Query on Map." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DataLayersCrossJoining">Cross joining of different layer columns.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/index.php?title=Documents/Usermanual/Features/DataLayersCrossJoining">{% trans "Cross joining of different layer columns." %}</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa fa-check gd-offer-txt" aria-hidden="true"></i>
-                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/">Wiki documentation.</a>
+                                                        <a class="what-offer-text-color" target="_blank" href="http://geodash.gov.bd/wiki/">{% trans "Wiki documentation." %}</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
-                                    {% endblocktrans %}
                                 </div>
                             </div>
                         </div>
@@ -884,7 +882,7 @@
       <!-- Share Map -->
       {% block index_sharemap %}
         {% if is_share_map or request.user.is_authenticated %}
-            <div id="gd-sharemap">
+            <div id="gd-sharemap" style="background:{{ share_your_map_section.background_color }}">
                 <div class="container">
                     <div class="gd-sharemap-main">
                         <div class="row">
@@ -895,10 +893,10 @@
                             </div>
                             <div class="col-md-offset-1 col-md-4">
                                 <div id="gd-sharemap-content">
-                                    <div class="title">{{ share_your_map_section.title }}</div>
+                                    <div class="title">{% trans share_your_map_section.title %}</div>
                                     <!--<div class="title">{% trans "Share your map" %}</div>-->
                                     <div class="description">
-                                        {{ share_your_map_section.description }}
+                                        {% trans share_your_map_section.description %}
                                     </div>
                                     <!--<div class="title">{% trans "Share your map" %}</div>-->
                                     <!--<div class="description">-->

@@ -42,7 +42,7 @@
                                     <th>Serial No</th>
                                     <th>Layer Title</th>
                                     <th>Organization</th>
-                                    <th>Layer creation date</th>
+                                    <th>Layer Creation Date</th>
                                 </tr>
                             </thead>
                             {% for draft in draft_list %}
@@ -52,7 +52,7 @@
                                         <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
-                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for approval" %}</a></td>
+                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>
                                         <td>
                                             <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" class="btn btn-gd-primary">{% trans "Delete Layer" %}</button> <br>
                                             {% include "layer_templates/_delete_layer.html" %}
@@ -73,7 +73,7 @@
                                     <th>Serial No</th>
                                     <th>Layer Title</th>
                                     <th>Organization</th>
-                                    <th>Request date</th>
+                                    <th>Request Date</th>
                                 </tr>
                             </thead>
                             {% for pending in pending_list %}
@@ -99,8 +99,8 @@
                                     <th>Serial No</th>
                                     <th>Layer Title</th>
                                     <th>Organization</th>
-                                    <th>Who denied</th>
-                                    <th>Deny date</th>
+                                    <th>Who Denied</th>
+                                    <th>Deny Date</th>
                                 </tr>
                             </thead>
                             {% for denied in denied_list %}
@@ -111,7 +111,7 @@
                                         <td>{{ denied.group }}</td>
                                         <td>{{ denied.last_auditor }}</td>
                                         <td>{{ denied.date_updated }}</td>
-                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and publish again" %}</a></td>
+                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and Push Again" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -129,7 +129,7 @@
                                     <th>Layer Title</th>
                                     <th>Organization</th>
                                     <th>Activator</th>
-                                    <th>Activation date</th>
+                                    <th>Activation Date</th>
                                     <th>Layer Edit</th>
                                 </tr>
                             </thead>
