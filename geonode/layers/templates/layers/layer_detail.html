@@ -635,7 +635,7 @@
                 var colors = getUriParameterByName('chco', uri);
                 var labels = getUriParameterByName('label', uri);
                 //console.log(colors,labels);
-                if(colors !== undefined && colors !== '' && labels !== undefined && labels !== ''){
+                if(colors !== undefined && colors !== '' && labels !== null && labels !== undefined && labels !== ''){
                     console.log(colors, labels);
                     var colorList = colors.split(',');
                     var labelList = labels.split('|');

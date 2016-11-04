@@ -108,7 +108,6 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
         var chf = ''; 
         var chco = ''; 
         if(externalGraphic !== undefined && externalGraphic !== null && externalGraphic !== ''){
-            externalGraphic = externalGraphic.replaceAll('&amp;','&');
             cht = this.getParameterByName('cht',externalGraphic);
             chd = this.getParameterByName('chd',externalGraphic);
             chd = chd.replace('t:','');
