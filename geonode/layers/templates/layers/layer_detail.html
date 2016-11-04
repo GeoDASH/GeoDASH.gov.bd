@@ -619,30 +619,33 @@
 
 {% block extra_script %}
     <script type="text/javascript">
-        var legend_clolor_str = ' http://chart?chf=bg,s,FFFFFF00&cht=p&chd=t:${100* AREA / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01}&label=AR|UcodeUpdt|UcodeUpt|Test&chco=3366CC,DC3912,FF9900,109618 ';
+        //var legend_clolor_str = ' http://chart?chf=bg,s,FFFFFF00&cht=p&chd=t:${100* AREA / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01}&label=AR|UcodeUpdt|UcodeUpt|Test&chco=3366CC,DC3912,FF9900,109618 ';
+        var legend_clolor_str = '{{chart_link}}'; // chart_link
         console.log(legend_clolor_str);
         $(document).ready(function () {
             addChartLegend(legend_clolor_str);
         });
         function addChartLegend(uri) {
-            console.log(uri);
+            //console.log(uri);
             uri = uri.trim();
-            var chartLegend = '';
-            var colors = getUriParameterByName('chco', uri);
-            var labels = getUriParameterByName('label', uri);
-            console.log(colors,labels);
-            if(colors !== undefined && colors !== '' && labels !== undefined && labels !== ''){
-                var colorList = colors.split(',');
-                var labelList = labels.split('|');
-                console.log(colorList,labelList);
-                console.log(colorList.length, labelList.length);
-                if(colorList.length == labelList.length){
-                    for(var i=0;i<colorList.length; i++){
-                        chartLegend += '<div><span style="background: #'+colorList[i]+'; height:5px;width:5px;margin-right: 5px; padding: 0 10px;"></span><span>'+labelList[i]+'</span></div>';
+            if(uri !== ''){
+                var chartLegend = '';
+                var colors = getUriParameterByName('chco', uri);
+                var labels = getUriParameterByName('label', uri);
+                //console.log(colors,labels);
+                if(colors !== undefined && colors !== '' && labels !== undefined && labels !== ''){
+                    var colorList = colors.split(',');
+                    var labelList = labels.split('|');
+                    //console.log(colorList,labelList);
+                    //console.log(colorList.length, labelList.length);
+                    if(colorList.length == labelList.length){
+                        for(var i=0;i<colorList.length; i++){
+                            chartLegend += '<div><span style="background: #'+colorList[i]+'; height:5px;width:5px;margin-right: 5px; padding: 0 10px;"></span><span>'+labelList[i]+'</span></div>';
+                        }
                     }
                 }
+                $('#chart-legend-holder').html(chartLegend);
             }
-            $('#chart-legend-holder').html(chartLegend);
         }
         function getUriParameterByName (name, url){
             if (!url) {
