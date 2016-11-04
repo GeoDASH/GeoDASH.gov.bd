@@ -572,51 +572,92 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
                     columns: tableHeader
                 }),
                 footer: true, //'Total result: '+totalResult,
-                autoScroll: true,
+                //autoScroll: true,
                 trackMouseOver:false,
                 disableSelection:true,
                 loadMask: true,
                 //stripeRows: true,
                 //maxHeight: 350,
-                width: 600,
+                height: 400,
+                //width: 600,
                 title: gridTitle,
+                //frame: true,
                 // config options for stateful behavior
                 //stateful: true,
                 //stateId: 'grid'
                 // paging bar on the bottom
                 // customize view config
+                //autoHeight: true,
+                //style: "top: auto; bottom: 0",
                 bbar: new Ext.PagingToolbar({
                     pageSize: PAGE_SIZE,
                     store: store,
                     displayInfo: true,
                     displayMsg: 'Displaying topics {0} - {1} of {2}',
                     emptyMsg: "No topics to display",
+                    items: {
+                        text: 'CSV Save',
+                        iconCls: "icon-save",
+                        handler: function () {
+                            //var extGridExporter = new ExtGridExporter();
+                            //extGridExporter.exportGrid(grid);
+                        },
+                        scope: this
+                    }
                 })
             });
             // render it
             //grid.render('records-grid');
             // trigger the data store load
             //store.load({params:{start:0, limit:PAGE_SIZE}});
-
+            var outconfig = new Ext.Window({
+                border: false,
+                //layout: "fit",
+                height: 400,
+                maxHeight: 400,
+                width: 600,
+                items: [
+                    grid
+                ],
+                /*bbar: ["->", {
+                    text: 'Save',
+                    iconCls: "icon-save",
+                    handler: function () {
+                        GridExporter.exportGrid(grid);
+                    },
+                    scope: this
+                }],*/
+                listeners: {
+                    afterlayout: function () {
+                        var height = Ext.getBody().getViewSize().height;
+                        if (this.getHeight() > height) {
+                            this.setHeight(height);
+                        }
+                        this.center();
+                    },
+                    afterrender: function () {
+                        var height = Ext.getBody().getViewSize().height;
+                        if (this.getHeight() > height) {
+                            this.setHeight(height);
+                        }
+                        this.center();
+                    }
+                }
+            });
+//            outconfig.on('afterrender', function () {
+//                if (this.getHeight() > this.maxHeight) {
+//                    this.setHeight(this.maxHeight);
+//                }
+//                this.center();
+//            }, this);
             //return false;
-            var config = Ext.apply(grid, config || {});
+            //var config = Ext.apply(grid, config || {});
+            var config = Ext.apply(outconfig, config || {});
         }
-        //var tab = new Ext.TabPanel({
-        //    maxHeight: 350,
-        //    width: 600,
-        //    autoScroll: true,
-        //    frame: true,
-        //    defaults: {autoHeight:true},
-        //    items:[
-        //        title: "test",
-        //        xtype: 'grid',
-        //
-        //    ]
-        //});
         //return SDSL.plugins.SearchByRadius.superclass.addActions.apply(this, [action]);
         var queryForm = SDSL.plugins.SearchByRadius.superclass.addOutput.call(this, config);
     },
-
+    
     getPointDistance: function (p1Lat, p1Lng, p2Lat, p2Lng) {
         var R = 6378137; // Earth’s mean radius in meter
         var dLat = this.getRad(p2Lat - p1Lat);
@@ -645,3 +686,131 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
 
 });
 Ext.preg(SDSL.plugins.SearchByRadius.prototype.ptype, SDSL.plugins.SearchByRadius);
+
+// Derived and simplified from example on bryntum.com
+// http://stackoverflow.com/questions/15029462/exporting-sdk2-grid-to-csv 
+var GridExporter = { 
+    dateFormat: 'Y-m-d g:i',
+    exportGrid: function (grid) {
+        if (Ext.isIE) {
+            this._ieToExcel(grid);
+
+        } else {
+            var data = this._getCSV(grid);
+
+            window.location = 'data:text/csv;charset=utf8,' + encodeURIComponent(data);
+        }
+    },
+    _escapeForCSV: function (string) {
+        if (string.match(/,/)) {
+            if (!string.match(/"/)) {
+                string = '"' + string + '"';
+            } else {
+                string = string.replace(/,/g, ''); // comma's and quotes-- sorry, just loose the commas
+            }
+        }
+        return string;
+    },
+    _getFieldText: function (fieldData) {
+        var text;
+
+        if (fieldData == null || fieldData == undefined) {
+            text = '';
+
+        } else if (fieldData._refObjectName && !fieldData.getMonth) {
+            text = fieldData._refObjectName;
+
+        } else if (fieldData instanceof Date) {
+            text = Ext.Date.format(fieldData, this.dateFormat);
+
+        } else if (!fieldData.match) { // not a string or object we recognize...bank it out
+            text = '';
+
+        } else {
+            text = fieldData;
+        }
+
+        return text;
+    },
+    _getFieldTextAndEscape: function (fieldData) {
+        var string = this._getFieldText(fieldData);
+
+        return this._escapeForCSV(string);
+    },
+    _getCSV: function (grid) {
+        var cols = grid.columns;
+        var store = grid.store;
+        var data = '';
+
+        var that = this;
+        Ext.Array.each(cols, function (col, index) {
+            if (col.hidden != true) {
+                data += that._getFieldTextAndEscape(col.text) + ',';
+            }
+        });
+        data += "\n";
+
+        store.each(function (record) {
+            var entry = record.getData();
+            Ext.Array.each(cols, function (col, index) {
+                if (col.hidden != true) {
+                    var fieldName = col.dataIndex;
+                    var text = entry[fieldName];
+
+                    data += that._getFieldTextAndEscape(text) + ',';
+                }
+            });
+            data += "\n";
+        });
+
+        return data;
+    },
+    _ieGetGridData: function (grid, sheet) {
+        var that = this;
+        var resourceItems = grid.store.data.items;
+        var cols = grid.columns;
+
+        Ext.Array.each(cols, function (col, colIndex) {
+            if (col.hidden != true) {
+                console.log('header: ', col.text);
+                sheet.cells(1, colIndex + 1).value = col.text;
+            }
+        });
+
+        var rowIndex = 2;
+        grid.store.each(function (record) {
+            var entry = record.getData();
+
+            Ext.Array.each(cols, function (col, colIndex) {
+                if (col.hidden != true) {
+                    var fieldName = col.dataIndex;
+                    var text = entry[fieldName];
+                    var value = that._getFieldText(text);
+
+                    sheet.cells(rowIndex, colIndex + 1).value = value;
+                }
+            });
+            rowIndex++;
+        });
+    },
+    _ieToExcel: function (grid) {
+        if (window.ActiveXObject) {
+            var xlApp, xlBook;
+            try {
+                xlApp = new ActiveXObject("Excel.Application");
+                xlBook = xlApp.Workbooks.Add();
+            } catch (e) {
+                Ext.Msg.alert('Error', 'For the export to work in IE, you have to enable a security setting called "Initialize and script ActiveX control not marked as safe" from Internet Options -> Security -> Custom level..."');
+                return;
+            }
+
+            xlBook.worksheets("Sheet1").activate;
+            var XlSheet = xlBook.activeSheet;
+            xlApp.visible = true;
+
+            this._ieGetGridData(grid, XlSheet);
+            XlSheet.columns.autofit;
+        }
+    }
+};
+//Ext.define("ExtGridExporter", GridExporter);

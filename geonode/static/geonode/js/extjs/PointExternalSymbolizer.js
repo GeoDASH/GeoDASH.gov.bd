@@ -66,6 +66,9 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
      *  Currently using an external graphic.
      */
     external: null,
+    default_color: ['3366CC', 'DC3912', 'FF9900', '109618', '990099', '3B3EAC', '0099C6',
+    'DD4477', '66AA00', 'B82E2E', '316395', '994499', '22AA99', 'AAAA11',
+    '6633CC', 'E67300', '8B0707', '329262', '5574A6', '3B3EAC'],
     /** private: config[layout]
      *  ``String``
      */
@@ -91,7 +94,12 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
         //this.external = !!this.symbolizer["externalGraphic"];
         this.external = true;
         delete this.symbolizer["graphicName"];
-        this.symbolizer["pointRadius"] = 5;
+        if(this.symbolizer["pointRadius"] !== undefined && this.symbolizer["pointRadius"] !== null && 
+                this.symbolizer["pointRadius"] !== ''){
+            //this.symbolizer["pointRadius"] = this.symbolizer["pointRadius"] * 2;
+        } else {
+            this.symbolizer["pointRadius"] = 5;
+        }
         
         this.defaultUrl = 'http://chart?chf=bg,s,FFFFFF00&cht=p';
         var externalGraphic = this.symbolizer["externalGraphic"];
@@ -103,13 +111,26 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
             cht = this.getParameterByName('cht',externalGraphic);
             chd = this.getParameterByName('chd',externalGraphic);
             chd = chd.replace('t:','');
+            //var chl = this.getParameterByName('chl',externalGraphic);
+            var chl = this.getParameterByName('label',externalGraphic);
+            if (chl !== undefined && chl !== '') {
+                var chlArr = chl.split('|');
+                if (chlArr.length > 0) {
+                    var chdArr = chd.split(",");
+                    for (var i = 0; i < chdArr.length; i++) {
+                        if (chlArr[i] !== undefined && chlArr[i] !== '') {
+                            chdArr[i] = chlArr[i] + '=' + chdArr[i];
+                        }
+                    }
+                    chd = chdArr.join(',');
+                }
+            }
             chf = this.getParameterByName('chf',externalGraphic);
             chco = this.getParameterByName('chco',externalGraphic);
         }
         //console.log(externalGraphic);
         //console.log(cht, chd, chf, chco);
         
-
         this.urlField = new Ext.form.TextField({
             name: "url",
             editable: false,
@@ -165,12 +186,57 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
             listeners: {
                 change: function (field, value) {
                     if(value){
-                        value = 't:'+value;
+                        // ${100 * MALE / PERSONS},${100 * FEMALE / PERSONS}
+                        // query
+                        var queryObj = this.parseLabelFromQuery(value);
+                        var querySection = queryObj.query;
+                        var queryValue = querySection.join(',');
+                        queryValue = 't:'+queryValue;
                         var urlField = this.urlField.getValue();
                         if(urlField !== undefined && urlField !== null && urlField !== ''){
                             this.defaultUrl = urlField;
                         }
-                        var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chd', value);
+                        var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chd', queryValue);
+                        // end query
+                        // 
+                        // start label
+                        var labelsValue = '';
+                        var labels = queryObj.label;
+                        if(labels.length > 0){
+                            labelsValue = labels.join('|');
+                        }
+                        //urlValue = this.updateQueryStringParameter(urlValue, 'chl', labelsValue);
+                        urlValue = this.updateQueryStringParameter(urlValue, 'label', labelsValue);
+                        // end label
+                        //
+                        // color section enable
+                        var colorStr = '';
+                        var colorField = this.colorField.getValue();
+                        if(colorField !== undefined && colorField !== null && colorField !== ''){
+                            //this.default_color[]
+                            var colorArr = colorField.split(',');
+                            var colorLen = colorArr.length;
+                            var querySecLen = querySection.length;
+                            if(colorLen !== querySecLen){
+                                for(var i=colorLen; i<querySecLen; i++){
+                                    colorArr.push(this.default_color[i]);
+                                }
+                                colorStr = colorArr.join(',');
+                                this.colorField.setValue(colorStr);
+                            }
+                        } else {
+                            var colorStrs = [];
+                            for(var i=0; i<labels.length; i++){
+                                colorStrs.push(this.default_color[i]);
+                            }
+                            colorStr = colorStrs.join(',');
+                            this.colorField.setValue(colorStr);
+                        }
+                        this.colorField.setValue(colorStr);
+                        urlValue = this.updateQueryStringParameter(urlValue, 'chco', colorStr);
+                        // end color section
+                        //
+                        // set url value
                         if (!Ext.isEmpty(urlValue)) {
                             this.symbolizer["externalGraphic"] = urlValue;
                         }
@@ -179,6 +245,7 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                             this.urlField.setValue(urlValue);
                             this.fireEvent("change", this.symbolizer);
                         }
+                        // end url value
                     }
                 },
                 scope: this
@@ -238,20 +305,48 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
             hidden: !this.external,
             listeners: {
                 change: function (field, value) {
-                    var urlField = this.urlField.getValue();
-                    if(urlField !== undefined && urlField !== null && urlField !== ''){
-                        this.defaultUrl = urlField;
-                    }
-                    var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chco', value);
-                    if (!Ext.isEmpty(urlValue)) {
-                        this.symbolizer["externalGraphic"] = urlValue;
-                    }
-                    var cht = this.getParameterByName('cht',urlValue);
-                    var chd = this.getParameterByName('chd',urlValue);
-                    if ((cht !== undefined && cht !== null && cht !== '') &&
-                            (chd !== undefined && chd !== null && chd !== '')) {
-                        this.urlField.setValue(urlValue);
-                        this.fireEvent("change", this.symbolizer);
+                    if (value) {
+                        var colour = value.split(',');
+                        var colors = [];
+                        for (var i = 0; i < colour.length; i++) {
+                            var color = colour[i];
+                            colors.push(color.trim());
+                        }
+                        var colorValue = colors.join(',');
+                        
+                        // query
+                        var queryField = this.queryField.getValue();
+                        if(queryField !== undefined && queryField !== null && queryField !== ''){
+                            var queryObj = this.parseLabelFromQuery(queryField);
+                            var querySection = queryObj.query;
+                            var colorArr = colors;
+                            var colorLen = colorArr.length;
+                            var querySecLen = querySection.length;
+                            if(colorLen !== querySecLen){
+                                for(var i=colorLen; i<querySecLen; i++){
+                                    colorArr.push(this.default_color[i]);
+                                }
+                                colorValue = colorArr.join(',');
+                            }
+                            this.colorField.setValue(colorValue);
+                        }
+                        // end query
+                        
+                        var urlField = this.urlField.getValue();
+                        if (urlField !== undefined && urlField !== null && urlField !== '') {
+                            this.defaultUrl = urlField;
+                        }
+                        var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chco', colorValue);
+                        if (!Ext.isEmpty(urlValue)) {
+                            this.symbolizer["externalGraphic"] = urlValue;
+                        }
+                        var cht = this.getParameterByName('cht', urlValue);
+                        var chd = this.getParameterByName('chd', urlValue);
+                        if ((cht !== undefined && cht !== null && cht !== '') &&
+                                (chd !== undefined && chd !== null && chd !== '')) {
+                            this.urlField.setValue(urlValue);
+                            this.fireEvent("change", this.symbolizer);
+                        }
                     }
                 },
                 scope: this
@@ -388,7 +483,7 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                 xtype: "textfield",
                 name: "size",
                 fieldLabel: this.sizeText,
-                value: 10,
+                value: this.symbolizer["pointRadius"] && this.symbolizer["pointRadius"] * 2,
                 listeners: {
                     change: function (field, value) {
                         this.symbolizer["pointRadius"] = value / 2;
@@ -455,6 +550,26 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
         } else {
             return uri + separator + key + "=" + value;
         }
+    },
+    parseLabelFromQuery: function (value) {
+        var totLabels = value.split(',');
+        var labels = [];
+        var sections = [];
+        for (var i = 0; i < totLabels.length; i++) {
+            var label = totLabels[i];
+            var section = label.trim();
+            var secs = section.split('=');
+            if (secs.length > 1) {
+                sections[i] = secs[1];
+                labels[i] = secs[0].replace(' ', '');
+            } else {
+                sections[i] = secs[0];
+            }
+        }
+        return {
+            query: sections,
+            label: labels
+        };
     }
 });
 
