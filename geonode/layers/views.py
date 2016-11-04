@@ -783,7 +783,6 @@ def layer_publish(request, layer_pk):
 @login_required
 def layer_approve(request, layer_pk):
     if request.method == 'POST':
-        import pdb;pdb.set_trace()
         form = ResourceApproveForm(request.POST)
         if form.is_valid():
 
