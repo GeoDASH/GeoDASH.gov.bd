@@ -773,8 +773,11 @@ class MapsWithFavoriteAndDoocked(TypeFilteredResource):
         return super(MapsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
-
 class GroupsWithFavoriteAndDoocked(TypeFilteredResource):
+
+    detail_url = fields.CharField()
+    def dehydrate_detail_url(self, bundle):
+        return reverse('group_detail', args=[bundle.obj.slug])
     class Meta:
         queryset = GroupProfile.objects.filter(favoriteresource__active=True)
         if settings.RESOURCE_PUBLISHING:
