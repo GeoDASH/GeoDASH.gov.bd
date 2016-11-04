@@ -92,7 +92,7 @@
                                 {% endif %}
                                 {% if user.is_authenticated %}
                                     <li id="nav_maps">
-                                      <a href="{% url "layer_upload" %}">{% trans "Upload Layers" %}</a>
+                                      <a href="{% url "layer_upload" 'member'%}">{% trans "Upload Layers" %}</a>
                                     </li>
                                 {% endif %}
                             </ul>
@@ -531,7 +531,7 @@
         </div>
         <ul class="c-menu__items">
             <li class="c-menu__item">
-                <a href="{% url "layer_upload" %}" class="c-menu__link">
+                <a href="{% url "layer_upload" 'member' %}" class="c-menu__link">
                     <i class="fa fa-cloud-upload"></i>
                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Upload Layers" %}</span>
                 </a>
