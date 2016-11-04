@@ -47,8 +47,8 @@ msgstr "সংগঠন"
 msgid "OSM Layer Wizard"
 msgstr "OSM লেয়ার উইজার্ড"
 
-msgid "AN OPEN SOURCE GEOSPATIAL DATA"
-msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা"
+msgid "AN OPEN SOURCE GEOSPATIAL DATA MANAGEMENT & VISUALIZATION PLATFORM"
+msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা ব্যবস্থাপনা ও মানসচিত্র গঠন চিত্র স্ফুটন প্ল্যাটফর্ম"
 
 msgid "MANAGEMENT & VISUALIZATION"
 msgstr "ব্যবস্থাপনা ও মানসচিত্র গঠন চিত্র স্ফুটন"
@@ -68,8 +68,8 @@ msgstr "কিভাবে এটা কাজ করে"
 msgid "Recent Activities"
 msgstr "সাম্প্রতিক কার্যক্রম"
 
-msgid "To create a new map go to your contributed or existing layers and click the “create map” link."
-msgstr "একটি নতুন মানচিত্র তৈরি করতে  আপনার অবদান বা বিদ্যমান স্তর এ যান এবং মানচিত্র তৈরি করুন লিংকে ক্লিক করুন."
+msgid "To create a new map go to your contributed or existing layers and click the “create map” link.This will take you to the “Map Composer” with a base layer loaded.To add data layers from GeoDASH click on the plus button located upper left side of the screen.This will open a dialog listing all the layers available on the GeoDASH.Select the layers you wish to add, then hit the Add Layers button."
+msgstr "একটি নতুন মানচিত্র তৈরি করতে  আপনার অবদান বা বিদ্যমান স্তর এ যান এবং মানচিত্র তৈরি করুন লিংকে ক্লিক করুন.এইটা আপনাকে নিবে ম্যাপ কম্পোজার  - বেস স্তর লোডের  সঙ্গে.GeoDASH এর উপরের বামদিকে  অবস্থিত পর্দার প্লাস বাটন ক্লিক করুন ডেটা লেয়ার যোগ করার জন্য.এই ডায়ালগ সব স্তর GeoDASH উপলব্ধ তালিকা খুলবে.স্তর আপনি যোগ করতে চান তা নির্বাচন করুন, তারপর লেয়ার যোগ বাটন আঘাত করুন."
 
 msgid "This will take you to the “Map Composer” with a base layer loaded."
 msgstr "এইটা আপনাকে নিবে ম্যাপ কম্পোজার  - বেস স্তর লোডের  সঙ্গে ."
@@ -116,8 +116,8 @@ msgstr "স্তরসমূহ একটি মানচিত্র বিষ
 msgid "Interoperability"
 msgstr "আন্তক্রিয়া"
 
-msgid "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content."
-msgstr "GeoDASH ওপেন ভূস্থানিক সাহচর্য (OGC), ব্যবস্থাপনা শেয়ারিং, এবং ভূস্থানিক এবং অ ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্য এন্টারপ্রাইজ জুড়ে প্রোগ্রাম মধ্যে উৎপন্ন নিখুত অনুবর্তী মান হয়."
+msgid "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content.You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces.You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc."
+msgstr "GeoDASH ওপেন ভূস্থানিক সাহচর্য (OGC), ব্যবস্থাপনা শেয়ারিং, এবং ভূস্থানিক এবং অ ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্য এন্টারপ্রাইজ জুড়ে প্রোগ্রাম মধ্যে উৎপন্ন নিখুত অনুবর্তী মান হয়.আপনি সম্প্রদায় সম্পৃক্ততা / সম্পাদনা / তথ্য অনলাইন, ক্ষমতাশালী, বিতরণ / versioned স্বজ্ঞাত ইন্টারফেস সঙ্গে স্থাপত্যে ভিড়-গুন মাধ্যমে সহযোগিতা করতে পারেন.আপনি এই ধরনের ওপেনস্ট্রীটম্যাপ, বিং, MapBox, CloudMade, MapQuest ইত্যাদি অন্যান্য ওপেন সোর্স WMS সেবা, মত ArcGIS বা QGIS পরিবেশের আপনার মানচিত্র প্রকল্পের মধ্যে ভৌগোলিক ড্যাশ WMS স্তর ব্যবহার করতে পারেন."
 
 msgid "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces."
 msgstr "আপনি সম্প্রদায় সম্পৃক্ততা / সম্পাদনা / তথ্য অনলাইন, ক্ষমতাশালী, বিতরণ / versioned স্বজ্ঞাত ইন্টারফেস সঙ্গে স্থাপত্যে ভিড়-গুন মাধ্যমে সহযোগিতা করতে পারেন."
@@ -134,8 +134,8 @@ msgstr "3d তে আপনার মানচিত্র দেখুন"
 msgid "Share your map"
 msgstr "আপনার মানচিত্র ভাগ করুন"
 
-msgid "Share your map via e-mail, LinkedIn, Twitter, Facebook etc."
-msgstr "আপনার মানচিত্র ভাগ করুন ই-মেইলের মাধ্যমে, লিঙ্কডইন, টুইটার, ফেসবুক ইত্যাদি."
+msgid "Share your map via e-mail, LinkedIn, Twitter, Facebook etc.to maximize data sharing and promote your work.You can also publish and embed your map right away."
+msgstr "আপনার মানচিত্র ভাগ করুন ই-মেইলের মাধ্যমে, লিঙ্কডইন, টুইটার, ফেসবুক ইত্যাদি.তথ্য ভাগ এবং পূর্ণবিস্তার আপনার কাজ উন্নীত করা.এছাড়াও আপনি প্রকাশ করতে এবং আপনার মানচিত্র এম্বেড সরাসরি করতে পারেন."
 
 msgid "to maximize data sharing and promote your work."
 msgstr "তথ্য ভাগ এবং পূর্ণবিস্তার আপনার কাজ উন্নীত করা."
