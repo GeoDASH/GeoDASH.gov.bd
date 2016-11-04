@@ -46,6 +46,10 @@
     <![endif]-->
     <!--<link rel="search" type="application/opensearchdescription+xml" href="/catalogue/opensearch" title="GeoNode Search"/>-->
       <script type="text/javascript">
+        String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
         var GEODASH_USER_ID = 0;
         var JS_STATIC_URL = '{{ STATIC_URL }}';
         var IS_LAYERS_PAGE_FOR_CART = false;

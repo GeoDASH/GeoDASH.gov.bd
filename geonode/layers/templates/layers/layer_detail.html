@@ -625,15 +625,18 @@
         $(document).ready(function () {
             addChartLegend(legend_clolor_str);
         });
+
         function addChartLegend(uri) {
             //console.log(uri);
             uri = uri.trim();
+            uri = uri.replaceAll('&amp;','&');
             if(uri !== ''){
                 var chartLegend = '';
                 var colors = getUriParameterByName('chco', uri);
                 var labels = getUriParameterByName('label', uri);
                 //console.log(colors,labels);
                 if(colors !== undefined && colors !== '' && labels !== undefined && labels !== ''){
+                    console.log(colors, labels);
                     var colorList = colors.split(',');
                     var labelList = labels.split('|');
                     //console.log(colorList,labelList);
