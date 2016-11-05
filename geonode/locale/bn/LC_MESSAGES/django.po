@@ -47,8 +47,20 @@ msgstr "সংগঠন"
 msgid "OSM Layer Wizard"
 msgstr "OSM লেয়ার উইজার্ড"
 
-msgid "AN OPEN SOURCE GEOSPATIAL DATA MANAGEMENT & VISUALIZATION PLATFORM"
+msgid "AN OPEN SOURCE GEOSPATIAL DATA    MANAGEMENT & VISUALIZATION    PLATFORM"
 msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা ব্যবস্থাপনা ও মানসচিত্র গঠন চিত্র স্ফুটন প্ল্যাটফর্ম"
+
+msgid "LAYERS ARE THE CONTENTS OF A MAP. CREATE A MAP USING SINGLE OR  MULTIPLE LAYERS AT YOUR FINGER TIP"
+msgstr "স্তর একটি মানচিত্রের বিষয়বস্তুর. আপনার অঙ্গুলি স্পর্শ দ্বারা একক বা একাধিক স্তর কর্তৃক তৈরী  করুন একটি মানচিত্র"
+
+msgid "AN OGC STANDARD INTEROPERABLE     PLATFORM FOR MANAGING,SHARING & ANALYZING GEOSPATIAL CONTENT"
+msgstr "ব্যবস্থাপনা , ভাগ করা এবং ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্য একটি OGC মানক অন্তর্চালিত প্ল্যাটফর্ম"
+
+msgid "A MAPPING PLATFORM TO CREATE      CUSTOM AND STYLISH MAPS"
+msgstr "কাস্টম এবং আড়ম্বরপূর্ণ মানচিত্র তৈরি করতে একটি ম্যাপিং প্ল্যাটফর্ম"
+
+msgid "SHARE YOUR MAPS WITH FRIENDS ON   FACEBOOK, TWITTER, GOOGLE+ &   EMAIL TO MAXIMIZE DATA SHARING"
+msgstr "বন্ধুদের সঙ্গে আপনার মানচিত্র ভাগ ফেসবুক, টুইটার, গুগল+  এবং  ইমেল তথ্য পূর্ণবিস্তার"
 
 msgid "MANAGEMENT & VISUALIZATION"
 msgstr "ব্যবস্থাপনা ও মানসচিত্র গঠন চিত্র স্ফুটন"

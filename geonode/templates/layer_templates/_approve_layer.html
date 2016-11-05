@@ -2,7 +2,7 @@
 {% load i18n %}
 
 <div class="modal fade" id="_approve_layer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:500px;">
+    <div class="modal-dialog" style="width:600px;">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -17,8 +17,6 @@
           <p class="message">}</p>
           <p class="extra_content"></p>
         </div>
-
-
           <form method="post" action="{% url "layer-approve" resource.id %}">
               {% csrf_token %}
                  <div style="padding:0px 50px 0px 50px;">
@@ -31,10 +29,7 @@
               <button type="submit" class="btn btn-primary" >{% trans "Yes" %}</button>
               </div>
               <div class="block-separator"></div>
-              </form>
-
-
-
+          </form>
       </div>
     </div>
 

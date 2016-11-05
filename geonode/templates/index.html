@@ -50,9 +50,9 @@
                                   <div class="carousel-caption">
                                       <div class="gd-slider-title">{{ slider.title }}</div>
                                       <div class="gd-slider-msg">
-                                          {{ slider.descripton|slice:"0:31" }}<br>
-                                          {{ slider.descripton|slice:"31:58" }}<br>
-                                          {{ slider.descripton|slice:"58:95" }}
+                                          {% trans slider.descripton|slice:"0:34" %}<br>
+                                          {% trans slider.descripton|slice:"34:64" %}<br>
+                                          {% trans slider.descripton|slice:"64:100" %}
                                       </div>
                                       <div class="gd-slider-btn">
                                           <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
