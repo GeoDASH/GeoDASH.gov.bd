@@ -500,199 +500,199 @@
         {% endif %}
       {% endblock %}
       <!-- Feature Highlights -->
-      {% block index_featurehighlight %}
-        {% if is_feature_highlights or request.user.is_authenticated %}
-            <div id="gd-featurehighlight" style="background:{{ feature_highlights_of_geodash_section.background_color }}">
-                <div class="block-separator"></div>
-                <div class="container">
-                    <div class="gd-control">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="header-title text-center"> {% trans feature_highlights_of_geodash_section.title %} </div>
-                                <!--<div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>-->
-                            </div>
-                        </div>
-                        <div class="gd-featurehighlight-main">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div id="gd-featurehighlight-left">
-                                        <div class="title">
-                                            {% if not user.is_authenticated %}
-                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
-                                            {% endif %}
-                                        </div>
-                                        <div class="description">
-                                            {% trans feature_highlights_of_geodash_section.description %}
-                                            <!--{% trans "Layers are the contents of a map." %}-->
-                                            <!--{% trans "To get started adding layers," %}-->
-                                            <!--{% trans "sign in to the site," %}-->
-                                            <!--{% trans "click on upload your layers/data," %}-->
-                                            <!--{% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}-->
-                                            <!--{% trans "Make sure your data projection is WGS 84 or BTM." %}-->
-                                        </div>
-                                        <!--<div class="description" style="float:right;font-size:14px;">-->
-                                            <!--{% if not user.is_authenticated %}-->
-                                            <!--<a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->
-                                            <!--{% endif %}-->
-                                            <!--{% if user.is_authenticated %}-->
-                                            <!--<a href="{% url "layer_upload" 'member' %}">{% trans "Check Out Details" %}</a>-->
-                                            <!--{% endif %}-->
-                                        <!--</div>-->
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div id="gd-featurehighlight-right">
-                                        <!--<img src="{{ STATIC_URL }}geonode/images/highlightmap.png" class="img-responsive" /> -->
-                                        <section id="data" class="Section Section--datacards DataLibrary js-DataLibrary">
-                                            <div class="CardsData CardsData--home">
-                                                <ul class="CardsData-inner">
-                                                    {% if feature_highlights_of_geodash_section.image1 %}
-                                                    <li class="CardsData-item CardsData-item--01">
-                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image1 }}" alt="Data" width="300" height="300">
-                                                    </li>
-                                                    {% endif %}
-                                                    {% if feature_highlights_of_geodash_section.image2 %}
-                                                    <li class="CardsData-item CardsData-item--02">
-                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image2 }}" alt="Data" width="300" height="300">
-                                                    </li>
-                                                    {% endif %}
-                                                    {% if feature_highlights_of_geodash_section.image3 %}
-                                                    <li class="CardsData-item CardsData-item--03">
-                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image3 }}" alt="Data" width="300" height="300">
-                                                    </li>
-                                                    {% endif %}
-                                                    {% if feature_highlights_of_geodash_section.image4 %}
-                                                    <li class="CardsData-item CardsData-item--04">
-                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image4 }}" alt="Data" width="300" height="300">
-                                                    </li>
-                                                    {% endif %}
-                                                    {% if feature_highlights_of_geodash_section.image5 %}
-                                                    <li class="CardsData-item CardsData-item--05">
-                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image5 }}" alt="Data" width="300" height="300">
-                                                    </li>
-                                                    {% endif %}
-                                                </ul>
-                                            </div>
-                                        </section>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endblock %}
+{#      {% block index_featurehighlight %}#}
+{#        {% if is_feature_highlights or request.user.is_authenticated %}#}
+{#            <div id="gd-featurehighlight" style="background:{{ feature_highlights_of_geodash_section.background_color }}">#}
+{#                <div class="block-separator"></div>#}
+{#                <div class="container">#}
+{#                    <div class="gd-control">#}
+{#                        <div class="row">#}
+{#                            <div class="col-md-12">#}
+{#                                <div class="header-title text-center"> {% trans feature_highlights_of_geodash_section.title %} </div>#}
+{#                                <!--<div class="header-title text-center">{% trans "Feature highlights of GeoDASH" %}</div>-->#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="gd-featurehighlight-main">#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-6">#}
+{#                                    <div id="gd-featurehighlight-left">#}
+{#                                        <div class="title">#}
+{#                                            {% if not user.is_authenticated %}#}
+{#                                            <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>#}
+{#                                            {% endif %}#}
+{#                                            {% if user.is_authenticated %}#}
+{#                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+{#                                        <div class="description">#}
+{#                                            {% trans feature_highlights_of_geodash_section.description %}#}
+{#                                            <!--{% trans "Layers are the contents of a map." %}-->#}
+{#                                            <!--{% trans "To get started adding layers," %}-->#}
+{#                                            <!--{% trans "sign in to the site," %}-->#}
+{#                                            <!--{% trans "click on upload your layers/data," %}-->#}
+{#                                            <!--{% trans "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)." %}-->#}
+{#                                            <!--{% trans "Make sure your data projection is WGS 84 or BTM." %}-->#}
+{#                                        </div>#}
+{#                                        <!--<div class="description" style="float:right;font-size:14px;">-->#}
+{#                                            <!--{% if not user.is_authenticated %}-->#}
+{#                                            <!--<a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->#}
+{#                                            <!--{% endif %}-->#}
+{#                                            <!--{% if user.is_authenticated %}-->#}
+{#                                            <!--<a href="{% url "layer_upload" 'member' %}">{% trans "Check Out Details" %}</a>-->#}
+{#                                            <!--{% endif %}-->#}
+{#                                        <!--</div>-->#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-6">#}
+{#                                    <div id="gd-featurehighlight-right">#}
+{#                                        <!--<img src="{{ STATIC_URL }}geonode/images/highlightmap.png" class="img-responsive" /> -->#}
+{#                                        <section id="data" class="Section Section--datacards DataLibrary js-DataLibrary">#}
+{#                                            <div class="CardsData CardsData--home">#}
+{#                                                <ul class="CardsData-inner">#}
+{#                                                    {% if feature_highlights_of_geodash_section.image1 %}#}
+{#                                                    <li class="CardsData-item CardsData-item--01">#}
+{#                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image1 }}" alt="Data" width="300" height="300">#}
+{#                                                    </li>#}
+{#                                                    {% endif %}#}
+{#                                                    {% if feature_highlights_of_geodash_section.image2 %}#}
+{#                                                    <li class="CardsData-item CardsData-item--02">#}
+{#                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image2 }}" alt="Data" width="300" height="300">#}
+{#                                                    </li>#}
+{#                                                    {% endif %}#}
+{#                                                    {% if feature_highlights_of_geodash_section.image3 %}#}
+{#                                                    <li class="CardsData-item CardsData-item--03">#}
+{#                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image3 }}" alt="Data" width="300" height="300">#}
+{#                                                    </li>#}
+{#                                                    {% endif %}#}
+{#                                                    {% if feature_highlights_of_geodash_section.image4 %}#}
+{#                                                    <li class="CardsData-item CardsData-item--04">#}
+{#                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image4 }}" alt="Data" width="300" height="300">#}
+{#                                                    </li>#}
+{#                                                    {% endif %}#}
+{#                                                    {% if feature_highlights_of_geodash_section.image5 %}#}
+{#                                                    <li class="CardsData-item CardsData-item--05">#}
+{#                                                        <img src="/uploaded/{{ feature_highlights_of_geodash_section.image5 }}" alt="Data" width="300" height="300">#}
+{#                                                    </li>#}
+{#                                                    {% endif %}#}
+{#                                                </ul>#}
+{#                                            </div>#}
+{#                                        </section>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#      {% endblock %}#}
       <!-- Inter Probability -->
-      {% block index_interprobability %}
-        {% if is_interportability or request.user.is_authenticated %}
-            <div id="gd-interprobability" style="background:{{ is_interportability_section.background_color }}">
-                <div class="container">
-                    <div class="gd-control">
-                        <div class="gd-interprobability-main">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div id="gd-interprobability-right">
-                                        <div class="title" style="text-align:center;">{% trans is_interportability_section.title %}</div>
-                                        <!--<div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>-->
-                                        <div class="description">
-                                            {% trans is_interportability_section.description %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                </div>
-                                <div class="col-md-9">
-                                    <div id="gd-interprobability-left">
-                                        {% if is_interportability_section.image1 %}
-                                        <img src="/uploaded/{{ is_interportability_section.image1 }}" style="height:380px;" class="img-responsive" />
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endblock %}
+{#      {% block index_interprobability %}#}
+{#        {% if is_interportability or request.user.is_authenticated %}#}
+{#            <div id="gd-interprobability" style="background:{{ is_interportability_section.background_color }}">#}
+{#                <div class="container">#}
+{#                    <div class="gd-control">#}
+{#                        <div class="gd-interprobability-main">#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-12">#}
+{#                                    <div id="gd-interprobability-right">#}
+{#                                        <div class="title" style="text-align:center;">{% trans is_interportability_section.title %}</div>#}
+{#                                        <!--<div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>-->#}
+{#                                        <div class="description">#}
+{#                                            {% trans is_interportability_section.description %}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-2">#}
+{#                                </div>#}
+{#                                <div class="col-md-9">#}
+{#                                    <div id="gd-interprobability-left">#}
+{#                                        {% if is_interportability_section.image1 %}#}
+{#                                        <img src="/uploaded/{{ is_interportability_section.image1 }}" style="height:380px;" class="img-responsive" />#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#      {% endblock %}#}
       <!-- Make Pretty -->
-      {% block index_makepretty %}
-        {% if is_pretty or request.user.is_authenticated %}
-            <div id="gd-makepretty" style="background:{{ make_pretty_maps_with_geodash_section.background_color }}">
-                <div class="container">
-                    <div class="gd-control">
-                        <div class="gd-makepretty-main">
-                            <!--<div class="row">-->
-                                <!--<div class="col-md-8">-->
-                                    <!--<div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div id="gd-makepretty-right">
-                                        <div class="description">
-                                            <div class="title"><a href="{% url "new_map" %}">{% trans make_pretty_maps_with_geodash_section.title %}</a></div>
-                                            <!--<div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>-->
-                                            {% trans make_pretty_maps_with_geodash_section.description %}
-                                        </div>
-                                        <!--<div class="description" style="float:right;font-size:14px;">-->
-                                            <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->
-                                        <!--</div>-->
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div id="gd-makepretty-left" style="float: right;">
-                                        {% if make_pretty_maps_with_geodash_section.image1 %}
-                                        <img src="/uploaded/{{ make_pretty_maps_with_geodash_section.image1 }}" style="height:380px;" class="img-responsive" />
-                                        {% endif %}
-                                        <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->
-                                            <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->
-                                            <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->
-                                        <!--</div>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endblock %}
+{#      {% block index_makepretty %}#}
+{#        {% if is_pretty or request.user.is_authenticated %}#}
+{#            <div id="gd-makepretty" style="background:{{ make_pretty_maps_with_geodash_section.background_color }}">#}
+{#                <div class="container">#}
+{#                    <div class="gd-control">#}
+{#                        <div class="gd-makepretty-main">#}
+{#                            <!--<div class="row">-->#}
+{#                                <!--<div class="col-md-8">-->#}
+{#                                    <!--<div class="title">{% trans "Make pretty maps with GeoDASH" %}</div>-->#}
+{#                                <!--</div>-->#}
+{#                            <!--</div>-->#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-5">#}
+{#                                    <div id="gd-makepretty-right">#}
+{#                                        <div class="description">#}
+{#                                            <div class="title"><a href="{% url "new_map" %}">{% trans make_pretty_maps_with_geodash_section.title %}</a></div>#}
+{#                                            <!--<div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>-->#}
+{#                                            {% trans make_pretty_maps_with_geodash_section.description %}#}
+{#                                        </div>#}
+{#                                        <!--<div class="description" style="float:right;font-size:14px;">-->#}
+{#                                            <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->#}
+{#                                        <!--</div>-->#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-6">#}
+{#                                    <div id="gd-makepretty-left" style="float: right;">#}
+{#                                        {% if make_pretty_maps_with_geodash_section.image1 %}#}
+{#                                        <img src="/uploaded/{{ make_pretty_maps_with_geodash_section.image1 }}" style="height:380px;" class="img-responsive" />#}
+{#                                        {% endif %}#}
+{#                                        <!--<div class="embed-responsive embed-responsive-16by9" style="width:100%;">-->#}
+{#                                            <!--&lt;!&ndash;<video id="sampleMovie" src="{{ STATIC_URL }}geonode/video/gd-pretty.mov" controls></video>&ndash;&gt;-->#}
+{#                                            <!--<iframe class="embed-responsive-item" style="width:100%;height:380px;" src="{{ STATIC_URL }}geonode/video/gd-pretty.gif"></iframe>-->#}
+{#                                        <!--</div>-->#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#      {% endblock %}#}
       <!-- Make 3d -->
-      {% block index_make3d %}
-        {% if is_3dmap or request.user.is_authenticated %}
-            <div id="gd-3dsection" style="background:{{ view_your_maps_in_3d_section.background_color }}">
-                <div class="container">
-                    <div class="gd-control">
-                        <div class="gd-3dsection-main">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div id="gd-3dsection-left" style="float: left;">
-                                        {% if view_your_maps_in_3d_section.image1 %}
-                                        <img src="/uploaded/{{ view_your_maps_in_3d_section.image1 }}" style="height:380px;" class="img-responsive" />
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div id="gd-3dsection-right">
-                                        <div class="description">
-                                            <div class="title">{% trans view_your_maps_in_3d_section.title %}</div>
-                                            <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
-                                            {% trans view_your_maps_in_3d_section.description %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endblock %}
+{#      {% block index_make3d %}#}
+{#        {% if is_3dmap or request.user.is_authenticated %}#}
+{#            <div id="gd-3dsection" style="background:{{ view_your_maps_in_3d_section.background_color }}">#}
+{#                <div class="container">#}
+{#                    <div class="gd-control">#}
+{#                        <div class="gd-3dsection-main">#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-5">#}
+{#                                    <div id="gd-3dsection-left" style="float: left;">#}
+{#                                        {% if view_your_maps_in_3d_section.image1 %}#}
+{#                                        <img src="/uploaded/{{ view_your_maps_in_3d_section.image1 }}" style="height:380px;" class="img-responsive" />#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-6">#}
+{#                                    <div id="gd-3dsection-right">#}
+{#                                        <div class="description">#}
+{#                                            <div class="title">{% trans view_your_maps_in_3d_section.title %}</div>#}
+{#                                            <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->#}
+{#                                            {% trans view_your_maps_in_3d_section.description %}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#      {% endblock %}#}
       <!-- What GeoDASH offer? -->
       {% block index_geodashoffer %}
         {% if is_what_geodash_offer or request.user.is_authenticated %}
@@ -880,41 +880,41 @@
         <!--{% endif %}-->
       <!--{% endblock %}-->
       <!-- Share Map -->
-      {% block index_sharemap %}
-        {% if is_share_map or request.user.is_authenticated %}
-            <div id="gd-sharemap" style="background:{{ share_your_map_section.background_color }}">
-                <div class="container">
-                    <div class="gd-sharemap-main">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div id="gd-makepretty-left" class="gd-sharemap-left-img">
-                                    <img src="/uploaded/{{ share_your_map_section.image1 }}" class="img-responsive"  />
-                                </div>
-                            </div>
-                            <div class="col-md-offset-1 col-md-4">
-                                <div id="gd-sharemap-content">
-                                    <div class="title">{% trans share_your_map_section.title %}</div>
-                                    <!--<div class="title">{% trans "Share your map" %}</div>-->
-                                    <div class="description">
-                                        {% trans share_your_map_section.description %}
-                                    </div>
-                                    <!--<div class="title">{% trans "Share your map" %}</div>-->
-                                    <!--<div class="description">-->
-                                        <!--{% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}-->
-                                        <!--{% trans "to maximize data sharing and promote your work." %}-->
-                                        <!--{% trans "You can also publish and embed your map right away." %}-->
-                                    <!--</div>-->
-                                    <!--<div class="description" style="float:right;font-size:14px;color:#fff;">-->
-                                        <!--<a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>-->
-                                    <!--</div>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endblock %}
+{#      {% block index_sharemap %}#}
+{#        {% if is_share_map or request.user.is_authenticated %}#}
+{#            <div id="gd-sharemap" style="background:{{ share_your_map_section.background_color }}">#}
+{#                <div class="container">#}
+{#                    <div class="gd-sharemap-main">#}
+{#                        <div class="row">#}
+{#                            <div class="col-md-6">#}
+{#                                <div id="gd-makepretty-left" class="gd-sharemap-left-img">#}
+{#                                    <img src="/uploaded/{{ share_your_map_section.image1 }}" class="img-responsive"  />#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="col-md-offset-1 col-md-4">#}
+{#                                <div id="gd-sharemap-content">#}
+{#                                    <div class="title">{% trans share_your_map_section.title %}</div>#}
+{#                                    <!--<div class="title">{% trans "Share your map" %}</div>-->#}
+{#                                    <div class="description">#}
+{#                                        {% trans share_your_map_section.description %}#}
+{#                                    </div>#}
+{#                                    <!--<div class="title">{% trans "Share your map" %}</div>-->#}
+{#                                    <!--<div class="description">-->#}
+{#                                        <!--{% trans "Share your map via e-mail, LinkedIn, Twitter, Facebook etc." %}-->#}
+{#                                        <!--{% trans "to maximize data sharing and promote your work." %}-->#}
+{#                                        <!--{% trans "You can also publish and embed your map right away." %}-->#}
+{#                                    <!--</div>-->#}
+{#                                    <!--<div class="description" style="float:right;font-size:14px;color:#fff;">-->#}
+{#                                        <!--<a href="" %}" style="font-size:14px;color:#fff;">{% trans "Check Out Details" %}</a>-->#}
+{#                                    <!--</div>-->#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#      {% endblock %}#}
       {% block index_partners %}
         {% if is_our_partners or request.user.is_authenticated %}
             <div id="gd-partners" style="background:{{ our_partners_section.background_color }}">
