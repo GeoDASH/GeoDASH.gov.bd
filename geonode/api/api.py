@@ -528,10 +528,17 @@ class MakeFeatured(TypeFilteredResource):
                         if status == True:
                             permissions = _perms_info_json(layer)
                             perm_dict = json.loads(permissions)
-                            if 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
-                                perm_dict['users']['AnonymousUser'].remove('download_resourcebase')
-                            if 'download_resourcebase' in perm_dict['groups']['anonymous']:
-                                perm_dict['groups']['anonymous'].remove('download_resourcebase')
+                            try:
+                                if 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                                    perm_dict['users']['AnonymousUser'].remove('download_resourcebase')
+                            except:
+                                pass
+
+                            try:
+                                if 'download_resourcebase' in perm_dict['groups']['anonymous']:
+                                    perm_dict['groups']['anonymous'].remove('download_resourcebase')
+                            except:
+                                pass
 
                             layer.set_permissions(perm_dict)
 
