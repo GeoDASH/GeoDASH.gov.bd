@@ -1199,7 +1199,7 @@ toolbar_right .border-dotted {
     margin-top:-10px;
  }
  .home-modal-border{
-    border:1px solid #3896e2;
+    /*border:1px solid #3896e2;*/
 }
 .home-modal-hbg{
     background:rgb(211,211,211);

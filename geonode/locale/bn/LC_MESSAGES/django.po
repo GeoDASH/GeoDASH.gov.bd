@@ -44,6 +44,15 @@ msgstr "ENGLISH"
 msgid "Organizations"
 msgstr "সংগঠন"
 
+msgid "English"
+msgstr "ইংরেজি"
+
+msgid "Bengali"
+msgstr "বাংলা"
+
+msgid "GeoDASH Wiki"
+msgstr "GeoDASH উইকিপিডিয়া"
+
 msgid "OSM Layer Wizard"
 msgstr "OSM লেয়ার উইজার্ড"
 
