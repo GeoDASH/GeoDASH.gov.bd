@@ -969,13 +969,9 @@ def style_chart_legend_color(layer):
 
 
 def finding_xlink(dic):
-    # import pdb;pdb.set_trace()
-    hh = ''
+
     for key, value in dic.iteritems():
-        print key
         if key == '@xlink:href':
-            print value
-            hh = value
             return value
 
         if isinstance(value, dict):
@@ -984,11 +980,4 @@ def finding_xlink(dic):
                 return item
 
 
-def _finditem(obj, key):
-    if key in obj: return obj[key]
-    for k, v in obj.items():
-        if isinstance(v,dict):
-            item = _finditem(v, key)
-            if item is not None:
-                return item
 
