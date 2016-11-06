@@ -196,12 +196,6 @@ class SliderImageCreate(CreateView):
     def get_success_url(self):
         return reverse('section-update-view', kwargs={'section_pk': self.kwargs['section_pk']})
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        section = SectionManagementTable.objects.get(pk=self.kwargs['section_pk'])
-        self.object.section = section
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
 
     def get_form_class(self):
         slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug

@@ -25,6 +25,7 @@ import shutil
 import traceback
 import requests
 import xmltodict
+import  requests
 
 from guardian.shortcuts import get_perms
 
@@ -46,6 +47,8 @@ from django.forms.models import inlineformset_factory
 from django.db import transaction
 from django.db.models import F
 from django.forms.util import ErrorList
+from requests.auth import HTTPBasicAuth
+from geonode.settings import  OGC_SERVER
 
 from notify.signals import notify
 
@@ -360,14 +363,28 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
                 if not getattr(layer, layer._meta.get_field(field).name):
                     messages.info(request, 'Please update layer metadata, missing some informations')
                     break
-    link = ''
-    try:
-        d = xmltodict.parse(layer.default_style.sld_body)
-        dd = d['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
-        ['sld:Rule']['sld:PointSymbolizer']
-        link = dd['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
-    except:
-        pass
+
+
+    # layer_name = layer.service_typename
+    # geoserver_user = OGC_SERVER['default']['USER']
+    # geoserver_password = OGC_SERVER['default']['PASSWORD']
+    # style_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/layers/" + layer_name + ".json"
+    # response1 = requests.get(style_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    # sld_file_name_url = response1.json()['layer']['defaultStyle']['href']
+    # response2 = requests.get(sld_file_name_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    # file_name = response2.json()['style']['filename']
+    # sld_file_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/styles/" + file_name
+    # sld_content = requests.get(sld_file_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password)).content
+    #
+    # xlink = ''
+    # try:
+    #     dict1 = xmltodict.parse(sld_content)
+    #     dict2 = dict1['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
+    #     ['sld:Rule']['sld:PointSymbolizer']
+    #     xlink = dict2['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
+    # except:
+    #     pass
+    xlink = style_chart_legend_color(layer)
 
     context_dict = {
         "resource": layer,
@@ -385,7 +402,7 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "deny_form": deny_form,
         "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
         "status": layer.status,
-        "chart_link" : link
+        "chart_link" : xlink
     }
 
     context_dict["viewer"] = json.dumps(
@@ -918,26 +935,60 @@ def layer_delete(request, layer_pk):
         return HttpResponseRedirect(reverse('member-workspace-layer'))
 
 
-def approve_layer_when_uploads(layer):
-    """
-    This method executes if an organization admin uploads layer and wants to approve directly
-    :param layer_pk:
-    :return:
-    """
-    # group = organization
-    # layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
-    # layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
-    layer.status = 'ACTIVE'
-    # layer.last_auditor = user
-    layer.save()
+def style_chart_legend_color(layer):
+    layer_name = layer.service_typename
+    geoserver_user = OGC_SERVER['default']['USER']
+    geoserver_password = OGC_SERVER['default']['PASSWORD']
+    style_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/layers/" + layer_name + ".json"
+    response1 = requests.get(style_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    sld_file_name_url = response1.json()['layer']['defaultStyle']['href']
+    response2 = requests.get(sld_file_name_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    file_name = response2.json()['style']['filename']
+    sld_file_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/styles/" + file_name
+    sld_content = requests.get(sld_file_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password)).content
+    sld_content = sld_content.replace('\r', '')
+    sld_content = sld_content.replace('\n', '')
 
-    # permissions = _perms_info_json(layer)
-    # perm_dict = json.loads(permissions)
-    # layer_submission_activity.is_audited = True
-    # layer_submission_activity.save()
-    #
-    # layer_audit_activity.comment_subject = comment_subject
-    # layer_audit_activity.comment_body = comment_body
-    # layer_audit_activity.result = 'APPROVED'
-    # layer_audit_activity.auditor = request.user
-    # layer_audit_activity.save()
+    try:
+        dict1 = xmltodict.parse(sld_content)
+    except:
+        pass
+    else:
+        xlink = finding_xlink(dict1)
+    #     dict2 = dict1['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
+    #     ['sld:Rule']['sld:PointSymbolizer']
+    #     xlink = dict2['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
+    # except:
+    #     pass
+
+    if xlink:
+        return xlink
+    else:
+        return ''
+
+
+
+def finding_xlink(dic):
+    # import pdb;pdb.set_trace()
+    hh = ''
+    for key, value in dic.iteritems():
+        print key
+        if key == '@xlink:href':
+            print value
+            hh = value
+            return value
+
+        if isinstance(value, dict):
+            item = finding_xlink(value)
+            if item is not None:
+                return item
+
+
+def _finditem(obj, key):
+    if key in obj: return obj[key]
+    for k, v in obj.items():
+        if isinstance(v,dict):
+            item = _finditem(v, key)
+            if item is not None:
+                return item
+
