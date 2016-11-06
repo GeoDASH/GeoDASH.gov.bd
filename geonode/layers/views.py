@@ -175,10 +175,13 @@ def layer_upload(request, user_type, template='upload/layer_upload.html'):
                     form.cleaned_data["base_file"].name)
                 keywords = name_base.split()
             ignore_keys = KeywordIgnoreListModel.objects.values_list('key', flat=True)
+            keyword_list = []
             for key in keywords:
-                if any(c.isalpha() for c in key):
-                    if key in ignore_keys or key.isdigit() or len(key)==1:
-                        keywords.remove(key)
+                if key not in ignore_keys and not key.isdigit() and any(c.isalpha() for c in key) and len(key) > 2:
+                    keyword_list.append(key)
+
+            keywords = keyword_list
+
             name = slugify(name_base.replace(".", "_"))
             try:
                 # Moved this inside the try/except block because it can raise
