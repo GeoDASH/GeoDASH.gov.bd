@@ -366,7 +366,7 @@
                                         {% if forloop.counter0|divisibleby:8 and forloop.counter0 == 0 %}
                                             <div class="item active {{ forloop.counter0 }}">
                                         {% endif %}
-                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured_layer_list.count %}
+                                        {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured.count %}
                                             </div>
                                             <div class="item {{ forloop.counter0 }} ">
                                         {% endif %}

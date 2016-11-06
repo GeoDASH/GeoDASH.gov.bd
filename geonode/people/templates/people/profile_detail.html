@@ -182,6 +182,46 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-md-4">
+                                <div class="txt">{% trans profile.first_name|default:profile.name_long %}</div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="gd-txt-right" >
+                                    <div class="row">
+                                    {% if user.is_authenticated %}
+                                    {% if request.user == profile %}
+                                      {% for group in profile.group_list_all %}
+                                      <div ng-if="group.logo != ''" class="col-md-2 pull-right group-logo">
+                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" width="75" height="75" alt="{{ group.title }}" /></a>
+                                      </div>
+                                      <!-- <div class="col-xs-6 col-md-8">
+                                        <h5>
+                                          <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+                                          {% if group.email %} <a href="mailto:{{ group.email }}"><i class="fa fa-envelope-o"></i></a>{% endif %}
+                                        </h5>
+                                      </div> -->
+                                      {% endfor %}
+                                    {% else %}
+                                      {% for group in profile.group_list_public %}
+                                      <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
+                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" width="75" height="50" alt="{{ group.title }}" /></a>
+                                      </div>
+                                      <!-- <div class="col-xs-6 col-md-8">
+                                        <h5>
+                                          <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+                                          {% if group.email %} <a href="mailto:{{ group.email }}"><i class="fa fa-envelope-o"></i></a>{% endif %}
+                                        </h5>
+                                      </div> -->
+                                      {% endfor %}
+                                    {% endif %}
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-4">
                                 {% trans 'Email' %}
                             </div>
                             <div class="col-md-8">

@@ -416,13 +416,14 @@
             $("#total_layers-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                 //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
-                    //console.log('inactive', i, (i%4), t_count);
+                    //console.log('inactive', i, (i%4), tot_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
@@ -486,12 +487,13 @@
             $("#total_maps-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
@@ -551,13 +553,14 @@
             $("#total_documents_fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
-                    //console.log('inactive', i, (i%4), t_count);
+                    //console.log('inactive', i, (i%4), tot_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
@@ -616,12 +619,13 @@
             $("#total_org-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';

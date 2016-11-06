@@ -78,6 +78,11 @@
     });
     IS_LAYERS_PAGE_FOR_CART = true;
   </script>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+        anyonePermissionDisable();
+        });
+    </script>
   {% with include_spatial='true' %}
   {% include 'search/search_scripts.html' %}
   {% endwith %}
