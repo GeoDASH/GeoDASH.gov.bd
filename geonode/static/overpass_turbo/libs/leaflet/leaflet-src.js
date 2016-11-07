@@ -1115,10 +1115,10 @@ L.DomUtil.TRANSITION_END =
  */
 
 L.LatLng = function (lat, lng, alt) { // (Number, Number, Number)
-	lat = 23.7099;
-	//lat = parseFloat(lat);
-	lng = 90.4071;
-	//lng = parseFloat(lng);
+	//lat = 23.7099;
+	lat = parseFloat(lat);
+	//lng = 90.4071;
+	lng = parseFloat(lng);
 
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');

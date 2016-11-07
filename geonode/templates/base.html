@@ -363,7 +363,7 @@
                           <select id="langOfSite" class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
                             {% for lang in LANGUAGES %}
                             <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                              {{ lang.1 }}
+                              {% trans lang.1 %}
                             </option>
                             {% endfor %}
                           </select>
@@ -644,7 +644,7 @@
             <li class="c-menu__item">
                 <a href="{% url "keyword-list" %}" class="c-menu__link">
                     <i class="fa fa-tasks"></i>
-                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Keyword list" %}</span>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Keyword List" %}</span>
                 </a>
             </li>
             {% endif %}

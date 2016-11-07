@@ -55,7 +55,7 @@
                                           {% trans slider.descripton|slice:"64:105" %}
                                       </div>
                                       <div class="gd-slider-btn">
-                                          <a role="button" href="#{{slider.id}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                                          <a role="button" href="#{{slider.section.id}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
                                       </div>
                                   </div>
                               </div>
@@ -332,7 +332,7 @@
         {% if is_featured_layers or request.user.is_authenticated %}
             <div id="gd-featurd-maps">
                 <div class="block-separator" ></div>
-                <div class="container">
+                <div class="container" id="28">
                     <div class="gd-stastic">
                         <div class="text-center">
                             <div class="row">
@@ -505,7 +505,7 @@
             <div id="gd-featurehighlight" style="background:{{ feature_highlights_of_geodash_section.background_color }}">
                 <div class="block-separator"></div>
                 <div class="container">
-                    <div class="gd-control">
+                    <div class="gd-control" >
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="header-title text-center">{% trans feature_highlights_of_geodash_section.title  %}</div>
