@@ -40,7 +40,7 @@ class MapForm(ResourceBaseForm):
             'center_x',
             'center_y',
             'status',
-            'group',
+            # 'group',
             'last_auditor'
         )
 

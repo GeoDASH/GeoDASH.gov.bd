@@ -31,6 +31,7 @@ from taggit.models import Tag
 
 from geonode.base.models import TopicCategory, Region
 from geonode.people.models import Profile
+from geonode.groups.models import GroupProfile
 
 
 class CategoryChoiceField(forms.ModelChoiceField):

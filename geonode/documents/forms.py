@@ -88,7 +88,7 @@ class DocumentForm(ResourceBaseForm):
             'doc_type',
             'doc_url',
             'status',
-            'group',
+            # 'group',
             'last_auditor')
 
 
