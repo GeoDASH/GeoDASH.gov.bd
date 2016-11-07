@@ -16,6 +16,9 @@ class SectionManagementTable(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.slug
+
 
 class SliderImages(models.Model):
     """
@@ -26,7 +29,7 @@ class SliderImages(models.Model):
     is_active = models.BooleanField(default=False)
     image = models.ImageField(upload_to="index_page/slider_images")
     logo_url = models.URLField(blank=True, null=True)
-    section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
+    section = models.ForeignKey('SectionManagementTable', null=True, blank=True, verbose_name=_('Connect section'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

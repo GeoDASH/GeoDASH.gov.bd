@@ -12,7 +12,7 @@ class SliderImageUpdateForm(forms.ModelForm):
 
     class Meta:
         model = SliderImages
-        fields = ['title', 'descripton', 'image', 'is_active']
+        fields = ['title', 'descripton', 'image', 'is_active', 'section']
 
     def clean_image(self):
          image = self.cleaned_data.get('image',False)
