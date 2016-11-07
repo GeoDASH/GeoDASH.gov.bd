@@ -521,7 +521,7 @@
                                             <a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
                                             {% endif %}
                                             {% if user.is_authenticated %}
-                                            <a href="{% url "layer_upload" 'member' %}" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
+                                            <a href="{% url "layer_upload"  %}" style="cursor:pointer;">{% trans feature_highlights_of_geodash_section.section_sub_title %}</a>
                                             {% endif %}
                                         </div>
                                         <div class="description">
@@ -538,7 +538,7 @@
                                             <!--<a onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Check Out Details" %}</a>-->
                                             <!--{% endif %}-->
                                             <!--{% if user.is_authenticated %}-->
-                                            <!--<a href="{% url "layer_upload" 'member' %}">{% trans "Check Out Details" %}</a>-->
+                                            <!--<a href="{% url "layer_upload"  %}">{% trans "Check Out Details" %}</a>-->
                                             <!--{% endif %}-->
                                         <!--</div>-->
                                     </div>

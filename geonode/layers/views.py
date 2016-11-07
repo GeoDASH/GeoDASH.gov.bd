@@ -142,7 +142,7 @@ def _resolve_layer(request, typename, permission='base.view_resourcebase',
 
 @login_required
 @user_passes_test(manager_or_member)
-def layer_upload(request, user_type, template='upload/layer_upload.html'):
+def layer_upload(request, template='upload/layer_upload.html'):
     if request.method == 'GET':
         mosaics = Layer.objects.filter(is_mosaic=True).order_by('name')
         ctx = {
@@ -202,9 +202,9 @@ def layer_upload(request, user_type, template='upload/layer_upload.html'):
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
 
-                if request.user in group.get_managers() and user_type == 'admin':
-                    saved_layer.status = 'ACTIVE'
-                    saved_layer.save()
+                # if request.user in group.get_managers() and user_type == 'admin':
+                #     saved_layer.status = 'ACTIVE'
+                #     saved_layer.save()
 
             except Exception as e:
                 exception_type, error, tb = sys.exc_info()

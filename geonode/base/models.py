@@ -390,8 +390,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        str_label = "{} - ".format(self.resource_type) + self.title + "  ({}/{})".format(self.group, self.owner)
-        return str_label
+        return self.title
 
     @property
     def bbox(self):
