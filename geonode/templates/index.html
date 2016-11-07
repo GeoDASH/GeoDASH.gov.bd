@@ -55,7 +55,7 @@
                                           {% trans slider.descripton|slice:"64:105" %}
                                       </div>
                                       <div class="gd-slider-btn">
-                                          <a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                                          <a role="button" href="#{{slider.id}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
                                       </div>
                                   </div>
                               </div>
@@ -331,13 +331,13 @@
       {% block index_featurdmaps %}
         {% if is_featured_layers or request.user.is_authenticated %}
             <div id="gd-featurd-maps">
-                <div class="block-separator"></div>
+                <div class="block-separator" ></div>
                 <div class="container">
                     <div class="gd-stastic">
                         <div class="text-center">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="header-title">{% trans "Featured layers" %}</div>
+                                    <div class="header-title" >{% trans "Featured layers" %}</div>
                                     <div class="block-separator"></div>
                                     <div class="header-sub-title">
                                         <a href="{% url "_featured_list" %}">{% trans "Check out some amazing layers uploaded on GeoDASH platform below" %}</a>
