@@ -29,7 +29,8 @@ class SliderImages(models.Model):
     is_active = models.BooleanField(default=False)
     image = models.ImageField(upload_to="index_page/slider_images")
     logo_url = models.URLField(blank=True, null=True)
-    section = models.ForeignKey('SectionManagementTable', null=True, blank=True, verbose_name=_('Connect section'))
+    section = models.ForeignKey('SectionManagementTable', null=True, blank=True)
+    connect_section = models.ForeignKey('SectionManagementTable', related_name='linksection', null=True, blank=True, verbose_name=_('Connect section'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
