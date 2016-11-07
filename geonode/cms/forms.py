@@ -206,5 +206,5 @@ class OurPartnersSectionManagementForm(forms.ModelForm):
 class OurPartnersImagesUploadForm(forms.ModelForm):
     class Meta:
         model = SliderImages
-        fields = ['image', 'is_active']
+        fields = ['image', 'is_active', 'logo_url']
 
