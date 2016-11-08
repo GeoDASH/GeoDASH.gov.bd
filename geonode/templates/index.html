@@ -55,7 +55,7 @@
                                           {% trans slider.descripton|slice:"64:105" %}
                                       </div>
                                       <div class="gd-slider-btn">
-                                          <a role="button" href="#{{slider.section.id}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                                          <a role="button" href="#{{slider.connect_section.slug}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
                                       </div>
                                   </div>
                               </div>
@@ -332,7 +332,7 @@
         {% if is_featured_layers or request.user.is_authenticated %}
             <div id="gd-featurd-maps">
                 <div class="block-separator" ></div>
-                <div class="container" id="28">
+                <div class="container" id="{{ featured_layers_section.slug }}">
                     <div class="gd-stastic">
                         <div class="text-center">
                             <div class="row">
@@ -504,7 +504,7 @@
         {% if is_feature_highlights or request.user.is_authenticated %}
             <div id="gd-featurehighlight" style="background:{{ feature_highlights_of_geodash_section.background_color }}">
                 <div class="block-separator"></div>
-                <div class="container">
+                <div class="container" id="{{ feature_highlights_of_geodash_section.slug }}">
                     <div class="gd-control" >
                         <div class="row">
                             <div class="col-md-12">
@@ -590,7 +590,7 @@
       {% block index_interprobability %}
         {% if is_interportability or request.user.is_authenticated %}
             <div id="gd-interprobability" style="background:{{ is_interportability_section.background_color }}">
-                <div class="container">
+                <div class="container" id="{{ is_interportability_section.slug }}">
                     <div class="gd-control">
                         <div class="gd-interprobability-main">
                             <div class="row">
@@ -623,7 +623,7 @@
       {% block index_makepretty %}
         {% if is_pretty or request.user.is_authenticated %}
             <div id="gd-makepretty" style="background:{{ make_pretty_maps_with_geodash_section.background_color }}">
-                <div class="container">
+                <div class="container" id="{{ make_pretty_maps_with_geodash_section.slug }}">
                     <div class="gd-control">
                         <div class="gd-makepretty-main">
                             <!--<div class="row">-->
@@ -666,7 +666,7 @@
       {% block index_make3d %}
         {% if is_3dmap or request.user.is_authenticated %}
             <div id="gd-3dsection" style="background:{{ view_your_maps_in_3d_section.background_color }}">
-                <div class="container">
+                <div class="container" id="{{ view_your_maps_in_3d_section.slug }}">
                     <div class="gd-control">
                         <div class="gd-3dsection-main">
                             <div class="row">
@@ -883,7 +883,7 @@
       {% block index_sharemap %}
         {% if is_share_map or request.user.is_authenticated %}
             <div id="gd-sharemap" style="background:{{ share_your_map_section.background_color }}">
-                <div class="container">
+                <div class="container" id="{{ share_your_map_section.slug }}">
                     <div class="gd-sharemap-main">
                         <div class="row">
                             <div class="col-md-6">
@@ -918,7 +918,7 @@
       {% block index_partners %}
         {% if is_our_partners or request.user.is_authenticated %}
             <div id="gd-partners" style="background:{{ our_partners_section.background_color }}">
-                <div class="container">
+                <div class="container" id="{{ our_partners_section.slug }}">
                     <div class="gd-partners-main">
                         <div class="row">
                             <div class="col-md-12">

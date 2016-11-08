@@ -386,7 +386,8 @@ ul.plain > li {
   z-index:1012;
 }
 .ui-front.huge_data {
-  z-index:1040;
+  /*z-index:1040;*/
+  z-index:104000;
 }
 body .ui-tooltip {
   opacity:0.8;
