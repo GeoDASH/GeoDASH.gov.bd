@@ -174,7 +174,7 @@ class LayerUploadForm(forms.Form):
             if osm_layer_type in response:
 
                 from plumbum.cmd import ogr2ogr
-                ogr2ogr[tempdir, file_path, 'points']()
+                ogr2ogr[tempdir, file_path, osm_layer_type]()
                 files = os.listdir(tempdir)
                 for item in files:
                     if item.endswith('.shp'):

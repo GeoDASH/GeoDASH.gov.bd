@@ -75,8 +75,10 @@ class IndexClass(ListView):
                 context['sliders'] = SliderImages.objects.filter(is_active=True, section=section)
             if section.slug == 'featured-layers-section':
                 context['is_featured_layers'] = section.is_visible
+                context['featured_layers_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'latest-news-and-updates-section':
                 context['is_latest_news'] = section.is_visible
+                context['latest_news_update_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'feature-highlights-of-geodash-section':
                 context['is_feature_highlights'] = section.is_visible
                 context['feature_highlights_of_geodash_section'] = SectionManagementModel.objects.get(slug=section.slug)
@@ -94,8 +96,10 @@ class IndexClass(ListView):
                 context['share_your_map_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'how-it-works-section':
                 context['is_how_it_works'] = section.is_visible
+                context['how_it_works_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'what-geodash-offer-section':
                 context['is_what_geodash_offer'] = section.is_visible
+                context['what_geodash_offers_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'our-partners-section':
                 context['is_our_partners'] = section.is_visible
                 context['our_partners_section'] = SectionManagementModel.objects.get(slug=section.slug)
