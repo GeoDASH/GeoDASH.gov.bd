@@ -486,6 +486,7 @@ table.gd-list-table tr td .media-body {
     position: relative;
     /*padding: 10px 15px;*/
     padding: 5px 10px;
+
     text-transform: uppercase;
 }
 #search .btn-gd-primary{
@@ -2735,7 +2736,8 @@ ul.termsuseandcondition li {
     z-index:99;
     background:#fff;
     top:53px;
-    margin-left:91px;
+    /*margin-left:91px;*/
+    margin-left:170px;
     position:absolute;
     height:300px;
     overflow:auto;
@@ -2915,5 +2917,14 @@ ul.termsuseandcondition li {
     margin-bottom: 20px;
     margin-top: 10px;
     text-align: left;
+}
+.user_dropdown{
+    width:80px;
+    border:none;
+    background:#ffffff;
+    cursor:pointer;
+    /*-moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;*/
 }
 
