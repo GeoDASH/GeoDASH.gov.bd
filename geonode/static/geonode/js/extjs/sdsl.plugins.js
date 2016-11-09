@@ -237,10 +237,17 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             // ##############################
             //this.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
             //this.boxLayer.addFeatures([radiusLineDrawing]);
+<<<<<<< Updated upstream
             var map = this.boxLayer && this.boxLayer.map;
             if (map) {
                 map.setLayerZIndex(this.boxLayer, 500);
             }
+=======
+            //var map = this.boxLayer && this.boxLayer.map;
+            //if (map) {
+            //    map.setLayerZIndex(this.boxLayer, 500);
+            //}
+>>>>>>> Stashed changes
         });
         action.control.handler.callbacks.move = function (e) {
             //console.log('move event fire', e);
@@ -435,8 +442,14 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         this.boxLayer.destroyFeatures();
         var map = this.boxLayer && this.boxLayer.map;
         if (map) {
+<<<<<<< Updated upstream
             map.setLayerZIndex(this.boxLayer, 500);
             //map.setLayerIndex(this.boxLayer, map.layers.length);
+=======
+            //map.setLayerZIndex(this.boxLayer, 500);
+            map.setLayerIndex(this.boxLayer, map.layers.length);
+            //map.raiseLayer(this.boxLayer, 500);
+>>>>>>> Stashed changes
             //map.raiseLayer(this.boxLayer, 500);
         }
     },
