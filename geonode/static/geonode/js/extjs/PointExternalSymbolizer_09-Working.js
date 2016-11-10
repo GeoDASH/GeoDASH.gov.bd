@@ -94,46 +94,32 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
         //this.external = !!this.symbolizer["externalGraphic"];
         this.external = true;
         delete this.symbolizer["graphicName"];
-        if(this.symbolizer["pointRadius"]){
-            delete this.symbolizer["pointRadius"];
-        }
-        /*if(this.symbolizer["pointRadius"] !== undefined && this.symbolizer["pointRadius"] !== null && 
+        if(this.symbolizer["pointRadius"] !== undefined && this.symbolizer["pointRadius"] !== null && 
                 this.symbolizer["pointRadius"] !== ''){
             //this.symbolizer["pointRadius"] = this.symbolizer["pointRadius"] * 2;
         } else {
             this.symbolizer["pointRadius"] = 5;
-        }*/
+        }
         
-        this.defaultUrl = 'http://chart?chf=bg,s,FFFFFF00&chs=150x75&cht=p';
+        this.defaultUrl = 'http://chart?chf=bg,s,FFFFFF00&cht=p';
         var externalGraphic = this.symbolizer["externalGraphic"];
-        var chs = '150x75'; 
-        var chsw = '150'; 
-        var chsh = '75'; 
         var cht = ''; 
         var chd = ''; 
         var chf = ''; 
         var chco = ''; 
         if(externalGraphic !== undefined && externalGraphic !== null && externalGraphic !== ''){
-            chs = this.getParameterByName('chs',externalGraphic);
-            if (chs !== undefined && chs !== '' && chs !== null) {
-                var chsize = chs.split('x');
-                if(chsize !== undefined && chsize.length > 1){
-                    chsw = chsize[0];
-                    chsh = chsize[1];
-                }
-            }
             cht = this.getParameterByName('cht',externalGraphic);
             chd = this.getParameterByName('chd',externalGraphic);
             chd = chd.replace('t:','');
             //var chl = this.getParameterByName('chl',externalGraphic);
-            var label = this.getParameterByName('label',externalGraphic);
-            if (label !== undefined && label !== '' && label !== null) {
-                var labelArr = label.split('|');
-                if (labelArr.length > 0) {
+            var chl = this.getParameterByName('label',externalGraphic);
+            if (chl !== undefined && chl !== '' && chl !== null) {
+                var chlArr = chl.split('|');
+                if (chlArr.length > 0) {
                     var chdArr = chd.split(",");
                     for (var i = 0; i < chdArr.length; i++) {
-                        if (labelArr[i] !== undefined && labelArr[i] !== '') {
-                            chdArr[i] = labelArr[i] + '=' + chdArr[i];
+                        if (chlArr[i] !== undefined && chlArr[i] !== '') {
+                            chdArr[i] = chlArr[i] + '=' + chdArr[i];
                         }
                     }
                     chd = chdArr.join(',');
@@ -213,21 +199,6 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                         var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chd', queryValue);
                         // end query
                         // 
-                        // start present
-                        var presentValue = '';
-                        var presents = [];
-                        for(var i=0; i<querySection.length; i++){
-                            var section = querySection[i];
-                            section = section.replace("${", "${round(");
-                            section = section.replace("}", ")}%");
-                            presents.push(section);
-                        }
-                        if(presents.length > 0){
-                            presentValue = presents.join('|');
-                        }
-                        urlValue = this.updateQueryStringParameter(urlValue, 'chl', presentValue);
-                        // end present
-                        // 
                         // start label
                         var labelsValue = '';
                         var labels = queryObj.label;
@@ -292,7 +263,7 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                     xtype: "button",
                     text: "",
                     iconCls: "gxp-icon-getfeatureinfo",
-                    tooltip: "X=${100*VELUE_1/TOTAL_VALUE}, Y=${100*VELUE_2/TOTAL_VALUE} The first value (X) is the result of 100*VELUE_1/TOTAL_VALUE, where VALUE_1 and TOTAL_VALUE are two attributes of layer data. Same applies for Y and so on."
+                    tooltip: "${100 * MALE / PERSONS},${100 * FEMALE / PERSONS} the chart data is expressed in “text” format, and in particular, the first value is the result of 100 * MALE / PERSONS, where MALE and PERSONS are two attributes of feature being rendered"
 
                 }
             ]
@@ -393,150 +364,11 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                     xtype: "button",
                     text: "",
                     iconCls: "gxp-icon-getfeatureinfo",
-                    tooltip: "Customize the default colors for each parameter!"
+                    tooltip: "We can specify the colors of all values, each value, or some values using the chco parameter. This override the usage of the default Background Fills chf parameter, hence it is optional."
 
                 }
             ]
         });
-        
-        this.widthField = new Ext.form.TextField({
-            name: "width",
-            fieldLabel: "Chart Width",
-            allowBlank: false,
-            value: chsw,
-            hidden: !this.external,
-            listeners: {
-                change: function (field, value) {
-                    var urlField = this.urlField.getValue();
-                    if(urlField !== undefined && urlField !== null && urlField !== ''){
-                        this.defaultUrl = urlField;
-                    }
-                    var sizeValue = '150x75';
-                    chs = this.getParameterByName('chs', this.defaultUrl);
-                    if (chs !== undefined && chs !== '' && chs !== null) {
-                        var chsize = chs.split('x');
-                        if (chsize !== undefined && chsize.length > 1) {
-                            if(value){
-                                chsize[0] = value;
-                            }
-                            sizeValue = chsize.join('x');
-                        } else {
-                            chsize = [];
-                            chsize[0] = value;
-                            chsize[1] = value;
-                            sizeValue = chsize.join('x');
-                        }
-                    }
-                    var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chs', sizeValue);
-                    //
-                    // set url value
-                    if (!Ext.isEmpty(urlValue)) {
-                        this.symbolizer["externalGraphic"] = urlValue;
-                    }
-                    var chd = this.getParameterByName('chd',urlValue);
-                    if(chd !== undefined && chd !== null && chd !== ''){
-                        this.urlField.setValue(urlValue);
-                        this.fireEvent("change", this.symbolizer);
-                    }
-                    // end url value
-                },
-                scope: this
-            },
-            width: 100 // TODO: push this to css
-        });
-        this.widthSection = new Ext.Panel({
-            border: false,
-            collapsed: !this.external,
-            layout: "column",
-            items: [{
-                    html: '<b style="width:150px;font-size:13px;">Chart Width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>'
-                }, this.widthField, {
-                    id: "buttonHelpQuery",
-                    xtype: "button",
-                    text: "",
-                    iconCls: "gxp-icon-getfeatureinfo",
-                    tooltip: "Set Chat width"
-
-                }
-            ]
-        });
-        
-        this.heightField = new Ext.form.TextField({
-            name: "height",
-            fieldLabel: "Chart Height",
-            allowBlank: false,
-            value: chsh,
-            hidden: !this.external,
-            listeners: {
-                change: function (field, value) {
-                    var urlField = this.urlField.getValue();
-                    if(urlField !== undefined && urlField !== null && urlField !== ''){
-                        this.defaultUrl = urlField;
-                    }
-                    var sizeValue = '150x75';
-                    chs = this.getParameterByName('chs', this.defaultUrl);
-                    if (chs !== undefined && chs !== '' && chs !== null) {
-                        var chsize = chs.split('x');
-                        if (chsize !== undefined && chsize.length > 1) {
-                            if(value){
-                                chsize[1] = value;
-                            }
-                            sizeValue = chsize.join('x');
-                        } else {
-                            chsize = [];
-                            chsize[0] = value;
-                            chsize[1] = value;
-                            sizeValue = chsize.join('x');
-                        }
-                    }
-                    var urlValue = this.updateQueryStringParameter(this.defaultUrl, 'chs', sizeValue);
-                    //
-                    // set url value
-                    if (!Ext.isEmpty(urlValue)) {
-                        this.symbolizer["externalGraphic"] = urlValue;
-                    }
-                    var chd = this.getParameterByName('chd',urlValue);
-                    if(chd !== undefined && chd !== null && chd !== ''){
-                        this.urlField.setValue(urlValue);
-                        this.fireEvent("change", this.symbolizer);
-                    }
-                    // end url value
-                },
-                scope: this
-            },
-            width: 100 // TODO: push this to css
-        });
-        this.heightSection = new Ext.Panel({
-            border: false,
-            collapsed: !this.external,
-            layout: "column",
-            items: [{
-                    html: '<b style="width:150px;font-size:13px;">Chart Height:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>'
-                }, this.heightField, {
-                    id: "buttonHelpQuery",
-                    xtype: "button",
-                    text: "",
-                    iconCls: "gxp-icon-getfeatureinfo",
-                    tooltip: "Set Chat height"
-
-                }
-            ]
-        });
-        
-        this.sizeField = {
-            xtype: "textfield",
-            name: "size",
-            fieldLabel: this.sizeText,
-            value: this.symbolizer["pointRadius"] && this.symbolizer["pointRadius"] * 2,
-            listeners: {
-                change: function (field, value) {
-                    this.symbolizer["pointRadius"] = value / 2;
-                    this.fireEvent("change", this.symbolizer);
-                },
-                scope: this
-            },
-            width: 100 // TODO: push this to css
-        };
         
         this.items = [{
                 xtype: "combo",
@@ -647,9 +479,20 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
             this.querySection,
             //this.backgroundField,
             this.colorSection,
-            //this.sizeField, 
-            this.widthField, 
-            this.heightField, {
+            {
+                xtype: "textfield",
+                name: "size",
+                fieldLabel: this.sizeText,
+                value: this.symbolizer["pointRadius"] && this.symbolizer["pointRadius"] * 2,
+                listeners: {
+                    change: function (field, value) {
+                        this.symbolizer["pointRadius"] = value / 2;
+                        this.fireEvent("change", this.symbolizer);
+                    },
+                    scope: this
+                },
+                width: 100 // TODO: push this to css
+            }, {
                 xtype: "textfield",
                 name: "rotation",
                 fieldLabel: this.rotationText,
