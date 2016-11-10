@@ -38,4 +38,7 @@ urlpatterns = patterns('geonode.people.views',
 
                        #invite user
                        url(r"^invite_user/$", InviteUserView.as_view(), name="invite_user"),
+
+                       #user message inbox
+                       url(r'^inbox', 'inbox', name='message-inbox-extend'),
                        )

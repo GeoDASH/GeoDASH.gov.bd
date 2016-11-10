@@ -36,6 +36,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.html import escape
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
@@ -50,6 +51,7 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from guardian.models import UserObjectPermission
 from notify.models import Notification
+from user_messages.models import Message
 
 from geonode.base.models import ResourceBase, FavoriteResource, DockedResource
 from geonode.base.models import TopicCategory
@@ -822,3 +824,18 @@ class UserNotifications(TypeFilteredResource):
             return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gt = date.date())
         else:
             return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gte=datetime.datetime.now()-datetime.timedelta(days=7))
+
+
+class ViewNotificationTimeSaving(TypeFilteredResource):
+
+    class Meta:
+        queryset = Notification.objects.filter(read=False, deleted=False)
+        resource_name = 'view-notification'
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+
+        user = request.user
+        user.last_notification_view = timezone.now()
+        user.save()
+        return super(ViewNotificationTimeSaving, self).get_object_list(request).filter(recipient=user, created__gt = user.last_notification_view)

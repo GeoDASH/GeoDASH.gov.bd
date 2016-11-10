@@ -102,6 +102,8 @@ class Profile(AbstractUser):
     keywords = TaggableManager(_('keywords'), blank=True, help_text=_(
         'commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject \
             (space or comma-separated'))
+    last_notification_view = models.DateTimeField()
+    last_message_view = models.DateTimeField()
 
     def get_absolute_url(self):
         return reverse('profile_detail', args=[self.username, ])
@@ -160,6 +162,11 @@ class Profile(AbstractUser):
     @property
     def location(self):
         return format_address(self.delivery, self.zipcode, self.city, self.area, self.country)
+
+    @property
+    def notification_count(self):
+        return self.notifications.filter(read=False, deleted=False, created__gt=self.last_notification_view).count()
+
 
 
 def get_anonymous_user_instance(Profile):
