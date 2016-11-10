@@ -227,7 +227,7 @@
                         {% if user.is_authenticated %}
 
                         <li class="notification">
-                            <a href="{% url "messages_inbox" %}" >
+                            <a href="{% url "message-inbox-extend" %}" >
                                 <button class="btn btn-default btn-link">
                                     <i class="fa fa-envelope"></i>
                                 </button>
@@ -236,10 +236,10 @@
                         </li>
                         <li class="notification" id="show-notification">
                             <a href="javascript:;" id="a_href">
-                                <button class="btn btn-default btn-link">
+                                <button class="btn btn-default btn-link unreadfalse">
                                     <i class="fa fa-bell" ></i>
                                 </button>
-                                <span class="badge badge-notify" id="rload">{% if user.notifications.unread.count %}{{ request.user.notifications.unread.count }}{% endif %}</span>
+                                <span class="badge badge-notify" id="rload">{% if user.notification_count %}{{ request.user.notification_count }}{% endif %}</span>
                             </a>
                         </li>
                         <div id="show-notification-msg" class="show-notification-msg" style="display:none;">
@@ -883,6 +883,27 @@
                     $("#set-language-of-site #langOfSite").val("bn");
                 }
                 $("#set-language-of-site").submit();
+            });
+        });
+        $(document).ready(function (){
+            $("#show-notification").click(function(){
+                var url = '{% url 'api_dispatch_list' api_name='api' resource_name='view-notification' %}';
+                $.ajax({
+                    cache: false,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                        $("#show-notification").load(location.href+" #show-notification>*","");
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                 });
             });
         });
     </script>

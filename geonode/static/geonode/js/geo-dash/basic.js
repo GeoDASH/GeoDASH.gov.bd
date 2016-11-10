@@ -279,6 +279,11 @@ $(document).ready(function() {
             $("#show-notification").load(location.href+" #show-notification>*","");
         });
     });
+//    $(document).ready(function() {
+//        $('.unreadfalse').click(function() {
+//            $(".unreadfalse").load(location.href+" .unreadfalse>*","");
+//        });
+//    });
     $(document).ready(function() {
         $('.gd-featurd-maps-container-dash').click(function() {
             $(".dash-load").load(location.href+" .dash-load>*","");
