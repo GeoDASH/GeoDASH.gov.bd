@@ -237,17 +237,10 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             // ##############################
             //this.boxLayer.addFeatures([centerPointDrawing, radiusLineDrawing]);
             //this.boxLayer.addFeatures([radiusLineDrawing]);
-<<<<<<< Updated upstream
             var map = this.boxLayer && this.boxLayer.map;
             if (map) {
                 map.setLayerZIndex(this.boxLayer, 500);
             }
-=======
-            //var map = this.boxLayer && this.boxLayer.map;
-            //if (map) {
-            //    map.setLayerZIndex(this.boxLayer, 500);
-            //}
->>>>>>> Stashed changes
         });
         action.control.handler.callbacks.move = function (e) {
             //console.log('move event fire', e);
@@ -413,9 +406,9 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             if(layer.visibility){
                 var url = this.getFeatureInfoRequestWFSUrl(layer);
                 var parameter = this.getFeatureInfoRequestWFSParams(layer, radiusInMeter, centerPoint);
-                
+
                 var thatObj = this;
-                
+
                 //console.log(parameter);
                 // Basic request
                 Ext.Ajax.request({
@@ -436,27 +429,21 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             }
         }
     },
-    
+
     raiseLayer: function () {
         //console.log('raiseLayers');
         this.boxLayer.destroyFeatures();
         var map = this.boxLayer && this.boxLayer.map;
         if (map) {
-<<<<<<< Updated upstream
             map.setLayerZIndex(this.boxLayer, 500);
             //map.setLayerIndex(this.boxLayer, map.layers.length);
-=======
-            //map.setLayerZIndex(this.boxLayer, 500);
-            map.setLayerIndex(this.boxLayer, map.layers.length);
-            //map.raiseLayer(this.boxLayer, 500);
->>>>>>> Stashed changes
             //map.raiseLayer(this.boxLayer, 500);
         }
     },
-    
+
     /** api: method[addOutput]
      */
-    
+
     addOutput: function (parameter, response, centerPoint, layerTitle) {
         //console.log('out');
         var gridTitle = parameter.typeNames;
@@ -678,7 +665,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
         //return SDSL.plugins.SearchByRadius.superclass.addActions.apply(this, [action]);
         var queryForm = SDSL.plugins.SearchByRadius.superclass.addOutput.call(this, config);
     },
-    
+
     getPointDistance: function (p1Lat, p1Lng, p2Lat, p2Lng) {
         var R = 6378137; // Earth’s mean radius in meter
         var dLat = this.getRad(p2Lat - p1Lat);
@@ -704,7 +691,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
     getMileToMeters: function (mile) {
         return mile * 1609.344;
     },
-    
+
     convertArrayOfObjectsToCSV: function (args) {
         var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
@@ -745,7 +732,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
 
         return result;
     },
-    
+
     downloadCSV: function (stockData, args) {
         var data, filename, link;
 
@@ -761,7 +748,7 @@ SDSL.plugins.SearchByRadius = Ext.extend(gxp.plugins.Tool, {
             csv = 'data:text/csv;charset=utf-8,' + csv;
         }
         data = encodeURI(csv);
-        
+
         link = document.createElement('a');
         link.setAttribute('href', data);
         link.setAttribute('download', filename);

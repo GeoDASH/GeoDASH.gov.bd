@@ -15,6 +15,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
     metaDataHeader: 'UT:About this Map',
     metaDataMapAbstract: 'UT:Abstract',
     metaDataMapTitle: 'UT:Title',
+    metaDataSelectOrganization: 'Select Organization',
+    metaDataSelectCategory: 'Select Category',
     // end i18n
 
     /** api: ptype = gn_save */
@@ -66,7 +68,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
      */
     initMetadataForm: function(callback){
 
-<<<<<<< Updated upstream
         // The data store containing the list of states
         var categoryStates = new Ext.data.JsonStore({
             // store config
@@ -146,8 +147,6 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             }
         });
 
-=======
->>>>>>> Stashed changes
         var titleField = new Ext.form.TextField({
             width: '95%',
             fieldLabel: this.metaDataMapTitle,
@@ -156,8 +155,10 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             enableKeyEvents: true,
             listeners: {
                 "valid": function() {
-                    saveAsButton.enable();
-                    saveButton.enable();
+                    if(titleField.getValue() && categoryField.getValue() && organizationField.getValue() ){
+                        saveAsButton.enable();
+                        saveButton.enable();
+                    }
                 },
                 "invalid": function() {
                     saveAsButton.disable();
@@ -178,6 +179,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             labelAlign: "top",
             items: [
                 titleField,
+                organizationField,
+                categoryField,
                 abstractField
             ]
         });
@@ -190,6 +193,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
                 delete this.target.id;
                 this.target.about.title = Ext.util.Format.stripTags(titleField.getValue());
                 this.target.about["abstract"] = Ext.util.Format.stripTags(abstractField.getValue());
+                this.target.about["organization"] = Ext.util.Format.stripTags(organizationField.getValue());
+                this.target.about["category"] = Ext.util.Format.stripTags(categoryField.getValue());
                 this.metadataForm.hide();
                 this._doSave = true;
                 this.target.save(this.metadataForm.saveCallback);
@@ -202,6 +207,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             handler: function(e){
                 this.target.about.title = Ext.util.Format.stripTags(titleField.getValue());
                 this.target.about["abstract"] = Ext.util.Format.stripTags(abstractField.getValue());
+                this.target.about["organization"] = Ext.util.Format.stripTags(organizationField.getValue());
+                this.target.about["category"] = Ext.util.Format.stripTags(categoryField.getValue());
                 this.metadataForm.hide();
                 this._doSave = true;
                 this.target.save(this.metadataForm.saveCallback);
@@ -226,6 +233,8 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
                     handler: function() {
                         titleField.setValue(this.target.about.title);
                         abstractField.setValue(this.target.about["abstract"]);
+                        categoryField.setValue(this.target.about["category"]);
+                        organizationField.setValue(this.target.about["organization"]);
                         this.metadataForm.hide();
                     },
                     scope: this
@@ -540,7 +549,6 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
             ptype: 'gn_savehyperlink',
             actionTarget: 'paneltbar'
         }, {
-<<<<<<< Updated upstream
             ptype: "sdsl_SearchByRadius",
             actionTarget: "map.tbar"
         }, {
@@ -554,8 +562,6 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
                 width: 620
             }
         }, {
-=======
->>>>>>> Stashed changes
             ptype: 'gn_save',
             actions: []
         }, {
@@ -582,10 +588,5 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
 });
 
 if (GeoNode.Composer) {
-<<<<<<< Updated upstream
     Ext.override(GeoNode.Composer, GeoNode.ComposerMixin) ;
 }
-=======
-    Ext.override(GeoNode.Composer, GeoNode.ComposerMixin);
-}
->>>>>>> Stashed changes
