@@ -84,6 +84,7 @@ gxp.plugins.Styler = Ext.extend(gxp.plugins.Tool, {
 
         if (!this.outputConfig) {
             this.outputConfig = {
+                id: 'gxp-sdsl-styler',
                 autoHeight: true,
                 width: 265
             };

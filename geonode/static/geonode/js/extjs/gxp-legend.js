@@ -62,6 +62,7 @@ gxp.plugins.Legend = Ext.extend(gxp.plugins.Tool, {
 
         if (!this.outputConfig) {
             this.outputConfig = {
+                id: 'gxp-sdsl-legend',
                 width: 300,
                 height: 150,
                 align: 'r'

@@ -129,7 +129,9 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
         gxp.plugins.CrossLayerQueryForm.superclass.addActions.apply(this, arguments);
         // support custom actions
         if (this.actions) {
-            this.target.tools[this.featureManager].on("layerchange",
+            var featureManager = this.target.tools[this.featureManager];
+            featureManager.maxFeatures = null;
+            featureManager.on("layerchange",
                 function(mgr, rec, schema) {
                     for (var i=this.actions.length-1; i>=0; --i) {
                         this.actions[i].setDisabled(!schema);
@@ -257,14 +259,23 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
         queryForm.dWithinAttributeFieldset.hide();*/
     },
 
+    isNumeric: function (n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    },
     /** api: method[filterTemplate]
      */
     filterTemplate: function(attrFilter, filterType, params) {
         var featureManager = this.target.tools[this.featureManager];
         var record = this.crossLayerRecord[filterType];
         var filterStr = "INCLUDE";
-
-        if (attrFilter) {filterStr = attrFilter.toString();}
+        //console.log('attrFilter', attrFilter);
+        if (attrFilter) {
+            /*var attrFilterValue = (attrFilter.value);
+            if(this.isNumeric(attrFilterValue)){
+                attrFilter.value = parseFloat(attrFilterValue); 
+            }*/
+            filterStr = attrFilter.toString();
+        }
 
         var filterFunc = new OpenLayers.Filter.Function({
             name: 'collectGeometries',
