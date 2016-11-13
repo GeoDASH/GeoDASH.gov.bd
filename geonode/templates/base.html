@@ -178,14 +178,14 @@
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown" style="margin-top:5px;">
-                            <select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">
-                                <option value="Default" selected="selected" id="drop_defsult">Default</option>
-                                <option value="Organization" id="drop_org">Organization</option>
-                                <option value="User" id="drop_user">User</option>
-                            </select>
-                        </li>
-                        <li class="nav-search-index" style="width:200px;"> <!-- nav-search-index -->
+                        <!--<li class="dropdown" style="margin-top:5px;">-->
+                            <!--<select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">-->
+                                <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
+                                <!--<option value="Organization" id="drop_org">Organization</option>-->
+                                <!--<option value="User" id="drop_user">User</option>-->
+                            <!--</select>-->
+                        <!--</li>-->
+                        <li class="nav-search-index" style="width:285px;"> <!-- nav-search-index -->
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
                                 <div class="input-group">
                                     {% if HAYSTACK_SEARCH %}
@@ -193,6 +193,13 @@
                                     {% else %}
                                         <input id="search_input" class="Organization" type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
+                                    <span>
+                                        <select name="" id="number" class="user_dropdown" onchange="drop_sec(this);">
+                                            <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
+                                            <option value="Organization" id="drop_org">Organization</option>
+                                            <option value="User" id="drop_user">User</option>
+                                        </select><span class="caret" style="cursor:pointer;"></span>
+                                    </span>
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
                                           <i class="fa fa-search"></i>
@@ -823,6 +830,7 @@
     {% include 'autocomplete_light/static.html' %}
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 
+
     {% block extra_script %}{% endblock extra_script %}
 
     <script type="text/javascript">
@@ -933,6 +941,16 @@
             $('#uploadsignlayer').attr('action', '/account/login/?next=/documents/upload/');
         }
     </script>
+  <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+  <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    <!--<script>-->
+      <!--$( function() {-->
+        <!--$( "#number" )-->
+          <!--.selectmenu()-->
+          <!--.selectmenu( "menuWidget" )-->
+            <!--.addClass( "overflow" );-->
+      <!--} );-->
+   <!--</script>-->
 
     <script type="text/javascript" src="{% url "lang" %}"></script>
 

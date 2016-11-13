@@ -24,7 +24,7 @@
                                     {% avatar user 30 %}
                                     <!--<img class="media-object" src="images/user-no-image.png" alt="user-no-image">-->
                                 </div>
-                                <div class="media-body">
+                                <div class="media-body" style="color: #999999;">
                                     {{ user }}
                                 </div>
                             </div>
@@ -32,7 +32,15 @@
                     {% endifnotequal %}
                 {% endfor %}
             </td>
-            <td><a href="{{ thread.get_absolute_url }}">{{ thread.subject }}</a></td>
+            <td>
+                <a href="{{ thread.get_absolute_url }}" class="media-list">
+                    <div class="media">
+                        <div class="media-body">
+                            {{ thread.subject }}
+                        </div>
+                    </div>
+                </a>
+            </td>
             <td>
                 {% ifequal request.user thread.latest_message.sender %}
                   {% trans "me" %}
