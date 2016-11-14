@@ -195,9 +195,9 @@
                                     {% endif %}
                                     <span>
                                         <select name="" id="number" class="user_dropdown" onchange="drop_sec(this);">
-                                            <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
-                                            <option value="Organization" id="drop_org">Organization</option>
-                                            <option value="User" id="drop_user">User</option>
+                                            <option value="Default" id="layermapdocsearch" selected="selected" id="drop_defsult">Layer/Map/Document</option>
+                                            <option value="Organization" id="organizationsearch">Organization</option>
+                                            <option value="User" id="userssearch">User</option>
                                         </select><span class="caret" style="cursor:pointer;"></span>
                                     </span>
                                     <span class="input-group-btn">
@@ -914,6 +914,20 @@
                  });
             });
         });
+        $(document).ready(function (){
+            $("#layermapdocsearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search layer/map/doc');
+            });
+            $("#organizationsearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search organizations');
+            });
+            $("#userssearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search users');
+            });
+        });
     </script>
     <script>
         // Workaround to fix the autocomplete box positions
@@ -934,7 +948,7 @@
     <script>
         function layerpopup(){
             $('#SigninModal').modal('show');
-            $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload/member');
+            $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
         }
         function documentpopup(){
             $('#SigninModal').modal('show');

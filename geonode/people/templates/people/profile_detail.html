@@ -191,7 +191,7 @@
                                     {% if request.user == profile %}
                                       {% for group in profile.group_list_all %}
                                       <div ng-if="group.logo != ''" class="col-md-2 pull-right group-logo">
-                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" width="75" height="75" alt="{{ group.title }}" /></a>
+                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" style="max-width:75px;max-height:75px;" alt="{{ group.title }}" /></a>
                                       </div>
                                       <!-- <div class="col-xs-6 col-md-8">
                                         <h5>
@@ -203,7 +203,7 @@
                                     {% else %}
                                       {% for group in profile.group_list_public %}
                                       <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
-                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" width="75" height="50" alt="{{ group.title }}" /></a>
+                                        <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" style="max-width:75px;max-height:75px;" alt="{{ group.title }}" /></a>
                                       </div>
                                       <!-- <div class="col-xs-6 col-md-8">
                                         <h5>

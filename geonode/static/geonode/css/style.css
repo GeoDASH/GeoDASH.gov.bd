@@ -2924,15 +2924,16 @@ ul.termsuseandcondition li {
     text-align: left;
 }
 .user_dropdown{
-    width:85px;
+    width:80px;
     border:none;
     background:#ffffff;
     cursor:pointer;
     padding-left: 5px;
     -moz-appearance: none;
     -webkit-appearance: none;
-    appearance: none;*/
+    appearance: none;
 }
+
 
 
 /*! jQuery UI - v1.12.1 - 2016-09-14
