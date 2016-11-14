@@ -40,7 +40,7 @@ def post_comment(request, content_type_id, object_id, form_class=CommentForm):
     form = form_class(request.POST, request=request, obj=obj, user=request.user)
     if form.is_valid():
         comment = form.save()
-        # notify document owner that someone have deleted the document
+        # notify resource owner that someone have commented on his resource
         if request.user != obj.owner:
             recipient = obj.owner
             notify.send(request.user, recipient=recipient, actor=request.user,

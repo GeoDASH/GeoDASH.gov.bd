@@ -480,7 +480,7 @@ ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 ACCOUNT_APPROVAL_REQUIRED = False
 
 # Email for users to contact admins.
-THEME_ACCOUNT_CONTACT_EMAIL = 'admin@example.com'
+THEME_ACCOUNT_CONTACT_EMAIL = 'admin@geodash.gov.bd'
 
 #
 # Test Settings
