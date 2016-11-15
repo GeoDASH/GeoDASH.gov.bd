@@ -99,7 +99,6 @@ class ProfileForm(forms.ModelForm):
             'last_notification_view')
 
     def clean_email(self):
-        import pdb; pdb.set_trace()
         value = self.cleaned_data["email"]
         qs = EmailAddress.objects.filter(email__iexact=value)
         if not qs.exists() or not settings.ACCOUNT_EMAIL_UNIQUE:
