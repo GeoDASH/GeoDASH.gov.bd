@@ -201,7 +201,7 @@
                   <div class="top-content text-center">
                       <div class="title">
                           <a href="{{ item.detail_url }}" title="{{ item.title }}">
-                              {{ item.title | limitTo: 25 }}{{ item.title.length  > 25 ? '...' : ''}}
+                              {{ item.title | limitTo: 20 }}{{ item.title.length  > 20 ? '...' : ''}}
                           </a>
                       </div>
                       <div class="category">
