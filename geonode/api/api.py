@@ -238,7 +238,8 @@ class GroupResource(ModelResource):
         filtering = {
             'name': ALL,
             'docked': ALL,
-            'favorite': ALL
+            'favorite': ALL,
+            'title': ALL
         }
         ordering = ['title', 'last_modified']
 
