@@ -509,6 +509,7 @@ table.gd-list-table tr td .media-body {
     border: none;
     background:#fff;
 }
+
 #search .input-group .yourlabs-autocomplete {
     top: 30px !important;
     border-radius: 2px;
@@ -2987,8 +2988,21 @@ ul.termsuseandcondition li {
     -webkit-appearance: none;
     appearance: none;
 }
+@media (min-width: 940px) {
+  .navbar-collapse.collapse{
+    width:1137px;
+  }
+  .brow_widt{
+    width:235px;
+  }
+  #search_input{
+    width:100px;
+  }
 
-
+ }
+.brow_widt{
+    width:285px;
+  }
 
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com
