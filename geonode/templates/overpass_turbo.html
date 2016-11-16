@@ -216,20 +216,76 @@
                         {% endblock %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-search-index" style="width:285px;"> <!-- nav-search-index -->
+                        <li class="nav-search-index brow_widt" id="search_lay_map_doc" style=""> <!-- nav-search-index -->
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
                                 <div class="input-group">
                                     {% if HAYSTACK_SEARCH %}
-                                        <input id="search_input" type="text" placeholder="" name="q" style="color:#5a5d63;">
+                                        <input id="search_input"  type="text" placeholder="" name="q" style="color:#5a5d63;">
                                     {% else %}
-                                        <input id="search_input" type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
+                                        <input id="search_input"  type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
                                     <span>
                                         <select name="" id="number" class="user_dropdown" onchange="drop_sec(this);">
-                                            <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
-                                            <option value="Organization" id="drop_org">Organization</option>
-                                            <option value="User" id="drop_user">User</option>
-                                        </select>
+                                            <option value="Default" class="layermapdocsearch" selected="selected" id="drop_defsult">Layer/Map/Document</option>
+                                            <option value="Organization" class="organizationsearch">Organization</option>
+                                            <option value="User" class="userssearch">User</option>
+                                        </select><span class="caret" style="cursor:pointer;"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-gd-primary" type="submit">
+                                          <i class="fa fa-search"></i>
+                                      </button>
+                                    </span>
+                                </div>
+                                <!-- <button class="btn btn-default btn-link">
+                                    <a href="#" >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </a>
+                                </button> -->
+                            </form>
+                        </li>
+                        <li class="nav-search-index search_dis brow_widt" id="search_organiz" style=""> <!-- nav-search-index -->
+                            <form class="top-site-search" id="search_org" action="{% url "searchorg" %}" >
+                                <div class="input-group">
+                                    {% if HAYSTACK_SEARCH %}
+                                        <input id="search_input_org" class="Organization" type="text" placeholder="Search organizations" name="q" style="color:#5a5d63;">
+                                    {% else %}
+                                        <input id="search_input_org" class="Organization" type="text" placeholder="Search organizations" style="color:#5a5d63;" name="title__icontains">
+                                    {% endif %}
+                                    <span>
+                                        <select name="" id="number" class="user_dropdown" onchange="drop_sec(this);">
+                                            <option value="Default" class="layermapdocsearch" selected="selected" id="drop_defsult">Layer/Map/Document</option>
+                                            <option value="Organization" class="organizationsearch">Organization</option>
+                                            <option value="User" class="userssearch">User</option>
+                                        </select><span class="caret" style="cursor:pointer;"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-gd-primary" type="submit">
+                                          <i class="fa fa-search"></i>
+                                      </button>
+                                    </span>
+                                </div>
+                                <!-- <button class="btn btn-default btn-link">
+                                    <a href="#" >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </a>
+                                </button> -->
+                            </form>
+                        </li>
+                        <li class="nav-search-index search_dis brow_widt" id="search_users" style=""> <!-- nav-search-index -->
+                            <form class="top-site-search" id="search_user" action="{% url "searchuser" %}" >
+                                <div class="input-group">
+                                    {% if HAYSTACK_SEARCH %}
+                                        <input id="search_input_user" class="Organization" type="text" placeholder="Search user" name="q" style="color:#5a5d63;">
+                                    {% else %}
+                                        <input id="search_input_user" class="Organization" type="text" placeholder="Search user" style="color:#5a5d63;" name="username">
+                                    {% endif %}
+                                    <span>
+                                        <select name=""  class="user_dropdown" onchange="drop_sec(this);">
+                                            <option value="Default" class="layermapdocsearch" selected="selected" id="drop_defsult">Layer/Map/Document</option>
+                                            <option value="Organization" class="organizationsearch">Organization</option>
+                                            <option value="User" class="userssearch">User</option>
+                                        </select><span class="caret" style="cursor:pointer;"></span>
                                     </span>
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
@@ -1010,19 +1066,34 @@
 
         function reInityourlabsAutocomplete(URL){
             $('#search_input').yourlabsAutocomplete('destroy');
-            autocomplete = $('#search_input').yourlabsAutocomplete({
+            autocomplete = $('#search_input_org').yourlabsAutocomplete({
                 url: URL,
                 choiceSelector: 'span',
                 hideAfter: 200,
                 minimumCharacters: 1,
                 placeholder: '{% trans 'Type your search here ...' %}',
-                appendAutocomplete: $('#search_input'),
+                appendAutocomplete: $('#search_input_org'),
                 autoHilightFirst: false
             });
-            $('#search_input').bind('selectChoice', function(e, choice, autocomplete) {
+            $('#search_input_org').bind('selectChoice', function(e, choice, autocomplete) {
                 if(choice[0].children[0] == undefined) {
-                    $('#search_input').val($(choice[0]).text());
-                    $('#search').submit();
+                    $('#search_input_org').val($(choice[0]).text());
+                    $('#search_org').submit();
+                }
+            });
+            autocomplete = $('#search_input_user').yourlabsAutocomplete({
+                url: URL,
+                choiceSelector: 'span',
+                hideAfter: 200,
+                minimumCharacters: 1,
+                placeholder: '{% trans 'Type your search here ...' %}',
+                appendAutocomplete: $('#search_input_user'),
+                autoHilightFirst: false
+            });
+            $('#search_input_user').bind('selectChoice', function(e, choice, autocomplete) {
+                if(choice[0].children[0] == undefined) {
+                    $('#search_input_user').val($(choice[0]).text());
+                    $('#search_user').submit();
                 }
             });
         }
@@ -1034,7 +1105,7 @@
             else if (sel.value == 'Organization'){
                 url = '{% url "autocomplete_light_autocomplete" "GroupProfileAutocomplete" %}';
             }
-            //console.log(url);
+            console.log(url);
             reInityourlabsAutocomplete(url);
         }
 
@@ -1071,6 +1142,29 @@
                  });
             });
         });
+        $(document).ready(function (){
+            $(".layermapdocsearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search layer/map/doc');
+                $('#search_lay_map_doc').css('display','block');
+                $('#search_organiz').css('display','none');
+                $('#search_users').css('display','none');
+            });
+            $(".organizationsearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search organizations');
+                $('#search_lay_map_doc').css('display','none');
+                $('#search_organiz').css('display','block');
+                $('#search_users').css('display','none');
+            });
+            $(".userssearch").click(function(){
+                //alert("layer");
+                $('#search_input').attr('placeholder','Search users');
+                $('#search_lay_map_doc').css('display','none');
+                $('#search_organiz').css('display','none');
+                $('#search_users').css('display','block');
+            });
+        });search_lay_map_doc
     </script>
     <script>
         // Workaround to fix the autocomplete box positions

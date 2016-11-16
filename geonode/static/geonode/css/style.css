@@ -2993,16 +2993,21 @@ ul.termsuseandcondition li {
     width:1137px;
   }
   .brow_widt{
-    width:235px;
+    width:230px;
   }
   #search_input{
     width:100px;
   }
+  #search_input_user{
+    width:100px;
+  }
+  #search_input_org{
+    width:100px;
+  }
 
  }
-.brow_widt{
-    width:285px;
-  }
+
+
 
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com
