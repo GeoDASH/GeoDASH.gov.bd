@@ -24,7 +24,7 @@
                 <div class="details">
                     {% if news.image %}
                     <p>
-                        <img src="/uploaded/{{ news.image }}" style="max-width:600px;max-height:500px;"/>
+                        <img src="/uploaded/{{ news.image }}" class="img-responsive" />
                     </p><br />
                     {% endif %}
                     <p>{{ news.description|slice:"0:1000" }}</p>
