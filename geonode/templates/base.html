@@ -194,11 +194,11 @@
                                         <input id="search_input"  type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
                                     <span>
-                                        <select name="" class="user_dropdown" onchange="drop_sec(this);">
-                                            <option value="Default" class="layermapdocsearch" selected="selected" id="drop_defsult">Layer/Map/Document</option>
-                                            <option value="Organization" class="organizationsearch">Organization</option>
-                                            <option value="User" class="userssearch">User</option>
-                                        </select><span class="caret" style="cursor:pointer;"></span>
+                                        <select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">
+                                            <option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>
+                                            <option value="Organization" id="organizationsearch">Organization</option>
+                                            <option value="User" id="userssearch">User</option>
+                                        </select><div class="caret" id="show_d_p" style="cursor:pointer;"></div>
                                     </span>
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
@@ -873,29 +873,23 @@
             var url = '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}';
             if (sel.value == 'User') {
                 url = '{% url "autocomplete_light_autocomplete" "ProfileAutocomplete" %}';
+                $('#search_input').attr('placeholder','Search users');
+                $('#search_input').attr('name', 'username__icontains');
+                $('#search').attr('action', '/searchuser/');
             }
             else if (sel.value == 'Organization'){
                 url = '{% url "autocomplete_light_autocomplete" "GroupProfileAutocomplete" %}';
-            }
-            console.log(url);
-            reInityourlabsAutocomplete(url);
-        }
-        $(document).ready(function (){
-            $(".layermapdocsearch").click(function(){
-                //alert("layer");
-                $('#search_input').attr('placeholder','Search layer/map/doc');
-            });
-            $(".organizationsearch").click(function(){
-                //alert("org");
                 $('#search_input').attr('placeholder','Search organizations');
                 $('#search').attr('action', '/searchorg/');
-            });
-            $(".userssearch").click(function(){
-                //alert("user");
-                $('#search_input').attr('placeholder','Search users');
-                $('#search').attr('action', '/searchuser/');
-            });
-        });
+            }
+            else if (sel.value == 'Default'){
+                url = '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}';
+                $('#search_input').attr('placeholder','Search layer/map/doc');
+                $('#search').attr('action', '/search/');
+            }
+            //console.log(url);
+            reInityourlabsAutocomplete(url);
+        }
 
         $(document).ready(function (){
             $("#lang-selection").click(function(){

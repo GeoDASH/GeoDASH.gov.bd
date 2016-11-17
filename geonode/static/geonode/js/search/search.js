@@ -207,7 +207,7 @@
     $scope.query.limit = $scope.query.limit || CLIENT_RESULTS_LIMIT;
     $scope.query.offset = $scope.query.offset || 0;
     $scope.page = Math.round(($scope.query.offset / $scope.query.limit) + 1);
-   
+
     //Get data from apis and make them available to the page
     function query_api(data){
       /*if (!$scope.query.hasOwnProperty("order_by")){
@@ -782,7 +782,7 @@
         }
       });
 
-			
+
       var leafletData = $injector.get('leafletData'),
           map = leafletData.getMap('filter-map');
 
@@ -792,7 +792,7 @@
           //query_api($scope.query);
         });
       });
-    
+
       var showMap = false;
       $('#_extent_filter, #advanced-search-control, .advanced-search-control').click(function(evt) {
      	  showMap = !showMap

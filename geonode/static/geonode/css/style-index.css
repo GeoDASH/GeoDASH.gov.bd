@@ -776,7 +776,8 @@
 }
 @media (max-width: 767px) {
   .gd-sharemap-left-img img{
-    float:left;
+    /*float:left;*/
+    margin-right:115px;
   }
 
  }
