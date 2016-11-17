@@ -32,34 +32,35 @@
                             <a href="{% url "slider-image-delete" image.id section.id %}" title="Delete" id=""><i class="fa fa-times fa-stack-1x"></i></a>
                         </span>
                       <a href="{% url "slider-image-update" image.id section.id %}" title="Edit">
-                      <img src="/uploaded/{{image.image}}" class="col-md-12" height="100" width="200" />
+                      <img src="/uploaded/{{image.image}}"  class="img-responsive "/>
                       </a>
               </div>
               {% endfor %}
           {% else %}
             {% if base_section.image1 %}
               <div class="col-md-3">
-                      <img src="/uploaded/{{base_section.image1}}" height="150" class="col-md-12" />
+                      <img src="/uploaded/{{base_section.image1}}" class="img-responsive" />
               </div>
             {% endif %}
             {% if base_section.image2 %}
               <div class="col-md-3">
-                      <img src="/uploaded/{{base_section.image2}}" height="150" class="col-md-12" />
+                      <img src="/uploaded/{{base_section.image2}}" class="img-responsive" />
               </div>
             {% endif %}
             {% if base_section.image3 %}
               <div class="col-md-3">
-                      <img src="/uploaded/{{base_section.image3}}" height="150" class="col-md-12" />
+                      <img src="/uploaded/{{base_section.image3}}" class="img-responsive" />
               </div>
             {% endif %}
             {% if base_section.image4 %}
               <div class="col-md-3">
-                      <img src="/uploaded/{{base_section.image4}}" height="150" class="col-md-12" />
+                      <img src="/uploaded/{{base_section.image4}}" class="img-responsive"/>
               </div>
             {% endif %}
+          <div class="block-separator"></div>
             {% if base_section.image5 %}
               <div class="col-md-3">
-                      <img src="/uploaded/{{base_section.image5}}" height="150" border="0" class="col-md-12" />
+                      <img src="/uploaded/{{base_section.image5}}" class="img-responsive" />
               </div>
             {% endif %}
           {% endif %}
