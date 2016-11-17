@@ -422,6 +422,7 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
+    'account.auth_backends.EmailAuthenticationBackend',
 
     # Authentication backend for facebook
     'social.backends.facebook.FacebookOAuth2',
@@ -475,8 +476,8 @@ ACTSTREAM_SETTINGS = {
 
 # Settings for Social Apps
 REGISTRATION_OPEN = True
-ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
+ACCOUNT_EMAIL_CONFIRMATION_EMAIL = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_APPROVAL_REQUIRED = False
 ACCOUNT_EMAIL_UNIQUE = True
 
