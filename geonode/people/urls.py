@@ -23,7 +23,7 @@ from django.views.generic import TemplateView
 
 from account.views import InviteUserView
 
-from geonode.people.views import CreateUser, activateuser, UserSignup
+from geonode.people.views import CreateUser, activateuser, UserSignup, InviteUser
 
 urlpatterns = patterns('geonode.people.views',
                        url(r'^$', TemplateView.as_view(template_name='people/profile_list.html'),
@@ -37,7 +37,7 @@ urlpatterns = patterns('geonode.people.views',
                        url(r"^signup/$", UserSignup.as_view(), name="user_signup"),
 
                        #invite user
-                       url(r"^invite_user/$", InviteUserView.as_view(), name="invite_user"),
+                       url(r"^invite_user/$", InviteUser.as_view(), name="invite_user"),
 
                        #user message inbox
                        url(r'^inbox', 'inbox', name='message-inbox-extend'),

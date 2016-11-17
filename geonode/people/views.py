@@ -36,7 +36,7 @@ from user_messages.models import UserThread
 
 from account import signals
 from account.forms import SignupForm
-from account.views import SignupView
+from account.views import SignupView, InviteUserView
 from account.utils import default_redirect
 
 from geonode.people.models import Profile
@@ -198,3 +198,12 @@ def inbox(request):
         msg.unread = False
         msg.save()
     return HttpResponseRedirect(reverse('messages_inbox'))
+
+
+class InviteUser(InviteUserView):
+    """
+
+    """
+    def get_success_url(self, fallback_url=None, **kwargs):
+
+        return reverse('invite_user')

@@ -234,8 +234,13 @@ def group_invite(request, slug):
             )
 
             # notify user that he/she is invited by the group
-            notify.send(request.user, recipient=user, actor=request.user,
-            verb='invited you to join')
+            try:
+                requested_user = Profile.objects.get(email=user)
+            except:
+                pass
+            else:
+                notify.send(request.user, recipient=requested_user, actor=request.user,
+                verb='invited you to join')
 
     return redirect("group_members", slug=group.slug)
 
