@@ -789,12 +789,12 @@ def layer_publish(request, layer_pk):
             # notify organization admins about the new published layer
             managers = list( group.get_managers())
             notify.send(request.user, recipient_list = managers, actor=request.user,
-                        verb='published a new layer', target=layer)
+                        verb='pushed a new layer for approval', target=layer)
 
             # set all the permissions for all the managers of the group for this layer
             layer.set_managers_permissions()
 
-            messages.info(request, 'published layer succesfully')
+            messages.info(request, 'Pushed layer succesfully for approval')
             return HttpResponseRedirect(reverse('member-workspace-layer'))
     else:
         return HttpResponseRedirect(reverse('member-workspace-layer'))
@@ -858,7 +858,7 @@ def layer_approve(request, layer_pk):
                 layer_audit_activity.auditor = request.user
                 layer_audit_activity.save()
 
-            messages.info(request, 'approved layer succesfully')
+            messages.info(request, 'Approved layer succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
         else:
             messages.info(request, 'Please write an approve comment and try again')
@@ -907,7 +907,7 @@ def layer_deny(request, layer_pk):
             messages.info(request, 'layer denied successfully')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
         else:
-            messages.info(request, 'Please write an deny comment and try again')
+            messages.info(request, 'Please write a deny comment and try again')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-layer'))
@@ -926,9 +926,9 @@ def layer_delete(request, layer_pk):
                 layer.save()
 
             else:
-                messages.info(request, 'you have no acces to delete the layer')
+                messages.info(request, 'You have no acces to delete the layer')
 
-        messages.info(request, 'layer deleted successfully')
+        messages.info(request, 'Deleted layer successfully')
         if request.user == layer.owner:
             return HttpResponseRedirect(reverse('member-workspace-layer'))
         else:

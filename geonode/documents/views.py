@@ -548,11 +548,11 @@ def document_publish(request, document_pk):
             # notify organization admins about the new published document
             managers = list( group.get_managers())
             notify.send(request.user, recipient_list = managers, actor=request.user,
-                        verb='published a new document', target=document)
+                        verb='pushed a new document for approval', target=document)
             # set all the permissions for all the managers of the group for this documentt
             document.set_managers_permissions()
 
-            messages.info(request, 'published document succesfully')
+            messages.info(request, 'Pushed document succesfully for approval')
             return HttpResponseRedirect(reverse('member-workspace-document'))
     else:
         return HttpResponseRedirect(reverse('member-workspace-document'))
@@ -614,7 +614,7 @@ def document_approve(request, document_pk):
                 document_audit_activity.auditor = request.user
                 document_audit_activity.save()
 
-            messages.info(request, 'approved document succesfully')
+            messages.info(request, 'Approved document succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
             messages.info(request, 'Please write an approve comment and try again')
@@ -659,7 +659,7 @@ def document_deny(request, document_pk):
                 document_audit_activity.auditor = request.user
                 document_audit_activity.save()
 
-            messages.info(request, 'document denied successfully')
+            messages.info(request, 'Denied document successfully')
             return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
             messages.info(request, 'Please write a deny comment and try again')
@@ -681,9 +681,9 @@ def document_delete(request, document_pk):
                 document.status = "DELETED"
                 document.save()
             else:
-                messages.info(request, 'you have no acces to delete the document')
+                messages.info(request, 'You have no acces to delete the document')
 
-        messages.info(request, 'document deleted successfully')
+        messages.info(request, 'Deleted the document successfully')
         if request.user == document.owner:
             return HttpResponseRedirect(reverse('member-workspace-document'))
         else:
