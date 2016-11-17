@@ -31,7 +31,7 @@
                                   {% avatar profile 100 %}
                                   <!--<img height="100" src="images/profile_pic.png" alt="profile_pic">-->
                                 </div>
-                                <div class="txt">{{ profile.first_name|default:profile.name_long }}</div>
+                                <div class="txt">{{ profile.first_name|default:profile.name_long }} {{ profile.last_name }}</div>
                             </a>
                         </div>
                         <div class="designation">
