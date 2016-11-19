@@ -311,7 +311,7 @@ INSTALLED_APPS = (
     'avatar',
     # 'dialogos',
     'agon_ratings',
-    'notification',
+    #'notification',
     'announcements',
     'actstream',
     'user_messages',

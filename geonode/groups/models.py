@@ -312,3 +312,25 @@ class QuestionAnswer(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
+
+class UserInvitationModel(models.Model):
+    """
+    This model keeps track of user invitations to groups
+    """
+    group = models.ForeignKey(GroupProfile)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    state = models.CharField(
+        max_length=10,
+        choices=(
+            ("pending", _("Pending")),
+            ("free", _("Free")),
+            ("connected", _("Connected")),
+
+        ),
+        default='free',
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [("group", "user", "state")]

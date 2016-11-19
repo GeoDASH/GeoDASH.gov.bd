@@ -156,6 +156,19 @@
                                       {% else %}
                                           {% if object.access == "public-invite" %}
                                             {% trans "Anyone may view this group but membership is by invitation only." %}
+                                              <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="block-separator"></div>
+                                                            <form class="uniForm" method="POST" action="{% url "user-invitation" object.slug %}">
+                                                            {% csrf_token %}
+                                                            {% if can_send_request %}
+                                                                <input type="submit" class="btn btn-gd-gray btn-md btn-block" value="Send Request" />
+                                                             {% elif pending_request %}
+                                                                {% trans "You already have pending request to join this group." %}
+                                                            {% endif %}
+                                                            </form>
+                                                    </div>
+                                                </div>
                                           {% else %}
                                             {% if object.access == "private" %}
                                                 {% trans "Membership is by invitation only." %}

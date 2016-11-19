@@ -21,7 +21,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-from .views import GroupDetailView, GroupActivityView, AnswerUpdate
+from .views import GroupDetailView, GroupActivityView, AnswerUpdate, UserInvitationListView, UserInvitationDeleteView
 
 urlpatterns = patterns('geonode.groups.views',
                        url(r'^$', TemplateView.as_view(template_name='groups/group_list.html'), name="group_list"),
@@ -45,6 +45,14 @@ urlpatterns = patterns('geonode.groups.views',
                        url(r'^group/(?P<slug>[-\w]+)/(?P<question_pk>[0-9]+)/delete/$', 'delete_question', name='delete-question'),
 
                        url(r'^group/(?P<slug>[-\w]+)/(?P<answer_pk>[0-9]+)/update$', AnswerUpdate.as_view(), name='answer-update'),
+
+
+                       url(r'^group/(?P<slug>[-\w]+)/user-invitation$', 'userinvitation', name='user-invitation'),
+                       url(r'^group/(?P<slug>[-\w]+)/user-invitations/list$', UserInvitationListView.as_view(), name='user-invitation-list'),
+                       url(r'^group/(?P<slug>[-\w]+)/user-invitations/(?P<invitation_pk>[0-9]+)/delete$', UserInvitationDeleteView.as_view(), name='user-invitation-delete'),
+                       url(r'^group/(?P<slug>[-\w]+)/user-invitations/(?P<user_pk>[0-9]+)/accept$', 'accept_user_invitation', name='user-invitation-accept'),
+
+
 
 
 

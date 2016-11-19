@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-
+from actstream.views import user
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
@@ -25,7 +25,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DeleteView
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
@@ -111,6 +111,33 @@ class GroupDetailView(ListView):
         self.group = get_object_or_404(GroupProfile, slug=kwargs.get('slug'))
         return super(GroupDetailView, self).get(request, *args, **kwargs)
 
+    def user_can_invite(self):
+        is_member = self.group.user_is_member(self.request.user)
+        is_manager = self.group.user_is_role(self.request.user, "manager")
+        try:
+            user_invitation = UserInvitationModel.objects.get(user=self.request.user, group=self.group)
+        except:
+            state = 'free'
+        else:
+            state = user_invitation.state
+
+        if not is_member and not is_manager and state == 'free':
+            return True
+        else:
+            return False
+
+    def user_invitation_pending(self):
+        try:
+            user_invitation = UserInvitationModel.objects.get(user=self.request.user, group=self.group)
+        except:
+            state = 'free'
+        else:
+            state = user_invitation.state
+        if state == 'pending':
+            return True
+        else:
+            return False
+
     def get_context_data(self, **kwargs):
         context = super(GroupDetailView, self).get_context_data(**kwargs)
         context['object'] = self.group
@@ -121,6 +148,8 @@ class GroupDetailView(ListView):
             self.request.user,
             "manager")
         context['can_view'] = self.group.can_view(self.request.user)
+        context['can_send_request'] = self.user_can_invite()
+        context['pending_request'] = self.user_invitation_pending()
         return context
 
 
@@ -436,3 +465,70 @@ class AnswerUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse('group_detail', kwargs={'slug': self.kwargs['slug']})
+
+
+from models import UserInvitationModel
+@require_POST
+@login_required
+def userinvitation(request, slug):
+    """
+
+    """
+    if request.method == 'POST':
+        group = get_object_or_404(GroupProfile, slug=slug)
+        if group.access == "public-invite":
+            user_invitation = UserInvitationModel(user=request.user, group=group, state='pending')
+            user_invitation.save()
+            managers = list(group.get_managers())
+            notify.send(request.user, recipient_list=managers, actor=request.user,
+                    target=group, verb='requested to join {}'.format(group.title))
+            return redirect("group_detail", slug=slug)
+
+
+class UserInvitationListView(ListView):
+    model = UserInvitationModel
+    template_name = 'groups/user_invitation_list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListView, self).get_context_data(*args, **kwargs)
+        slug = self.kwargs['slug']
+        group = get_object_or_404(GroupProfile, slug=slug)
+        context['pending_invitations'] = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
+        context['slug'] = slug
+
+        return context
+
+
+class UserInvitationDeleteView(DeleteView):
+    """
+
+    """
+    # template_name = 'slider_image_delete.html'
+    model = UserInvitationModel
+
+    def get_success_url(self):
+        return reverse('user-invitation-list', kwargs={'slug': self.kwargs['slug']})
+
+    def get_object(self):
+        slug = self.kwargs['slug']
+        group = get_object_or_404(GroupProfile, slug=slug)
+        return UserInvitationModel.objects.get(pk=self.kwargs['invitation_pk'])
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+
+@require_POST
+@login_required
+def accept_user_invitation(request, user, slug):
+    import pdb; pdb.set_trace()
+    group = get_object_or_404(GroupProfile, slug=slug)
+
+    if not group.user_is_role(user, role="manager") and not user.is_superuser:
+        return HttpResponseForbidden()
+
+    group.join(user, role='member')
+    user_invitation = UserInvitationModel.objects.get(group=group, user=user)
+    user_invitation.state='connected'
+    user_invitation.save()
+    return redirect("group_detail", slug=group.slug)
