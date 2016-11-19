@@ -261,8 +261,9 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                             colorStr = colorStrs.join(',');
                             this.colorField.setValue(colorStr);
                         }
-                        this.colorField.setValue(colorStr);
-                        urlValue = this.updateQueryStringParameter(urlValue, 'chco', colorStr);
+                        colorField = this.colorField.getValue();
+                        console.log(colorField);
+                        urlValue = this.updateQueryStringParameter(urlValue, 'chco', colorField);
                         // end color section
                         //
                         // set url value

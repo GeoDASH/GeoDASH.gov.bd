@@ -19,7 +19,8 @@ Ext.onReady(function() {
         proxy: '{{ PROXY_URL }}',
         {% endif %}
         {% if MAPFISH_PRINT_ENABLED %}
-        printService: "{{GEOSERVER_BASE_URL}}pdf/",
+        //printService: "{{GEOSERVER_BASE_URL}}pdf/",
+		printService: "{{GEOSERVER_BASE_URL}}pdf/info.json?url={{GEOSERVER_BASE_URL}}pdf/",
         {% else %}
         printService: "",
         {% endif %}
@@ -41,7 +42,9 @@ Ext.onReady(function() {
        }
     }, {{ config }});
 
-     $.ajax({
+	//console.log("Hmm :: ",config,JSON.stringify(config));
+	
+    /* */$.ajax({
         url: "/api/layersource",
         success: function(result){
             //console.log(result);
@@ -56,7 +59,7 @@ Ext.onReady(function() {
                 };
                 config.sources['GeonodeWMS'+layer.id+'Server'] = layerObj;
             }
-            console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ",config);
+            console.log("GD-CONFIG on MAP-GEO-EXPLORER :: ",config,JSON.stringify(config));
             app = new GeoNode.Composer(config);
         },
          error: function(){
@@ -65,6 +68,7 @@ Ext.onReady(function() {
             app = new GeoNode.Composer(config);
          }
     });
+	//app = new GeoNode.Composer(config);
 {% endautoescape %}
 });
 </script>
