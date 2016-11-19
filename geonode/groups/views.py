@@ -519,16 +519,22 @@ class UserInvitationDeleteView(DeleteView):
         return self.post(*args, **kwargs)
 
 
-@require_POST
+
 @login_required
 def accept_user_invitation(request, slug, user_pk):
+    
     group = get_object_or_404(GroupProfile, slug=slug)
     user = get_object_or_404(Profile, pk=user_pk)
-    if not group.user_is_role(user, role="manager") and not user.is_superuser:
-        return HttpResponseForbidden()
+    if request.method == 'POST':
 
-    group.join(user, role='member')
-    user_invitation = UserInvitationModel.objects.get(group=group, user=user)
-    user_invitation.state='connected'
-    user_invitation.save()
-    return redirect("user-invitation-list", slug=slug)
+        if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
+            return HttpResponseForbidden()
+
+        group.join(user, role='member')
+        user_invitation = UserInvitationModel.objects.get(group=group, user=user)
+        user_invitation.state='connected'
+        user_invitation.save()
+        return redirect("user-invitation-list", slug=slug)
+
+    else:
+        return redirect("user-invitation-list", slug=slug)

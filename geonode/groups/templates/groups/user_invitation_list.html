@@ -53,7 +53,7 @@
                                         <td>
                                             <form action="{% url "user-invitation-accept" slug pending.user.id %}" method="post">
                                             {% csrf_token %}
-                                                <button class="btn btn-gd-primary pull-right icon-btn-color" href="" title="Add Member">Add Member</button>
+                                                <button  type="submit" class="btn btn-gd-primary pull-right icon-btn-color" href="" title="Add Member">Add Member</button>
                                             </form>
                                         </td>
                                         <td>
