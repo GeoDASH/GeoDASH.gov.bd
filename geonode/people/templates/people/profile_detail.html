@@ -302,14 +302,25 @@
                             {% if request.user == profile %}
                               {% for group in profile.group_list_all %}
                               <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
-                                  <div style="text-align:center;padding-bottom:20px;font-weight:bold;">
+                                  <div class="show-org-pro">
                                       {% if group.slug|length >= 15 %}
                                       <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"> {{ group.slug|truncatechars:15 }}.... </a>
                                       {% else %}
                                        <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}">{{ group.slug }}</a>
                                       {% endif %}
                                   </div>
-                                <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive"  style="height:150px;border:none;" /></a>
+                                   <div class="show-org-pro">
+                                      {% if request.user in group.get_managers %}
+                                          {{ '( Admin )' }}
+                                      {% else %}
+                                          {{ '( Member )' }}
+                                      {% endif %}
+                                  </div>
+                                  {% if group.logo %}
+                                <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive" style="height:150px;border:none;" /></a>
+                                  {% else %}
+                                  <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="{{ STATIC_URL }}geonode/images/no-image.png" class="img-responsive"  style="height:150px;border:none;" /></a>
+                                  {% endif %}
                               </div>
                               <!--<div ng-if="group.logo = ''" class="col-md-3 pull-right group-logo">-->
                                 <!--<a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="{{ STATIC_URL }}geonode/images/no-image.png" class="img-responsive"  style="height:150px;" /></a>-->

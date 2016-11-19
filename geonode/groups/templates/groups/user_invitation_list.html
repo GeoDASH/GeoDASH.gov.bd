@@ -40,7 +40,7 @@
                             <thead>
                                 <tr>
                                     <th>Serial No</th>
-                                    <th>User</th>
+                                    <th>User Name</th>
                                     <th>Request Date</th>
                                 </tr>
                             </thead>
@@ -48,7 +48,7 @@
                                 <tbody>
                                     <tr>
                                         <td>{{ forloop.counter}}</td>
-                                        <td>{{ pending.user }}</td>
+                                        <td><a href="{% url "profile_detail" slug %}">{{ pending.user }}</a> </td>
                                         <td>{{ pending.date_created }}</td>
                                         <td>
                                             <form action="{% url "user-invitation-accept" slug pending.user.id %}" method="post">
