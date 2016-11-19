@@ -13,8 +13,19 @@
 {% block body_outer %}
     <div class="gd-content">
         <div class="gd-content-heading">
-            <div class="title small-content">
-                {% trans "User Invitation List" %}
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="title small-content">
+                      {% trans "User Invitation List" %}
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="small-content text-right">
+                      <a href="{% url "group_detail" slug  %}" class="btn btn-gd-primary pull-right icon-btn-color" style="font-size:12px;">
+                            {% trans "Back to Organization" %}
+                      </a>
+                  </div>
+              </div>
             </div>
             <div class="hr"></div>
         </div>

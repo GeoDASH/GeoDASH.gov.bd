@@ -295,15 +295,28 @@
                     <!--<div class="col-md-4">-->
                         <!--<div class="txt">{{ profile.first_name|default:profile.name_long }} {{ profile.last_name }}</div>-->
                     <!--</div>-->
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="gd-txt-right" >
                             <div class="row">
                             {% if user.is_authenticated %}
                             {% if request.user == profile %}
                               {% for group in profile.group_list_all %}
-                              <div ng-if="group.logo != ''" class="col-md-4 pull-right group-logo">
-                                <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive"  /></a>
+                              <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
+                                  <div style="text-align:center;padding-bottom:20px;font-weight:bold;">
+                                      {% if group.slug|length >= 15 %}
+                                      <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"> {{ group.slug|truncatechars:15 }}.... </a>
+                                      {% else %}
+                                       <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}">{{ group.slug }}</a>
+                                      {% endif %}
+                                  </div>
+                                <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive"  style="height:150px;border:none;" /></a>
                               </div>
+                              <!--<div ng-if="group.logo = ''" class="col-md-3 pull-right group-logo">-->
+                                <!--<a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="{{ STATIC_URL }}geonode/images/no-image.png" class="img-responsive"  style="height:150px;" /></a>-->
+                                  <!--<div style="text-align:center;padding-top:20px;">-->
+                                       <!--{{ group.slug }}-->
+                                  <!--</div>-->
+                              <!--</div>-->
                               <!-- <div class="col-xs-6 col-md-8">
                                 <h5>
                                   <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
@@ -313,8 +326,8 @@
                               {% endfor %}
                             {% else %}
                               {% for group in profile.group_list_public %}
-                              <div ng-if="group.logo != ''" class="col-md-4 pull-right group-logo">
-                                <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" class="img-responsive" alt="{{ group.title }}" /></a>
+                              <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
+                                <a href="{{ group.get_absolute_url }}" ><img src="/uploaded/{{ group.logo }}" class="img-responsive" /></a>
                               </div>
                               <!-- <div class="col-xs-6 col-md-8">
                                 <h5>

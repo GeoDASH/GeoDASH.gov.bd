@@ -60,7 +60,9 @@
                   <li><a href="#acitivity" id="qroup_activity" data-toggle="tab"><i class="fa fa-map-marker"></i> {% trans "Activity" %}</a></li>
                     {% endif %}
                   <li><a href="#qtionanswer" id="qst_ans" data-target="#qtionanswer" data-toggle="tab"><i class="fa fa-comment-o"></i> {% trans "Question/Answer" %}</a></li>
+                    {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
                   <li><a href="{% url "user-invitation-list" object.slug %}"><i class="fa fa-comment-o"></i> {% trans "Member Requests" %}</a></li>
+                    {% endif %}
                 </ul>
             </div>
       </div>
