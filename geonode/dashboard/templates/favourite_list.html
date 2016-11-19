@@ -444,7 +444,11 @@
                 output +='<div class="contents">';
                 output +='<div class="title">';
                 output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                output +=''+ item.title  +'';
+                if (item.title.length >= 25){
+                output +=''+item.title.slice(0,15)+'.....';
+                        }else{
+                output +=''+ item.title +'';
+                        }
                 output +='</a>';
                 output +='</div>';
                 output +='</div>';
@@ -517,7 +521,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -585,7 +593,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -631,12 +643,12 @@
                 }
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
-                    output +='<div class="avater-img">';
+                    output +='<div class="avater-img" >';
                     output +='<a class="avater-img-mid" href="#" >';
                                 if(item.logo)
-                    output +='<img src="'+ item.logo +'" alt="" class="group-logo" />';
+                    output +='<img src="'+ item.logo +'" alt="" class="img-responsive" style="height:150px"/>';
                                 else{
-                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
+                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" style="height:150px" class="img-responsive" />';
                                 }
                     output +='</a>';
                     output +='</div>';
@@ -651,9 +663,13 @@
                     output +='</div>';
                     output +='</div>';
                     output +='<div class="contents">';
-                    output +='<div class="title">';
+                    output +='<div class="title" style="text-align:center;">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
