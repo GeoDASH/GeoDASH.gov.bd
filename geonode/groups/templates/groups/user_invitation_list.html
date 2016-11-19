@@ -53,13 +53,11 @@
                                         <td>
                                             <form action="{% url "user-invitation-accept" slug pending.user.id %}" method="post">
                                             {% csrf_token %}
-                                                <button  type="submit" class="btn btn-gd-primary pull-right icon-btn-color" href="" title="Add Member">Add Member</button>
+                                                <button  type="submit" class="btn btn-gd-primary pull-right icon-btn-color" href="" title="Accept Request">Accept Request</button>
                                             </form>
                                         </td>
                                         <td>
-                                            <form>
                                             <a class="btn btn-gd-primary pull-right icon-btn-color" href="{% url "user-invitation-delete" slug pending.id%}" title="Delete request">Delete Request</a>
-                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>
