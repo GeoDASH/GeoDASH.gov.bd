@@ -451,7 +451,11 @@
                 output +='<div class="contents">';
                 output +='<div class="title">';
                 output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                output +=''+ item.title  +'';
+                if (item.title.length >= 25){
+                output +=''+item.title.slice(0,15)+'.....';
+                        }else{
+                output +=''+ item.title +'';
+                        }
                 output +='</a>';
                 output +='</div>';
                 output +='</div>';
@@ -522,7 +526,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -588,7 +596,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -635,9 +647,9 @@
                     output +='<div class="avater-img">';
                     output +='<a class="avater-img-mid" href="#" >';
                                 if(item.logo)
-                    output +='<img src="'+ item.logo +'" alt="" class="group-logo" />';
+                    output +='<img src="'+ item.logo +'" alt="" class="group-logo img-responsive" />';
                                 else{
-                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
+                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo img-responsive" />';
                                 }
                     output +='</a>';
                     output +='</div>';
@@ -654,7 +666,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
