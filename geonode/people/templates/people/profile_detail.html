@@ -303,10 +303,10 @@
                               {% for group in profile.group_list_all %}
                               <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
                                   <div class="show-org-pro">
-                                      {% if group.slug|length >= 15 %}
-                                      <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"> {{ group.slug|truncatechars:15 }}.... </a>
+                                      {% if group.title|length >= 15 %}
+                                      <a href="{{ group.get_absolute_url }}" title="{{ group.title }}"> {{ group.title|truncatechars:15 }}.... </a>
                                       {% else %}
-                                       <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}">{{ group.slug }}</a>
+                                       <a href="{{ group.get_absolute_url }}" title="{{ group.title }}">{{ group.title }}</a>
                                       {% endif %}
                                   </div>
                                    <div class="show-org-pro">
