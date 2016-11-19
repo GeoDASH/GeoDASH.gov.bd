@@ -101,13 +101,14 @@ input[type="file"]:active.form-control{
     -ms-transform:rotate(50deg) skewX(24deg) skewY(12deg);
 }
 .gd-footer-language{
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     margin-top: 40px;
+    width:220px;
 }
 @media (max-width: 767px) {
   .gd-footer-language{
     float:left;
-    margin-left: 35px;
+    margin-left: 0px;
     margin-top: 0px;
     padding-bottom: 20px;
   }
@@ -822,7 +823,7 @@ table.gd-list-table tr td .media-body {
 #gd-footer .navbar-nav > li > a{
     color:#fff;
     font-size:11px;
-    padding: 0px 15px;
+    padding: 0px 12px;
     text-transform: uppercase;
     border-right:1px solid #7e8186;
 }
@@ -3048,8 +3049,77 @@ ul.termsuseandcondition li {
     appearance: none;
 }
 
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .title{
+    color:#333333;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align:left;
+    border-bottom: 0;
+}
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .sub-title{
+    color:#898887;
+    font-size: 11px;
+    text-align:left;
+    border-bottom: 0;
+    margin-bottom: 15px;
+}
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .collapsed .title{
+    text-transform: none;
+    color: #60abe8;
+}
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .collapsed .title .fa{
+    display: inline-block;
+    float: right;
+    color: #60abe8;
+}
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .title .fa ,
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-heading .collapsed .sub-title{
+    display: none;
+}
+#gd-latestnews-left-recentpost #accordion .accordion-section .accordion-section-description{
+    color:#333333;
+    font-size: 13px;
+}
 
+.tooltip_use {
+    position: relative;
+    display: inline-block;
+    /*border-bottom: 1px dotted red;*/
+    font-size:11px;
+    border-right: 0px solid #7e8186;
+    color: #fff;
+    padding: 0 12px;
+    text-transform: uppercase;
+}
 
+.tooltip_use .tooltiptext_use {
+    visibility: hidden;
+    width: 180px;
+    background-color: #000000;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    text-transform:normal;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip_use:hover .tooltiptext_use {
+    visibility: visible;
+    color: #fff;
+    padding:10px;
+}
+.tooltip_use .tooltiptext_use ul li a{
+    color: #fff;
+    padding-bottom:3px;
+}
 
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com

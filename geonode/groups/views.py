@@ -39,6 +39,7 @@ from geonode.layers.models import Layer
 from geonode.groups.models import QuestionAnswer
 from geonode.groups.forms import QuestionForm, AnsewerForm
 from geonode.settings import ANONYMOUS_USER_ID
+from geonode import settings
 
 @login_required
 @user_passes_test(superuser_check)
@@ -520,10 +521,9 @@ class UserInvitationDeleteView(DeleteView):
 
 @require_POST
 @login_required
-def accept_user_invitation(request, user, slug):
-    import pdb; pdb.set_trace()
+def accept_user_invitation(request, slug, user_pk):
     group = get_object_or_404(GroupProfile, slug=slug)
-
+    user = get_object_or_404(Profile, pk=user_pk)
     if not group.user_is_role(user, role="manager") and not user.is_superuser:
         return HttpResponseForbidden()
 
@@ -531,4 +531,4 @@ def accept_user_invitation(request, user, slug):
     user_invitation = UserInvitationModel.objects.get(group=group, user=user)
     user_invitation.state='connected'
     user_invitation.save()
-    return redirect("group_detail", slug=group.slug)
+    return redirect("user-invitation-list", slug=slug)

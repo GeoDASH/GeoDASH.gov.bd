@@ -156,17 +156,31 @@
                                 <div id="gd-latestnews-tweets" >
                                     <h4>{% trans "Recent Posts" %}</h4>
                                     <hr />
-                                    <div class="gd-latestnews-tweets-scroll resent-activetiy gd-history" id="gd-latestnews-tweets-scroll">
-                                        <!--<div class="tab-content activity-style-list">-->
-                                            <!--<article class="tab-pane active">-->
-                                                <!--{% for action in action_list %}-->
-
-                                                <!--{% empty %}-->
-                                                    <!--<p>{% trans "No actions yet" %}</p>-->
-                                                <!--{% endfor %}-->
-                                            <!--</article>-->
-                                        <!--</div>-->
-                                        <!--<a class="view-all-activity" href="{% url "recent-activity" %}">View all Activity</a>-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="gd-latestnews-left-recentpost">
+                                                <div id="accordion" >
+                                                    {% for news in latest_news_list %}
+                                                    <div class="accordion-section">
+                                                        <div class="accordion-section-heading" role="tab" id="headingOne">
+                                                                <div class="title">{{ news.title }}</div>
+                                                                <div class="sub-title">{{ news.date_created }}</div>
+                                                        </div>
+                                                        <div id="collapseOne"  class="accordion-section-description collapse in">
+                                                            {% if news.description|length >= 100 %}
+                                                                {{ news.description|truncatechars:100 }}
+                                                                &nbsp;&nbsp;
+                                                                <span> <a href="{% url "news-details" news.id %}"> More </a></span>
+                                                            {% else %}
+                                                                {{ news.description }}
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="block-separator"></div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

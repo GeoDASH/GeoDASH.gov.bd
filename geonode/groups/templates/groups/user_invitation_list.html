@@ -40,12 +40,15 @@
                                         <td>{{ pending.user }}</td>
                                         <td>{{ pending.date_created }}</td>
                                         <td>
-                                            <a href="{% url "user-invitation-accept" slug pending.user.id %}" class="" title="Accept request"><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></a>
+                                            <form action="{% url "user-invitation-accept" slug pending.user.id %}" method="post">
+                                            {% csrf_token %}
+                                                <button class="btn btn-gd-primary pull-right icon-btn-color" href="" title="Add Member">Add Member</button>
+                                            </form>
                                         </td>
                                         <td>
-                                            <span>
-                                            <a href="{% url "user-invitation-delete" slug pending.id%}" class="" title="Delete request"><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></a>
-                                            </span>
+                                            <form>
+                                            <a class="btn btn-gd-primary pull-right icon-btn-color" href="{% url "user-invitation-delete" slug pending.id%}" title="Delete request">Delete Request</a>
+                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>
