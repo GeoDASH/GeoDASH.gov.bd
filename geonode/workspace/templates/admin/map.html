@@ -124,8 +124,7 @@
                                             <td>{{ draft.owner.username }}</td>
                                             <td>{{ draft.date_created }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "Delete Map" %}</button> <br>
-                                                {% include "map_templates/_delete_map.html" %}
+                                                <button type="button" class="btn btn-gd-primary" onclick="mapLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Map" %}</button> <br>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -172,6 +171,7 @@
             </div>
         </div>
     </div>
+{% include "map_templates/_delete_map.html" %}
 {% endblock %}
 
 {% block extra_script %}
@@ -279,6 +279,14 @@
         });
     </script>
 <script>
+function mapLayer(id){
+        //console.log(id);
+        var sleID = parseInt(id);
+        $("#testid").html(id);
+        $('#_delete_map').modal('show');
+        $('#Map_Del').attr('action', '../../maps/'+ sleID +'/delete');
+    }
+
 $(function () {
     $("#follow_button, #unfollow_button").click(function () {
         $.post($(this).attr("href"), {});

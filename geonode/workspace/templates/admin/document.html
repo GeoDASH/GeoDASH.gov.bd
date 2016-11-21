@@ -123,8 +123,7 @@
                                             <td>{{ draft.owner.username }}</td>
                                             <td>{{ draft.date_created }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_document" style="color:#fff;">{% trans "Delete Document" %}</button> <br>
-                                                {% include "document_templates/_delete_document.html" %}
+                                                <button type="button" class="btn btn-gd-primary" onclick="deleteDocument({{ draft.id }})" style="color:#fff;">{% trans "Delete Document" %}</button> <br>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -171,6 +170,7 @@
             </div>
         </div>
     </div>
+{% include "document_templates/_delete_document.html" %}
 {% endblock %}
 
 {% block extra_script %}
@@ -283,6 +283,14 @@
         });
     </script>
 <script>
+function deleteDocument(id){
+        //console.log(id);
+        var sleID = parseInt(id);
+        $("#testid").html(id);
+        $('#_delete_document').modal('show');
+        $('#Doc_Del').attr('action', '../../documents/'+ sleID +'/delete');
+    }
+
 $(function () {
     $("#follow_button, #unfollow_button").click(function () {
         $.post($(this).attr("href"), {});
