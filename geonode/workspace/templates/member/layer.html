@@ -54,8 +54,7 @@
                                         <td>{{ draft.date_created }}</td>
                                         <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>
                                         <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_layer" class="btn btn-gd-primary">{% trans "Delete Layer" %}</button> <br>
-                                            {% include "layer_templates/_delete_layer.html" %}
+                                            <button type="button" class="btn btn-gd-primary" onclick="deleteLayer({{ draft.id }})" class="btn btn-gd-primary">{% trans "Delete Layer" %}</button> <br>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -155,11 +154,20 @@
             </div>
         </div>
     </div>
+{% include "layer_templates/_delete_layer.html" %}
 {% endblock %}
 
 {% block extra_script %}
 {{ block.super }}
 <script>
+function deleteLayer(id){
+        //console.log(id);
+        var sleID = parseInt(id);
+        $("#testid").html(id);
+        $('#_delete_layer').modal('show');
+        $('#Layer_Del').attr('action', '../../layers/'+ sleID +'/delete');
+    }
+
 $(function () {
     $("#follow_button, #unfollow_button").click(function () {
         $.post($(this).attr("href"), {});
