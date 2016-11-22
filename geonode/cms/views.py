@@ -15,6 +15,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import get_user_model
 
 from actstream.models import Action
 
@@ -29,6 +30,8 @@ from forms import SliderSectionManagementForm, FeatureHighlightsSectionManagemen
     PrettyMapsSectionManagementForm, Maps3DSectionManagementForm, ShareMapSectionManagementForm, OurPartnersSectionManagementForm
 from models import IndexPageImagesModel
 from forms import IndexPageImageUploadForm, OurPartnersImagesUploadForm
+from geonode.maps.models import Map
+from geonode.groups.models import GroupProfile
 
 
 
@@ -68,6 +71,18 @@ class IndexClass(ListView):
             action_object_content_type__id=ct_comment_id)[:15]
         context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
         context['featured_layer_list'] = Layer.objects.filter(featured=True)
+
+        #home page counters
+        context['layer_counter'] = Layer.objects.filter(status='ACTIVE').count()
+        context['map_counter'] = Map.objects.filter(status='ACTIVE').count()
+        context['document_counter'] = GroupProfile.objects.all().count()
+        if self.request.user.is_superuser:
+            context['user_counter'] = get_user_model().objects.exclude(username='AnonymousUser').count()
+        else:
+            context['user_counter'] = get_user_model().objects.filter(active=True).exclude(
+                username='AnonymousUser', is_staff=True).count()
+
+
         sections = SectionManagementTable.objects.all()
         for section in sections:
             if section.slug == 'slider-section':
