@@ -194,53 +194,38 @@
                         <!--</div>-->
                     <!--{% endif %}-->
                     <div class="gd-stastic-control">
-                        {% with facet_type='home' %}
-                        {% facets as facets %}
                         <ul class="text-center">
                             <li>
                                 <a href="{% url "layer_browse" %}">
-                                    <div class="title animation_conuter" id="total_layers_home">{{ facets.layers|default:_("0") }}</div>
+                                    <div class="title animation_conuter">{{ layer_counter }}</div>
                                     <div class="description">
-                                        {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}
+                                        {% trans "Layers" %}
                                     </div>
                                 </a>
                             </li>
-                            <li class="map-org-li-fixed">
+                            <li>
                                 <a href="{% url "maps_browse" %}">
-                                    <div class="title animation_conuter_maps" id="total_maps_home">{{ facets.maps|default:_("0") }}</div>
+                                    <div class="title animation_conuter">{{ map_counter }}</div>
                                     <div class="description">
-                                        {% blocktrans count counter=facets.map %}Map{% plural %}Maps{% endblocktrans %}
+                                        {% trans "Maps" %}
                                     </div>
                                 </a>
                             </li>
-                            <li class="map-org-li-fixed">
+                            <li>
                                 <a href="{% url "group_list" %}">
-                                    <div class="title animation_conuter_orgs" id="total_orgs_home">{{ facets.groups|default:_("0") }}</div>
+                                    <div class="title animation_conuter">{{ group_counter }}</div>
                                     <div class="description">{% trans "Organizations" %}</div>
                                 </a>
                             </li>
-                            {% if user.is_authenticated %}
                             <li>
                                 <a href="{% url "profile_browse" %}">
-                                    <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
+                                    <div class="title animation_conuter">{{ user_counter }}</div>
                                     <div class="description">
-                                        {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
+                                        {% trans "Users" %}
                                     </div>
                                 </a>
                             </li>
-                            {% endif %}
-                            {% if not user.is_authenticated %}
-                            <li>
-                                <a style="cursor:pointer;" onclick="userspopup('SigninModal');">
-                                    <div class="title animation_conuter_users" id="total_users_home">{{ facets.users|default:_("0") }}</div>
-                                    <div class="description">
-                                        {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}
-                                    </div>
-                                </a>
-                            </li>
-                            {% endif %}
                         </ul>
-                        {% endwith %}
                     </div>
                 </div>
             </div>

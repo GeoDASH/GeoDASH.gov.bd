@@ -116,22 +116,7 @@ $(document).ready(function() {
         });
     }
     if( $(".animation_conuter").length){
-        var JS_STATIC_URL = '../api/layers';
-        $.ajax({
-        url: JS_STATIC_URL,
-        type: 'GET',
-        data: {},
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        context: document.body,
-        success: function(jsondata){
-            //console.log(JSON.stringify(jsondata));
-            var data = eval(jsondata.objects);
-            var t_count = data.length;
-            //alert(t_count);
-            $("#total_layers_home").text(t_count);
-            //$("#total_layers_home");
-            $('.animation_conuter').each(function () {
+        $('.animation_conuter').each(function () {
             $(this).prop('Counter',0).animate({
                 Counter: $(this).text()
             }, {
@@ -142,9 +127,8 @@ $(document).ready(function() {
                 }
             });
         });
-        }});
     }
-    if( $(".animation_conuter_maps").length){
+/*    if( $(".animation_conuter_maps").length){
         var JS_STATIC_URL = '../api/maps';
         $.ajax({
         url: JS_STATIC_URL,
@@ -173,64 +157,7 @@ $(document).ready(function() {
         });
         }});
     }
-    if( $(".animation_conuter_orgs").length){
-        var JS_STATIC_URL = '../api/groups';
-        $.ajax({
-        url: JS_STATIC_URL,
-        type: 'GET',
-        data: {},
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        context: document.body,
-        success: function(jsondata){
-            //console.log(JSON.stringify(jsondata));
-            var data = eval(jsondata.objects);
-            var t_count = data.length;
-            //alert(t_count);
-            $("#total_orgs_home").text(t_count);
-            //$("#total_layers_home");
-            $('.animation_conuter_orgs').each(function () {
-            $(this).prop('Counter',0).animate({
-                Counter: $(this).text()
-            }, {
-                duration: 2000,
-                easing: 'swing',
-                step: function (now) {
-                    $(this).text(Math.ceil(now));
-                }
-            });
-        });
-        }});
-    }
-    if( $(".animation_conuter_users").length){
-        var JS_STATIC_URL = '../api/profiles';
-        $.ajax({
-        url: JS_STATIC_URL,
-        type: 'GET',
-        data: {},
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        context: document.body,
-        success: function(jsondata){
-            //console.log(JSON.stringify(jsondata));
-            var data = eval(jsondata.objects);
-            var t_count = data.length;
-            //alert(t_count);
-            $("#total_users_home").text(t_count);
-            //$("#total_layers_home");
-            $('.animation_conuter_users').each(function () {
-            $(this).prop('Counter',0).animate({
-                Counter: $(this).text()
-            }, {
-                duration: 2000,
-                easing: 'swing',
-                step: function (now) {
-                    $(this).text(Math.ceil(now));
-                }
-            });
-        });
-        }});
-    }
+*/
     if( $("body.layer-detail-page #gd-wrapper").length){
         $('.modal').on('shown.bs.modal', function () {
             $("body.layer-detail-page #gd-wrapper").css("position","absolute");
