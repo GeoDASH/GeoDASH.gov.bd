@@ -79,7 +79,7 @@ class IndexClass(ListView):
         if self.request.user.is_superuser:
             context['user_counter'] = get_user_model().objects.exclude(username='AnonymousUser').count()
         else:
-            context['user_counter'] = get_user_model().objects.get_user_model().objects.exclude(
+            context['user_counter'] = get_user_model().objects.exclude(
                 username='AnonymousUser').exclude(is_staff=True).filter(is_active=True).count()
 
 
