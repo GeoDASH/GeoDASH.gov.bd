@@ -604,8 +604,8 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
                             }
                             this.downloadCSV(tableRows, { filename: layerName+"-cross-layer.csv" });
                             //var jsonData = Ext.encode(Ext.pluck(store.data.items, 'data'));
-                            console.log(store);
-                            console.log(tableHeader, tableRows);
+                            //console.log(store);
+                            //console.log(tableHeader, tableRows);
                         } else {
                             featureManager.showLayer();
                             featureManager.visible();

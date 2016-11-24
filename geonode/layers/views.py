@@ -32,11 +32,12 @@ from guardian.shortcuts import get_perms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.template import RequestContext, loader
 try:
     import json
 except ImportError:
@@ -277,7 +278,12 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
 
     # if the edit request is not valid then just return from here
     if not edit_permit:
-        return  HttpResponse('you dont have permission to edit this layer')
+        return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You dont have permission to edit this layer.")})), status=401)
+        # return  HttpResponse('You dont have permission to edit this layer')
 
     # assert False, str(layer_bbox)
     config = layer.attribute_config()
@@ -775,10 +781,15 @@ def layer_publish(request, layer_pk):
         try:
             layer = Layer.objects.get(id=layer_pk)
         except Layer.DoesNotExist:
-            return HttpResponse("Layer does not exist")
+            return Http404("Layer does not exist")
         else:
             if request.user != layer.owner:
-                return HttpResponse('you are not allowed to publish this layer')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to publish this layer.")})), status=401)
+                # return HttpResponse('you are not allowed to publish this layer')
             group = layer.group
             layer.status = 'PENDING'
             layer.current_iteration += 1
@@ -809,11 +820,16 @@ def layer_approve(request, layer_pk):
             try:
                 layer = Layer.objects.get(id=layer_pk)
             except Layer.DoesNotExist:
-                return HttpResponse("requested layer does not exists")
+                return Http404("requested layer does not exists")
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to approve this layer")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to approve this layer.")})), status=401)
+                    # return HttpResponse("you are not allowed to approve this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -876,11 +892,16 @@ def layer_deny(request, layer_pk):
             try:
                 layer = Layer.objects.get(id=layer_pk)
             except:
-                return HttpResponse("requested layer does not exists")
+                return Http404("requested layer does not exists")
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deny this layer")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to deny this layer.")})), status=401)
+                    # return HttpResponse("you are not allowed to deny this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -919,14 +940,19 @@ def layer_delete(request, layer_pk):
         try:
             layer = Layer.objects.get(id=layer_pk)
         except:
-            return HttpResponse("requested layer does not exists")
+            return Http404("requested layer does not exists")
         else:
             if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
                 layer.status = "DELETED"
                 layer.save()
 
             else:
-                messages.info(request, 'You have no acces to delete the layer')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You have no acces to delete the layer.")})), status=401)
+                # messages.info(request, 'You have no acces to delete the layer')
 
         messages.info(request, 'Deleted layer successfully')
         if request.user == layer.owner:

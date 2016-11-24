@@ -25,11 +25,12 @@ from guardian.shortcuts import get_perms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.template import RequestContext, loader
 try:
     # Django >= 1.7
     import json
@@ -957,10 +958,15 @@ def map_publish(request, map_pk):
         try:
             map = Map.objects.get(id=map_pk)
         except Map.DoesNotExist:
-            return HttpResponse("Map does not exist")
+            return Http404("Map does not exist")
         else:
             if request.user != map.owner:
-                return HttpResponse('you are not allowed to publish this map')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to publish this map.")})), status=401)
+                # return HttpResponse('you are not allowed to publish this map')
             group = map.group
             map.status = 'PENDING'
             map.current_iteration += 1
@@ -991,11 +997,17 @@ def map_approve(request, map_pk):
             try:
                 map = Map.objects.get(id=map_pk)
             except Map.DoesNotExist:
-                return HttpResponse("requested map does not exists")
+                return Http404("requested map does not exists")
             else:
                 group = map.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to approve this map")
+                    if request.user != map.owner:
+                        return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to approve this map.")})), status=401)
+                    # return HttpResponse("you are not allowed to approve this map")
                 map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
                 map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -1058,11 +1070,16 @@ def map_deny(request, map_pk):
             try:
                 map = Map.objects.get(id=map_pk)
             except:
-                return HttpResponse("requested map does not exists")
+                return Http404("requested map does not exists")
             else:
                 group = map.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deny this map")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to deny this map.")})), status=401)
+                    # return HttpResponse("you are not allowed to deny this map")
                 map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
                 map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -1101,13 +1118,18 @@ def map_delete(request, map_pk):
         try:
             map = Map.objects.get(id=map_pk)
         except:
-            return HttpResponse("requested map does not exists")
+            return Http404("requested map does not exists")
         else:
             if map.status == 'DRAFT' and ( request.user == map.owner or request.user in map.group.get_managers()):
                 map.status = "DELETED"
                 map.save()
             else:
-                messages.info(request, 'You have no acces to delete the map')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You have no acces to delete the map.")})), status=401)
+                # messages.info(request, 'You have no acces to delete the map')
 
         messages.info(request, 'Deleted map successfully')
         if request.user == map.owner:
