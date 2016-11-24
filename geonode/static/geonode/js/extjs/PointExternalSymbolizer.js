@@ -204,7 +204,21 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                         // query
                         var queryObj = this.parseLabelFromQuery(value);
                         var querySection = queryObj.query;
-                        var queryValue = querySection.join(',');
+                        // Query String to add round method
+                        var querys = [];
+                        var presents = [];
+                        for(var i=0; i<querySection.length; i++){
+                            var section = querySection[i];
+                            if(section.indexOf("${round") === -1) {
+                                section = section.replace("${", "${round(");
+                                section = section.replace("}", ")}");
+                            }
+                            querys.push(section);
+                            presents.push(section+'%');
+                        }
+                        var queryValue = querys.join(',');
+                        //this.queryField.setValue(queryValue);
+                        
                         queryValue = 't:'+queryValue;
                         var urlField = this.urlField.getValue();
                         if(urlField !== undefined && urlField !== null && urlField !== ''){
@@ -215,13 +229,6 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                         // 
                         // start present
                         var presentValue = '';
-                        var presents = [];
-                        for(var i=0; i<querySection.length; i++){
-                            var section = querySection[i];
-                            section = section.replace("${", "${round(");
-                            section = section.replace("}", ")}%");
-                            presents.push(section);
-                        }
                         if(presents.length > 0){
                             presentValue = presents.join('|');
                         }
@@ -262,8 +269,10 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                             this.colorField.setValue(colorStr);
                         }
                         colorField = this.colorField.getValue();
-                        console.log(colorField);
+                        //console.log(colorField);
+                        console.log(urlValue);
                         urlValue = this.updateQueryStringParameter(urlValue, 'chco', colorField);
+                        console.log(urlValue);
                         // end color section
                         //
                         // set url value
@@ -273,6 +282,13 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                         var chd = this.getParameterByName('chd',urlValue);
                         if(chd !== undefined && chd !== null && chd !== ''){
                             this.urlField.setValue(urlValue);
+                            
+                            // start left legend
+                            // start left legend
+                            legend_clolor_str = urlValue;
+                            this.addChartLegend(legend_clolor_str);
+                            // end left legend
+                            
                             this.fireEvent("change", this.symbolizer);
                         }
                         // end url value
@@ -319,6 +335,13 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                     if ((cht !== undefined && cht !== null && cht !== '') &&
                             (chd !== undefined && chd !== null && chd !== '')) {
                         this.urlField.setValue(urlValue);
+                        
+                        // start left legend
+                        // start left legend
+                        legend_clolor_str = urlValue;
+                        this.addChartLegend(legend_clolor_str);
+                        // end left legend
+                            
                         this.fireEvent("change", this.symbolizer);
                     }
                 },
@@ -375,6 +398,13 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                         if ((cht !== undefined && cht !== null && cht !== '') &&
                                 (chd !== undefined && chd !== null && chd !== '')) {
                             this.urlField.setValue(urlValue);
+                            
+                            // start left legend
+                            // start left legend
+                            legend_clolor_str = urlValue;
+                            this.addChartLegend(legend_clolor_str);
+                            // end left legend
+                            
                             this.fireEvent("change", this.symbolizer);
                         }
                     }
@@ -437,6 +467,13 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                     var chd = this.getParameterByName('chd',urlValue);
                     if(chd !== undefined && chd !== null && chd !== ''){
                         this.urlField.setValue(urlValue);
+                        
+                        // start left legend
+                        // start left legend
+                        legend_clolor_str = urlValue;
+                        this.addChartLegend(legend_clolor_str);
+                        // end left legend
+                            
                         this.fireEvent("change", this.symbolizer);
                     }
                     // end url value
@@ -499,6 +536,14 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                     var chd = this.getParameterByName('chd',urlValue);
                     if(chd !== undefined && chd !== null && chd !== ''){
                         this.urlField.setValue(urlValue);
+                        
+                        // start left legend
+                        // start left legend
+                        legend_clolor_str = urlValue;
+                        this.addChartLegend(legend_clolor_str);
+                        // end left legend
+                            
+                            
                         this.fireEvent("change", this.symbolizer);
                     }
                     // end url value
@@ -637,6 +682,13 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
                             var chd = this.getParameterByName('chd',urlValue);
                             if ((chd !== undefined && chd !== null && chd !== '')) {
                                 this.urlField.setValue(urlValue);
+                                
+                                // start left legend
+                                // start left legend
+                                legend_clolor_str = urlValue;
+                                this.addChartLegend(legend_clolor_str);
+                                // end left legend
+                            
                                 this.fireEvent("change", this.symbolizer);
                             }
                         }
@@ -728,7 +780,50 @@ gxp.PointExternalSymbolizer = Ext.extend(Ext.Panel, {
             query: sections,
             label: labels
         };
+    },
+    addChartLegend: function (uri) {
+        //console.log(uri);
+        uri = uri.trim();
+        uri = uri.replaceAll('&amp;', '&');
+        if (uri !== '') {
+            var chartLegend = '';
+            var colors = getUriParameterByName('chco', uri);
+            var labels = getUriParameterByName('label', uri);
+            //console.log(colors,labels);
+            if (colors !== undefined && colors !== '' && labels !== null && labels !== undefined && labels !== '') {
+                //console.log(colors, labels);
+                var colorList = colors.split(',');
+                var labelList = labels.split('|');
+                //console.log(colorList,labelList);
+                //console.log(colorList.length, labelList.length);
+                if (colorList.length == labelList.length) {
+                    for (var i = 0; i < colorList.length; i++) {
+                        chartLegend += '<div style="margin-bottom:5px;"><span style="background: #' + colorList[i] + '; height:5px;width:5px;margin-right: 5px; padding: 0 10px;"></span><span>' + labelList[i] + '</span></div>';
+                    }
+                }
+            }
+            console.log('chartLegend called');
+            setTimeout(function(){
+                $('#chart-legend-holder').html(chartLegend);
+                //$('#gxp-sdsl-legend .x-panel-bwrap .gxp-legend-item').append(chartLegend);
+            }, 500);
+            
+        }
+    },
+    getUriParameterByName: function (name, url) {
+        if (!url) {
+            return '';
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+    
 });
 
 /** api: xtype = gxp_pointexternalsymbolizer */

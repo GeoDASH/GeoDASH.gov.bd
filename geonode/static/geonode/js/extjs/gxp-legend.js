@@ -64,7 +64,7 @@ gxp.plugins.Legend = Ext.extend(gxp.plugins.Tool, {
             this.outputConfig = {
                 id: 'gxp-sdsl-legend',
                 width: 300,
-                height: 150,
+                height: 200,
                 align: 'r'
             };
         }
@@ -100,13 +100,25 @@ gxp.plugins.Legend = Ext.extend(gxp.plugins.Tool, {
      *  :arg config: ``Object``
      */
     addOutput: function(config) {
+        //console.log(legend_clolor_str || 'legend_clolor_str');
+        
+        if(legend_clolor_str != undefined && legend_clolor_str != null && legend_clolor_str != ''){
+            this.addChartLegend(legend_clolor_str);
+        }
+        
         var output = gxp.plugins.Legend.superclass.addOutput.call(this, Ext.apply({
             xtype: 'gx_legendpanel',
             ascending: false,
             border: false,
             hideMode: "offsets",
             layerStore: this.target.mapPanel.layers,
-            defaults: {cls: 'gxp-legend-item'}
+            defaults: {
+                cls: 'gxp-legend-item',
+                baseParams: {
+                    FORMAT: 'image/png',
+                    LEGEND_OPTIONS: 'forceLabels:on'
+                 }
+            }
         }, config));
         output.ownerCt.ownerCt.alignTo(Ext.getBody(), "tr-tr", [-20, 95]);
 
@@ -133,8 +145,49 @@ gxp.plugins.Legend = Ext.extend(gxp.plugins.Tool, {
             layerStore: this.target.mapPanel.layers,
             defaults: {cls: 'gxp-legend-item'}
         }, config));*/
+    },
+    addChartLegend: function (uri) {
+        //console.log(uri);
+        uri = uri.trim();
+        uri = uri.replaceAll('&amp;', '&');
+        if (uri !== '') {
+            var chartLegend = '';
+            var colors = getUriParameterByName('chco', uri);
+            var labels = getUriParameterByName('label', uri);
+            //console.log(colors,labels);
+            if (colors !== undefined && colors !== '' && labels !== null && labels !== undefined && labels !== '') {
+                //console.log(colors, labels);
+                var colorList = colors.split(',');
+                var labelList = labels.split('|');
+                //console.log(colorList,labelList);
+                //console.log(colorList.length, labelList.length);
+                if (colorList.length == labelList.length) {
+                    for (var i = 0; i < colorList.length; i++) {
+                        chartLegend += '<div style="margin-bottom:5px;"><span style="background: #' + colorList[i] + '; height:5px;width:5px;margin-right: 5px; padding: 0 10px;"></span><span>' + labelList[i] + '</span></div>';
+                    }
+                }
+            }
+            //console.log(chartLegend);
+            setTimeout(function(){
+                $('#chart-legend-holder').html(chartLegend);
+                $('#gxp-sdsl-legend .x-panel-bwrap .gxp-legend-item').append(chartLegend);
+            }, 500);
+            
+        }
+    },
+    getUriParameterByName: function (name, url) {
+        if (!url) {
+            return '';
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-
 });
 
 Ext.preg(gxp.plugins.Legend.prototype.ptype, gxp.plugins.Legend);

@@ -27,6 +27,8 @@ Ext.namespace("gxp.plugins");
  *    Plugin for performing cross layer queries
  */
 gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
+    hasSaveData: false,
+    downloadData: null,
     /** api: ptype = gxp_crosslayerqueryform */
     ptype: "gxp_crosslayerqueryform",
 
@@ -130,6 +132,7 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
         // support custom actions
         if (this.actions) {
             var featureManager = this.target.tools[this.featureManager];
+            //featureManager.maxFeatures = 10000;
             featureManager.maxFeatures = null;
             featureManager.on("layerchange",
                 function(mgr, rec, schema) {
@@ -468,6 +471,46 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
                     }
                 }
             }, {
+                text: "Download CSV",
+                iconCls: "icon-save",
+                //disabled: !this.hasSaveData,
+                handler: function() {
+                    var filters = [];
+                    if (queryForm.intersectFieldset.collapsed !== true &&
+                            queryForm.intersectCrossLayerField.disabled !== true) {
+                        var intersectFilter = this.filterTemplate(
+                                        queryForm.intersectAttributeFieldset.filterBuilder.getFilter(),
+                                        OpenLayers.Filter.Spatial.INTERSECTS);
+                        filters.push(intersectFilter);
+                    }
+                    if (filters.length > 0) {
+                        featureManager.loadFeatures(filters.length > 1 ?
+                            new OpenLayers.Filter.Logical({
+                                type: OpenLayers.Filter.Logical.AND,
+                                filters: filters
+                            }) :
+                            filters[0]
+                        );
+                    }
+                    this.hasSaveData = true;
+                    
+                    /*var store = this.downloadData;
+                    console.log(store);
+                    // check store is avalivale or not
+                    if(store !== null && store.getCount() > 0){
+                        var jsonData = Ext.encode(Ext.pluck(store.data.items, 'data'));
+                        console.log(jsonData);
+                    } else {
+                        Ext.Msg.show({
+                            title: 'Warning',
+                            msg: '',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.INFO
+                        });
+                    }*/
+                },
+                scope: this
+            }, {
                 text: this.queryActionText,
                 iconCls: "gxp-icon-find",
                 handler: function() {
@@ -496,6 +539,7 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
                             filters[0]
                         );
                     }
+                    this.hasSaveData = false;
                 },
                 scope: this
             }]
@@ -530,9 +574,43 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
                                 queryForm.ownerCt.ownerCt;
                             ownerCt instanceof Ext.Window && ownerCt.hide();
                         }
-                        featureManager.showLayer();
-                        featureManager.visible();
-                        featureManager.raiseLayer();
+                        if(this.hasSaveData){
+                            var tableRows = [];
+                            var tableHeader = [];
+                            
+                            var searchResult = store.data.items;
+                            if(searchResult.length > 0 && searchResult[0] !== undefined){
+                                var layerName = searchResult[0].data.feature.fid;
+                                layerName = layerName.replace('.1', '');
+                                // get table header
+                                var featureData = searchResult[0].data.feature.data;
+                                if ((featureData instanceof Object) && !(featureData instanceof Array)) {
+                                    var keys = Object.keys(featureData);
+                                    var columnsLen = keys.length;
+                                    var headerColumnsLen = columnsLen;
+                                    for (var j = 0; j < columnsLen; j++) {
+                                        var header = keys[j];
+                                        if (tableHeader.length < headerColumnsLen) {
+                                            tableHeader.push(header);
+                                        }
+                                    }
+                                }
+                                // table row adding
+                                for(var i=0; i<searchResult.length; i++){
+                                    var result = searchResult[i];
+                                    var featureData = result.data.feature.data;
+                                    tableRows.push(featureData);
+                                }
+                            }
+                            this.downloadCSV(tableRows, { filename: layerName+"-cross-layer.csv" });
+                            //var jsonData = Ext.encode(Ext.pluck(store.data.items, 'data'));
+                            console.log(store);
+                            console.log(tableHeader, tableRows);
+                        } else {
+                            featureManager.showLayer();
+                            featureManager.visible();
+                            featureManager.raiseLayer();
+                        }
                     }
                 }
             },
@@ -540,6 +618,72 @@ gxp.plugins.CrossLayerQueryForm = Ext.extend(gxp.plugins.Tool, {
         });
 
         return queryForm;
+    },
+
+    convertArrayOfObjectsToCSV: function (args) {
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        var headerItem = [];
+        var keyItems = Object.keys(data[0]);
+        for(var i=0; i<keyItems.length; i++){
+            var item = keyItems[i];
+            item = item.replace('centerDistance', 'Distance')
+                .replace('pro_', '')
+                .replace('_perty','');
+            headerItem.push(item);
+        }
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += headerItem.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function (item) {
+            ctr = 0;
+            keys.forEach(function (key) {
+                if (ctr > 0)
+                    result += columnDelimiter;
+
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+
+        return result;
+    },
+
+    downloadCSV: function (stockData, args) {
+        var data, filename, link;
+
+        var csv = this.convertArrayOfObjectsToCSV({
+            data: stockData
+        });
+        if (csv == null)
+            return;
+
+        filename = args.filename || 'export.csv';
+
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = 'data:text/csv;charset=utf-8,' + csv;
+        }
+        data = encodeURI(csv);
+
+        link = document.createElement('a');
+        link.setAttribute('href', data);
+        link.setAttribute('download', filename);
+        //link.click();
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 });
 
