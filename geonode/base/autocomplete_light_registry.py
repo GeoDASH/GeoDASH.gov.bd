@@ -24,13 +24,23 @@ from taggit.models import Tag
 from models import ResourceBase, Region
 
 
+
+class ResourceBaseAutocomplete(autocomplete_light.AutocompleteModelBase):
+    search_fields=['title', 'group__title', 'owner__username', 'keywords__name']
+    def choices_for_request(self):
+        self.choices = self.choices.distinct()
+        return super(ResourceBaseAutocomplete, self).choices_for_request()
+
+
 autocomplete_light.register(Region,
                             search_fields=['name'],
                             autocomplete_js_attributes={'placeholder': 'Region/Country ..', },)
 
 autocomplete_light.register(ResourceBase,
-                            search_fields=['title', 'group__title', 'owner__username', 'keywords__name'],
-                            autocomplete_js_attributes={'placeholder': 'Resource name..', },)
+                            ResourceBaseAutocomplete
+                            # search_fields=['title', 'group__title', 'owner__username', 'keywords__name'],
+                            # autocomplete_js_attributes={'placeholder': 'Resource name..', },
+                            )
 
 autocomplete_light.register(Tag,
                             search_fields=['name', 'slug'],
