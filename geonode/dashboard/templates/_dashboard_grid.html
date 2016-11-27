@@ -30,8 +30,13 @@
                   </div>
                   <div class="row" style="padding-bottom:20px;">
                       <div class="col-md-6">
-                          <div class="" style="font-size:20px;">
-                              {% trans "Layers" %}
+                          <div class="" style="">
+                              <ul class="nav navbar-nav nav-pills">
+                                  <li class="active"><a href="#org-profile" id="org_profile" data-toggle="tab" ><i class="fa fa-square-o rotate-45"></i> {% trans "Layers" %}</a></li>
+                                  <li><a href="#layerslist" id="layers_list" data-toggle="tab" ><i class="fa fa-square-o rotate-45"></i> {% trans "Maps" %}</a></li>
+                                  <li ><a href="#userlist" data-toggle="tab"><i class="fa fa-square-o rotate-45"></i> {% trans "Documents" %}</a></li>
+                                  <li><a href="#qtionanswer" id="qst_ans" data-target="#qtionanswer" data-toggle="tab"><i class="fa fa-square-o rotate-45"></i>  {% trans "Organizations" %}</a></li>
+                              </ul>
                           </div>
                       </div>
                       <div class="col-md-6">
@@ -43,7 +48,7 @@
                                       </a>
                                   </li>
                                   <li>
-                                      <a href="{% url "_dashboard_grid" %}" title="Grid View">
+                                      <a href="{% url "_dashboard_grid" %}" title="Tab View">
                                           <i class="fa fa-th-large fa-stack-1-5x"></i>
                                       </a>
                                   </li>

@@ -35,7 +35,7 @@
     <div class="gd-content" style="border-top:5px solid lightgrey;">
       <div class="gd-content-body layer-test" >
         <div class="row">
-          <div class="col-md-4 margin-zero right-pad-zero">
+          <div class="col-md-4 margin-zero right-pad-zero overlay_layerdetails" id="myNav" style="">
             <div id="gd-accordion-style" class="layer-information">
                         <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
@@ -606,8 +606,15 @@
           {% endif %}
 
           </div> <!-- col-md-4 -->
-          <div class="col-md-8">
-
+          <div class="col-md-12" id="myNav_map_left">
+              <div class="layerdetails_arro">
+                  <span id="layerdetails_show" >
+                      <img  src="{{ STATIC_URL }}geonode/images/mini-right.gif" onclick="openNav()" alt="Mini-right">
+                  </span>
+                  <span id="layerdetails_hide"  style="display:none;">
+                      <img src="{{ STATIC_URL }}geonode/images/mini-left.gif" onclick="closeNav()" alt="Mini-Left">
+                  </span>
+              </div>
             <div id="embedded_map" class="mrg-btm">
               <div id="preview_map"></div>
             </div>
@@ -619,6 +626,27 @@
 
 {% block extra_script %}
     <script type="text/javascript">
+    function openNav()
+    {
+    //alert("test");
+        $('#myNav').css('width','28%');
+        $('#myNav_map_left').css('width','70%');
+        $('#myNav_map_left').css('float','right');
+        $('#myNav_map_left').css('left','0%');
+        $('#layerdetails_show').css('display','none');
+        $('#layerdetails_hide').css('display','block');
+    }
+    function closeNav()
+    {
+    //alert("close");
+        $('#myNav').css('width','0%');
+        //$('#myNav').addClass('overlay_layerdetails');
+        $('#myNav_map_left').css('width','100%');
+        //$('#myNav_map_left').addClass('col-md-12');
+        //$('#myNav_map_left').removeClass('col-md-8');
+        $('#layerdetails_show').css('display','block');
+        $('#layerdetails_hide').css('display','none');
+    }
         //var legend_clolor_str = ' http://chart?chf=bg,s,FFFFFF00&cht=p&chd=t:${100* AREA / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01}&label=AR|UcodeUpdt|UcodeUpt|Test&chco=3366CC,DC3912,FF9900,109618 ';
         var legend_clolor_str = '{{chart_link}}'; // chart_link
         console.log(legend_clolor_str);

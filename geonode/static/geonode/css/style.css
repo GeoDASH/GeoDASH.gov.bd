@@ -108,9 +108,29 @@ input[type="file"]:active.form-control{
 @media (max-width: 767px) {
   .gd-footer-language{
     float:left;
-    margin-left: 0px;
-    margin-top: 0px;
-    padding-bottom: 20px;
+    margin-left: -80px;
+    margin-top: 10px;
+    padding-bottom: 25px;
+  }
+
+ }
+ .footer-admin-app{
+    margin-top:40px;
+    color:#fff;
+ }
+ .footer-admin-app a img{
+    margin-top:5px;
+    width:65px;
+ }
+ @media (max-width: 767px) {
+  .footer-admin-app{
+    margin-left: 35px;
+  }
+
+ }
+ @media (max-width: 767px) {
+  .ssl-certify-logo{
+    margin-left: 25px;
   }
 
  }
@@ -194,6 +214,7 @@ ul.user-actions li a .fa{
     margin-bottom: 20px;
     /*padding: 15px;*/
     padding-bottom: 15px;
+    box-shadow: 0 0 5px 0 rgba(224, 217, 224, 1);
 }
 .grid-container.box-shadow {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
@@ -2916,6 +2937,7 @@ ul.termsuseandcondition li {
     -webkit-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
     -moz-box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
      box-shadow: 0px 0px 5px 0px rgba(224,217,224,1);
+     margin-bottom: 20px;
 }
 
 .grid-container-dash.lmd .avater{
@@ -3153,6 +3175,41 @@ ul.termsuseandcondition li {
     font-weight:bold;
 }
 
+.layerdetails_arro{
+    margin-top:300px;
+    position:absolute;
+    z-index:1;
+    cursor:pointer;
+    padding-left:5px;
+}
+.layerdetails_arro span img{
+    cursor:pointer;
+}
+.overlay_layerdetails {
+    height: 100%;
+    width: 0;
+    position: absolute;
+    z-index: 100;
+    /*top: 75px;*/
+    top: 127px;
+    left: 74px;
+    /*background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);*/
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+@media (max-width: 767px) {
+  .not-permi{
+    line-height: 45px;
+  }
+
+ }
+@media (max-width: 767px) {
+  .not-found{
+    line-height: 50px;
+  }
+
+ }
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com
 * Includes: core.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, draggable.css, resizable.css, progressbar.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css

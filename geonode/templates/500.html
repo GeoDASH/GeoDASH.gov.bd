@@ -2,41 +2,46 @@
 {% load i18n %}
 
 {% block middle %}
-      <div class="gd-content">
-          <div class="gd-content-heading">
-              <div class="row">
-                  <div class="col-md-12">
-                      <div class="title small-content">
-                          <!--{% trans "GeoNode Help" %}-->
+    <div class="container">
+          <div class="gd-content">
+              <div class="gd-content-heading">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="title small-content">
+                              <!--{% trans "GeoNode Help" %}-->
+                          </div>
+                      </div>
+                  </div>
+                  <!--<div class="hr"></div>-->
+              </div>
+              <div class="block-separator"></div>
+              <div class="block-separator"></div>
+                <div class="gd-content">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div id="help-content" class="gd-content-body text-center">
+                              <div class="block-separator"></div>
+                              <p class="lead" style="font-size:48px;">
+                                  <span class="not-found">{% trans "Problem loading this page" %}</span>
+                              </p>
+                              <div class="block-separator"></div>
+                              <p class="lead" style="font-size:38px;color:#5bc0de;">
+                                  {% trans "Error" %} <span style="font-size:70px;color:#5bc0de;">500</span>
+                              </p>
+                              <div class="block-separator"></div>
+                              <div class="block-separator"></div>
+                              <p>
+                                  Please contact GeoDASH administrator on admin@geodash.gov.bd if this issue persist.
+                              </p>
+                              <div class="block-separator"></div>
+                              <p>
+                                  <a href="{% url "home" %}" class="btn btn-large btn-info" >Take Me Home</a>
+                              </p>
+                          </div>
                       </div>
                   </div>
               </div>
-              <div class="hr"></div>
           </div>
-            <div class="gd-content">
-              <div class="row">
-                  <div class="col-md-12">
-                      <div id="help-content" class="gd-content-body text-center">
-                          <div class="block-separator"></div>
-                          <p class="lead" style="font-size:48px;">
-                              {% trans "Problem loading this page" %}
-                          </p>
-                          <div class="block-separator"></div>
-                          <p class="lead" style="font-size:38px;color:#5bc0de;">
-                              {% trans "Error" %} <span style="font-size:70px;color:#5bc0de;">500</span>
-                          </p>
-                          <div class="block-separator"></div>
-                          <div class="block-separator"></div>
-                          <p>
-                              Please contact GeoDASH administrator on admin@geodash.gov.bd if this issue persist.
-                          </p>
-                          <div class="block-separator"></div>
-                          <p>
-                              <a href="{% url "home" %}" class="btn btn-large btn-info" >Take Me Home</a>
-                          </p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+        <div class="block-separator"></div>
     </div>
 {% endblock %}

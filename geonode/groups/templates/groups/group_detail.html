@@ -268,7 +268,7 @@
                             output +='<div class="title">';
                             output +='<a href="'+item.detail_url+'" target="_self" title="' +item.title+ '">';
                                     if (item.title.length >= 25){
-                            output +='.........';
+                            output +=''+item.title.slice(0,15)+'.....';
                                     }else{
                             output +=''+ item.title +'';
                                     }
@@ -284,7 +284,7 @@
                             output +='</div>';
                             output +='<div class="details">';
                                     if (item.abstract.length >= 250){
-                            output +='......';
+                            output +=''+item.abstract.slice(0,220)+'.....';
                                     }else{
                             output +=''+ item.abstract+ '';
                                     }

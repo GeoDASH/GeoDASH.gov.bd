@@ -2,44 +2,49 @@
 {% load i18n %}
 
 {% block middle %}
-    <div class="gd-content">
-        <div class="gd-content-heading">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="title small-content">
-                        <!--{% trans "GeoNode Help" %}-->
-                    </div>
-                </div>
-            </div>
-            <div class="hr"></div>
-        </div>
+    <div class="container">
         <div class="gd-content">
-            <div class="row">
-                <!--<div class="col-md-3">-->
-                    <!--<img src="{{ STATIC_URL }}geonode/images/user-icon/remote-services.png" >-->
-                <!--</div>-->
-                <div class="col-md-12">
-                    <div id="help-content" class="gd-content-body text-center">
-                        <div class="block-separator"></div>
-                        <p class="lead" style="font-size:48px;">
-                            {% trans "Page Not Found" %}
-                        </p>
-                        <div class="block-separator"></div>
-                        <p class="lead" style="font-size:38px;color:#5bc0de;">
-                            {% trans "Error" %} <span style="font-size:70px;color:#5bc0de;">404</span>
-                        </p>
-                        <div class="block-separator"></div>
-                        <div class="block-separator"></div>
-                        <p>
-                            The page you requested could not be found. Use your browsers Back button to navigate to the page you have previously come from.
-                        </p>
-                        <div class="block-separator"></div>
-                        <p>
-                            <a href="{% url "home" %}" class="btn btn-large btn-info" >Take Me Home</a>
-                        </p>
+            <div class="gd-content-heading">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title small-content">
+                            <!--{% trans "GeoNode Help" %}-->
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="hr"></div>-->
+            </div>
+            <div class="block-separator"></div>
+            <div class="block-separator"></div>
+            <div class="gd-content">
+                <div class="row">
+                    <!--<div class="col-md-3">-->
+                        <!--<img src="{{ STATIC_URL }}geonode/images/user-icon/remote-services.png" >-->
+                    <!--</div>-->
+                    <div class="col-md-12">
+                        <div id="help-content" class="gd-content-body text-center">
+                            <div class="block-separator"></div>
+                            <p class="lead" style="font-size:48px;">
+                                <span class="not-found">{% trans "Page Not Found" %}</span>
+                            </p>
+                            <div class="block-separator"></div>
+                            <p class="lead" style="font-size:38px;color:#5bc0de;">
+                                {% trans "Error" %} <span style="font-size:70px;color:#5bc0de;">404</span>
+                            </p>
+                            <div class="block-separator"></div>
+                            <div class="block-separator"></div>
+                            <p>
+                                The page you requested could not be found. Use your browsers Back button to navigate to the page you have previously come from.
+                            </p>
+                            <div class="block-separator"></div>
+                            <p>
+                                <a href="{% url "home" %}" class="btn btn-large btn-info" >Take Me Home</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="block-separator"></div>
     </div>
 {% endblock %}
