@@ -609,10 +609,10 @@
           <div class="col-md-12" id="myNav_map_left">
               <div class="layerdetails_arro">
                   <span id="layerdetails_show" >
-                      <img  src="{{ STATIC_URL }}geonode/images/mini-right.gif" onclick="openNav()" alt="Mini-right">
+                      <img  src="{{ STATIC_URL }}geonode/images/caret-right.svg" class="img-responsive expand_view" title="Expand to view layer options" onclick="openNav()" alt="Mini-right">
                   </span>
                   <span id="layerdetails_hide"  style="display:none;">
-                      <img src="{{ STATIC_URL }}geonode/images/mini-left.gif" onclick="closeNav()" alt="Mini-Left">
+                      <img src="{{ STATIC_URL }}geonode/images/caret-left.svg"  class="img-responsive" onclick="closeNav()" alt="Mini-Left">
                   </span>
               </div>
             <div id="embedded_map" class="mrg-btm">
@@ -626,6 +626,9 @@
 
 {% block extra_script %}
     <script type="text/javascript">
+
+   // $( ".expand_view" ).tooltip({ show: { effect: "blind", duration: 1 } });
+
     function openNav()
     {
     //alert("test");

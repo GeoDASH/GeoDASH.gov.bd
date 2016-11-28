@@ -821,11 +821,11 @@ table.gd-list-table tr td .media-body {
     position: relative;
     margin-top: -100px; /* negative value of footer height */
     clear:both;
-
     background:#5a5d63;
     color:#FFF;
     min-height:100px;
     width:100%;
+    z-index:100;
 }
 #gd-footer .navbar-toggle {
     background:#cbcaca;
@@ -3180,19 +3180,24 @@ ul.termsuseandcondition li {
     position:absolute;
     z-index:1;
     cursor:pointer;
-    padding-left:5px;
+}
+.logo-img path {
+  fill: #fff;
 }
 .layerdetails_arro span img{
     cursor:pointer;
+     width: 64px;
+     color:#fff;
+     margin-left:-16px;
 }
-.overlay_layerdetails {
+.gd-content .gd-content-body .overlay_layerdetails {
     height: 100%;
     width: 0;
     position: absolute;
     z-index: 100;
-    /*top: 75px;*/
-    top: 127px;
-    left: 74px;
+    /*top: 127px;*/
+    top: 70px;
+    left: 80px;
     /*background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.9);*/
     overflow-x: hidden;
