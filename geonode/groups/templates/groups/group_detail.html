@@ -434,7 +434,7 @@
                 "status": makefavoritesID
             });
             $.ajax({
-                cache: false,
+                cache: true,
                 type: 'POST',
                 url: url,
                 data: data,
@@ -469,7 +469,7 @@
                 "status": makefavoritesID
             });
             $.ajax({
-                cache: false,
+                cache: true,
                 type: 'POST',
                 url: url,
                 data: data,
@@ -495,7 +495,7 @@
             $("#qst_ans").click(function(){
                 var url = "{% url "question-answer-list" object.slug %}";
                     $.ajax({
-                        cache: false,
+                        cache: true,
                         type: 'GET',
                         url: url,
                         data: {},
@@ -516,7 +516,7 @@
             $("#qroup_activity").click(function(){
                 var url = "{% url "group_activity" object.slug %}";
                     $.ajax({
-                        cache: false,
+                        cache: true,
                         type: 'GET',
                         url: url,
                         data: {},
