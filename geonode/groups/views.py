@@ -469,6 +469,9 @@ class AnswerUpdate(UpdateView):
 
 
 from models import UserInvitationModel
+from django.template import RequestContext, loader
+from django.utils.translation import ugettext as _
+from django.shortcuts import render
 @require_POST
 @login_required
 def userinvitation(request, slug):
@@ -490,14 +493,28 @@ class UserInvitationListView(ListView):
     model = UserInvitationModel
     template_name = 'groups/user_invitation_list.html'
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(ListView, self).get_context_data(*args, **kwargs)
-        slug = self.kwargs['slug']
+    def get(self, request, slug):
         group = get_object_or_404(GroupProfile, slug=slug)
-        context['pending_invitations'] = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
-        context['slug'] = slug
+        pending_invitations = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
+        slug = slug
+        if request.user not in group.get_managers():
+            return HttpResponse(
+                    loader.render_to_string(
+                        '401.html', RequestContext(
+                        request, {
+                        'error_message': _("you are not allowed to publish this document.")})), status=403)
+        else:
+            # return HttpResponse(self.get_context_data())
+            return render(request, self.template_name, {'pending_invitations': pending_invitations, 'slug':slug})
 
-        return context
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(ListView, self).get_context_data(*args, **kwargs)
+    #     slug = self.kwargs['slug']
+    #     group = get_object_or_404(GroupProfile, slug=slug)
+    #     context['pending_invitations'] = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
+    #     context['slug'] = slug
+    #
+    #     return context
 
 
 class UserInvitationDeleteView(DeleteView):
