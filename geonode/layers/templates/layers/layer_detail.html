@@ -105,7 +105,7 @@
 
                                         <div class="modal fade" id="download-layer" tabindex="-1" role="dialog"
                                              aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-edit">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal"
@@ -145,7 +145,7 @@
                                             </li>
                                             <div class="modal fade" id="edit-layer" tabindex="-1" role="dialog"
                                                  aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
+                                                <div class="modal-dialog modal-dialog-edit">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal"
@@ -229,7 +229,7 @@
                                             </li>-->
                                             <div class="modal fade" id="download-metadata" tabindex="-1" role="dialog"
                                                  aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
+                                                <div class="modal-dialog modal-dialog-edit">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal"
@@ -627,7 +627,7 @@
 {% block extra_script %}
     <script type="text/javascript">
 
-   // $( ".expand_view" ).tooltip({ show: { effect: "blind", duration: 1 } });
+    $( ".expand_view" ).tooltip({ show: { effect: "blind", duration: 300 } });
 
     function openNav()
     {
