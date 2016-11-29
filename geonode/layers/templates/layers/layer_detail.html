@@ -35,7 +35,7 @@
     <div class="gd-content" style="border-top:5px solid lightgrey;">
       <div class="gd-content-body layer-test" >
         <div class="row">
-          <div class="col-md-4 margin-zero right-pad-zero overlay_layerdetails" id="myNav" style="">
+          <div class="col-md-4 margin-zero right-pad-zero overlay_layerdetails" id="myNav" >
             <div id="gd-accordion-style" class="layer-information">
                         <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
@@ -609,10 +609,10 @@
           <div class="col-md-12" id="myNav_map_left">
               <div class="layerdetails_arro">
                   <span id="layerdetails_show" >
-                      <img  src="{{ STATIC_URL }}geonode/images/caret-right.svg" class="img-responsive expand_view" title="Expand to view layer options" onclick="openNav()" alt="Mini-right">
+                      <img  src="{{ STATIC_URL }}geonode/images/caret-right.svg" class="img-responsive expand_view open_carlet" title="Expand to view layer options" onclick="openNav()" alt="Mini-right">
                   </span>
                   <span id="layerdetails_hide"  style="display:none;">
-                      <img src="{{ STATIC_URL }}geonode/images/caret-left.svg"  class="img-responsive" onclick="closeNav()" alt="Mini-Left">
+                      <img src="{{ STATIC_URL }}geonode/images/caret-left.svg"  class="img-responsive close_carlet" onclick="closeNav()" alt="Mini-Left">
                   </span>
               </div>
             <div id="embedded_map" class="mrg-btm">
@@ -631,7 +631,6 @@
 
     function openNav()
     {
-    //alert("test");
         $('#myNav').css('width','28%');
         $('#myNav_map_left').css('width','70%');
         $('#myNav_map_left').css('float','right');
@@ -641,12 +640,8 @@
     }
     function closeNav()
     {
-    //alert("close");
         $('#myNav').css('width','0%');
-        //$('#myNav').addClass('overlay_layerdetails');
         $('#myNav_map_left').css('width','100%');
-        //$('#myNav_map_left').addClass('col-md-12');
-        //$('#myNav_map_left').removeClass('col-md-8');
         $('#layerdetails_show').css('display','block');
         $('#layerdetails_hide').css('display','none');
     }

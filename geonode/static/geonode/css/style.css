@@ -3188,16 +3188,22 @@ ul.termsuseandcondition li {
     cursor:pointer;
      width: 64px;
      color:#fff;
-     margin-left:-16px;
+     /*margin-left:-16px;*/
+}
+.layerdetails_arro span img.open_carlet{
+    margin-left:-16px;
+}
+.layerdetails_arro span img.close_carlet{
+    margin-left:-6px;
 }
 .gd-content .gd-content-body .overlay_layerdetails {
     height: 100%;
     width: 0;
     position: absolute;
     z-index: 100;
-    /*top: 127px;*/
-    top: 70px;
-    left: 80px;
+    /*top: 127px;
+    top: 74px;
+    left: 75px;*/
     /*background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.9);*/
     overflow-x: hidden;
@@ -3215,7 +3221,12 @@ ul.termsuseandcondition li {
   }
 
  }
+ @media (max-width: 767px) {
+  .not-found-error{
+    line-height: 70px;
+  }
 
+ }
 .modal-dialog{
     margin: 80px auto;
     width: 600px;
