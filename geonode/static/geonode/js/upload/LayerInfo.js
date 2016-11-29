@@ -216,6 +216,10 @@ define(function (require, exports) {
         if ($('#id_metadata_uploaded_preserve').prop('checked')) {
              form_data.append('metadata_uploaded_preserve', true);
         }
+        var capacityValue = $('#upload-and-publish-trigger').val();
+        if(capacityValue == true || capacityValue == 'true'){
+            form_data.append('upload_and_publish', true);
+        }
         return form_data;
     };
 

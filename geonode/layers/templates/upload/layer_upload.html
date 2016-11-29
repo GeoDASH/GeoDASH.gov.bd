@@ -128,10 +128,14 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <select id="id-select-organization" class="col-md-12">
+                                <select id="id-select-organization" class="col-md-12" >
                                     <option value='' selected="selected">.......................</option>
                                     {% for organization in organizations %}
-                                        <option value={{ organization.id }}>{{ organization.title }}</option>
+                                    {% if request.user in organization.get_managers %}
+                                        <option value={{ organization.id }} data-isadmin="true">{{ organization.title }}</option>
+                                    {% else %}
+                                        <option value={{ organization.id }} data-isadmin="false">{{ organization.title }}</option>
+                                    {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -314,8 +318,14 @@
                         </div>
                     {% endif %}
                     <section class="gd-content-body full-pad-20px">
-                        <a href="#" id="clear-button" class="btn btn-gd-gray">{% trans "Clear" %}</a>
-                        <a href="#" id="upload-button" class="btn btn-danger btn-gd">{% trans "Upload files" %}</a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" id="clear-button" class="btn btn-gd-gray">{% trans "Clear" %}</a>
+                                <a href="#" id="upload-button" class="btn btn-danger btn-gd">{% trans "Upload files" %}</a>
+                                <input type="hidden" name="upload-and-publish-trigger" id="upload-and-publish-trigger" value="false" />
+                                <a href="javascript:;" id="upload-button-publish" class="btn btn-danger btn-gd upload_publish" style="display:none;">{% trans "Upload & Publish" %}</a>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -347,8 +357,30 @@
 
     </script>
     <script type="text/javascript" language="JavaScript">
+
         $(document).ready(function () {
-        anyonePermissionDisable();
+            anyonePermissionDisable();
+            $("#upload-button-publish").click(function () {
+                $('#upload-and-publish-trigger').val('true');
+                $("#upload-button").trigger( "click" );
+                setTimeout(function(){
+                    $('#upload-and-publish-trigger').val('false');
+                }, 100);
+            });
+
+            $("#id-select-organization").change(function () {
+                var orgnization_select = $(this).val();
+                //var orgnization_select_data = orgnization_select.attr("data-is-admin");
+                var capacityValue = $('#id-select-organization').find(':selected').data('isadmin');
+                if(capacityValue == true || capacityValue == 'true'){
+                    $('#upload-button-publish').css('display','inline-block');
+                }
+                else{
+                    $('#upload-button-publish').css('display','none');
+                }
+                //alert(capacityValue);
+            });
+
             $("#fileType").change(function () {
                 var fileType = $(this).val();
                 //shp osm csv
