@@ -218,7 +218,7 @@ define(function (require, exports) {
         }
         var capacityValue = $('#upload-and-publish-trigger').val();
         if(capacityValue == true || capacityValue == 'true'){
-            form_data.append('upload_and_publish', true);
+            form_data.append('admin_upload', true);
         }
         return form_data;
     };
