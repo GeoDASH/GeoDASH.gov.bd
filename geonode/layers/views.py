@@ -164,6 +164,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
             title = form.cleaned_data["layer_title"]
             category = form.cleaned_data["category"]
             organization_id = form.cleaned_data["organization"]
+            admin_upload = form.cleaned_data["admin_upload"]
             group = GroupProfile.objects.get(id=organization_id)
             # Replace dots in filename - GeoServer REST API upload bug
             # and avoid any other invalid characters.
@@ -202,10 +203,9 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
-
-                # if request.user in group.get_managers() and user_type == 'admin':
-                #     saved_layer.status = 'ACTIVE'
-                #     saved_layer.save()
+                if admin_upload:
+                    saved_layer.status = 'ACTIVE'
+                    saved_layer.save()
 
             except Exception as e:
                 exception_type, error, tb = sys.exc_info()

@@ -274,6 +274,7 @@ class NewLayerUploadForm(LayerUploadForm):
     charset = forms.CharField(required=False)
     category = forms.CharField(required=True)
     organization = forms.CharField(required=True)
+    admin_upload = forms.BooleanField(required=False)
     the_geom = forms.CharField(required=False)
     longitude = forms.CharField(required=False)
     lattitude = forms.CharField(required=False)
