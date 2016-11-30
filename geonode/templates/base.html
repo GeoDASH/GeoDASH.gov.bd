@@ -801,6 +801,18 @@
                     <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Data Backup" %}</span>
                 </a>
             </li>
+            <li class="c-menu__item">
+                <a href="{% url "uploaded-folder-backup" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Media Backup" %}</span>
+                </a>
+            </li>
+                <li class="c-menu__item">
+                <a href="{% url "data-folder-backup" %}" class="c-menu__link">
+                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Data Backup" %}</span>
+                </a>
+            </li>
             {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">

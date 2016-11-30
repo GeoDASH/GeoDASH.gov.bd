@@ -15,4 +15,8 @@ urlpatterns = patterns(
     url(r'^database-backup/data$', 'databackup', name='data-backup'),
 
 
+    url(r'^uploaded-folder-backup$', 'uploadedFolderBackup', name='uploaded-folder-backup'),
+    url(r'^data-folder-backup$', 'geoserverDataFolderBackup', name='data-folder-backup'),
+
+
 )
