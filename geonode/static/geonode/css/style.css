@@ -108,10 +108,9 @@ input[type="file"]:active.form-control{
 @media (max-width: 767px) {
   .gd-footer-language{
     float:left;
-    margin-left: 0px;
+    margin-left: -110px;
     margin-top: 10px;
     padding-bottom: 25px;
-    width:138px;
   }
 
  }
@@ -3232,6 +3231,14 @@ ul.termsuseandcondition li {
     margin: 80px auto;
     /*width: 600px;*/
 }
+
+@media (max-width: 767px) {
+  .modal_top_mar{
+    margin-top:20px;
+  }
+
+ }
+
 .modal-backdrop {
     background-color: #000;
     bottom: 0;
