@@ -3025,6 +3025,13 @@ ul.termsuseandcondition li {
 #gd-model .modal-body span.fbsign{
     color: #FFFFFF;
 }
+
+@media (max-width: 767px) {
+  #gd-model .modal-body span.fbsign{
+    font-size:12px;
+  }
+
+ }
 /*
 
 #crossLayerQueryFromAddIcon tr:first-child{
@@ -3191,9 +3198,13 @@ ul.termsuseandcondition li {
      /*margin-left:-16px;*/
 }
 .layerdetails_arro span img.open_carlet{
+    color:red;
+    width: 64px;
     margin-left:-16px;
 }
 .layerdetails_arro span img.close_carlet{
+    color:red;
+    width: 64px;
     margin-left:-6px;
 }
 .gd-content .gd-content-body .overlay_layerdetails {
@@ -3235,6 +3246,7 @@ ul.termsuseandcondition li {
     }
 
  }
+
  @media (max-width: 767px) {
   .not-permi{
     line-height: 45px;
