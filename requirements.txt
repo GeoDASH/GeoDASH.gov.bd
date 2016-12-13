@@ -76,3 +76,5 @@ flake8==2.3.0
 pep8==1.6.2
 django-suit==0.2.21
 xmltodict==0.10.2
+uWSGI==2.0.14
+

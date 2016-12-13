@@ -49,7 +49,8 @@ class IndexClass(ListView):
         context = super(ListView, self).get_context_data(*args, **kwargs)
 
         # add sections to index page when start the application
-        # add_sections_to_index_page()
+        if SectionManagementTable.objects.all().count() == 0:
+            add_sections_to_index_page()
 
         contenttypes = ContentType.objects.all()
         for ct in contenttypes:

@@ -189,7 +189,10 @@ def profile_post_save(instance, sender, **kwargs):
             defaults={'email': instance.email, 'verified': False})
         if not created:
             EmailAddress.objects.filter(user=instance, primary=True).update(email=instance.email)
-    default_group = get_object_or_404(GroupProfile, slug='default')
+    default_group, created_group = GroupProfile.objects.get_or_create(slug='default')
+    if not default_group.title:
+        default_group.title = 'default organization'
+        default_group.save()
     if not instance.is_superuser:
         default_group.join(instance, role='member')
     else:
