@@ -179,13 +179,13 @@ def add_sections_to_index_page():
         SectionManagementTable.objects.all().delete()
         SectionManagementModel.objects.all().delete()
         for section in list_of_sections:
-            new_section = SectionManagementTable(slug=section)
+            new_section = SectionManagementTable(slug=section, title=section)
             if section in ['slider-section', 'feature-highlights-of-geodash-section', 'interportability-section',
                            'make-pretty-maps-with-geodash-section', 'view-your-maps-in-3d-section',
                            'share-your-map-section', 'our-partners-section']:
                 new_section.should_update = True
             new_section.save()
-            new_section = SectionManagementModel(slug=section)
+            new_section = SectionManagementModel(slug=section, title=section)
             new_section.save()
 
 
