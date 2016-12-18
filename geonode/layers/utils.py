@@ -497,7 +497,7 @@ def file_upload(filename, name=None, group=None, user=None, title=None, abstract
     # If it is a raster file, get the resolution.
     if is_raster(filename):
         defaults['storeType'] = 'coverageStore'
-
+ 
     # Create a Django object.
     layer, created = Layer.objects.get_or_create(
         name=valid_name,

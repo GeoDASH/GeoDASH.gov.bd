@@ -510,7 +510,11 @@
                                             {% endif %}
                                         </div>
                                         <div class="description">
-                                            {% trans feature_highlights_of_geodash_section.description %}
+                                            {% if feature_highlights_of_geodash_section.description %}
+                                                {% trans feature_highlights_of_geodash_section.description %}
+                                            {% else %}
+                                                {% trans "Feature highlights of geodash section" %}
+                                            {% endif %}
                                             <!--{% trans "Layers are the contents of a map." %}-->
                                             <!--{% trans "To get started adding layers," %}-->
                                             <!--{% trans "sign in to the site," %}-->
@@ -584,7 +588,12 @@
                                         <div class="title" style="text-align:center;">{% trans is_interportability_section.title %}</div>
                                         <!--<div class="title" style="text-align:center;">{% trans "Interoperability" %}</div>-->
                                         <div class="description">
-                                            {% trans is_interportability_section.description %}
+                                            
+						{% if is_interportability_section.description %}
+                                                {% trans is_interportability_section.description %}
+                                            {% else %}
+                                                {% trans "Interportability section" %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -622,7 +631,12 @@
                                         <div class="description">
                                             <div class="title"><a href="{% url "new_map" %}">{% trans make_pretty_maps_with_geodash_section.title %}</a></div>
                                             <!--<div class="title"><a href="{% url "new_map" %}">{% trans "Make pretty maps with GeoDASH" %}</a></div>-->
-                                            {% trans make_pretty_maps_with_geodash_section.description %}
+                                            
+					    {% if is_interportability_section.description %}
+                                                {% trans make_pretty_maps_with_geodash_section.description %}
+                                            {% else %}
+                                                {% trans "Make pretty map with geodash section" %}
+                                            {% endif %}
                                         </div>
                                         <!--<div class="description" style="float:right;font-size:14px;">-->
                                             <!--<a href="{% url "new_map" %}">{% trans "Check Out Details" %}</a>-->
@@ -667,7 +681,12 @@
                                         <div class="description">
                                             <div class="title">{% trans view_your_maps_in_3d_section.title %}</div>
                                             <!--<div class="title">{% trans "View your maps in 3d" %}</div>-->
-                                            {% trans view_your_maps_in_3d_section.description %}
+                                            
+					    {% if view_your_maps_in_3d_section.description %}
+                                                {% trans view_your_maps_in_3d_section.description %}
+                                            {% else %}
+                                                {% trans "view your maps in 3d section" %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -881,7 +900,12 @@
                                     <div class="title">{% trans share_your_map_section.title %}</div>
                                     <!--<div class="title">{% trans "Share your map" %}</div>-->
                                     <div class="description">
-                                        {% trans share_your_map_section.description %}
+                                        
+					{% if share_your_map_section.description %}
+                                                {% trans share_your_map_section.description %}
+                                            {% else %}
+                                                {% trans "share your map section" %}
+                                            {% endif %}
                                     </div>
                                     <!--<div class="title">{% trans "Share your map" %}</div>-->
                                     <!--<div class="description">-->
