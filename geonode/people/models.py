@@ -193,7 +193,7 @@ def profile_post_save(instance, sender, **kwargs):
     if not default_group.title:
         default_group.title = 'default organization'
         default_group.save()
-    if not instance.is_superuser and not instance == get_anonymous_user(Profile):
+    if not instance.is_superuser and not instance == get_anonymous_user():
         default_group.join(instance, role='member')
     else:
         default_group.join(instance, role='manager')
