@@ -192,11 +192,11 @@ class DocumentUploadView(CreateView):
         try:
             group = GroupProfile.objects.get(pk=group_id)
         except GroupProfile.DoesNotExist:
-            return HttpResponse('Selected organization does not exists')
+            return Http404('Selected organization does not exists')
         try:
             category = TopicCategory.objects.get(gn_description=category_id)
         except TopicCategory.DoesNotExist:
-            return HttpResponse('Selected category does not exists')
+            return Http404('Selected category does not exists')
         self.object.group = group
         self.object.category = category
         if resource_id:
@@ -509,10 +509,15 @@ def document_remove(request, docid, template='documents/document_remove.html'):
 
     except PermissionDenied:
         return HttpResponse(
-            'You are not allowed to delete this document',
-            content_type="text/plain",
-            status=401
-        )
+            loader.render_to_string(
+                '401.html', RequestContext(
+                    request, {
+                        'error_message': _("You are not allowed to delete this document.")})), status=401)
+        # return HttpResponse(
+        #     'You are not allowed to delete this document',
+        #     content_type="text/plain",
+        #     status=401
+        # )
 
 
 def document_metadata_detail(request, docid, template='documents/document_metadata_detail.html'):
@@ -535,10 +540,15 @@ def document_publish(request, document_pk):
         try:
             document = Document.objects.get(id=document_pk)
         except Document.DoesNotExist:
-            return HttpResponse("Document does not exist")
+            return Http404("Document does not exist")
         else:
             if request.user != document.owner:
-                return HttpResponse('you are not allowed to publish this document')
+                return HttpResponse(
+                    loader.render_to_string(
+                        '401.html', RequestContext(
+                        request, {
+                        'error_message': _("you are not allowed to publish this document.")})), status=403)
+                # return HttpResponse('you are not allowed to publish this document')
             group = document.group
             document.status = 'PENDING'
             document.current_iteration += 1
@@ -548,11 +558,11 @@ def document_publish(request, document_pk):
             # notify organization admins about the new published document
             managers = list( group.get_managers())
             notify.send(request.user, recipient_list = managers, actor=request.user,
-                        verb='published a new document', target=document)
+                        verb='pushed a new document for approval', target=document)
             # set all the permissions for all the managers of the group for this documentt
             document.set_managers_permissions()
 
-            messages.info(request, 'published document succesfully')
+            messages.info(request, 'Pushed document succesfully for approval')
             return HttpResponseRedirect(reverse('member-workspace-document'))
     else:
         return HttpResponseRedirect(reverse('member-workspace-document'))
@@ -566,11 +576,16 @@ def document_approve(request, document_pk):
             try:
                 document = Document.objects.get(id=document_pk)
             except Document.DoesNotExist:
-                return HttpResponse("requested document does not exists")
+                return Http404("requested document does not exists")
             else:
                 group = document.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to approve this document")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("you are not allowed to approve this document.")})), status=401)
+                    # return HttpResponse("you are not allowed to approve this document")
                 document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
                 document_audit_activity = DocumentAuditActivity(document_submission_activity=document_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -578,6 +593,26 @@ def document_approve(request, document_pk):
                 document.status = 'ACTIVE'
                 document.last_auditor = request.user
                 document.save()
+
+                permissions = _perms_info_json(document)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                document.set_permissions(perm_dict)
+
 
                 # notify document owner that someone have deleted the document
                 if request.user != document.owner:
@@ -594,7 +629,7 @@ def document_approve(request, document_pk):
                 document_audit_activity.auditor = request.user
                 document_audit_activity.save()
 
-            messages.info(request, 'approved document succesfully')
+            messages.info(request, 'Approved document succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
             messages.info(request, 'Please write an approve comment and try again')
@@ -611,11 +646,16 @@ def document_deny(request, document_pk):
             try:
                 document = Document.objects.get(id=document_pk)
             except Document.DoesNotExist:
-                return HttpResponse("requested document does not exists")
+                return Http404("requested document does not exists")
             else:
                 group = document.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deny this document")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("you are not allowed to deny this document.")})), status=401)
+                    # return HttpResponse("you are not allowed to deny this document")
                 document_submission_activity = DocumentSubmissionActivity.objects.get(document=document, group=group, iteration=document.current_iteration)
                 document_audit_activity= DocumentAuditActivity(document_submission_activity=document_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -639,7 +679,7 @@ def document_deny(request, document_pk):
                 document_audit_activity.auditor = request.user
                 document_audit_activity.save()
 
-            messages.info(request, 'document denied successfully')
+            messages.info(request, 'Denied document successfully')
             return HttpResponseRedirect(reverse('admin-workspace-document'))
         else:
             messages.info(request, 'Please write a deny comment and try again')
@@ -655,21 +695,24 @@ def document_delete(request, document_pk):
         try:
             document = Document.objects.get(id=document_pk)
         except Document.DoesNotExist:
-            return HttpResponse("requested document does not exists")
+            return Http404("requested document does not exists")
         else:
             if document.status == 'DRAFT' and ( request.user == document.owner or request.user in document.group.get_managers()):
                 document.status = "DELETED"
                 document.save()
             else:
-                messages.info(request, 'you have no acces to delete the document')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You have no acces to delete the document.")})), status=401)
+                # messages.info(request, 'You have no acces to delete the document')
 
-        messages.info(request, 'document deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-document'))
-        else:
+        messages.info(request, 'Deleted the document successfully')
+        if request.user == document.owner:
             return HttpResponseRedirect(reverse('member-workspace-document'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-document'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-document'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-document'))
+        return HttpResponseRedirect(reverse('member-workspace-document'))

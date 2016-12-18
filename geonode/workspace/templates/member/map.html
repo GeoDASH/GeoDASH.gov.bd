@@ -31,7 +31,7 @@
                   <li class="active"><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
                   <li><a href="#pending" data-toggle="tab">{% trans "Pending" %}</a></li>
                   <li><a href="#denied" data-toggle="tab">{% trans "Denied" %}</a></li>
-                  <li><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
+                  <li ><a href="#active" data-toggle="tab">{% trans "Active" %}</a></li>
                 </ul>
                 <div class="tab-content">
                   <article id="draft" class="tab-pane active">
@@ -42,7 +42,7 @@
                                     <th>No.</th>
                                     <th>Map Title</th>
                                     <th>Organization</th>
-                                    <th>Map creation date</th>
+                                    <th>Map Creation Date</th>
                                 </tr>
                             </thead>
                             {% for draft in draft_list %}
@@ -52,10 +52,9 @@
                                         <td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>
                                         <td>{{ draft.group }}</td>
                                         <td>{{ draft.date_created }}</td>
-                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue to Publish" %}</a></td>
+                                        <td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>
                                         <td>
-                                            <button type="button" class="btn btn-gd-primary" data-toggle="modal" data-target="#_delete_map" style="color:#fff;">{% trans "Delete Map" %}</button> <br>
-                                            {% include "map_templates/_delete_map.html" %}
+                                            <button type="button" class="btn btn-gd-primary" onclick="mapLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Map" %}</button> <br>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -111,7 +110,7 @@
                                         <td>{{ denied.group }}</td>
                                         <td>{{ denied.last_auditor }}</td>
                                         <td>{{ denied.date_updated }}</td>
-                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and publish again" %}</a></td>
+                                        <td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and Push Again" %}</a></td>
                                     </tr>
                                 </tbody>
                             {% empty %}
@@ -120,7 +119,7 @@
                         </table>
                     </ul>
                   </article>
-                  <article id="active" class="tab-pane">
+                  <article id="active" class="tab-pane ">
                     <ul class="no-style-list">
                         <table class="table table-hover" style="background:#ffffff;">
                             <thead>
@@ -129,7 +128,7 @@
                                     <th>Map Title</th>
                                     <th>Organization</th>
                                     <th>Activator</th>
-                                    <th>Activation date</th>
+                                    <th>Activation Date</th>
                                     <th>Map Edit</th>
                                 </tr>
                             </thead>
@@ -155,11 +154,20 @@
             </div>
         </div>
     </div>
+{% include "map_templates/_delete_map.html" %}
 {% endblock %}
 
 {% block extra_script %}
 {{ block.super }}
 <script>
+function mapLayer(id){
+        //console.log(id);
+        var sleID = parseInt(id);
+        $("#testid").html(id);
+        $('#_delete_map').modal('show');
+        $('#Map_Del').attr('action', '../../maps/'+ sleID +'/delete');
+    }
+
 $(function () {
     $("#follow_button, #unfollow_button").click(function () {
         $.post($(this).attr("href"), {});

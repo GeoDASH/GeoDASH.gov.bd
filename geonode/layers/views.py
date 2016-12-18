@@ -24,16 +24,20 @@ import logging
 import shutil
 import traceback
 import requests
+import xmltodict
+import  requests
+
 from guardian.shortcuts import get_perms
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.template import RequestContext, loader
 try:
     import json
 except ImportError:
@@ -44,6 +48,8 @@ from django.forms.models import inlineformset_factory
 from django.db import transaction
 from django.db.models import F
 from django.forms.util import ErrorList
+from requests.auth import HTTPBasicAuth
+from geonode.settings import  OGC_SERVER
 
 from notify.signals import notify
 
@@ -68,6 +74,7 @@ from geonode.geoserver.helpers import cascading_delete, gs_catalog
 from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.base.libraries.decorators import manager_or_member
+from geonode.base.models import KeywordIgnoreListModel
 
 CONTEXT_LOG_FILE = None
 
@@ -157,6 +164,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
             title = form.cleaned_data["layer_title"]
             category = form.cleaned_data["category"]
             organization_id = form.cleaned_data["organization"]
+            admin_upload = form.cleaned_data["admin_upload"]
             group = GroupProfile.objects.get(id=organization_id)
             # Replace dots in filename - GeoServer REST API upload bug
             # and avoid any other invalid characters.
@@ -167,6 +175,15 @@ def layer_upload(request, template='upload/layer_upload.html'):
             else:
                 name_base, __ = os.path.splitext(
                     form.cleaned_data["base_file"].name)
+                keywords = name_base.split()
+            ignore_keys = KeywordIgnoreListModel.objects.values_list('key', flat=True)
+            keyword_list = []
+            for key in keywords:
+                if key not in ignore_keys and not key.isdigit() and any(c.isalpha() for c in key) and len(key) > 2:
+                    keyword_list.append(key)
+
+            keywords = keyword_list
+
             name = slugify(name_base.replace(".", "_"))
             try:
                 # Moved this inside the try/except block because it can raise
@@ -186,6 +203,10 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
+                if admin_upload:
+                    saved_layer.status = 'ACTIVE'
+                    saved_layer.save()
+
             except Exception as e:
                 exception_type, error, tb = sys.exc_info()
                 logger.exception(e)
@@ -257,7 +278,12 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
 
     # if the edit request is not valid then just return from here
     if not edit_permit:
-        return  HttpResponse('you dont have permission to edit this layer')
+        return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You dont have permission to edit this layer.")})), status=401)
+        # return  HttpResponse('You dont have permission to edit this layer')
 
     # assert False, str(layer_bbox)
     config = layer.attribute_config()
@@ -330,6 +356,45 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
             all_granules = {"features": []}
     approve_form = ResourceApproveForm()
     deny_form = ResourceDenyForm()
+    metadata_field_list = ['owner', 'title', 'date', 'date_type', 'edition', 'abstract', 'purpose',
+                           'maintenance_frequency', 'regions', 'restriction_code_type', 'constraints_other', 'license',
+                           'language', 'spatial_representation_type', 'resource_type', 'temporal_extent_start',
+                           'temporal_extent_end', 'supplemental_information', 'data_quality_statement', 'thumbnail_url',
+                            'elevation_regex', 'time_regex', 'keywords',
+                           'category']
+    if request.user == layer.owner or request.user in layer.group.get_managers():
+        if not layer.attributes:
+            messages.info(request, 'Please update layer metadata, missing some informations')
+        elif not layer.metadata_author:
+            messages.info(request, 'Please update layer metadata, missing some informations')
+        else:
+            for field in metadata_field_list:
+                if not getattr(layer, layer._meta.get_field(field).name):
+                    messages.info(request, 'Please update layer metadata, missing some informations')
+                    break
+
+
+    # layer_name = layer.service_typename
+    # geoserver_user = OGC_SERVER['default']['USER']
+    # geoserver_password = OGC_SERVER['default']['PASSWORD']
+    # style_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/layers/" + layer_name + ".json"
+    # response1 = requests.get(style_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    # sld_file_name_url = response1.json()['layer']['defaultStyle']['href']
+    # response2 = requests.get(sld_file_name_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    # file_name = response2.json()['style']['filename']
+    # sld_file_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/styles/" + file_name
+    # sld_content = requests.get(sld_file_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password)).content
+    #
+    # xlink = ''
+    # try:
+    #     dict1 = xmltodict.parse(sld_content)
+    #     dict2 = dict1['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
+    #     ['sld:Rule']['sld:PointSymbolizer']
+    #     xlink = dict2['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
+    # except:
+    #     pass
+    xlink = style_chart_legend_color(layer)
+
     context_dict = {
         "resource": layer,
         'perms_list': get_perms(request.user, layer.get_self_resource()),
@@ -345,7 +410,8 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         "approve_form": approve_form,
         "deny_form": deny_form,
         "denied_comments": LayerAuditActivity.objects.filter(layer_submission_activity__layer=layer),
-        "status": layer.status
+        "status": layer.status,
+        "chart_link" : xlink
     }
 
     context_dict["viewer"] = json.dumps(
@@ -715,10 +781,15 @@ def layer_publish(request, layer_pk):
         try:
             layer = Layer.objects.get(id=layer_pk)
         except Layer.DoesNotExist:
-            return HttpResponse("Layer does not exist")
+            return Http404("Layer does not exist")
         else:
             if request.user != layer.owner:
-                return HttpResponse('you are not allowed to publish this layer')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to publish this layer.")})), status=401)
+                # return HttpResponse('you are not allowed to publish this layer')
             group = layer.group
             layer.status = 'PENDING'
             layer.current_iteration += 1
@@ -729,12 +800,12 @@ def layer_publish(request, layer_pk):
             # notify organization admins about the new published layer
             managers = list( group.get_managers())
             notify.send(request.user, recipient_list = managers, actor=request.user,
-                        verb='published a new layer', target=layer)
+                        verb='pushed a new layer for approval', target=layer)
 
             # set all the permissions for all the managers of the group for this layer
             layer.set_managers_permissions()
 
-            messages.info(request, 'published layer succesfully')
+            messages.info(request, 'Pushed layer succesfully for approval')
             return HttpResponseRedirect(reverse('member-workspace-layer'))
     else:
         return HttpResponseRedirect(reverse('member-workspace-layer'))
@@ -749,11 +820,16 @@ def layer_approve(request, layer_pk):
             try:
                 layer = Layer.objects.get(id=layer_pk)
             except Layer.DoesNotExist:
-                return HttpResponse("requested layer does not exists")
+                return Http404("requested layer does not exists")
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to approve this layer")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to approve this layer.")})), status=401)
+                    # return HttpResponse("you are not allowed to approve this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -761,6 +837,27 @@ def layer_approve(request, layer_pk):
                 layer.status = 'ACTIVE'
                 layer.last_auditor = request.user
                 layer.save()
+
+                permissions = _perms_info_json(layer)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+
+                layer.set_permissions(perm_dict)
+
 
                 # notify layer owner that someone have approved the layer
                 if request.user != layer.owner:
@@ -777,7 +874,7 @@ def layer_approve(request, layer_pk):
                 layer_audit_activity.auditor = request.user
                 layer_audit_activity.save()
 
-            messages.info(request, 'approved layer succesfully')
+            messages.info(request, 'Approved layer succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
         else:
             messages.info(request, 'Please write an approve comment and try again')
@@ -795,11 +892,16 @@ def layer_deny(request, layer_pk):
             try:
                 layer = Layer.objects.get(id=layer_pk)
             except:
-                return HttpResponse("requested layer does not exists")
+                return Http404("requested layer does not exists")
             else:
                 group = layer.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deny this layer")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to deny this layer.")})), status=401)
+                    # return HttpResponse("you are not allowed to deny this layer")
                 layer_submission_activity = LayerSubmissionActivity.objects.get(layer=layer, group=group, iteration=layer.current_iteration)
                 layer_audit_activity = LayerAuditActivity(layer_submission_activity=layer_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -826,7 +928,7 @@ def layer_deny(request, layer_pk):
             messages.info(request, 'layer denied successfully')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
         else:
-            messages.info(request, 'Please write an deny comment and try again')
+            messages.info(request, 'Please write a deny comment and try again')
             return HttpResponseRedirect(reverse('admin-workspace-layer'))
     else:
         return HttpResponseRedirect(reverse('admin-workspace-layer'))
@@ -838,22 +940,73 @@ def layer_delete(request, layer_pk):
         try:
             layer = Layer.objects.get(id=layer_pk)
         except:
-            return HttpResponse("requested layer does not exists")
+            return Http404("requested layer does not exists")
         else:
             if layer.status == 'DRAFT' and ( request.user == layer.owner or request.user in layer.group.get_managers()):
                 layer.status = "DELETED"
                 layer.save()
 
             else:
-                messages.info(request, 'you have no acces to delete the layer')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You have no acces to delete the layer.")})), status=401)
+                # messages.info(request, 'You have no acces to delete the layer')
 
-        messages.info(request, 'layer deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-layer'))
-        else:
+        messages.info(request, 'Deleted layer successfully')
+        if request.user == layer.owner:
             return HttpResponseRedirect(reverse('member-workspace-layer'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-layer'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-layer'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-layer'))
+        return HttpResponseRedirect(reverse('member-workspace-layer'))
+
+
+def style_chart_legend_color(layer):
+    layer_name = layer.service_typename
+    geoserver_user = OGC_SERVER['default']['USER']
+    geoserver_password = OGC_SERVER['default']['PASSWORD']
+    style_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/layers/" + layer_name + ".json"
+    response1 = requests.get(style_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    sld_file_name_url = response1.json()['layer']['defaultStyle']['href']
+    response2 = requests.get(sld_file_name_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password))
+    file_name = response2.json()['style']['filename']
+    sld_file_url = OGC_SERVER['default']['PUBLIC_LOCATION'] + "rest/styles/" + file_name
+    sld_content = requests.get(sld_file_url, auth=HTTPBasicAuth(geoserver_user, geoserver_password)).content
+    sld_content = sld_content.replace('\r', '')
+    sld_content = sld_content.replace('\n', '')
+
+    try:
+        dict1 = xmltodict.parse(sld_content)
+    except:
+        pass
+    else:
+        xlink = finding_xlink(dict1)
+    #     dict2 = dict1['sld:StyledLayerDescriptor']['sld:NamedLayer']['sld:UserStyle']['sld:FeatureTypeStyle']\
+    #     ['sld:Rule']['sld:PointSymbolizer']
+    #     xlink = dict2['sld:Graphic']['sld:ExternalGraphic']['sld:OnlineResource']['@xlink:href']
+    # except:
+    #     pass
+
+    if xlink:
+        return xlink
+    else:
+        return ''
+
+
+
+def finding_xlink(dic):
+
+    for key, value in dic.iteritems():
+        if key == '@xlink:href':
+            return value
+
+        if isinstance(value, dict):
+            item = finding_xlink(value)
+            if item is not None:
+                return item
+
+
+

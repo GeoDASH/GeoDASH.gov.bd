@@ -122,6 +122,7 @@
     }
 }
 
+
 /*--- how it  works start--*/
 #gd-howitworks{
     color:#fff;
@@ -198,10 +199,10 @@
     /*cursor:pointer;*/
 }
 #gd-featurd-maps .gd-featurd-maps-content-dash .gd-featurd-maps-container-dash:hover {
-    /*background:#fff;*/
+    /*background:#fff;
     height:100%;
     width:100%;
-    cursor:pointer;
+    cursor:pointer;*/
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .avater {
     
@@ -443,7 +444,7 @@
 /*--- Geo dash Feature Highlight start --*/
 
 #gd-featurehighlight{
-    background:#f7f7f7;
+    /*background:#f7f7f7;*/
     padding-bottom:0px;
     min-height:450px;
 }
@@ -497,7 +498,7 @@
 /*--- Geo dash Interoperabity start --*/
 
 #gd-interprobability{
-    background:#21d0e8;  /*2c3e50*/
+    /*background:#21d0e8;*/  /*2c3e50*/
     padding-top:20px;
     /*padding-bottom:50px;*/
     min-height:450px;
@@ -560,7 +561,7 @@
 /*--- Geo dash makepretty start --*/
 
 #gd-makepretty{
-    background:#f7f7f7;
+    /*background:#f7f7f7;*/
     padding-top:30px;
     min-height:450px;
 }
@@ -678,7 +679,7 @@
 /*--- Geo dash share maps start --*/
 
 #gd-sharemap{
-    background:url('../images/shear-footer.png') no-repeat;
+    /*background:url('../images/shear-footer.png') no-repeat;*/
     padding-top:30px;
     min-height:500px;
     margin:0 auto;
@@ -714,6 +715,40 @@
     text-align:right;
     font-family:Titillium Web;
 }
+#gd-partners{
+    /*background:#D8D8D8;*/
+    padding-top:20px;
+    padding-bottom:30px;
+    margin:0 auto;
+}
+#gd-partners-content .title{
+    color:#fff;
+    text-transform: uppercase;
+    font-size:30px;
+    margin-top: 55px;
+    text-align: left;
+    font-family:Titillium Web;
+}
+#gd-partners-content .description{
+    color:#fff;
+    text-align:justify;
+    font-size:13px;
+    margin-top:10px;
+}
+#gd-partners-bottom{
+
+}
+#gd-partners-bottom .title{
+    /*color:#898887;*/
+    color:#898887;
+    text-transform: uppercase;
+    font-size:30px;
+    /*margin-top:210px;
+    margin-top: -120px;*/
+    padding-bottom:10px;
+    text-align:right;
+    font-family:Titillium Web;
+}
 .sponsor-image{
     text-align:right;
 }
@@ -726,19 +761,23 @@
 .sponsor-image img.bd-gov{
     text-align:right;
     border:none;
-    width:80px;
+    /*width:150px;*/
     margin-left:20px;
+    padding-bottom:10px;
+    height:80px;
 }
 .sponsor-image img.bcc{
     text-align:right;
     border:none;
-    width:120px;
+    width:150px;
     margin-left:20px;
     height:80px;
+    padding-bottom:10px;
 }
 @media (max-width: 767px) {
   .gd-sharemap-left-img img{
-    float:left;
+    /*float:left;*/
+    margin-right:115px;
   }
 
  }
@@ -1028,7 +1067,7 @@
 /*--- Geo dash 3d section --*/
 
 #gd-3dsection{
-    background:#21d0e8;
+    /*background:#21d0e8;*/
     padding-top:30px;
     min-height:450px;
 }
@@ -1131,4 +1170,47 @@ toolbar_right .border-dotted {
     margin-top: 7px;
     font-size:9px;
     font-weight:normal;
+}
+
+/* home page modal section */
+.welcomeHelpModalBox{
+        display: none;
     }
+    .welcomeHelpModalBox.activeitem{
+        display: block;
+    }
+    .helpselector.activeitem{
+        font-weight: bold;
+    }
+.home-modal{
+    color: #2ecc71;
+    padding-right:10px;
+    padding-left:20px;
+}
+
+ .home-modal-limit{
+    padding:0px 4px;
+    cursor:pointer;
+}
+.modal-fixed-height{
+    display:none;
+    height:220px;
+}
+.do-show{
+    text-align:left;
+    margin-top:-10px;
+ }
+ .home-modal-border{
+    /*border:1px solid #3896e2;*/
+}
+.home-modal-hbg{
+    background:rgb(211,211,211);
+}
+.bcctestmap{
+        display: block;
+    }
+
+.what-offer-text-color{
+    color:#6e6b6b;
+}
+

@@ -40,7 +40,7 @@ class MapForm(ResourceBaseForm):
             'center_x',
             'center_y',
             'status',
-            'group',
+            # 'group',
             'last_auditor'
         )
 
@@ -48,4 +48,4 @@ class MapForm(ResourceBaseForm):
 class WmsServerForm(ModelForm):
     class Meta:
         model = WmsServer
-        fields = ('title', 'ptype', 'url',)
+        fields = ('title', 'url',)

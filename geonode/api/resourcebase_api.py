@@ -578,7 +578,7 @@ class CommonFavorite(ModelResource):
                 bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, resource=ResourceBase.objects.get(id=bundle.obj.id)).active
             except FavoriteResource.DoesNotExist:
                 bundle.data['favorite'] = False
-        bundle.data['owner'] = bundle.obj.owner
+        bundle.data['owner__username'] = bundle.obj.owner.username
         bundle.data['category'] = bundle.obj.category
         bundle.data['group'] = bundle.obj.group
         if bundle.request.user in bundle.obj.group.get_managers():
@@ -600,7 +600,8 @@ class LayerResourceWithFavorite(CommonFavorite):
         resource_name = 'layers_with_favorite'
         excludes = ['csw_anytext', 'metadata_xml']
         filtering = {
-            'group': ALL
+            'group': ALL,
+            'featured': ALL
         }
     def get_object_list(self, request):
         group = request.GET.get('group')
@@ -619,6 +620,9 @@ class MapResourceWithFavorite(CommonFavorite):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'maps_with_favorite'
+        filtering = {
+            'id': ALL
+        }
 
 
 class DocumentResourceWithFavorite(CommonFavorite):

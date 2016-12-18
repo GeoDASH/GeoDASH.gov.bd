@@ -278,12 +278,12 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='owned_resource',
                               verbose_name=_("Owner"))
     contacts = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ContactRole')
-    title = models.CharField(_('title'), max_length=255, help_text=_('name by which the cited resource is known'))
+    title = models.CharField( max_length=255, help_text=_('name by which the cited resource is known'), verbose_name=_('* Title'))
     date = models.DateTimeField(_('date'), default=datetime.datetime.now, help_text=date_help_text)
     date_type = models.CharField(_('date type'), max_length=255, choices=VALID_DATE_TYPES, default='publication',
                                  help_text=date_type_help_text)
     edition = models.CharField(_('edition'), max_length=255, blank=True, null=True, help_text=edition_help_text)
-    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text)
+    abstract = models.TextField(_('abstract'), blank=True, help_text=abstract_help_text, default='Abstract is very important! You are requested to update it now.')
     purpose = models.TextField(_('purpose'), null=True, blank=True, help_text=purpose_help_text)
     maintenance_frequency = models.CharField(_('maintenance frequency'), max_length=255, choices=UPDATE_FREQUENCIES,
                                              blank=True, null=True, help_text=maintenance_frequency_help_text)
@@ -374,6 +374,20 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
     thumbnail_url = models.TextField(null=True, blank=True)
     detail_url = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(default=0, null=True, blank=True)
+    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    last_auditor = models.ForeignKey('people.Profile', related_name='a_last_auditor', blank=True, null=True)
+    current_iteration = models.IntegerField(default=0)
+    status = models.CharField(max_length=10, choices=[
+        ("DRAFT", _("Draft")),
+        ("PENDING", _("Pending")),
+        ("ACTIVE", _("Active")),
+        ("INACTIVE", _("Inactive")),
+        ("DENIED", _("Denied")),
+        ("DELETED", _("Deleted")),
+        ("CANCELED", _("Canceled"))],
+        default="DRAFT")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.title
@@ -542,7 +556,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
         """Return Link for legend or None if it does not exist.
         """
         try:
-            legends_link = self.link_set.get(name='Legend')
+            legends_link = self.link_set.filter(name='Legend')[0]
         except Link.DoesNotExist:
             return None
         else:
@@ -806,3 +820,17 @@ class DockedResource(models.Model):
     active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+
+class KeywordIgnoreListModel(models.Model):
+    """
+    This model keeps keyword ignore list
+    when keywords are generating from resource title
+    """
+    key = models.CharField(null=True, blank=True, max_length=100)
+    is_active = models.BooleanField(default=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u"{0}".format(self.key)

@@ -32,10 +32,11 @@ from django.conf import settings
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth, messages
+from user_messages.models import UserThread
 
 from account import signals
 from account.forms import SignupForm
-from account.views import SignupView
+from account.views import SignupView, InviteUserView
 from account.utils import default_redirect
 
 from geonode.people.models import Profile
@@ -184,3 +185,25 @@ class UserSignup(SignupView):
 
         default_group = get_object_or_404(GroupProfile, slug='default')
         default_group.join(self.created_user, role='member')
+
+
+def inbox(request):
+    """
+
+    :param request:
+    :return:
+    """
+    unread_messages = UserThread.objects.filter(user=request.user, unread=True)
+    for msg in unread_messages:
+        msg.unread = False
+        msg.save()
+    return HttpResponseRedirect(reverse('messages_inbox'))
+
+
+class InviteUser(InviteUserView):
+    """
+
+    """
+    def get_success_url(self, fallback_url=None, **kwargs):
+
+        return reverse('invite_user')

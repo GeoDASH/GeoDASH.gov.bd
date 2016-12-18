@@ -216,6 +216,10 @@ define(function (require, exports) {
         if ($('#id_metadata_uploaded_preserve').prop('checked')) {
              form_data.append('metadata_uploaded_preserve', true);
         }
+        var capacityValue = $('#upload-and-publish-trigger').val();
+        if(capacityValue == true || capacityValue == 'true'){
+            form_data.append('admin_upload', true);
+        }
         return form_data;
     };
 
@@ -284,7 +288,7 @@ define(function (require, exports) {
             }
         }
         self.logStatus({
-            msg: '<p>' + gettext('Your layer was successfully uploaded') + '<br/>' + msg_col + '<br/>' + a + '&nbsp;&nbsp;&nbsp;' + b + '&nbsp;&nbsp;&nbsp;' + c + '</p>',
+            msg: '<p>' + gettext('Your layer has been uploaded successfully') + '<br/>' + msg_col + '<br/>' + a + '&nbsp;&nbsp;&nbsp;' + b + '&nbsp;&nbsp;&nbsp;' + c + '</p>',
             level: 'alert-success',
             empty: 'true'
         });

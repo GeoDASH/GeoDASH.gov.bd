@@ -27,11 +27,15 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from django.core.mail import send_mail
 
 from notify.signals import notify
 
 from geonode.utils import resolve_object
 from geonode.base.models import ResourceBase
+from geonode.layers.models import Layer
+from geonode.documents.models import Document
+from geonode.maps.models import Map
 
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
@@ -127,12 +131,52 @@ def request_permissions(request):
     uuid = request.POST['uuid']
     resource = get_object_or_404(ResourceBase, uuid=uuid)
     try:
-        notification.send(
-            [resource.owner],
-            'request_download_resourcebase',
-            {'from_user': request.user, 'resource': resource}
-        )
-        # notify layer owners that this layer is used to create this map
+        # notification.send(
+        #     [resource.owner],
+        #     'request_download_resourcebase',
+        #     {'from_user': request.user, 'resource': resource}
+        # )
+        # notify layer owners that this layer is requested to download
+        if resource.resource_type == 'layer':
+            verb = 'requested to download your layer'
+            resource = Layer.objects.get(id=resource.id)
+        elif resource.resource_type == 'document':
+            verb = 'requested to download your document'
+            resource = Document.objects.get(id=resource.id)
+        elif resource.resource_type == 'map':
+            verb = 'requested to download your map'
+            resource = Map.objects.get(id=resource.id)
+        try:
+            body = """
+            You have received the following notice from {0}
+
+
+
+            The user {1} requested you to download this {2}:
+            {3}
+
+
+            {4}
+
+
+            Please go to resource page and assign the download permissions if you wish.
+
+
+
+            To see other notices or change how you receive notifications, please go to {5}
+            """.format(settings.SITEURL, request.user, resource.resource_type, resource.title, settings.SITEURL[:-1]+resource.detail_url, settings.SITEURL)
+
+            send_mail(
+            "A  {}'s download has been requested".format(resource.resource_type),
+            body,
+
+            request.user.email,
+            [resource.owner.email],
+            fail_silently=False,
+            )
+        except:
+            pass
+
         notify.send(request.user, recipient=resource.owner, actor=request.user,
             verb='requested to download your resource', target=resource)
         return HttpResponse(

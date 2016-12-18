@@ -84,12 +84,15 @@ GeoNode.plugins.Save = Ext.extend(gxp.plugins.Tool, {
             // store config
             autoLoad: true,
             autoDestroy: true,
-            url: '/api/groups',
+            url: '/api/user-organization-list?user='+GEODASH_USER_ID,
             storeId: 'organizationStore',
             // render
             root: 'objects',
             idProperty: 'id',
-            fields: ['id', 'title']
+            fields: [
+                {name:'id', mapping: 'group.id'},
+                {name:'title', mapping: 'group.title'}
+            ]
         });
 
         var categoryField = new Ext.form.ComboBox({
@@ -549,6 +552,16 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
             ptype: "sdsl_SearchByRadius",
             actionTarget: "map.tbar"
         }, {
+            ptype: 'gxp_crosslayerqueryform',
+            featureManager: "featuremanager",
+            actionTarget: {
+                index: 0,
+                target: "layers.contextMenu"
+            },
+            outputConfig: {
+                width: 620
+            }
+        }, {
             ptype: 'gn_save',
             actions: []
         }, {
@@ -575,5 +588,5 @@ GeoNode.Composer = window.GeoExplorer && Ext.extend(GeoExplorer.Composer, {
 });
 
 if (GeoNode.Composer) {
-    Ext.override(GeoNode.Composer, GeoNode.ComposerMixin);
+    Ext.override(GeoNode.Composer, GeoNode.ComposerMixin) ;
 }

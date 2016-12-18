@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-
+from actstream.views import user
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
@@ -25,7 +25,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView, DeleteView
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
@@ -38,6 +38,8 @@ from geonode.base.libraries.decorators import superuser_check
 from geonode.layers.models import Layer
 from geonode.groups.models import QuestionAnswer
 from geonode.groups.forms import QuestionForm, AnsewerForm
+from geonode.settings import ANONYMOUS_USER_ID
+from geonode import settings
 
 @login_required
 @user_passes_test(superuser_check)
@@ -110,6 +112,33 @@ class GroupDetailView(ListView):
         self.group = get_object_or_404(GroupProfile, slug=kwargs.get('slug'))
         return super(GroupDetailView, self).get(request, *args, **kwargs)
 
+    def user_can_invite(self):
+        is_member = self.group.user_is_member(self.request.user)
+        is_manager = self.group.user_is_role(self.request.user, "manager")
+        try:
+            user_invitation = UserInvitationModel.objects.get(user=self.request.user, group=self.group)
+        except:
+            state = 'free'
+        else:
+            state = user_invitation.state
+
+        if not is_member and not is_manager and state == 'free':
+            return True
+        else:
+            return False
+
+    def user_invitation_pending(self):
+        try:
+            user_invitation = UserInvitationModel.objects.get(user=self.request.user, group=self.group)
+        except:
+            state = 'free'
+        else:
+            state = user_invitation.state
+        if state == 'pending':
+            return True
+        else:
+            return False
+
     def get_context_data(self, **kwargs):
         context = super(GroupDetailView, self).get_context_data(**kwargs)
         context['object'] = self.group
@@ -120,6 +149,8 @@ class GroupDetailView(ListView):
             self.request.user,
             "manager")
         context['can_view'] = self.group.can_view(self.request.user)
+        context['can_send_request'] = self.user_can_invite()
+        context['pending_request'] = self.user_invitation_pending()
         return context
 
 
@@ -233,8 +264,13 @@ def group_invite(request, slug):
             )
 
             # notify user that he/she is invited by the group
-            notify.send(request.user, recipient=user, actor=request.user,
-            verb='invited you to join')
+            try:
+                requested_user = Profile.objects.get(email=user)
+            except:
+                pass
+            else:
+                notify.send(request.user, recipient=requested_user, actor=request.user,
+                verb='invited you to join')
 
     return redirect("group_members", slug=group.slug)
 
@@ -267,12 +303,12 @@ def group_remove(request, slug):
         return render_to_response(
             "groups/group_remove.html", RequestContext(request, {"group": group}))
     if request.method == 'POST':
-
-        if not group.user_is_role(request.user, role="manager")and not request.user.is_superuser:
+        if  request.user.is_superuser:
+            group.delete()
+            return HttpResponseRedirect(reverse("group_list"))
+        else:
             return HttpResponseForbidden()
 
-        group.delete()
-        return HttpResponseRedirect(reverse("group_list"))
     else:
         return HttpResponseNotAllowed()
 
@@ -333,7 +369,6 @@ class GroupActivityView(ListView):
         return context
 
 
-@login_required
 def question_answer_list_view(request, slug):
 
     """
@@ -346,7 +381,10 @@ def question_answer_list_view(request, slug):
         if form.is_valid():
             question = QuestionAnswer()
             asked_question = form.cleaned_data["question"]
-            questioner = request.user
+            if request.user.is_authenticated():
+                questioner = request.user
+            else:
+                questioner = Profile.objects.get(id=ANONYMOUS_USER_ID)
             question.question = asked_question
             question.questioner = questioner
             question.group = group
@@ -398,7 +436,7 @@ def answer_view(request, slug, question_pk):
         return redirect("group_detail", slug=slug)
 
 
-
+@login_required
 def delete_question(request, slug, question_pk):
     """
     This view is for deleting a question with answer.
@@ -414,3 +452,106 @@ def delete_question(request, slug, question_pk):
             return redirect("group_detail", slug=slug)
     else:
         return redirect("group_detail", slug=slug)
+
+
+class AnswerUpdate(UpdateView):
+    """
+    This view is for updating an existing answer
+    """
+    model = QuestionAnswer
+    form_class = AnsewerForm
+
+    def get_object(self):
+        return QuestionAnswer.objects.get(pk=self.kwargs['answer_pk'])
+
+    def get_success_url(self):
+        return reverse('group_detail', kwargs={'slug': self.kwargs['slug']})
+
+
+from models import UserInvitationModel
+from django.template import RequestContext, loader
+from django.utils.translation import ugettext as _
+from django.shortcuts import render
+@require_POST
+@login_required
+def userinvitation(request, slug):
+    """
+
+    """
+    if request.method == 'POST':
+        group = get_object_or_404(GroupProfile, slug=slug)
+        if group.access == "public-invite":
+            user_invitation = UserInvitationModel(user=request.user, group=group, state='pending')
+            user_invitation.save()
+            managers = list(group.get_managers())
+            notify.send(request.user, recipient_list=managers, actor=request.user,
+                    target=group, verb='requested to join {}'.format(group.title))
+            return redirect("group_detail", slug=slug)
+
+
+class UserInvitationListView(ListView):
+    model = UserInvitationModel
+    template_name = 'groups/user_invitation_list.html'
+
+    def get(self, request, slug):
+        group = get_object_or_404(GroupProfile, slug=slug)
+        pending_invitations = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
+        slug = slug
+        if request.user not in group.get_managers():
+            return HttpResponse(
+                    loader.render_to_string(
+                        '401.html', RequestContext(
+                        request, {
+                        'error_message': _("you are not allowed to publish this document.")})), status=403)
+        else:
+            # return HttpResponse(self.get_context_data())
+            return render(request, self.template_name, {'pending_invitations': pending_invitations, 'slug':slug})
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(ListView, self).get_context_data(*args, **kwargs)
+    #     slug = self.kwargs['slug']
+    #     group = get_object_or_404(GroupProfile, slug=slug)
+    #     context['pending_invitations'] = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
+    #     context['slug'] = slug
+    #
+    #     return context
+
+
+class UserInvitationDeleteView(DeleteView):
+    """
+
+    """
+    # template_name = 'slider_image_delete.html'
+    model = UserInvitationModel
+
+    def get_success_url(self):
+        return reverse('user-invitation-list', kwargs={'slug': self.kwargs['slug']})
+
+    def get_object(self):
+        slug = self.kwargs['slug']
+        group = get_object_or_404(GroupProfile, slug=slug)
+        return UserInvitationModel.objects.get(pk=self.kwargs['invitation_pk'])
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+
+
+@login_required
+def accept_user_invitation(request, slug, user_pk):
+    
+    group = get_object_or_404(GroupProfile, slug=slug)
+    user = get_object_or_404(Profile, pk=user_pk)
+    if request.method == 'POST':
+
+        if not group.user_is_role(request.user, role="manager") and not request.user.is_superuser:
+            return HttpResponseForbidden()
+
+        group.join(user, role='member')
+        user_invitation = UserInvitationModel.objects.get(group=group, user=user)
+        user_invitation.state='connected'
+        user_invitation.save()
+        return redirect("user-invitation-list", slug=slug)
+
+    else:
+        return redirect("user-invitation-list", slug=slug)

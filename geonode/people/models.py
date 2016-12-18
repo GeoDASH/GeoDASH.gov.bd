@@ -18,6 +18,8 @@
 #
 #########################################################################
 
+import datetime
+
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
@@ -25,6 +27,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import signals
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from django.core import validators
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, Http404
 
 from taggit.managers import TaggableManager
 
@@ -35,10 +41,14 @@ from account.models import EmailAddress
 from user_messages.models import UserThread
 
 from .utils import format_address
+from geonode.settings import ANONYMOUS_USER_ID, REMOVE_ANONYMOUS_USER
 
 if 'notification' in settings.INSTALLED_APPS:
     from notification import models as notification
 
+
+def get_anonymous_user():
+    return get_user_model().objects.get(username = 'AnonymousUser')
 
 class Profile(AbstractUser):
 
@@ -94,6 +104,7 @@ class Profile(AbstractUser):
     keywords = TaggableManager(_('keywords'), blank=True, help_text=_(
         'commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject \
             (space or comma-separated'))
+    last_notification_view = models.DateTimeField(default=datetime.datetime.now)
 
     def get_absolute_url(self):
         return reverse('profile_detail', args=[self.username, ])
@@ -153,6 +164,11 @@ class Profile(AbstractUser):
     def location(self):
         return format_address(self.delivery, self.zipcode, self.city, self.area, self.country)
 
+    @property
+    def notification_count(self):
+        return self.notifications.filter(read=False, deleted=False, created__gt=self.last_notification_view).count()
+
+
 
 def get_anonymous_user_instance(Profile):
     return Profile(username='AnonymousUser')
@@ -173,9 +189,14 @@ def profile_post_save(instance, sender, **kwargs):
             defaults={'email': instance.email, 'verified': False})
         if not created:
             EmailAddress.objects.filter(user=instance, primary=True).update(email=instance.email)
-    default_group = get_object_or_404(GroupProfile, slug='default')
-    if not instance.is_superuser:
+    default_group, created_group = GroupProfile.objects.get_or_create(slug='default')
+    if not default_group.title:
+        default_group.title = 'default organization'
+        default_group.save()
+    if not instance.is_superuser and not instance == get_anonymous_user(Profile):
         default_group.join(instance, role='member')
+    else:
+        default_group.join(instance, role='manager')
 
 
 def email_post_save(instance, sender, **kw):
@@ -191,6 +212,11 @@ def profile_pre_save(instance, sender, **kw):
             'notification' in settings.INSTALLED_APPS:
         notification.send([instance, ], "account_active")
 
+def profile_pre_delete(instance, sender, **kw):
+    if instance == get_anonymous_user() and REMOVE_ANONYMOUS_USER == False:
+        # raise PermissionDenied
+        raise Http404('Please dont try to delete "Anonymous User". This may break the system.')
 signals.pre_save.connect(profile_pre_save, sender=Profile)
 signals.post_save.connect(profile_post_save, sender=Profile)
 signals.post_save.connect(email_post_save, sender=EmailAddress)
+signals.pre_delete.connect(profile_pre_delete, sender=Profile)

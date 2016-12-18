@@ -21,7 +21,7 @@
                   <form id="upload_form"  method="post" enctype="multipart/form-data" action="{% url "document_upload" %}">
                     <div class="row">
                         <div class="col-md-12">
-                            <label class="control-label"> {% trans "Select Organization " %} </label>
+                            <label class="control-label"> <span style="color:red;"> * </span>{% trans "Select Organization " %} </label>
                         </div>
                     </div>
                     <div class="row">
@@ -36,7 +36,7 @@
                     <div class="block-separator"></div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label class="control-label"> {% trans "Select Category " %} </label>
+                            <label class="control-label"> <span style="color:red;"> * </span> {% trans "Select Category " %} </label>
                         </div>
                     </div>
                     <div class="row">
@@ -69,6 +69,10 @@
 {% include "_permissions_form_js.html" %}
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        anyonePermissionDisable();
+    });
+
     $('#id_doc_file').on('change', function(){
         if($('#id_title').val() == ''){
             $('#id_title').val($('#id_doc_file').val().replace("C:\\fakepath\\", ""));

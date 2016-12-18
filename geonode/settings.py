@@ -237,6 +237,7 @@ GEONODE_APPS = (
     'geonode.workspace',
     'geonode.news',
     'geonode.dashboard',
+    'geonode.cms',
 
     # GeoServer Apps
     # Geoserver needs to come last because
@@ -310,7 +311,7 @@ INSTALLED_APPS = (
     'avatar',
     # 'dialogos',
     'agon_ratings',
-    'notification',
+    #'notification',
     'announcements',
     'actstream',
     'user_messages',
@@ -319,6 +320,7 @@ INSTALLED_APPS = (
     'guardian',
     # user notification app
     'notify',
+    'suit',
     
 ) + GEONODE_APPS
 
@@ -382,6 +384,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'account.context_processors.account',
+    'django.template.context_processors.request',
     # The context processor below adds things like SITEURL
     # and GEOSERVER_BASE_URL to all pages that use a RequestContext
     'geonode.context_processors.resource_urls',
@@ -419,6 +422,7 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
+    'account.auth_backends.EmailAuthenticationBackend',
 
     # Authentication backend for facebook
     'social.backends.facebook.FacebookOAuth2',
@@ -472,12 +476,13 @@ ACTSTREAM_SETTINGS = {
 
 # Settings for Social Apps
 REGISTRATION_OPEN = True
-ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
+ACCOUNT_EMAIL_CONFIRMATION_EMAIL = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_APPROVAL_REQUIRED = False
+ACCOUNT_EMAIL_UNIQUE = True
 
 # Email for users to contact admins.
-THEME_ACCOUNT_CONTACT_EMAIL = 'admin@example.com'
+THEME_ACCOUNT_CONTACT_EMAIL = 'admin@geodash.gov.bd'
 
 #
 # Test Settings

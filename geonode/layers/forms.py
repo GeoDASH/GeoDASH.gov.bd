@@ -63,7 +63,7 @@ class LayerForm(ResourceBaseForm):
             'upload_session',
             'service',
             'status',
-            'group',
+            # 'group',
             'last_auditor'
         )
 
@@ -125,7 +125,6 @@ class LayerUploadForm(forms.Form):
                 "Only Shapefiles and GeoTiffs are supported. You uploaded a %s file" %
                 base_ext)
         if base_ext.lower() == ".csv" and self.cleaned_data['the_geom'] != "geom" and self.cleaned_data['the_geom'] != '':
-            import pdb;pdb.set_trace()
             raise forms.ValidationError("The field name of your .csv file which contains multilinestring coordinates should be 'geom' ")
         if base_ext.lower() == ".shp":
             if dbf_file is None or shx_file is None:
@@ -175,7 +174,7 @@ class LayerUploadForm(forms.Form):
             if osm_layer_type in response:
 
                 from plumbum.cmd import ogr2ogr
-                ogr2ogr[tempdir, file_path, 'points']()
+                ogr2ogr[tempdir, file_path, osm_layer_type]()
                 files = os.listdir(tempdir)
                 for item in files:
                     if item.endswith('.shp'):
@@ -275,6 +274,7 @@ class NewLayerUploadForm(LayerUploadForm):
     charset = forms.CharField(required=False)
     category = forms.CharField(required=True)
     organization = forms.CharField(required=True)
+    admin_upload = forms.BooleanField(required=False)
     the_geom = forms.CharField(required=False)
     longitude = forms.CharField(required=False)
     lattitude = forms.CharField(required=False)

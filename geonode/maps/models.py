@@ -86,20 +86,20 @@ class Map(ResourceBase, GXPMapBase):
         max_length=255,
         blank=True)
     # Full URL for featured map view, ie http://domain/someview
-    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
-    current_iteration = models.IntegerField(default=0)
-    status = models.CharField(max_length=10, choices=[
-        ("DRAFT", _("Draft")),
-        ("PENDING", _("Pending")),
-        ("ACTIVE", _("Active")),
-        ("INACTIVE", _("Inactive")),
-        ("DENIED", _("Denied")),
-        ("DELETED", _("Deleted")),
-        ("CANCELED", _("Canceled"))],
-        default="DRAFT")
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
+    # group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    # last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    # current_iteration = models.IntegerField(default=0)
+    # status = models.CharField(max_length=10, choices=[
+    #     ("DRAFT", _("Draft")),
+    #     ("PENDING", _("Pending")),
+    #     ("ACTIVE", _("Active")),
+    #     ("INACTIVE", _("Inactive")),
+    #     ("DENIED", _("Denied")),
+    #     ("DELETED", _("Deleted")),
+    #     ("CANCELED", _("Canceled"))],
+    #     default="DRAFT")
+    # date_created = models.DateTimeField(auto_now_add=True)
+    # date_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return '%s by %s' % (
@@ -606,7 +606,7 @@ class MapAuditActivity(models.Model):
     comment_subject = models.CharField(max_length=300,
                                        help_text=_('Comment type to approve or deny layer submission '))
     comment_body = models.TextField(help_text=_('Comments when auditor denied or approved layer submission'),
-                               blank=True)
+                               blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -616,8 +616,8 @@ class WmsServer(models.Model):
     This model is for adding new wms server
     """
 
-    ptype = models.CharField(max_length=50)
-    url = models.URLField(max_length=500)
-    title = models.CharField(max_length=100)
+    ptype = models.CharField(max_length=50, default='gxp_wmscsource')
+    url = models.URLField(max_length=500, help_text=_('http://example.com/geoserver/wms'))
+    title = models.CharField(max_length=100, verbose_name=_('Your server name'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

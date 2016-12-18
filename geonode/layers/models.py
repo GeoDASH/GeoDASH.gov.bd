@@ -123,20 +123,20 @@ class Layer(ResourceBase):
         null=True,
         blank=True,
         related_name='layer_set')
-    group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
-    last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
-    current_iteration = models.IntegerField(default=0)
-    status = models.CharField(max_length=10, choices=[
-        ("DRAFT", _("Draft")),
-        ("PENDING", _("Pending")),
-        ("ACTIVE", _("Active")),
-        ("INACTIVE", _("Inactive")),
-        ("DENIED", _("Denied")),
-        ("DELETED", _("Deleted")),
-        ("CANCELED", _("Canceled"))],
-        default="DRAFT")
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
+    # group = models.ForeignKey('groups.GroupProfile', blank=True, null=True)
+    # last_auditor = models.ForeignKey('people.Profile', blank=True, null=True)
+    # current_iteration = models.IntegerField(default=0)
+    # status = models.CharField(max_length=10, choices=[
+    #     ("DRAFT", _("Draft")),
+    #     ("PENDING", _("Pending")),
+    #     ("ACTIVE", _("Active")),
+    #     ("INACTIVE", _("Inactive")),
+    #     ("DENIED", _("Denied")),
+    #     ("DELETED", _("Deleted")),
+    #     ("CANCELED", _("Canceled"))],
+    #     default="DRAFT")
+    # date_created = models.DateTimeField(auto_now_add=True)
+    # date_updated = models.DateTimeField(auto_now=True)
 
     def is_vector(self):
         return self.storeType == 'dataStore'
@@ -309,7 +309,7 @@ class LayerAuditActivity(models.Model):
     comment_subject = models.CharField(max_length=300,
                                        help_text=_('Comment type to approve or deny layer submission '))
     comment_body = models.TextField(help_text=_('Comments when auditor denied or approved layer submission'),
-                               blank=True)
+                               blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -489,7 +489,7 @@ def pre_save_layer(instance, sender, **kwargs):
         instance.bbox_y1 = instance.resourcebase_ptr.bbox_y1
 
     if instance.abstract == '' or instance.abstract is None:
-        instance.abstract = unicode(_('No abstract provided'))
+        instance.abstract = unicode(_('Layer abstract is very important! You are requested to update it now.'))
     if instance.title == '' or instance.title is None:
         instance.title = instance.name
 

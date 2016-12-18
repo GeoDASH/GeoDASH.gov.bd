@@ -76,6 +76,11 @@
             $("#advanced-search-menu").show();
       });
   </script>
+  <script type="text/javascript" language="JavaScript">
+        $(document).ready(function () {
+        anyonePermissionDisable();
+        });
+  </script>
   {% with include_spatial='true' %}
   {% include 'search/search_scripts.html' %}
   {% endwith %}

@@ -41,31 +41,31 @@
                 </div>
                 <ul class="resources-summery">
                   <li>
-                      <a href="/people/profile/{{ item.owner }}">
+                      <a href="/people/profile/{{ item.owner__username}}" title="{{item.resource_type}} owner">
                           <i class="fa fa-user"></i>
-                          {{ item.owner }}
+                          {{ item.owner__username }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#info">
+                      <a href="{{ item.detail_url }}#info" title="{{item.resource_type}} creation date">
                           <i class="fa fa-calendar-o"></i>
                           {{ item.date|date:'d MMM y' }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}">
+                      <a href="{{ item.detail_url }}" title="{{item.resource_type}} view count">
                           <i class="fa fa-eye"></i>
                           {{ item.popular_count }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#share">
+                      <a href="{{ item.detail_url }}#share" title="{{item.resource_type}} share count">
                           <i class="fa fa-share"></i>
                           {{ item.share_count }}
                       </a>
                   </li>
                   <li>
-                      <a href="{{ item.detail_url }}#rate">
+                      <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating">
                           <i class="fa fa-star"></i>
                           {{ item.rating }}
                       </a>
@@ -201,7 +201,7 @@
                   <div class="top-content text-center">
                       <div class="title">
                           <a href="{{ item.detail_url }}" title="{{ item.title }}">
-                              {{ item.title | limitTo: 45 }}{{ item.title.length  > 45 ? '...' : ''}}
+                              {{ item.title | limitTo: 20 }}{{ item.title.length  > 20 ? '...' : ''}}
                           </a>
                       </div>
                       <div class="category">
@@ -209,7 +209,7 @@
                           {{ item.category == null || item.category == '' ? 'Not provided.' : '' }}
                       </div>
                       <div class="details">
-                          {{ item.abstract | limitTo: 300 }}{{ item.abstract.length  > 300 ? '...' : ''}}
+                          {{ item.abstract | limitTo: 220 }}{{ item.abstract.length  > 220 ? '...' : ''}}
                       </div>
                   </div>
 
@@ -217,31 +217,31 @@
                       <div class="item-items">
                           <ul class="list-inline lmd">
                               <li>
-                                  <a href="/people/profile/{{ item.owner }}">
+                                  <a href="/people/profile/{{ item.owner__username }}" title="{{item.resource_type}} owner">
                                       <i class="fa fa-user"></i>
-                                      {{ item.owner }}
+                                      {{ item.owner__username }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#info">
+                                  <a href="{{ item.detail_url }}#info" title="{{item.resource_type}} creation date">
                                       <i class="fa fa-calendar-o"></i>
                                       {{ item.date|date:'d MMM y' }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}">
+                                  <a href="{{ item.detail_url }}" title="{{item.resource_type}} view count">
                                       <i class="fa fa-eye"></i>
                                       {{ item.popular_count }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#share">
+                                  <a href="{{ item.detail_url }}#share" title="{{item.resource_type}} share count">
                                       <i class="fa fa-share"></i>
                                       {{ item.share_count }}
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{ item.detail_url }}#rate">
+                                  <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating">
                                       <i class="fa fa-star"></i>
                                       {{ item.rating }}
                                   </a>

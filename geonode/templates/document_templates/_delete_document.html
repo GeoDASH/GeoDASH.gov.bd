@@ -17,7 +17,7 @@
           <p class="extra_content"></p>
         </div>
 
-          <form method="post" action="{% url "document-delete" draft.id %}">
+          <form method="post" id="Doc_Del" action="">
           {% csrf_token %}
               <div class="modal-footer" style="padding:10px 50px 0px 50px;">
               <button class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</button>

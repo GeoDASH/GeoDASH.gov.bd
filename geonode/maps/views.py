@@ -25,11 +25,12 @@ from guardian.shortcuts import get_perms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.template import RequestContext, loader
 try:
     # Django >= 1.7
     import json
@@ -459,6 +460,15 @@ def new_map_json(request):
                       category=TopicCategory.objects.get(id=category_id), group=group, title=title)
         map_obj.save()
         map_obj.set_default_permissions()
+
+        permissions = _perms_info_json(map_obj)
+        perm_dict = json.loads(permissions)
+        if 'download_resourcebase' in perm_dict['groups']['anonymous']:
+            perm_dict['groups']['anonymous'].remove('download_resourcebase')
+        if 'view_resourcebase' in perm_dict['groups']['anonymous']:
+            perm_dict['groups']['anonymous'].remove('view_resourcebase')
+        #
+        map_obj.set_permissions(perm_dict)
 
         # If the body has been read already, use an empty string.
         # See https://github.com/django/django/commit/58d555caf527d6f1bdfeab14527484e4cca68648
@@ -948,10 +958,15 @@ def map_publish(request, map_pk):
         try:
             map = Map.objects.get(id=map_pk)
         except Map.DoesNotExist:
-            return HttpResponse("Map does not exist")
+            return Http404("Map does not exist")
         else:
             if request.user != map.owner:
-                return HttpResponse('you are not allowed to publish this map')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to publish this map.")})), status=401)
+                # return HttpResponse('you are not allowed to publish this map')
             group = map.group
             map.status = 'PENDING'
             map.current_iteration += 1
@@ -960,7 +975,7 @@ def map_publish(request, map_pk):
             # notify organization admins about the new published map
             managers = list( group.get_managers())
             notify.send(request.user, recipient_list = managers, actor=request.user,
-                        verb='published a new map', target=map)
+                        verb='pushed a new map for approval', target=map)
 
             map_submission_activity = MapSubmissionActivity(map=map, group=group, iteration=map.current_iteration)
             map_submission_activity.save()
@@ -968,7 +983,7 @@ def map_publish(request, map_pk):
             # set all the permissions for all the managers of the group for this map
             map.set_managers_permissions()
 
-            messages.info(request, 'published map succesfully')
+            messages.info(request, 'Pushed map succesfully')
             return HttpResponseRedirect(reverse('member-workspace-map'))
     else:
         return HttpResponseRedirect(reverse('member-workspace-map'))
@@ -982,11 +997,17 @@ def map_approve(request, map_pk):
             try:
                 map = Map.objects.get(id=map_pk)
             except Map.DoesNotExist:
-                return HttpResponse("requested map does not exists")
+                return Http404("requested map does not exists")
             else:
                 group = map.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to approve this map")
+                    if request.user != map.owner:
+                        return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to approve this map.")})), status=401)
+                    # return HttpResponse("you are not allowed to approve this map")
                 map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
                 map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -994,6 +1015,28 @@ def map_approve(request, map_pk):
                 map.status = 'ACTIVE'
                 map.last_auditor = request.user
                 map.save()
+
+                permissions = _perms_info_json(map)
+                perm_dict = json.loads(permissions)
+                if request.POST.get('view_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+                    else:
+                        if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('view_resourcebase')
+
+                if request.POST.get('download_permission'):
+                    if not 'AnonymousUser' in perm_dict['users']:
+                        perm_dict['users']['AnonymousUser'] = []
+                        perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+                    else:
+                        if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                            perm_dict['users']['AnonymousUser'].append('download_resourcebase')
+
+                map.set_permissions(perm_dict)
+
+
 
                 # notify map owner that someone have approved the map
                 if request.user != map.owner:
@@ -1010,7 +1053,7 @@ def map_approve(request, map_pk):
                 map_audit_activity.auditor = request.user
                 map_audit_activity.save()
 
-            messages.info(request, 'approved map succesfully')
+            messages.info(request, 'Approved map succesfully')
             return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
             messages.info(request, 'Please write an approve comment and try again')
@@ -1027,11 +1070,16 @@ def map_deny(request, map_pk):
             try:
                 map = Map.objects.get(id=map_pk)
             except:
-                return HttpResponse("requested map does not exists")
+                return Http404("requested map does not exists")
             else:
                 group = map.group
                 if request.user not in group.get_managers():
-                    return HttpResponse("you are not allowed to deny this map")
+                    return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You are not allowed to deny this map.")})), status=401)
+                    # return HttpResponse("you are not allowed to deny this map")
                 map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
                 map_audit_activity= MapAuditActivity(map_submission_activity=map_submission_activity)
                 comment_body = request.POST.get('comment')
@@ -1055,7 +1103,7 @@ def map_deny(request, map_pk):
                 map_audit_activity.auditor = request.user
                 map_audit_activity.save()
 
-            messages.info(request, 'map denied successfully')
+            messages.info(request, 'Denied map successfully')
             return HttpResponseRedirect(reverse('admin-workspace-map'))
         else:
             messages.info(request, 'Please write an deny comment and try again')
@@ -1070,24 +1118,27 @@ def map_delete(request, map_pk):
         try:
             map = Map.objects.get(id=map_pk)
         except:
-            return HttpResponse("requested map does not exists")
+            return Http404("requested map does not exists")
         else:
             if map.status == 'DRAFT' and ( request.user == map.owner or request.user in map.group.get_managers()):
                 map.status = "DELETED"
                 map.save()
             else:
-                messages.info(request, 'you have no acces to delete the map')
+                return HttpResponse(
+                        loader.render_to_string(
+                            '401.html', RequestContext(
+                            request, {
+                            'error_message': _("You have no acces to delete the map.")})), status=401)
+                # messages.info(request, 'You have no acces to delete the map')
 
-        messages.info(request, 'map deleted successfully')
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-map'))
-        else:
+        messages.info(request, 'Deleted map successfully')
+        if request.user == map.owner:
             return HttpResponseRedirect(reverse('member-workspace-map'))
+        else:
+            return HttpResponseRedirect(reverse('admin-workspace-map'))
+
     else:
-        if request.user.is_manager_of_any_group:
-            return HttpResponseRedirect(reverse('admin-workspace-map'))
-        else:
-            return HttpResponseRedirect(reverse('member-workspace-map'))
+        return HttpResponseRedirect(reverse('member-workspace-map'))
 
 
 class WmsServerList(ListView):

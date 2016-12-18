@@ -51,7 +51,7 @@ class GroupProfile(models.Model):
                         'such as a mailing list, shared email, or exchange group.')
 
     group = models.OneToOneField(Group)
-    title = models.CharField(_('Title'), max_length=50)
+    title = models.CharField(_('Title'), max_length=200)
     slug = models.SlugField(unique=True)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
@@ -304,11 +304,33 @@ class QuestionAnswer(models.Model):
     This model is for question and answer in organization details page.
     """
     group = models.ForeignKey(GroupProfile, blank=True, null=True)
-    question = models.TextField(help_text=_('Ask a question'))
+    question = models.TextField()
     questioner = models.ForeignKey('people.Profile', blank=True, null=True, related_name='questioner')
-    answer = models.TextField(help_text=_('Answer the question'))
+    answer = models.TextField()
     respondent = models.ForeignKey('people.Profile', blank=True, null=True, related_name='respondent')
     answered = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
+
+class UserInvitationModel(models.Model):
+    """
+    This model keeps track of user invitations to groups
+    """
+    group = models.ForeignKey(GroupProfile)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    state = models.CharField(
+        max_length=10,
+        choices=(
+            ("pending", _("Pending")),
+            ("free", _("Free")),
+            ("connected", _("Connected")),
+
+        ),
+        default='free',
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [("group", "user", "state")]

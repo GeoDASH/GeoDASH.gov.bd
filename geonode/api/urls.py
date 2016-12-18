@@ -23,7 +23,8 @@ from tastypie.api import Api
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
         UndockResources, FavoriteUnfavoriteResources, OsmOgrInfo, LayerSourceServer, LayersWithFavoriteAndDoocked, \
-    MapsWithFavoriteAndDoocked, GroupsWithFavoriteAndDoocked, DocumentsWithFavoriteAndDoocked
+    MapsWithFavoriteAndDoocked, GroupsWithFavoriteAndDoocked, DocumentsWithFavoriteAndDoocked, UserNotifications, \
+    ViewNotificationTimeSaving
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
@@ -61,3 +62,6 @@ api.register(MapResourceWithFavorite())
 api.register(DocumentResourceWithFavorite())
 api.register(GroupsResourceWithFavorite())
 
+api.register(UserNotifications())
+
+api.register(ViewNotificationTimeSaving())

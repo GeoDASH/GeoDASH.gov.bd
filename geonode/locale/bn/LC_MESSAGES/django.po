@@ -39,16 +39,40 @@ msgstr ""
 
 #: Add New Item for GeoDASH
 msgid "LANGUAGE"
-msgstr "English"
+msgstr "ENGLISH"
 
 msgid "Organizations"
 msgstr "সংগঠন"
 
-msgid "AN OPEN SOURCE GEOSPATIAL DATA"
-msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা"
+msgid "English"
+msgstr "ইংরেজি"
+
+msgid "Bengali"
+msgstr "বাংলা"
+
+msgid "GeoDASH Wiki"
+msgstr "GeoDASH উইকিপিডিয়া"
+
+msgid "OSM Layer Wizard"
+msgstr "OSM লেয়ার উইজার্ড"
+
+msgid "AN OPEN SOURCE GEOSPATIAL DATA    MANAGEMENT & VISUALIZATION    PLATFORM"
+msgstr "একটি ওপেন সোর্স ভূস্থানিক ডেটা    ব্যবস্থাপনা ও মানসচিত্র গঠন   চিত্র স্ফুটন প্ল্যাটফর্ম"
+
+msgid "LAYERS ARE THE CONTENTS OF A MAP. CREATE A MAP USING SINGLE OR  MULTIPLE LAYERS AT YOUR FINGER TIP"
+msgstr "স্তর একটি মানচিত্রের বিষয়বস্তুর.  আপনার অঙ্গুলি স্পর্শ দ্বারা  একাধিক স্তর কর্তৃক মানচিত্র তৈরী করুন"
+
+msgid "AN OGC STANDARD INTEROPERABLE     PLATFORM FOR MANAGING,SHARING & ANALYZING GEOSPATIAL CONTENT"
+msgstr "ব্যবস্থাপনা ভাগ করা এবং ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্যএকটি OGC মানক অন্তর্চালিত প্ল্যাটফর্ম"
+
+msgid "A MAPPING PLATFORM TO CREATE      CUSTOM AND STYLISH MAPS"
+msgstr "কাস্টম এবং আড়ম্বরপূর্ণ মানচিত্র  তৈরি করতে একটি ম্যাপিং        প্ল্যাটফর্ম"
+
+msgid "SHARE YOUR MAPS WITH FRIENDS ON   FACEBOOK, TWITTER, GOOGLE+ &   EMAIL TO MAXIMIZE DATA SHARING"
+msgstr "বন্ধুদের সঙ্গে আপনার মানচিত্র ভাগ ফেসবুক, টুইটার,গুগল+ এবং ইমেল তথ্য পূর্ণবিস্তার"
 
 msgid "MANAGEMENT & VISUALIZATION"
-msgstr "ব্যবস্থাপনা ও কল্পনা"
+msgstr "ব্যবস্থাপনা ও মানসচিত্র গঠন চিত্র স্ফুটন"
 
 msgid "PLATFORM"
 msgstr "প্ল্যাটফর্ম"
@@ -57,7 +81,7 @@ msgid "NEWS"
 msgstr "সংবাদ"
 
 msgid "Categories and Key words"
-msgstr "বিভাগ ও কীওয়ার্ড"
+msgstr "বিভাগ ও মূল শব্দ"
 
 msgid "How It Works"
 msgstr "কিভাবে এটা কাজ করে"
@@ -65,26 +89,26 @@ msgstr "কিভাবে এটা কাজ করে"
 msgid "Recent Activities"
 msgstr "সাম্প্রতিক কার্যক্রম"
 
-msgid "To create a new map go to your contributed or existing layers and click the “create map” link."
-msgstr "তৈরি করতে একটি নতুন মানচিত্র আপনার অবদান বা বিদ্যমান স্তর যান এবং মানচিত্র তৈরি করুন লিংকে ক্লিক করুন."
+msgid "To create a new map go to your contributed or existing layers and click the “create map” link.This will take you to the “Map Composer” with a base layer loaded.To add data layers from GeoDASH click on the plus button located upper left side of the screen.This will open a dialog listing all the layers available on the GeoDASH.Select the layers you wish to add, then hit the Add Layers button."
+msgstr "একটি নতুন মানচিত্র তৈরি করতে  আপনার অবদান বা বিদ্যমান স্তর এ যান এবং মানচিত্র তৈরি করুন লিংকে ক্লিক করুন.এইটা আপনাকে নিবে ম্যাপ কম্পোজার  - বেস স্তর লোডের  সঙ্গে.GeoDASH এর উপরের বামদিকে  অবস্থিত পর্দার প্লাস বাটন ক্লিক করুন ডেটা লেয়ার যোগ করার জন্য.এই ডায়ালগ সব স্তর GeoDASH উপলব্ধ তালিকা খুলবে.স্তর আপনি যোগ করতে চান তা নির্বাচন করুন, তারপর লেয়ার যোগ বাটন আঘাত করুন."
 
 msgid "This will take you to the “Map Composer” with a base layer loaded."
-msgstr "এই বেস স্তর লোড সঙ্গে ম্যাপ কম্পোজার আপনাকে নিতে হবে."
+msgstr "এইটা আপনাকে নিবে ম্যাপ কম্পোজার  - বেস স্তর লোডের  সঙ্গে ."
 
 msgid "To add data layers from GeoDASH click on the plus button located upper left side of the screen."
-msgstr "পর্দার প্লাস বাটন অবস্থিত উপরের বামদিকে GeoDASH ক্লিক থেকে ডেটা লেয়ার যোগ করার জন্য."
+msgstr "GeoDASH এর উপরের বামদিকে  অবস্থিত পর্দার প্লাস বাটন ক্লিক করুন ডেটা লেয়ার যোগ করার জন্য."
 
 msgid "This will open a dialog listing all the layers available on the GeoDASH."
 msgstr "এই ডায়ালগ সব স্তর GeoDASH উপলব্ধ তালিকা খুলবে."
 
 msgid "Select the layers you wish to add, then hit the Add Layers button. "
-msgstr "স্তর আপনি যোগ করতে চান তা নির্বাচন করুন, তারপর লেয়ার যোগ বাটন আঘাত."
+msgstr "স্তর আপনি যোগ করতে চান তা নির্বাচন করুন, তারপর লেয়ার যোগ বাটন আঘাত করুন"
 
 msgid "Just a few quick steps from creating your map to publishing it"
-msgstr "তা প্রকাশ করতে আপনার মানচিত্র তৈরি থেকে মাত্র কয়েক দ্রুত পদক্ষেপ"
+msgstr "আপনার মানচিত্র তৈরি  এবং তা প্রকাশ করতে মাত্র কয়েক পদক্ষেপ দূরে"
 
 msgid "Check out some amazing layers uploaded on GeoDASH platform below"
-msgstr "নিচে GeoDASH প্ল্যাটফর্মে আপলোড কিছু আশ্চর্যজনক স্তর পরীক্ষা করে দেখুন"
+msgstr "নিচে GeoDASH প্ল্যাটফর্মে আপলোড কিছু বিস্ময়কর স্তর পরীক্ষা করে দেখুন"
 
 msgid "create a map"
 msgstr "একটি মানচিত্র তৈরি"
@@ -102,52 +126,37 @@ msgid "Feature highlights of GeoDASH"
 msgstr "GeoDASH এর বৈশিষ্ট্য হাইলাইট"
 
 msgid "Import your own layers"
-msgstr "আপনার নিজের স্তর ইম্পোর্ট"
+msgstr "আপনার নিজের স্তর ইম্পোর্ট  "
 
 msgid "Our Partners"
 msgstr "আমাদের অংশীদার"
 
-msgid "Layers are the contents of a map."
-msgstr "স্তরসমূহ একটি মানচিত্র বিষয়বস্তু হয়."
+msgid "Layers are the contents of a map. To get started adding layers, sign in to the site, click on upload your layers/data, choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img). Make sure your data projection is WGS 84 or BTM."
+msgstr "স্তরসমূহ একটি মানচিত্র বিষয়বস্তু. লেয়ার যোগ শুরু করার জন্য,সাইটে সাইন ইন,আপনার স্তর / ডাটা আপলোড এ ক্লিক করুন,ভেক্টর জন্য ডেটা বিন্যাস চয়ন (উদাহরণ: .shp, .shx, .dbf, .prj) বা রাস্টার (.TIFF, .image). নিশ্চিত করুন যে আপনার তথ্য অভিক্ষেপ WGS84 বা BTM করুন."
 
-msgid "To get started adding layers,"
-msgstr "লেয়ার যোগ শুরু করার জন্য,"
-
-msgid "sign in to the site,"
-msgstr "সাইটে সাইন ইন,"
-
-msgid "click on upload your layers/data,"
-msgstr "আপনার স্তর / ডাটা আপলোড এ ক্লিক করুন,"
-
-msgid "choose the data format for Vector (Example: .shp, .shx, .dbf, .prj) or Raster (.tiff, .img)."
-msgstr "ভেক্টর জন্য ডেটা বিন্যাস চয়ন (উদাহরণ: .shp, .shx, .dbf, .prj) বা রাস্টার (.TIFF, .image)."
-
-msgid "Make sure your data projection is WGS 84 or BTM."
-msgstr "নিশ্চিত করুন যে আপনার তথ্য অভিক্ষেপ WGS84 বা BTM করুন."
-
-msgid "interoperabity"
+msgid "Interoperability"
 msgstr "আন্তক্রিয়া"
 
-msgid "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content."
-msgstr "GeoDASH ওপেন ভূস্থানিক সাহচর্য (OGC), ব্যবস্থাপনা শেয়ারিং, এবং ভূস্থানিক এবং অ ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্য এন্টারপ্রাইজ জুড়ে প্রোগ্রাম মধ্যে উৎপন্ন নিখুত অনুবর্তী মান হয়."
+msgid "GeoDASH is Open GeoSpatial Consortium (OGC) standards compliant to optimize interoperability between programs across the enterprise for managing, sharing, and analyzing geospatial and non-geospatial content.You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces.You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc."
+msgstr "GeoDASH ওপেন ভূস্থানিক সাহচর্য (OGC), ব্যবস্থাপনা শেয়ারিং, এবং ভূস্থানিক এবং অ ভূস্থানিক বিষয়বস্তু বিশ্লেষণের জন্য এন্টারপ্রাইজ জুড়ে প্রোগ্রাম মধ্যে উৎপন্ন নিখুত অনুবর্তী মান হয়.আপনি সম্প্রদায় সম্পৃক্ততা / সম্পাদনা / তথ্য অনলাইন, ক্ষমতাশালী, বিতরণ / versioned স্বজ্ঞাত ইন্টারফেস সঙ্গে স্থাপত্যে ভিড়-গুন মাধ্যমে সহযোগিতা করতে পারেন.আপনি এই ধরনের ওপেনস্ট্রীটম্যাপ, বিং, MapBox, CloudMade, MapQuest ইত্যাদি অন্যান্য ওপেন সোর্স WMS সেবা, মত ArcGIS বা QGIS পরিবেশের আপনার মানচিত্র প্রকল্পের মধ্যে ভৌগোলিক ড্যাশ WMS স্তর ব্যবহার করতে পারেন."
 
 msgid "You can make collaboration through community involvement/editing/crowd-sourcing of information in online, powerful, distributed/versioned architecture with intuitive interfaces."
 msgstr "আপনি সম্প্রদায় সম্পৃক্ততা / সম্পাদনা / তথ্য অনলাইন, ক্ষমতাশালী, বিতরণ / versioned স্বজ্ঞাত ইন্টারফেস সঙ্গে স্থাপত্যে ভিড়-গুন মাধ্যমে সহযোগিতা করতে পারেন."
 
 msgid "You can use the GeoDASH WMS layer in your map project of ArcGIS or QGIS environment like other open source WMS services, such as OpenStreetMap, Bing, MapBox, CloudMade, MapQuest, Stamen etc."
-msgstr "আপনি এই ধরনের ওপেনস্ট্রীটম্যাপ, বিং, MapBox, CloudMade, MapQuest, কেশর ইত্যাদি অন্যান্য ওপেন সোর্স WMS সেবা, মত ArcGIS বা QGIS পরিবেশের আপনার মানচিত্র প্রকল্পের মধ্যে ভৌগোলিক ড্যাশ WMS স্তর ব্যবহার করতে পারেন."
+msgstr "আপনি এই ধরনের ওপেনস্ট্রীটম্যাপ, বিং, MapBox, CloudMade, MapQuest ইত্যাদি অন্যান্য ওপেন সোর্স WMS সেবা, মত ArcGIS বা QGIS পরিবেশের আপনার মানচিত্র প্রকল্পের মধ্যে ভৌগোলিক ড্যাশ WMS স্তর ব্যবহার করতে পারেন."
 
 msgid "Make pretty maps with GeoDASH"
 msgstr "GeoDASH সঙ্গে চমত্কার মানচিত্র বানান"
 
 msgid "View your maps in 3d"
-msgstr "3d আপনার মানচিত্র দেখুন"
+msgstr "3d তে আপনার মানচিত্র দেখুন"
 
 msgid "Share your map"
 msgstr "আপনার মানচিত্র ভাগ করুন"
 
-msgid "Share your map via e-mail, LinkedIn, Twitter, Facebook etc."
-msgstr "আপনার মানচিত্র ভাগ ই-মেইলের মাধ্যমে লিঙ্কডইন, টুইটার, ফেসবুক ইত্যাদি."
+msgid "Share your map via e-mail, LinkedIn, Twitter, Facebook etc.to maximize data sharing and promote your work.You can also publish and embed your map right away."
+msgstr "আপনার মানচিত্র ভাগ করুন ই-মেইলের মাধ্যমে, লিঙ্কডইন, টুইটার, ফেসবুক ইত্যাদি.তথ্য ভাগ এবং পূর্ণবিস্তার আপনার কাজ উন্নীত করা.এছাড়াও আপনি প্রকাশ করতে এবং আপনার মানচিত্র এম্বেড সরাসরি করতে পারেন."
 
 msgid "to maximize data sharing and promote your work."
 msgstr "তথ্য ভাগ এবং পূর্ণবিস্তার আপনার কাজ উন্নীত করা."
@@ -159,7 +168,7 @@ msgid "Terms of use"
 msgstr "ব্যবহারের শর্তাবলী"
 
 msgid "Advanced"
-msgstr "অগ্রসর"
+msgstr "অগ্রবর্তী"
 
 msgid "Contacts"
 msgstr "পরিচিতি"
@@ -168,7 +177,7 @@ msgid "Explore Organizations"
 msgstr "সংগঠন এক্সপ্লোর"
 
 msgid "Explore Users"
-msgstr "এক্সপ্লোর ব্যবহারকারীরা"
+msgstr "এক্সপ্লোর ব্যবহারকারী"
 
 msgid "create a new map"
 msgstr "একটি নতুন মানচিত্র তৈরি"
@@ -225,7 +234,7 @@ msgstr "ক্ষেত্রের অধিবেশন"
 
 #: base/enumerations.py:36
 msgid "dataset"
-msgstr "ডেটা সেটটি"
+msgstr "ডেটা সেট"
 
 #: base/enumerations.py:37
 msgid "service interfaces"
@@ -237,7 +246,7 @@ msgstr "অ্যাট্রিবিউট শ্রেণী"
 
 #: base/enumerations.py:39
 msgid "characteristic of a feature"
-msgstr "একটি বৈশিষ্ট্য চারিত্রিক"
+msgstr "চারিত্রিক বৈশিষ্ট্য "
 
 #: base/enumerations.py:40
 msgid "tile or spatial subset of geographic data"
@@ -253,7 +262,7 @@ msgstr "মাত্রা গ্রুপ"
 
 #: base/enumerations.py:46
 msgid "frequency of maintenance for the data is not known"
-msgstr "তথ্য জন্য রক্ষণাবেক্ষণ ফ্রিকোয়েন্সি পরিচিত না হয়"
+msgstr "তথ্য জন্য রক্ষণাবেক্ষণ ফ্রিকোয়েন্সি পরিচিত নয়"
 
 #: base/enumerations.py:47
 msgid "data is repeatedly and frequently updated"
@@ -261,11 +270,11 @@ msgstr "তথ্য বারবার এবং ঘন ঘন আপডেট 
 
 #: base/enumerations.py:48
 msgid "there are no plans to update the data"
-msgstr "তথ্য আপডেট করার কোন পরিকল্পনা আছে"
+msgstr "তথ্য আপডেট করার কোন পরিকল্পনা নাই "
 
 #: base/enumerations.py:49
 msgid "data is updated each day"
-msgstr "তথ্য প্রতিটি দিন আপডেট করা হয়"
+msgstr "তথ্য প্রতিদিন আপডেট করা হয়"
 
 #: base/enumerations.py:50
 msgid "data is updated every year"
@@ -297,11 +306,11 @@ msgstr "তথ্য প্রতি বছর দুবার আপডেট �
 
 #: base/enumerations.py:58
 msgid "data is updated every three months"
-msgstr "তথ্য প্রতি তিন মাস আপডেট হয়"
+msgstr "তথ্য প্রতি তিন মাস পরপর আপডেট হয়"
 
 #: base/enumerations.py:77
 msgid "No information provided"
-msgstr "প্রদত্ত কোন তথ্য"
+msgstr "কোন তথ্য প্রদান করা হয়নি"
 
 #: base/forms.py:43 base/templates/base/resourcebase_info_panel.html:62
 #: documents/templates/documents/document_metadata.html:65
@@ -447,7 +456,7 @@ msgstr "সংস্করণ"
 
 #: base/models.py:247
 msgid "abstract"
-msgstr "বিমূর্ত"
+msgstr "সারাংশ"
 
 #: base/models.py:248
 msgid "purpose"
@@ -459,11 +468,11 @@ msgstr "রক্ষণাবেক্ষণ ফ্রিকোয়েন্�
 
 #: base/models.py:252 people/models.py:92
 msgid "keywords"
-msgstr "কীওয়ার্ড"
+msgstr "মূলশব্দ"
 
 #: base/models.py:253
 msgid "keywords region"
-msgstr "কীওয়ার্ড অঞ্চল"
+msgstr "মূলশব্দ অঞ্চল"
 
 #: base/models.py:256
 msgid "restrictions"
@@ -476,7 +485,7 @@ msgstr "অন্যান্য বিধিনিষেধ"
 #: base/models.py:264 base/templates/base/resourcebase_info_panel.html:16
 #: base/templates/base/resourcebase_info_panel.html:108
 msgid "License"
-msgstr "লাইসেন্স"
+msgstr "অনুমতিপত্র"
 
 #: base/models.py:266
 msgid "language"
@@ -504,11 +513,11 @@ msgstr "ডেটা সেটটি সম্পর্কে অন্য ক�
 
 #: base/models.py:287
 msgid "distribution URL"
-msgstr "বন্টন URL টি"
+msgstr "বিতরণ URL"
 
 #: base/models.py:289
 msgid "distribution description"
-msgstr "বন্টন বিবরণ"
+msgstr "বিতরণ বিবরণ"
 
 #: base/models.py:293
 msgid "data quality statement"
@@ -576,7 +585,7 @@ msgstr "রিসোর্স ডাউনলোড করার অনুরো
 
 #: base/management/__init__.py:15
 msgid "A request for downloading a resource was sent"
-msgstr "নকশা"
+msgstr "একটি রিসোর্স ডাউনলোড করার জন্য একটি অনুরোধ পাঠানো হয়েছে"
 
 #: base/templates/base/_resourcebase_contact_snippet.html:3
 #: templates/500.html:151 templates/base.html:144
@@ -615,7 +624,7 @@ msgstr ""
 
 #: base/templates/base/resourcebase_info_panel.html:29 services/forms.py:29
 msgid "Abstract"
-msgstr "বিমূর্ত"
+msgstr "সারাংশ"
 
 #: base/templates/base/resourcebase_info_panel.html:34
 #: contrib/exif/templates/exif/_exif_document_detail.html:13
@@ -1089,7 +1098,7 @@ msgstr "ডকুমেন্ট অনুমতি পরিবর্তন ক
 #: documents/templates/documents/document_metadata.html:16
 #: documents/templates/documents/document_upload_base.html:11
 msgid "Explore Documents"
-msgstr "ডকুমেন্টস এবং পুরুষ"
+msgstr "ডকুমেন্টস এক্সপ্লোর"
 
 #: documents/templates/documents/document_list.html:12
 #: documents/templates/documents/document_upload_base.html:12
@@ -1391,13 +1400,13 @@ msgstr "মন্তব্য"
 #: social/templates/social/activity_list.html:58
 #: templates/actstream/actor.html:28
 msgid "No actions yet"
-msgstr "এখনও কোন কর্ম"
+msgstr "এখনও কোন কর্ম নহে"
 
 #: groups/templates/groups/group_base.html:13
 #: groups/templates/groups/group_list.html:5
 #: groups/templates/groups/group_list.html:14
 msgid "Explore Groups"
-msgstr "গ্রুপ টেলিভিশন"
+msgstr "গোষ্ঠীসমূহ এক্সপ্লোর"
 
 #: groups/templates/groups/group_base.html:14
 #: groups/templates/groups/group_create.html:11
@@ -1585,7 +1594,7 @@ msgstr "shapefile / স্থানিক ডাটাবেসের মধ্�
 
 #: layers/models.py:304
 msgid "attribute description"
-msgstr "বিবরণ বৈশিষ্ট্যাবলী"
+msgstr "বৈশিষ্ট্যাবলী বিবরণ "
 
 #: layers/models.py:305
 msgid "description of attribute to be used in metadata"
@@ -1593,7 +1602,7 @@ msgstr "বৈশিষ্ট্য বর্ণনা মেটাডেটা 
 
 #: layers/models.py:310
 msgid "attribute label"
-msgstr "অ্যাট্রিবিউট ট্যাগ"
+msgstr "গুণ লেবেল"
 
 #: layers/models.py:311
 msgid "title of attribute as displayed in GeoNode"
@@ -1915,14 +1924,14 @@ msgstr "উত্স"
 #: layers/templates/upload/layer_upload.html:17
 #: layers/templates/upload/layer_upload_base.html:11
 msgid "Explore Layers"
-msgstr "স্তরসমূহ টেলিভিশন"
+msgstr "সস্তরসমূহ এক্সপ্লোর"
 
 #: layers/templates/layers/layer_list.html:12
 #: layers/templates/upload/layer_upload.html:18
 #: layers/templates/upload/layer_upload_base.html:12 templates/500.html:216
 #: templates/base.html:209
 msgid "Upload Layers"
-msgstr "আপলোড স্তরসমূহ"
+msgstr "সস্তরসমূহ আপলোড"
 
 #: layers/templates/layers/layer_metadata.html:17
 #, python-format
@@ -1946,11 +1955,11 @@ msgstr ""
 #: layers/templates/layers/layer_metadata.html:45
 #: layers/templates/layers/layer_metadata.html:85 templates/_actions.html:5
 msgid "Attributes"
-msgstr "আরোপ করা"
+msgstr "বৈশিষ্ট্যাবলী"
 
 #: layers/templates/layers/layer_metadata.html:89
 msgid "Attribute"
-msgstr "গুণ"
+msgstr "বৈশিষ্ট্য"
 
 #: layers/templates/layers/layer_metadata.html:92
 msgid "Display Order"
@@ -2216,12 +2225,12 @@ msgstr "এই তথ্য একটি সময় অ্যাট্রি�
 #: layers/templates/upload/layer_upload_time.html:30
 #: layers/templates/upload/layer_upload_time.html:57
 msgid "Existing Time Attribute"
-msgstr "বর্তমান টাইম গুন"
+msgstr "বর্তমান টাইম বৈশিষ্ট্যাবলী"
 
 #: layers/templates/upload/layer_upload_time.html:36
 #: layers/templates/upload/layer_upload_time.html:63
 msgid "Convert Text Attribute"
-msgstr "লেখা গুন রূপান্তর করুন"
+msgstr "লেখা বৈশিষ্ট্যাবলী রূপান্তর করুন"
 
 #: layers/templates/upload/layer_upload_time.html:38
 #: layers/templates/upload/layer_upload_time.html:65
@@ -2239,7 +2248,7 @@ msgstr "ঐচ্ছিক শেষ সময় অ্যাট্রিবি
 
 #: layers/templates/upload/layer_upload_time.html:81
 msgid "Present time attribute as"
-msgstr "হিসাবে বর্তমান সময় অ্যাট্রিবিউট"
+msgstr "হিসাবে বর্তমান সময় বৈশিষ্ট্যাবলী"
 
 #: layers/templates/upload/layer_upload_time.html:84
 msgid "List"
@@ -2402,11 +2411,11 @@ msgstr "কেন্দ্র Y"
 
 #: maps/models.py:77
 msgid "Site URL"
-msgstr "সাইট URL টি"
+msgstr "সাইট URL"
 
 #: maps/models.py:82
 msgid "Featured Map URL"
-msgstr "বৈশিষ্ট্যযুক্ত মানচিত্র URL টি"
+msgstr "বৈশিষ্ট্যযুক্ত মানচিত্র URL"
 
 #: maps/models.py:379
 msgid "stack order"
@@ -2532,7 +2541,7 @@ msgstr "একটি রেটিং একটি মানচিত্র দ�
 #: maps/templates/maps/map_list.html:11
 #: maps/templates/maps/map_metadata.html:11
 msgid "Explore Maps"
-msgstr "মানচিত্র টেলিভিশন"
+msgstr "মানচিত্র এক্সপ্লোর"
 
 #: maps/templates/maps/map_detail.html:50
 msgid "Rate this Map"
@@ -2945,7 +2954,7 @@ msgstr "সমস্ত বিষয়বস্তু"
 #: people/templates/people/_profile_filters.html:7 templates/500.html:61
 #: templates/base.html:62
 msgid "Documents"
-msgstr "কাগজপত্র"
+msgstr "ডকুমেন্টস"
 
 #: people/templates/people/forgot_username_form.html:6
 msgid "Forgot Username"
@@ -3087,7 +3096,7 @@ msgstr "আপডেট প্রফাইল"
 
 #: people/templates/people/profile_list.html:8
 msgid "Explore People"
-msgstr "মানুষ টেলিভিশন"
+msgstr "এক্সপ্লোর মানুষ"
 
 #: services/enumerations.py:24
 msgid "Auto-detect"
@@ -3992,7 +4001,7 @@ msgstr "[%(site_name)s] পাসওয়ার্ড রিসেট"
 
 #: templates/actstream/actor.html:7 templates/actstream/actor.html.py:8
 msgid "My Activity feed"
-msgstr "আমার চাঞ্চল্যপূর্ণ ফিড"
+msgstr "আমার কার্যকলাপ ফিড"
 
 #: templates/actstream/actor.html:7 templates/actstream/actor.html.py:8
 msgid "Activity Feed"
@@ -4351,7 +4360,7 @@ msgstr "কেউ এই ব্যবহারকারীর অনুসরণ
 
 #: templates/relationships/_manage_connections.html:4
 msgid "Manage Connections"
-msgstr "সংযোগ সেকেন্ড"
+msgstr "সংযোগ পরিচালনা করা"
 
 #: templates/relationships/_manage_connections.html:7
 msgid "Blocking"
@@ -4522,13 +4531,13 @@ msgstr "উত্তর পাঠান"
 #~ "    "
 
 #~ msgid "email"
-#~ msgstr "email"
+#~ msgstr "ই-মেইল"
 
 #~ msgid "KML"
 #~ msgstr "KML"
 
 #~ msgid "Tiles"
-#~ msgstr "Tiles"
+#~ msgstr "টাইল"
 
 #~ msgid ""
 #~ "\n"
@@ -4540,19 +4549,19 @@ msgstr "উত্তর পাঠান"
 #~ "      "
 
 #~ msgid "Replace this Document"
-#~ msgstr "Replace this Document"
+#~ msgstr "দলিল প্রতিস্থাপন করা"
 
 #~ msgid "Edit Styles"
-#~ msgstr "Edit Styles"
+#~ msgstr " শৈলী সম্পাদন করা "
 
 #~ msgid "Set Map Thumbnail"
 #~ msgstr "Set Map Thumbnail"
 
 #~ msgid "Replace this Layer"
-#~ msgstr "Replace this Layer"
+#~ msgstr "স্তর প্রতিস্থাপন করা"
 
 #~ msgid "Remove this Layer"
-#~ msgstr "Remove this Layer"
+#~ msgstr "স্তর অপসারণ"
 
 #~ msgid "Edit Map Metadata"
 #~ msgstr "Edit Map Metadata"
@@ -4573,10 +4582,10 @@ msgstr "উত্তর পাঠান"
 #~ msgstr "view"
 
 #~ msgid "Average rating"
-#~ msgstr "Average rating"
+#~ msgstr "গড় নির্ধারণ"
 
 #~ msgid "votes"
-#~ msgstr "votes"
+#~ msgstr "ভোট"
 
 #~ msgid "You do not have permission to view this document"
 #~ msgstr "You do not have permission to view this document"
@@ -4640,7 +4649,7 @@ msgstr "উত্তর পাঠান"
 #~ msgstr "No notices."
 
 #~ msgid "Notice"
-#~ msgstr "Notice"
+#~ msgstr "বিজ্ঞপ্তি"
 
 #~ msgid "you"
-#~ msgstr "you"
+#~ msgstr "আপনি"

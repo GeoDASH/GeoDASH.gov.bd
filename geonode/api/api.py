@@ -25,6 +25,7 @@ import sys
 import logging
 import traceback
 import shutil
+import datetime
 
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
@@ -35,6 +36,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.html import escape
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
@@ -48,6 +50,8 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from guardian.models import UserObjectPermission
+from notify.models import Notification
+from user_messages.models import Message
 
 from geonode.base.models import ResourceBase, FavoriteResource, DockedResource
 from geonode.base.models import TopicCategory
@@ -62,6 +66,7 @@ from geonode.layers.models import UploadSession
 from geonode.people.models import Profile
 from geonode.settings import MEDIA_ROOT
 from geonode.maps.models import WmsServer
+from geonode.security.views import _perms_info, _perms_info_json
 from .authorization import GeoNodeAuthorization
 
 
@@ -233,7 +238,8 @@ class GroupResource(ModelResource):
         filtering = {
             'name': ALL,
             'docked': ALL,
-            'favorite': ALL
+            'favorite': ALL,
+            'title': ALL
         }
         ordering = ['title', 'last_modified']
 
@@ -523,10 +529,22 @@ class MakeFeatured(TypeFilteredResource):
                     if layer.group in user.group_list_all():
                         resource.featured = status
                         if status == True:
+                            permissions = _perms_info_json(layer)
+                            perm_dict = json.loads(permissions)
                             try:
-                                UserObjectPermission.objects.get(object_pk=resource_id, permission=141, user=-1).delete()
-                            except UserObjectPermission.DoesNotExist:
+                                if 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                                    perm_dict['users']['AnonymousUser'].remove('download_resourcebase')
+                            except:
                                 pass
+
+                            try:
+                                if 'download_resourcebase' in perm_dict['groups']['anonymous']:
+                                    perm_dict['groups']['anonymous'].remove('download_resourcebase')
+                            except:
+                                pass
+
+                            layer.set_permissions(perm_dict)
+
 
                         resource.save()
                         out['success'] = 'True'
@@ -765,8 +783,11 @@ class MapsWithFavoriteAndDoocked(TypeFilteredResource):
         return super(MapsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
 
 
-
 class GroupsWithFavoriteAndDoocked(TypeFilteredResource):
+
+    detail_url = fields.CharField()
+    def dehydrate_detail_url(self, bundle):
+        return reverse('group_detail', args=[bundle.obj.slug])
     class Meta:
         queryset = GroupProfile.objects.filter(favoriteresource__active=True)
         if settings.RESOURCE_PUBLISHING:
@@ -790,3 +811,32 @@ class DocumentsWithFavoriteAndDoocked(TypeFilteredResource):
 
     def get_object_list(self, request):
         return super(DocumentsWithFavoriteAndDoocked, self).get_object_list(request).filter(favoriteresource__user=request.user, dockedresource__active=True).distinct()
+
+
+class UserNotifications(TypeFilteredResource):
+    class Meta:
+        queryset = Notification.objects.filter(read=False, deleted=False)
+        resource_name = 'admin_notifications'
+
+    def get_object_list(self, request):
+        timestamp = request.GET.get('timestamp')
+        if timestamp:
+            date = datetime.datetime.fromtimestamp(float(timestamp))
+            return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gt = date.date())
+        else:
+            return super(UserNotifications, self).get_object_list(request).filter(recipient=request.user, created__gte=datetime.datetime.now()-datetime.timedelta(days=7))
+
+
+class ViewNotificationTimeSaving(TypeFilteredResource):
+
+    class Meta:
+        queryset = Notification.objects.filter(read=False, deleted=False)
+        resource_name = 'view-notification'
+        allowed_methods = ['get']
+
+    def get_object_list(self, request):
+
+        user = request.user
+        user.last_notification_view = timezone.now()
+        user.save()
+        return super(ViewNotificationTimeSaving, self).get_object_list(request).filter(recipient=user, created__gt = user.last_notification_view)

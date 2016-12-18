@@ -28,7 +28,7 @@ from django.contrib import admin
 
 import geonode.proxy.urls
 from geonode.api.urls import api
-from geonode.views import IndexClass
+from geonode.cms.views import IndexClass
 
 import autocomplete_light
 
@@ -62,7 +62,8 @@ urlpatterns = patterns('',
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
                        url(r'^developer/$', TemplateView.as_view(template_name='developer.html'), name='developer'),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-
+                       # Overpass-turbo Files
+                       url(r'^overpass_turbo/$', TemplateView.as_view(template_name='overpass_turbo.html'), name='overpass_turbo'),
                        url(r'^formtest/$', TemplateView.as_view(template_name='formtest.html'), name='formtest'),
                        url(r'^add_news/$', TemplateView.as_view(template_name='news/add_news.html'), name='add_news'),
                        url(r'^notifications/$', TemplateView.as_view(template_name='notification/notifications_detail_page.html'), name='notifications_all'),
@@ -79,6 +80,9 @@ urlpatterns = patterns('',
                        # Map views
                        (r'^maps/', include('geonode.maps.urls')),
 
+                       # cms
+                       (r'^cms/', include('geonode.cms.urls')),
+
                        # Catalogue views
                        (r'^catalogue/', include('geonode.catalogue.urls')),
 
@@ -93,6 +97,8 @@ urlpatterns = patterns('',
 
                        # Search views
                        url(r'^search/$', TemplateView.as_view(template_name='search/search.html'), name='search'),
+                       url(r'^searchuser/$', TemplateView.as_view(template_name='search/searchuser.html'), name='searchuser'),
+                       url(r'^searchorg/$', TemplateView.as_view(template_name='search/searchorg.html'), name='searchorg'),
 
                        # user notification url
                        url(r'^notifications/', include('notify.urls', 'notifications')),
@@ -119,6 +125,11 @@ urlpatterns = patterns('',
                        url(r'^topiccategory/delete$', 'geonode.views.topiccategory_delete', name='topiccategory-delete'),
                        url(r'^lang\.js$', TemplateView.as_view(template_name='lang.js', content_type='text/javascript'),
                            name='lang'),
+
+                       #keywords
+                       url(r'^keyword/create$', 'geonode.views.keyword_create', name='keyword-create'),
+                       url(r'^keyword/list$', 'geonode.views.keyword_list', name='keyword-list'),
+                       url(r'^keyword/delete$', 'geonode.views.keyword_delete', name='keyword-delete'),
 
                        url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='jscat'),
                        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps},
@@ -169,3 +180,4 @@ urlpatterns += patterns('',
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/$', 'geonode.maps.views.featured_map'),
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/info$', 'geonode.maps.views.featured_map_info'),
                         )
+

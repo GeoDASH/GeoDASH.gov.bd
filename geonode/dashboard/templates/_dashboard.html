@@ -1,8 +1,9 @@
 {% extends "layers/layer_base.html" %}
 {% load bootstrap_tags %}
 {% load base_tags %}
-
 {% load i18n %}
+{% load i18n announcements_tags %}
+{% announcements as site_wide_announcements %}
 {% block title %} {% trans "Dashboard" %} - {{ block.super }} {% endblock %}
 {% block extra_head %}
 <link href="{{ STATIC_URL }}geonode/css/style-index.css?v={{ VERSION }}" rel="stylesheet" />
@@ -34,9 +35,25 @@
                           </div>
                       </div>
                       <div class="col-md-6">
-                          <div class="text-right" style="font-size:20px;">
-                              <span id="total_layers-fav"></span>
-                              {% trans "Docked" %}
+                          <div class="pull-right">
+                              <ul class="search-type">
+                                  <li>
+                                      <a href="{% url "_dashboard" %}" title="List View">
+                                          <i class="fa fa-bars fa-stack-1-5x"></i>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="{% url "_dashboard_grid" %}" title="Tab View">
+                                          <i class="fa fa-th-large fa-stack-1-5x"></i>
+                                      </a>
+                                  </li>
+                                  <li style="margin-top:-4px;">
+                                      <span style="font-size:20px;">{% trans "Docked" %}</span>
+                                  </li>
+                                  <li style="margin-top:-4px; padding-left:10px;">
+                                      <span style="font-size:20px;" id="total_layers-fav"></span>
+                                  </li>
+                              </ul>
                           </div>
                       </div>
                   </div>
@@ -398,6 +415,11 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
+
+        {% if site_wide_announcements %}
+            $("#GDAnnouncementsModel").modal('show');
+        {% endif %}
+
       var url = '{% url 'api_dispatch_list' api_name='api' resource_name='favoritelayers' %}';
       $.ajax({
         url: url,
@@ -414,12 +436,14 @@
             $("#total_layers-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
+                //alert(tot_count);
                 //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
@@ -427,13 +451,13 @@
                 output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                 output +='<div class="avater">';
                 output +='<div class="avater-img">';
-                output +='<a class="avater-img-mid" href="#" >';
+                output +='<div class="avater-img-mid" href="#" >';
                             if(item.thumbnail_url)
                 output +='<img src="'+ item.thumbnail_url +'" alt="'+ item.title +'" class="group-logo" />';
                             else{
                 output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="'+ item.title +'" class="group-logo" />';
                             }
-                output +='</a>';
+                output +='</div>';
                 output +='</div>';
                 output +='<div class="checkbox-overlay">';
                 output +='<div class="checkbox">';
@@ -448,7 +472,11 @@
                 output +='<div class="contents">';
                 output +='<div class="title">';
                 output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                output +=''+ item.title  +'';
+                if (item.title.length >= 25){
+                output +=''+item.title.slice(0,15)+'.....';
+                        }else{
+                output +=''+ item.title +'';
+                        }
                 output +='</a>';
                 output +='</div>';
                 output +='</div>';
@@ -484,12 +512,13 @@
             $("#total_maps-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
@@ -497,13 +526,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.thumbnail_url)
                     output +='<img src="'+ item.thumbnail_url +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -518,7 +547,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -549,12 +582,13 @@
             $("#total_documents_fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
@@ -562,13 +596,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.thumbnail_url)
                     output +='<img src="'+ item.thumbnail_url +'" alt="" class="group-logo" />';
                                 else{
                     output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -583,7 +617,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -614,12 +652,13 @@
             $("#total_org-fav").text(t_count);
             var output = '';
             $.each(data, function(i, item) {
+                var tot_count = i.length;
                     //console.log(i, (i%4));
                 if ( (i%4) == 0 && i == 0 ){
                     //console.log('active', i, (i%4));
                     output += '<div class="item active">';
                     output += '<article class="gd-featurd-maps-container-dash">';
-                } else if ( (i%4) == 0 && i != 0 && (i+1) != t_count ) {
+                } else if ( (i%4) == 0 && i != 0 && (i+1) != tot_count ) {
                     //console.log('inactive', i, (i%4), t_count);
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
@@ -627,13 +666,13 @@
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
-                    output +='<a class="avater-img-mid" href="#" >';
+                    output +='<div class="avater-img-mid" href="#" >';
                                 if(item.logo)
-                    output +='<img src="'+ item.logo +'" alt="" class="group-logo" />';
+                    output +='<img src="'+ item.logo +'" alt="" class="group-logo img-responsive" />';
                                 else{
-                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo" />';
+                    output +='<img src="\/static\/geonode\/img\/missing_thumb.png" alt="" class="group-logo img-responsive" />';
                                 }
-                    output +='</a>';
+                    output +='</div>';
                     output +='</div>';
                     output +='<div class="checkbox-overlay">';
                     output +='<div class="checkbox">';
@@ -648,7 +687,11 @@
                     output +='<div class="contents">';
                     output +='<div class="title">';
                     output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    output +=''+ item.title  +'';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
                     output +='</a>';
                     output +='</div>';
                     output +='</div>';
@@ -662,7 +705,7 @@
         }});
     });
   </script>
-  <script type="text/javascript" language="JavaScript">
+    <script type="text/javascript" language="JavaScript">
 
         function udock(undockID){
         //var make_favoriteStatus = undockStatus;

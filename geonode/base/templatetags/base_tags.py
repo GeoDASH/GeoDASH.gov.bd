@@ -116,6 +116,6 @@ def facets(context):
 
 
 @register.filter
-def replace_underscores(string):
-    string = string.replace('_', ' ')
+def replace_dashes(string):
+    string = string.replace('-', ' ')
     return string.upper()

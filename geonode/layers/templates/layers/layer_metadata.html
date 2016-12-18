@@ -29,6 +29,9 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="lead">
+                    <span style="color:red;"> * Marked fields are mandatory </span>
+                </div>
+                <div class="lead">
                     {% blocktrans with layer.typename as layer_title %}
                         Editing details for {{ layer_title }}
                     {% endblocktrans %}
@@ -94,7 +97,6 @@
                         </div>
                     {% endif %}
 
-
                     {% csrf_token %}
                     <div class="col-md-6 form-controls">
                         {{ layer_form|as_bootstrap }}
@@ -102,11 +104,11 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <label class="control-label required-field">{% trans "Category" %}</label>
+                            <label class="control-label required-field" ><span style="color:red;"> * </span>{% trans "Category" %}&nbsp;</label>
                             <fieldset id="category_form">
                                 {% autoescape off %}
                                     {% for choice in category_form.category_choice_field.field.choices %}
-                                        <div class="radio col-md-6">
+                                        <div class="radio col-md-6" >
                                             <input type="radio" name="category_choice_field" value="{{ choice.0 }}"
                                                     {% ifequal category_form.initial choice.0 %}
                                                    checked="checked" {% endifequal %}>

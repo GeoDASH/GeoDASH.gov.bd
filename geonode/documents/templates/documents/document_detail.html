@@ -96,7 +96,7 @@
                 <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button> <br>
                 {% include "document_templates/_deny_comments.html" %}
                 {% endif %}
-                <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_document">{% trans "Publish Document" %}</button> <br>
+                <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_document">{% trans "Push for Approval" %}</button> <br>
                 {% include "document_templates/_publish_document.html" %}
             {% endif %}
             {% if user_role == "manager" and status == 'PENDING' %}
@@ -104,7 +104,7 @@
                 {% include "document_templates/_deny_comments.html" %}
                 <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_document">{% trans "Approve Document" %}</button> <br>
                 {% include "document_templates/_approve_document.html" %}
-                <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_document">{% trans "Deney Document" %}</button> <br>
+                <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_document">{% trans "Deny Document" %}</button> <br>
                 {% include "document_templates/_deny_document.html" %}
             {% endif %}
           {% if "download_resourcebase" in perms_list %}
@@ -221,6 +221,13 @@
 {% block extra_script %}
 {% if SOCIAL_BUTTONS %}
 <div id="fb-root"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        {% if status != 'ACTIVE' %}
+            anyonePermissionDisable();
+        {% endif %}
+    });
+</script>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}

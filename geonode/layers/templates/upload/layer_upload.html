@@ -111,26 +111,31 @@
                         <div id="upload-status"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Title" %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Title" %} </label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <input id="id-layer-upload-title" class="form-control" type="text" name="title"
-                                       maxlength="255">
+                                       maxlength="255" placeholder="Name of your data layer">
                             </div>
                         </div>
                         <div class="block-separator"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Select Organization " %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Select Organization " %} </label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <select id="id-select-organization" class="col-md-12">
+                                <select id="id-select-organization" class="col-md-12" >
+                                    <option value='' selected="selected">.......................</option>
                                     {% for organization in organizations %}
-                                        <option value={{ organization.id }}>{{ organization.title }}</option>
+                                    {% if request.user in organization.get_managers %}
+                                        <option value={{ organization.id }} data-isadmin="true">{{ organization.title }}</option>
+                                    {% else %}
+                                        <option value={{ organization.id }} data-isadmin="false">{{ organization.title }}</option>
+                                    {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -138,7 +143,7 @@
                         <div class="block-separator"></div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="control-label"> {% trans "Select Category " %} </label>
+                                <label class="control-label"><span style="color:red;"> * </span> {% trans "Select Category " %} </label>
                             </div>
                         </div>
                         <div class="row">
@@ -155,7 +160,7 @@
                         <section id="fileTypeSection">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select uploaded file type" %} </label>
+                                    <label class="control-label"><span style="color:red;"> * </span> {% trans "Select uploaded file type" %} </label>
                                 </div>
                             </div>
                             <div class="row">
@@ -164,7 +169,7 @@
                                         <option selected='selected' value="shp">.shp .shx .dbf .prj</option>
                                         <option value="osm">.osm</option>
                                         <option value="csv">.csv</option>
-                                        <option value="csv">.tif</option>
+                                        <option value="tif">.tif</option>
                                     </select>
                                 </div>
                             </div>
@@ -198,7 +203,7 @@
                             </div>
                         </section>
 
-                        <div>{% trans " or select them one by one:" %}</div>
+                        <div><span style="color:red;"> * </span> {% trans " or select them one by one:" %}</div>
 
                         <form id="file-uploader" method="post" enctype="multipart/form-data">
                             <input class="btn btn-gd" id="file-input" type="file" multiple>
@@ -226,9 +231,9 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <input checked="checked" type="radio" name="csvcategory" id="thegeo" class="thegeo" value="thegeo"/>
-                                        &nbsp;Well Known Text(WKT)
-                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/>Latitude
-                                        &nbsp;Point Coordinates
+                                        &nbsp;Well Known Text(WKT) <br>
+                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/> Latitude
+                                        Point Coordinates
                                 </div>
                             </div>
                             <!--<div class="block-separator"></div>-->
@@ -239,10 +244,10 @@
                             <div class="block-separator"></div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label class="control-label"> {% trans "Select X-field" %} </label>
+                                    <label class="control-label"> {% trans "Select X-field (select longitude field)" %} </label>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="control-label"> {% trans "Select Y-field" %} </label>
+                                    <label class="control-label"> {% trans "Select Y-field (select latitude field)" %} </label>
                                 </div>
                             </div>
                             <div class="row">
@@ -271,7 +276,7 @@
                             <div class="block-separator"></div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label"> {% trans "Select Coordinate" %} </label>
+                                    <label class="control-label"> {% trans "Select Coordinate (select geom field)" %} </label>
                                 </div>
                             </div>
                             <div class="row">
@@ -282,12 +287,6 @@
                             </div>
                             <div class="block-separator"></div>
                         </section>
-
-
-
-
-
-
                         <section class="charset">
                             <div class="row">
                                 <div class="col-md-12">
@@ -319,8 +318,14 @@
                         </div>
                     {% endif %}
                     <section class="gd-content-body full-pad-20px">
-                        <a href="#" id="clear-button" class="btn btn-gd-gray">{% trans "Clear" %}</a>
-                        <a href="#" id="upload-button" class="btn btn-danger btn-gd">{% trans "Upload files" %}</a>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" id="clear-button" class="btn btn-gd-gray">{% trans "Clear" %}</a>
+                                <a href="#" id="upload-button" class="btn btn-danger btn-gd">{% trans "Upload files" %}</a>
+                                <input type="hidden" name="upload-and-publish-trigger" id="upload-and-publish-trigger" value="false" />
+                                <a href="javascript:;" id="upload-button-publish" class="btn btn-danger btn-gd upload_publish" style="display:none;">{% trans "Upload & Publish" %}</a>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -352,7 +357,30 @@
 
     </script>
     <script type="text/javascript" language="JavaScript">
+
         $(document).ready(function () {
+            anyonePermissionDisable();
+            $("#upload-button-publish").click(function () {
+                $('#upload-and-publish-trigger').val('true');
+                $("#upload-button").trigger( "click" );
+                setTimeout(function(){
+                    $('#upload-and-publish-trigger').val('false');
+                }, 100);
+            });
+
+            $("#id-select-organization").change(function () {
+                var orgnization_select = $(this).val();
+                //var orgnization_select_data = orgnization_select.attr("data-is-admin");
+                var capacityValue = $('#id-select-organization').find(':selected').data('isadmin');
+                if(capacityValue == true || capacityValue == 'true'){
+                    $('#upload-button-publish').css('display','inline-block');
+                }
+                else{
+                    $('#upload-button-publish').css('display','none');
+                }
+                //alert(capacityValue);
+            });
+
             $("#fileType").change(function () {
                 var fileType = $(this).val();
                 //shp osm csv

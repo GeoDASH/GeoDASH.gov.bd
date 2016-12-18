@@ -28,6 +28,7 @@ from modeltranslation.admin import TranslationAdmin
 
 from geonode.base.models import (TopicCategory, SpatialRepresentationType, Region, RestrictionCodeType,
                                  ContactRole, Link, License)
+from models import KeywordIgnoreListModel
 
 
 class MediaTranslationAdmin(TranslationAdmin):
@@ -127,6 +128,7 @@ admin.site.register(RestrictionCodeType, RestrictionCodeTypeAdmin)
 admin.site.register(ContactRole, ContactRoleAdmin)
 admin.site.register(Link, LinkAdmin)
 admin.site.register(License, LicenseAdmin)
+admin.site.register(KeywordIgnoreListModel)
 
 
 class ResourceBaseAdminForm(autocomplete_light.ModelForm):

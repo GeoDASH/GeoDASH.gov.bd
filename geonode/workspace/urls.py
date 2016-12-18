@@ -23,19 +23,21 @@ from django.conf import settings
 from django.views.generic import TemplateView
 
 from geonode.workspace.views import MemberWorkspaceLayer, MemberWorkspaceDocument, MemberWorkspaceMap
-from geonode.workspace.views import AdminWorkspaceLayer, AdminWorkspaceDocument, AdminWorkspaceMap
+from geonode.workspace.views import AdminWorkspaceLayer, AdminWorkspaceDocument, AdminWorkspaceMap, AdminWorkspaceUserList
 
 js_info_dict = {
     'packages': ('geonode.layers',),
 }
 
 urlpatterns = patterns(
-    'geonode.layers.views',
+    'geonode.workspace.views',
     url(r'^member/layer$', MemberWorkspaceLayer.as_view(), name='member-workspace-layer'),
     url(r'^member/document$', MemberWorkspaceDocument.as_view(), name='member-workspace-document'),
     url(r'^member/map$', MemberWorkspaceMap.as_view(), name='member-workspace-map'),
     url(r'^manager/layer$',AdminWorkspaceLayer.as_view(), name='admin-workspace-layer'),
     url(r'^manager/document$', AdminWorkspaceDocument.as_view(), name='admin-workspace-document'),
     url(r'^manager/map$', AdminWorkspaceMap.as_view(), name='admin-workspace-map'),
+    url(r'^manager/userlist', AdminWorkspaceUserList.as_view(), name='admin-workspace-user-list'),
+    url(r'^manager/(?P<slug>[-\w]+)/member_remove/(?P<username>.+)$', 'remove_group_member', name='remove-group-member'),
 
 )
