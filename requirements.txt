@@ -1,5 +1,5 @@
-pillow>=3.1.1    # python-pillow
-lxml>=3.4.4    # python-lxml
+pillow==3.2.0    # python-pillow
+lxml==3.6.1    # python-lxml
 
 #  psycopg2==2.4.5    # python-psycopg2
 Django==1.8.7    # python-django
@@ -11,11 +11,11 @@ MultipartPostHandler==0.1.0    # python-multipartposthandler
 httplib2==0.9.2    # python-httplib2
 transifex-client==0.10    # transifex-client
 Paver==1.2.1    # python-paver
-nose>=1.3.1    # python-nose
-django-nose>=1.2    # python-django-nose
+nose==1.3.1    # python-nose
+django-nose==1.4.3   # python-django-nose
 awesome-slugify==1.6.2
-python-social-auth
-overpass
+python-social-auth==0.2.19
+overpass==0.4.0
 
 # Django Apps
 django-pagination==1.0.5   # python-django-pagination
@@ -40,10 +40,10 @@ django-autocomplete-light==2.3.3
 django-modeltranslation==0.11
 
 # django notification app
-django-notify-x
+django-notify-x==0.1.6
 
 # GeoNode org maintained apps.
-django-geoexplorer>=4.0.5  
+django-geoexplorer==4.0.5
 geonode-user-messages==0.1.2  
 geonode-avatar==2.1.4
 geonode-announcements==1.0.9
@@ -52,17 +52,17 @@ geonode-user-accounts==1.0.10
 geonode-arcrest==10.2  
 geonode-notification==1.1.1  
 #geonode-dialogos==0.4
-gsconfig>=1.0.3  
+gsconfig==1.0.3
 gsimporter==1.0.0  
-gisdata>=0.5.4
+gisdata==0.5.4
 pyshp==1.2.3
-plumbum
+plumbum==1.6.2
 
 # geopython dependencies
-OWSLib==0.11.0  
-pycsw>=1.10.3  
-pyproj>=1.9.3  
-Shapely==1.5.13  
+OWSLib==0.11.0
+pycsw==1.10.4
+pyproj==1.9.3
+Shapely==1.5.13
 
 # haystack/elasticsearch  uncomment to use
 django-haystack==2.1.0  
