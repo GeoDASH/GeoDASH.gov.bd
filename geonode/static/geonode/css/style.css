@@ -490,7 +490,7 @@ table.gd-list-table tr td .media-body {
     width:230px;
   }
   #search_input{
-    width:100px;
+    width:150px;
   }
   #search_input_user{
     width:100px;
@@ -3185,7 +3185,6 @@ ul.termsuseandcondition li {
 }
 
 .layerdetails_arro{
-    top: 94%;
     position:absolute;
     z-index:1;
     cursor:pointer;
@@ -3194,8 +3193,9 @@ ul.termsuseandcondition li {
     cursor: pointer;
     height: 48px;
     width: 23px;
-    background:gray;
+    background:#fff;
     color:#fff;
+    margin-top: -49px;
 }
 .logo-img path {
   fill: #fff;
@@ -3205,13 +3205,13 @@ ul.termsuseandcondition li {
     position: absolute;
     z-index: 119;
     cursor:pointer;
-    margin-top: -47px;
+    margin-top: -49px;
     border-left: 1px solid #d4d4d4;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     height: 48px;
     width: 23px;
-    background:gray;
+    background:#fff;
     left:18px;
     color:#fff;
 }
@@ -3224,8 +3224,9 @@ ul.termsuseandcondition li {
 .layerdetails_arro span img.open_carlet{
     color:red;
     transform: scaleX(-1);
-    margin-top: 15px;
+    margin-top: 19px;
     color:#ffffff;
+    width: 10px;
     /*width: 64px;
     margin-left:-16px;*/
 }
@@ -3244,8 +3245,9 @@ ul.termsuseandcondition li {
 .layer-mini-slider span img.close_carlet{
     /*width: 50px;*/
     position: absolute;
-    margin-top: 15px;
+    margin-top: 19px;
     color:#ffffff;
+    width: 10px;
 }
 .gd-content .gd-content-body .overlay_layerdetails {
     height: 100%;
@@ -3326,7 +3328,15 @@ ul.termsuseandcondition li {
     top: 0;
     z-index: 1;
 }
-
+.styled-dropdown-select-all{
+    color: #999;
+    content: "";
+    font-family: "LinkedIn-Glyphs-2.0.7","LinkedIn-Glyphs";
+    font-size: 17px;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com
 * Includes: core.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, draggable.css, resizable.css, progressbar.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css
