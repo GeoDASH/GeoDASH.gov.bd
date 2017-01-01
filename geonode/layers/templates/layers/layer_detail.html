@@ -607,19 +607,24 @@
 
           </div> <!-- col-md-4 -->
           <div class="col-md-12" id="myNav_map_left">
-              <div class="layerdetails_arro">
-                  <span id="layerdetails_show" >
-                      <img  src="{{ STATIC_URL }}geonode/images/caret-right.png" class="img-responsive expand_view open_carlet" title="Expand to view layer options" onclick="openNav()" alt="Mini-right">
-                      <!--<i class="fa fa-caret-right expand_view open_carlet" title="Expand to view layer options" onclick="openNav()" aria-hidden="true"></i>-->
-                  </span>
-                  <span id="layerdetails_hide"  style="display:none;">
-                      <img src="{{ STATIC_URL }}geonode/images/caret-left.png"  class="img-responsive close_carlet" onclick="closeNav()" alt="Mini-Left">
-                      <!--<i class="fa fa-caret-left close_carlet" onclick="closeNav()" aria-hidden="true"></i>-->
-                  </span>
-              </div>
             <div id="embedded_map" class="mrg-btm">
               <div id="preview_map"></div>
             </div>
+              <div class="layerdetails_arro" id="layerdetails_arro_addcls" onclick="openNav()">
+                  <span id="layerdetails_show">
+                      <img  src="{{ STATIC_URL }}geonode/images/layer_details_mini_icon.png" style="" class="img-responsive1 expand_view open_carlet" title="Expand to view layer options"  alt="Mini-right">
+                      <!--<i style="width:40px;height:20px;" class="fa fa-caret-right expand_view open_carlet" onclick="openNav()" aria-hidden="true"></i>-->
+                      <!--<i class="fa fa-caret-right expand_view open_carlet" title="Expand to view layer options" onclick="openNav()" aria-hidden="true"></i>-->
+                  </span>
+                  <!--<span id="layerdetails_hide" >-->
+                    <!--<img  src="{{ STATIC_URL }}geonode/images/caret-left.png" onclick="closeNav();" class="img-responsive expand_view close_carlet" title="Expand to view layer options" alt="Mini-left">-->
+                  <!--</span>-->
+              </div>
+              <div class="layer-mini-slider" id="mini-slider" onclick="closeNav();">
+                <span>
+                    <img src="{{ STATIC_URL }}geonode/images/layer_details_mini_icon.png" class="img-responsive1 expand_view close_carlet" title="Expand to view layer options" alt="Mini-left">
+                </span>
+              </div>
           </div>
         </div> <!-- row -->
       </div>
@@ -628,24 +633,28 @@
 
 {% block extra_script %}
     <script type="text/javascript">
-
+    setTimeout(openNav, 1000);
     $( ".expand_view" ).tooltip({ show: { effect: "blind", duration: 300 } });
 
     function openNav()
     {
         $('#myNav').css('width','28%');
+        $('#layerdetails_arro_addcls').removeClass('layerdetails_arro');
         $('#myNav_map_left').css('width','69%');
         $('#myNav_map_left').css('float','right');
         $('#myNav_map_left').css('left','0%');
         $('#layerdetails_show').css('display','none');
         $('#layerdetails_hide').css('display','block');
+        $('#mini-slider').css('display','block');
     }
     function closeNav()
     {
         $('#myNav').css('width','0%');
         $('#myNav_map_left').css('width','100%');
+        $('#layerdetails_arro_addcls').addClass('layerdetails_arro');
         $('#layerdetails_show').css('display','block');
         $('#layerdetails_hide').css('display','none');
+        $('#mini-slider').css('display','none');
     }
         //var legend_clolor_str = ' http://chart?chf=bg,s,FFFFFF00&cht=p&chd=t:${100* AREA / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01},${100 * Ucode_updt / UNIONCOD01}&label=AR|UcodeUpdt|UcodeUpt|Test&chco=3366CC,DC3912,FF9900,109618 ';
         var legend_clolor_str = '{{chart_link}}'; // chart_link

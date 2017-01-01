@@ -729,10 +729,12 @@ table.gd-list-table tr td .media-body {
     color: #9f9f9f;
 }
 #gd-header .navbar-default .navbar-nav.gd-menu > li > a{
-    height:40px;
+    /*height:40px;*/
+    height:48px;
 }
 #gd-header .navbar-default .navbar-nav.gd-menu > li > a:hover{
-    height:40px;
+    /*height:40px;*/
+    height:48px;
     color: #53a4e6;
     text-decoration: none;
     border-bottom: 2px solid #53a4e6;
@@ -3183,29 +3185,67 @@ ul.termsuseandcondition li {
 }
 
 .layerdetails_arro{
-    margin-top:300px;
+    top: 94%;
     position:absolute;
     z-index:1;
     cursor:pointer;
+    border-left: 1px solid #d4d4d4;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    height: 48px;
+    width: 23px;
+    background:gray;
+    color:#fff;
 }
 .logo-img path {
   fill: #fff;
 }
+.layer-mini-slider{
+    left: 0%;
+    position: absolute;
+    z-index: 119;
+    cursor:pointer;
+    margin-top: -47px;
+    border-left: 1px solid #d4d4d4;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    height: 48px;
+    width: 23px;
+    background:gray;
+    left:18px;
+    color:#fff;
+}
 .layerdetails_arro span img{
     cursor:pointer;
-     width: 64px;
+     /*width: 64px;*/
      color:#fff;
      /*margin-left:-16px;*/
 }
 .layerdetails_arro span img.open_carlet{
     color:red;
-    width: 64px;
-    margin-left:-16px;
+    transform: scaleX(-1);
+    margin-top: 15px;
+    color:#ffffff;
+    /*width: 64px;
+    margin-left:-16px;*/
+}
+.layerdetails_arro span i.open_carlet{
+    color:red;
+    /*width: 40px;
+    margin-left:-16px;*/
 }
 .layerdetails_arro span img.close_carlet{
     color:red;
-    width: 64px;
-    margin-left:-6px;
+    width: 50px;
+    position:relative;
+    margin-left:29%;
+    visibility:visible;
+}
+.layer-mini-slider span img.close_carlet{
+    /*width: 50px;*/
+    position: absolute;
+    margin-top: 15px;
+    color:#ffffff;
 }
 .gd-content .gd-content-body .overlay_layerdetails {
     height: 100%;
