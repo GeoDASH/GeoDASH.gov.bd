@@ -27,9 +27,10 @@ from geonode.news.models import News
 from geonode.layers.models import Layer
 from models import SectionManagementModel
 from forms import SliderSectionManagementForm, FeatureHighlightsSectionManagementForm, InterPortabilitySectionManagementForm, \
-    PrettyMapsSectionManagementForm, Maps3DSectionManagementForm, ShareMapSectionManagementForm, OurPartnersSectionManagementForm
+    PrettyMapsSectionManagementForm, Maps3DSectionManagementForm, ShareMapSectionManagementForm, OurPartnersSectionManagementForm, \
+    CounterSectionManagementForm, FooterSectionManagementForm, LatestNewsUpdateSectionManagementForm
 from models import IndexPageImagesModel
-from forms import IndexPageImageUploadForm, OurPartnersImagesUploadForm
+from forms import IndexPageImageUploadForm, OurPartnersImagesUploadForm, FooterImagesUploadForm
 from geonode.maps.models import Map
 from geonode.groups.models import GroupProfile
 
@@ -88,7 +89,11 @@ class IndexClass(ListView):
         for section in sections:
             if section.slug == 'slider-section':
                 context['is_slider'] = section.is_visible
+                context['slider_section'] = SectionManagementModel.objects.get(slug=section.slug)
                 context['sliders'] = SliderImages.objects.filter(is_active=True, section=section)
+            if section.slug == 'counter-section':
+                context['is_counter_section'] = section.is_visible
+                context['counter_section'] = SectionManagementModel.objects.get(slug=section.slug)
             if section.slug == 'featured-layers-section':
                 context['is_featured_layers'] = section.is_visible
                 context['featured_layers_section'] = SectionManagementModel.objects.get(slug=section.slug)
@@ -120,6 +125,10 @@ class IndexClass(ListView):
                 context['is_our_partners'] = section.is_visible
                 context['our_partners_section'] = SectionManagementModel.objects.get(slug=section.slug)
                 context['our_partners_section_images'] = SliderImages.objects.filter(is_active=True, section=section)
+            if section.slug == 'footer-section':
+                context['is_footer_section'] = section.is_visible
+                context['footer_section'] = SectionManagementModel.objects.get(slug=section.slug)
+                context['footer_section_images'] = SliderImages.objects.filter(is_active=True, section=section)
 
 
         return context
@@ -131,7 +140,7 @@ def section_list(request, template='section_table.html'):
     This view is for updating section sho/hide table from web. Only super admin can manage this table.
     """
     context_dict = {
-        "section_list": SectionManagementTable.objects.all(),
+        "section_list": SectionManagementTable.objects.all().order_by('date_created'),
     }
     return render_to_response(template, RequestContext(request, context_dict))
 
@@ -164,6 +173,7 @@ def section_update(request):
 def add_sections_to_index_page():
     list_of_sections = [
         'slider-section',
+        'counter-section',
         'how-it-works-section',
         'featured-layers-section',
         'latest-news-and-updates-section',
@@ -173,18 +183,21 @@ def add_sections_to_index_page():
         'view-your-maps-in-3d-section',
         'share-your-map-section',
         'what-geodash-offer-section',
-        'our-partners-section'
+        'our-partners-section',
+        'footer-section'
     ]
-    if len(list_of_sections) != len(SectionManagementTable.objects.all()):
-        SectionManagementTable.objects.all().delete()
-        SectionManagementModel.objects.all().delete()
-        for section in list_of_sections:
-            new_section = SectionManagementTable(slug=section, title=section)
+    # if len(list_of_sections) != SectionManagementTable.objects.all().count():
+        # SectionManagementTable.objects.all().delete()
+        # SectionManagementModel.objects.all().delete()
+    created_sections = [section.slug for section in SectionManagementTable.objects.all()]
+    for section in list_of_sections:
+        if section not in created_sections:
+            new_section_table = SectionManagementTable(slug=section, title=section)
             if section in ['slider-section', 'feature-highlights-of-geodash-section', 'interportability-section',
-                           'make-pretty-maps-with-geodash-section', 'view-your-maps-in-3d-section',
-                           'share-your-map-section', 'our-partners-section']:
-                new_section.should_update = True
-            new_section.save()
+                           'make-pretty-maps-with-geodash-section', 'view-your-maps-in-3d-section', 'latest-news-and-updates-section',
+                           'share-your-map-section', 'our-partners-section', 'counter-section', 'footer-section']:
+                new_section_table.should_update = True
+            new_section_table.save()
             new_section = SectionManagementModel(slug=section, title=section)
             new_section.save()
 
@@ -223,6 +236,8 @@ class SliderImageCreate(CreateView):
             return SliderImageUpdateForm
         elif slug == 'our-partners-section':
             return OurPartnersImagesUploadForm
+        elif slug == 'footer-section':
+            return FooterImagesUploadForm
 
 
 class SliderImageUpdate(UpdateView):
@@ -244,6 +259,8 @@ class SliderImageUpdate(UpdateView):
             return SliderImageUpdateForm
         elif slug == 'our-partners-section':
             return OurPartnersImagesUploadForm
+        elif slug == 'footer-section':
+            return FooterImagesUploadForm
 
 
 
@@ -282,6 +299,7 @@ class SectionUpdate(UpdateView):
     """
     template_name = 'section_update.html'
     model = SectionManagementModel
+    # import pdb; pdb.set_trace()
 
     def get_form_class(self):
         slug = SectionManagementTable.objects.get(pk=self.kwargs['section_pk']).slug
@@ -299,6 +317,12 @@ class SectionUpdate(UpdateView):
             return ShareMapSectionManagementForm
         elif slug == 'our-partners-section':
             return OurPartnersSectionManagementForm
+        elif slug == 'counter-section':
+            return CounterSectionManagementForm
+        elif slug == 'footer-section':
+            return FooterSectionManagementForm
+        elif slug == 'latest-news-and-updates-section':
+            return LatestNewsUpdateSectionManagementForm
 
 
     def get_object(self):

@@ -12,7 +12,7 @@ class SliderImageUpdateForm(forms.ModelForm):
 
     class Meta:
         model = SliderImages
-        fields = ['title', 'descripton', 'image', 'is_active', 'connect_section']
+        fields = ['title', 'descripton', 'image', 'is_active']
 
     def clean_image(self):
          image = self.cleaned_data.get('image',False)
@@ -38,13 +38,13 @@ class SliderSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['title']
-    #     widgets = {
-    #         'background_color': HTML5Input(input_type='color'),
-    #     }
-    # def __init__(self, *args, **kwargs):
-    #     super(SliderSectionManagementForm, self).__init__(*args, **kwargs)
-    #     self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+        fields = ['title', 'background_color', 'image1']
+        widgets = {
+            'background_color': HTML5Input(input_type='color'),
+        }
+    def __init__(self, *args, **kwargs):
+        super(SliderSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
 
 
 
@@ -208,3 +208,47 @@ class OurPartnersImagesUploadForm(forms.ModelForm):
         model = SliderImages
         fields = ['image', 'is_active', 'logo_url']
 
+
+class CounterSectionManagementForm(forms.ModelForm):
+
+    class Meta:
+        model = SectionManagementModel
+        fields = ['title', 'background_color']
+        widgets = {
+            'background_color': HTML5Input(input_type='color'),
+        }
+    def __init__(self, *args, **kwargs):
+        super(CounterSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
+
+class FooterSectionManagementForm(forms.ModelForm):
+
+    class Meta:
+        model = SectionManagementModel
+        fields = ['title', 'background_color']
+        widgets = {
+            'background_color': HTML5Input(input_type='color'),
+        }
+    def __init__(self, *args, **kwargs):
+        super(FooterSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
+
+class FooterImagesUploadForm(forms.ModelForm):
+    class Meta:
+        model = SliderImages
+        fields = ['image', 'is_active', 'logo_url']
+
+
+class LatestNewsUpdateSectionManagementForm(forms.ModelForm):
+
+    class Meta:
+        model = SectionManagementModel
+        fields = ['background_color']
+        widgets = {
+            'background_color': HTML5Input(input_type='color'),
+        }
+    def __init__(self, *args, **kwargs):
+        super(LatestNewsUpdateSectionManagementForm, self).__init__(*args, **kwargs)
+        self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
