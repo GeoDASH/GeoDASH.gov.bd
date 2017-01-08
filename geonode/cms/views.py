@@ -456,6 +456,7 @@ class TermsAndConditionUpdateView(UpdateView):
     """
     This view is for update sections in footer section
     """
+    template_name = 'termsandcondition_update.html'
     model = FooterSectionDescriptions
 
     def get_success_url(self):

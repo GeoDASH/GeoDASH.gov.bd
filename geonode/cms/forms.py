@@ -259,4 +259,4 @@ class FooterSubSectionsUpdateForm(forms.ModelForm):
 
     class Meta:
         model = FooterSectionDescriptions
-        fields = ['title', 'descripton', 'image']
+        fields = ['title', 'description']
