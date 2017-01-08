@@ -6,6 +6,7 @@ from suit.widgets import HTML5Input
 
 
 from models import SliderImages, SectionManagementModel, IndexPageImagesModel
+from geonode.cms.models import FooterSectionDescriptions
 
 
 class SliderImageUpdateForm(forms.ModelForm):
@@ -252,3 +253,10 @@ class LatestNewsUpdateSectionManagementForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LatestNewsUpdateSectionManagementForm, self).__init__(*args, **kwargs)
         self.fields['background_color'].widget.attrs['style'] = 'width:70px; height:40px;'
+
+
+class FooterSubSectionsUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = FooterSectionDescriptions
+        fields = ['title', 'descripton', 'image']

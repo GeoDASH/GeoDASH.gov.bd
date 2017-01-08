@@ -450,6 +450,8 @@ class TermsAndConditionView(ListView):
         return FooterSectionDescriptions.objects.get(slug=self.kwargs['slug'])
 
 
+
+from geonode.cms.forms import FooterSubSectionsUpdateForm
 class TermsAndConditionUpdateView(UpdateView):
     """
     This view is for update sections in footer section
@@ -461,3 +463,6 @@ class TermsAndConditionUpdateView(UpdateView):
 
     def get_object(self):
         return FooterSectionDescriptions.objects.get(slug=self.kwargs['slug'])
+
+    def get_form_class(self):
+        return FooterSubSectionsUpdateForm
