@@ -54,9 +54,6 @@ urlpatterns = patterns('',
 
                        # Static pages
                        url(r'^categories_key_words/?$', TemplateView.as_view(template_name='categories_key_words.html'),name='categories_key_words'),
-                       url(r'^termsandcondition/?$', TemplateView.as_view(template_name='termsandcondition.html'),name='termsandcondition'),
-                       url(r'^policy/?$', TemplateView.as_view(template_name='policy.html'), name='policy'),
-                       url(r'^termsofuse/?$', TemplateView.as_view(template_name='termsofuse.html'), name='termsofuse'),
                        # url(r'^/?$', TemplateView.as_view(template_name='index.html'), name='home'),
                        url(r'^/?$', IndexClass.as_view(), name='home'),
                        url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),

@@ -67,3 +67,14 @@ class SectionManagementModel(models.Model):
     background_color = models.CharField(max_length=20, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+
+class FooterSectionDescriptions(models.Model):
+    """
+    This model keeps descriptons for every options in footer section
+    """
+    title = models.CharField(max_length=1000)
+    slug = models.SlugField(max_length=100, null=True, blank=True)
+    description = models.TextField(default='this is good', blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)

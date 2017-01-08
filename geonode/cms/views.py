@@ -33,6 +33,12 @@ from models import IndexPageImagesModel
 from forms import IndexPageImageUploadForm, OurPartnersImagesUploadForm, FooterImagesUploadForm
 from geonode.maps.models import Map
 from geonode.groups.models import GroupProfile
+from geonode.cms.models import FooterSectionDescriptions
+
+
+terms_and_condition_description = "Add terms and conditions here"
+privacy_policy_description = "privacy policy"
+terms_of_use_description = "terms of use"
 
 
 
@@ -420,3 +426,38 @@ def activateimage(request, image_pk, section_pk):
             image.save()
 
         return HttpResponseRedirect(reverse('section-update-view', args=(section_pk,)))
+
+
+class TermsAndConditionView(ListView):
+    """
+    This view returns terms and conditions for geodash.
+    """
+    template_name = 'termsandcondition.html'
+    model = FooterSectionDescriptions
+
+    def get_queryset(self):
+        if FooterSectionDescriptions.objects.all().count() == 0:
+            terms_and_condition = FooterSectionDescriptions(title='TERMS AND CONDITIONS', slug='terms-and-condition',
+                                                           description=terms_and_condition_description)
+            privacy_policy = FooterSectionDescriptions(title='PRIVACY POLICY', slug='privacy-policy',
+                                                           description=privacy_policy_description)
+            terms_of_use = FooterSectionDescriptions(title='TERMS OF USE', slug='terms-of-use',
+                                                           description=terms_of_use_description)
+            terms_and_condition.save()
+            privacy_policy.save()
+            terms_of_use.save()
+
+        return FooterSectionDescriptions.objects.get(slug=self.kwargs['slug'])
+
+
+class TermsAndConditionUpdateView(UpdateView):
+    """
+    This view is for update sections in footer section
+    """
+    model = FooterSectionDescriptions
+
+    def get_success_url(self):
+        return reverse('footer-section-view', kwargs={'slug': self.kwargs['slug']})
+
+    def get_object(self):
+        return FooterSectionDescriptions.objects.get(slug=self.kwargs['slug'])

@@ -51,11 +51,11 @@ class NewsList(ListView):
     model = News
 
     def get_queryset(self):
-        return News.objects.all().order_by('-date_created')[:15]
+        return News.objects.all().order_by('-publish_date')[:15]
 
     def get_context_data(self, *args, **kwargs):
         context = super(ListView, self).get_context_data(*args, **kwargs)
-        context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        context['latest_news_list'] = News.objects.all().order_by('-publish_date')[:5]
         return context
 
 
