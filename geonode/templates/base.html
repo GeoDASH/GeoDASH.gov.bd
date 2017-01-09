@@ -379,12 +379,12 @@
                     </button> -->
                     <!--<div class="collapse navbar-collapse" id="gd-footer-navbar-collapse">-->
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url "termsandcondition" %}">{% trans "Terms and Condition" %}</a></li>
-                        <li><a href="{% url "policy" %}">{% trans "Privacy Policy" %}</a></li>
-                        <li><a href="{% url "termsofuse" %}">{% trans "Terms of use" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
                         <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
                         <li>
-                            <div class="tooltip_use">Useful Resource
+                            <div class="tooltip_use" style="cursor:pointer;">Useful Resource
                               <span class="tooltiptext_use">
                                   <ul>
                                       <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
