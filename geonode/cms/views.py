@@ -34,6 +34,8 @@ from forms import IndexPageImageUploadForm, OurPartnersImagesUploadForm, FooterI
 from geonode.maps.models import Map
 from geonode.groups.models import GroupProfile
 from geonode.cms.models import FooterSectionDescriptions
+from geonode.cms.forms import FooterSubSectionsUpdateForm
+
 
 
 terms_and_condition_description = "Add terms and conditions here"
@@ -451,13 +453,19 @@ class TermsAndConditionView(ListView):
 
 
 
-from geonode.cms.forms import FooterSubSectionsUpdateForm
 class TermsAndConditionUpdateView(UpdateView):
     """
     This view is for update sections in footer section
     """
     template_name = 'termsandcondition_update.html'
     model = FooterSectionDescriptions
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(TermsAndConditionUpdateView, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(reverse('footer-section-view', kwargs={'slug': self.kwargs['slug']} ))
+        else:
+            return response
 
     def get_success_url(self):
         return reverse('footer-section-view', kwargs={'slug': self.kwargs['slug']})

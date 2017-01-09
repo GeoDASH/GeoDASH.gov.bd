@@ -320,13 +320,14 @@ class GroupActivityView(ListView):
 
     template_name = 'groups/activity.html'
     group = None
+    paginate_by = 50
 
     def get_queryset(self):
         if not self.group:
             return None
         else:
             members = ([(member.user.id) for member in self.group.member_queryset()])
-            return Action.objects.filter(public=True, actor_object_id__in=members, )[:15]
+            return Action.objects.filter(public=True, actor_object_id__in=members, )
 
     def get(self, request, *args, **kwargs):
         self.group = None
@@ -497,12 +498,12 @@ class UserInvitationListView(ListView):
         group = get_object_or_404(GroupProfile, slug=slug)
         pending_invitations = UserInvitationModel.objects.filter(group=group, state='pending').order_by('date_updated')
         slug = slug
-        if request.user not in group.get_managers():
+        if request.user not in group.get_managers() and not request.user.is_superuser:
             return HttpResponse(
                     loader.render_to_string(
                         '401.html', RequestContext(
                         request, {
-                        'error_message': _("you are not allowed to publish this document.")})), status=403)
+                        'error_message': _("You are not allowed to perform this job.")})), status=403)
         else:
             # return HttpResponse(self.get_context_data())
             return render(request, self.template_name, {'pending_invitations': pending_invitations, 'slug':slug})
