@@ -21,9 +21,18 @@
                             <div class="block-separator"></div>
                                 <button type="submit" id="" class="btn btn-gd-primary">Update</button>
                         </form>
+                        <!--<textarea name="area2" style="width: 100%;">-->
+	<!--Some Initial Content was in this textarea-->
+<!--</textarea>-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+{% block extra_script %}
+    <script src="{{ STATIC_URL }}geonode/js/geo-dash/nicEdit.js"></script>
+    <script type="text/javascript">
+        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+    </script>
+{% endblock extra_script %}

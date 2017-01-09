@@ -116,7 +116,7 @@
                                                         <div class="col-md-6">
                                                             <a href="javascript:;">
                                                                 <!--Aug. 20, 2016, 3:36 a.m.-->
-                                                                {{ news.date_created }}
+                                                                {{ news.publish_date }}
                                                             </a>
                                                         </div>
                                                         <div class="col-md-6 gd-txt-right">
@@ -164,7 +164,7 @@
                                                     <div class="accordion-section">
                                                         <div class="accordion-section-heading" role="tab" id="headingOne">
                                                                 <div class="title">{{ news.title }}</div>
-                                                                <div class="sub-title">{{ news.date_created }}</div>
+                                                                <div class="sub-title">{{ news.publish_date }}</div>
                                                         </div>
                                                         <div id="collapseOne"  class="accordion-section-description collapse in">
                                                             {% if news.description|length >= 100 %}
