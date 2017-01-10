@@ -320,7 +320,7 @@ class GroupActivityView(ListView):
 
     template_name = 'groups/activity.html'
     group = None
-    paginate_by = 50
+    paginate_by = 15
 
     def get_queryset(self):
         if not self.group:
