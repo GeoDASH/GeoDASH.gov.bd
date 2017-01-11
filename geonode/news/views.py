@@ -67,6 +67,13 @@ class NewsCreate(CreateView):
     model = News
     form_class = NewsUpdateForm
 
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsCreate, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(reverse('news-list'))
+        else:
+            return response
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.publish_date = form.data['publish_date']
@@ -86,6 +93,13 @@ class NewsUpdate(UpdateView):
     model = News
     form_class = NewsUpdateForm
 
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsUpdate, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return response
+
     def get_object(self):
         return News.objects.get(pk=self.kwargs['news_pk'])
 
@@ -99,6 +113,13 @@ class NewsDelete(DeleteView):
     """
     template_name = 'news_delete.html'
     model = News
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsDelete, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return response
 
     def get_success_url(self):
         return reverse('news-list')
