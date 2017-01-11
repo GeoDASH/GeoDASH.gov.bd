@@ -67,6 +67,13 @@ class NewsCreate(CreateView):
     model = News
     form_class = NewsUpdateForm
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.publish_date = form.data['publish_date']
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
     def get_success_url(self):
         return reverse('news-details', kwargs={'news_pk': self.object.id})
 

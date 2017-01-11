@@ -55,7 +55,7 @@
                 {{ field.label_tag }}
                     <div class="block-separator"></div>
                 {% if field.html_name == 'publish_date' %}
-                    <input data-date-format="YYYY-MM-DD HH:MM:SS" type="text"
+                    <input data-date-format="YYYY-MM-DD HH:MM:SS" type="text" name="publish_date"
                        class="datepicker form-control" style="width:170px;" placeholder="{% trans 'yyyy-mm-dd' %}"
                        />
                 {% else %}
