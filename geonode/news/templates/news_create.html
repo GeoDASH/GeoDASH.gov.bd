@@ -47,7 +47,9 @@
                         <!--<button type="submit" id="" class="btn btn-gd-primary">Add News</button>-->
                       <!--{% endif %}-->
                   <!--</form>-->
-                    {% for field in form %}
+                <form id=""  method="post" enctype="multipart/form-data" action="">
+                    {% csrf_token %}
+                {% for field in form %}
                 <div class="fieldWrapper">
                 {{ field.errors }}
                 {{ field.label_tag }}
@@ -69,6 +71,7 @@
                         <button type="submit" id="" class="btn btn-gd-primary">Add News</button>
                     {% endif %}
                 </div>
+                </form>
             </div>
         </div>
     </div>
