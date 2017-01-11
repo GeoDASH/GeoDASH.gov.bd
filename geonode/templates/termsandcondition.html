@@ -16,7 +16,7 @@
                     <div class="title small-content text-right">
                         {% if user.is_superuser %}
                             <span style="padding-left:15px;">
-                                <a href="{% url "footer-section-update" object_list.slug %}" title="Edit News"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="{% url "footer-section-update" object_list.slug %}" title="{{object_list.slug}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </span>
                         {% endif %}
                     </div>
