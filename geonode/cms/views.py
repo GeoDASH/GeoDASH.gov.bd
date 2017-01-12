@@ -133,13 +133,9 @@ class IndexClass(ListView):
                 context['is_our_partners'] = section.is_visible
                 context['our_partners_section'] = SectionManagementModel.objects.get(slug=section.slug)
                 context['our_partners_section_images'] = SliderImages.objects.filter(is_active=True, section=section)
-            if section.slug == 'footer-section':
-                context['is_footer_section'] = section.is_visible
-                context['footer_section'] = SectionManagementModel.objects.get(slug=section.slug)
-                context['footer_section_images'] = SliderImages.objects.filter(is_active=True, section=section)
-
 
         return context
+
 
 @login_required
 @user_passes_test(superuser_check)
@@ -192,7 +188,6 @@ def add_sections_to_index_page():
         'share-your-map-section',
         'what-geodash-offer-section',
         'our-partners-section',
-        'footer-section'
     ]
     # if len(list_of_sections) != SectionManagementTable.objects.all().count():
         # SectionManagementTable.objects.all().delete()
@@ -203,7 +198,7 @@ def add_sections_to_index_page():
             new_section_table = SectionManagementTable(slug=section, title=section)
             if section in ['slider-section', 'feature-highlights-of-geodash-section', 'interportability-section',
                            'make-pretty-maps-with-geodash-section', 'view-your-maps-in-3d-section', 'latest-news-and-updates-section',
-                           'share-your-map-section', 'our-partners-section', 'counter-section', 'footer-section']:
+                           'share-your-map-section', 'our-partners-section', 'counter-section']:
                 new_section_table.should_update = True
             new_section_table.save()
             new_section = SectionManagementModel(slug=section, title=section)
@@ -244,8 +239,6 @@ class SliderImageCreate(CreateView):
             return SliderImageUpdateForm
         elif slug == 'our-partners-section':
             return OurPartnersImagesUploadForm
-        elif slug == 'footer-section':
-            return FooterImagesUploadForm
 
 
 class SliderImageUpdate(UpdateView):
@@ -267,8 +260,6 @@ class SliderImageUpdate(UpdateView):
             return SliderImageUpdateForm
         elif slug == 'our-partners-section':
             return OurPartnersImagesUploadForm
-        elif slug == 'footer-section':
-            return FooterImagesUploadForm
 
 
 
@@ -327,8 +318,6 @@ class SectionUpdate(UpdateView):
             return OurPartnersSectionManagementForm
         elif slug == 'counter-section':
             return CounterSectionManagementForm
-        elif slug == 'footer-section':
-            return FooterSectionManagementForm
         elif slug == 'latest-news-and-updates-section':
             return LatestNewsUpdateSectionManagementForm
 
