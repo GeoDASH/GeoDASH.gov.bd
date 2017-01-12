@@ -444,7 +444,7 @@
 /*--- Geo dash Feature Highlight start --*/
 
 #gd-featurehighlight{
-    /*background:#f7f7f7;*/
+    background:#f7f7f7;
     padding-bottom:0px;
     min-height:450px;
 }
@@ -498,7 +498,7 @@
 /*--- Geo dash Interoperabity start --*/
 
 #gd-interprobability{
-    /*background:#21d0e8;*/  /*2c3e50*/
+    background:#21d0e8;  /*2c3e50*/
     padding-top:20px;
     /*padding-bottom:50px;*/
     min-height:450px;
@@ -561,7 +561,7 @@
 /*--- Geo dash makepretty start --*/
 
 #gd-makepretty{
-    /*background:#f7f7f7;*/
+    background:#f7f7f7;
     padding-top:30px;
     min-height:450px;
 }
@@ -683,6 +683,7 @@
     padding-top:30px;
     min-height:500px;
     margin:0 auto;
+    background:#21d0e8;
 }
 #gd-sharemap .gd-sharemap-main{
     margin-left: 100px;
@@ -716,7 +717,7 @@
     font-family:Titillium Web;
 }
 #gd-partners{
-    /*background:#D8D8D8;*/
+    background:#D8D8D8;
     padding-top:20px;
     padding-bottom:30px;
     margin:0 auto;
@@ -1067,7 +1068,7 @@
 /*--- Geo dash 3d section --*/
 
 #gd-3dsection{
-    /*background:#21d0e8;*/
+    background:#21d0e8;
     padding-top:30px;
     min-height:450px;
 }
