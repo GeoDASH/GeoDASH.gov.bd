@@ -39,7 +39,7 @@ class SliderSectionManagementForm(forms.ModelForm):
 
     class Meta:
         model = SectionManagementModel
-        fields = ['background_color', 'image1']
+        fields = ['background_color']
         widgets = {
             'background_color': HTML5Input(input_type='color'),
         }
