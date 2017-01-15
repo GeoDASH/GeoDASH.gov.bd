@@ -19,23 +19,23 @@
 #########################################################################
 
 import re
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.conf.urls import url
+from django.core.paginator import Paginator, InvalidPage
+from django.http import Http404
+from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.models import ContentType
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.utils import trailing_slash
-
+from actstream.models import Action
 from guardian.shortcuts import get_objects_for_user
-
-from django.conf.urls import url
-from django.core.paginator import Paginator, InvalidPage
-from django.http import Http404
-from django.core.urlresolvers import reverse
-
 from tastypie.utils.mime import build_content_type
 
 from geonode.layers.models import Layer
@@ -666,3 +666,51 @@ class GroupsResourceWithFavorite(ModelResource):
             except FavoriteResource.DoesNotExist:
                 bundle.data['favorite'] = False
         return bundle
+
+
+class GroupActivity(ModelResource):
+    """
+    This API return Activities for a specific group.
+    it takes three parameters.
+    limit = limit of queryset. used for pagination.
+    group = slug for a specific group and the api will return
+        activities for that group.
+    option = layers, maps, comments. the option for activity.
+        if layers is given then it will return layer activity
+        if maps is given thenn it will return maps activity
+        if comments is given it will return comments activity
+        if no options is given then it will return all the activity of that group
+    if no group slug is given then the API will return empty queryset
+    if the requested user is not authenticated, it will return empty queryset.
+    """
+    class Meta:
+        queryset = Action.objects.filter(public=True)
+        resource_name = 'group_activity'
+
+    def get_object_list(self, request):
+        if request.user.is_authenticated():
+            contenttypes = ContentType.objects.all()
+            for ct in contenttypes:
+                if ct.name == 'layer':
+                    ct_layer_id = ct.id
+                if ct.name == 'map':
+                    ct_map_id = ct.id
+                if ct.name == 'comment':
+                    ct_comment_id = ct.id
+            group_slug = request.GET.get('group')
+            option = request.GET.get('option')
+            if group_slug:
+                group = get_object_or_404(GroupProfile, slug=group_slug)
+                members = ([(member.user.id) for member in group.member_queryset()])
+                if option == 'comments':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_comment_id)
+                elif option == 'maps':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_map_id)
+                elif option == 'layers':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_layer_id)
+                else:
+                    return Action.objects.filter(public=True, actor_object_id__in=members)
+            else:
+                return Action.objects.filter(public=True)[:0]
+        else:
+            return Action.objects.filter(public=True)[:0]
