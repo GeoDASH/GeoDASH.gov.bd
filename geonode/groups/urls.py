@@ -21,7 +21,8 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-from .views import GroupDetailView, GroupActivityView, AnswerUpdate, UserInvitationListView, UserInvitationDeleteView
+from .views import GroupDetailView, GroupActivityView, AnswerUpdate, UserInvitationListView, UserInvitationDeleteView, \
+    GroupLayerActivityView
 
 urlpatterns = patterns('geonode.groups.views',
                        url(r'^$', TemplateView.as_view(template_name='groups/group_list.html'), name="group_list"),
@@ -53,6 +54,8 @@ urlpatterns = patterns('geonode.groups.views',
                        url(r'^group/(?P<slug>[-\w]+)/user-invitations/(?P<user_pk>[0-9]+)/accept$', 'accept_user_invitation', name='user-invitation-accept'),
 
 
+                       #group layer activity
+                       url(r'^group/(?P<slug>[-\w]+)/layer/activity/$', GroupLayerActivityView.as_view(), name='group_layer_activity'),
 
 
 
