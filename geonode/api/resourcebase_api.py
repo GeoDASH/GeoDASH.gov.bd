@@ -741,6 +741,7 @@ class GroupActivity(ModelResource):
         bundle.data['preposition'] = preposition
         bundle.data['fragment = None'] = fragment
         bundle.data['timesince'] = timesince(bundle.obj.timestamp)
+        bundle.data['user_url'] = bundle.obj.actor.get_absolute_url()
         return bundle
 
 
