@@ -30,6 +30,7 @@ from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.utils.timesince import timesince
+from django.utils.translation import ugettext as _
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
@@ -722,42 +723,63 @@ class GroupActivity(ModelResource):
             return Action.objects.filter(public=True)[:0]
 
     def dehydrate(self, bundle):
-        preposition = 'to'
+        actor = bundle.obj.actor
+        activity_class = 'activity'
+        verb = bundle.obj.verb
+        username = bundle.obj.actor.username
+        target = bundle.obj.target
+        object_type = None
+        object = bundle.obj.action_object
+        raw_action = get_data(bundle.obj, 'raw_action')
+        object_name = get_data(bundle.obj, 'object_name')
+        preposition = _("to")
         fragment = None
-        bundle.data['user'] = bundle.obj.actor.username
-        bundle.data['object'] = bundle.obj.action_object
-        bundle.data['target'] = bundle.obj.target
-        if bundle.obj.action_object:
-            object_type = bundle.obj.action_object.__class__._meta.object_name.lower()
-            bundle.data['activity_class'] = activity_class(object_type)
-            preposition = get_preposition(object_type)
+        thumbnail_url = None
+        object_url = None
+
+        if object:
+            object_type = object.__class__._meta.object_name.lower()
+
+        if target:
+            target_type = target.__class__._meta.object_name.lower()  # noqa
+
+        if actor is None:
+            return str()
+
+    # Set the item's class based on the object.
+        if object:
             if object_type == 'comment':
-                fragment = 'comments'
-            if object_type != 'comment':
-                bundle.data['object_thumbnail'] = bundle.obj.action_object.thumbnail_url
-        else:
-            bundle.data['activity_class'] = ''
-        bundle.data['object_name'] = get_data(bundle.data, 'object_name')
-        bundle.data['preposition'] = preposition
-        bundle.data['fragment = None'] = fragment
-        bundle.data['timesince'] = timesince(bundle.obj.timestamp)
-        bundle.data['user_url'] = bundle.obj.actor.get_absolute_url()
+                activity_class = 'comment'
+                preposition = _("on")
+                object = None
+                fragment = "comments"
+
+            if object_type == 'map':
+                activity_class = 'map'
+
+            if object_type == 'layer':
+                activity_class = 'layer'
+
+        if raw_action == 'deleted':
+            activity_class = 'delete'
+
+        if raw_action == 'created' and object_type == 'layer':
+            activity_class = 'upload'
+
+        bundle.data['activity_class'] = activity_class,
+        bundle.data['action'] = bundle.obj,
+        bundle.data['actor'] = actor,
+        bundle.data['object'] = object,
+        bundle.data['object_name'] = object_name,
+        bundle.data['preposition'] = preposition,
+        bundle.data['target'] = target,
+        bundle.data['timestamp'] = bundle.obj.timestamp,
+        bundle.data['username'] = username,
+        bundle.data['verb'] = verb,
+        bundle.data['fragment'] = fragment
+        # bundle.data['user_url'] = bundle.obj.actor.get_absolute_url()
+        # bundle.data['timesince'] = timesince(bundle.obj.timestamp)
+        # bundle.data['object_thumbnail'] = bundle.obj.target.thumbnail_url
+        # bundle.data['object_url'] = bundle.obj.target.get_absolute_url()
+
         return bundle
-
-
-def activity_class(object_type):
-    a_class = 'activity'
-    if object_type == 'comment':
-        a_class = 'comment'
-    if object_type == 'map':
-        a_class = 'map'
-    if object_type == 'layer':
-        a_class = 'layer'
-    return a_class
-
-
-def get_preposition(object_type):
-    if object_type == 'comment':
-        return 'on'
-    else:
-        return 'to'
