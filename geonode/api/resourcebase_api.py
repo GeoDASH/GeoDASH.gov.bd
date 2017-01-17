@@ -731,6 +731,8 @@ class GroupActivity(ModelResource):
             preposition = get_preposition(object_type)
             if object_type == 'comment':
                 fragment = 'comments'
+            if object_type != 'comment':
+                bundle.data['object_thumbnail'] = bundle.obj.action_object.thumbnail_url
         else:
             bundle.data['activity_class'] = ''
         from geonode.social.templatetags.social_tags import get_data
