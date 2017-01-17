@@ -95,7 +95,7 @@ def geoserverDataFolderBackup(request):
             if form.is_valid():
                 tempdir = tempfile.mkdtemp()
                 host_user = form.cleaned_data['user']
-                host = urlparse(settings.OGC_SERVER['LOCATION']).hostname
+                host = urlparse(settings.OGC_SERVER['default']['LOCATION']).hostname
                 password = form.cleaned_data['password']
                 form = DataFolderBackupForm()
                 # sshpass -p "Geodash@bcc@world@123" scp -r  root@103.48.16.34:/home/geodash/geodash_200/geodash/geonode/maps /home/jaha/Music

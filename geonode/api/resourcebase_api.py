@@ -686,6 +686,10 @@ class GroupActivity(ModelResource):
     class Meta:
         queryset = Action.objects.filter(public=True)
         resource_name = 'group_activity'
+        # fields =  [
+        #     '',
+        #
+        # ]
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
@@ -714,3 +718,41 @@ class GroupActivity(ModelResource):
                 return Action.objects.filter(public=True)[:0]
         else:
             return Action.objects.filter(public=True)[:0]
+
+    def dehydrate(self, bundle):
+        preposition = 'to'
+        fragment = None
+        bundle.data['user'] = bundle.obj.actor.username
+        bundle.data['object'] = bundle.obj.action_object
+        bundle.data['target'] = bundle.obj.target
+        if bundle.obj.action_object:
+            object_type = bundle.obj.action_object.__class__._meta.object_name.lower()
+            bundle.data['activity_class'] = activity_class(object_type)
+            preposition = get_preposition(object_type)
+            if object_type == 'comment':
+                fragment = 'comments'
+        else:
+            bundle.data['activity_class'] = ''
+        from geonode.social.templatetags.social_tags import get_data
+        bundle.data['object_name'] = get_data(bundle.data, 'object_name')
+        bundle.data['preposition'] = preposition
+        bundle.data['fragment = None'] = fragment
+        return bundle
+
+
+def activity_class(object_type):
+    a_class = 'activity'
+    if object_type == 'comment':
+        a_class = 'comment'
+    if object_type == 'map':
+        a_class = 'map'
+    if object_type == 'layer':
+        a_class = 'layer'
+    return a_class
+
+
+def get_preposition(object_type):
+    if object_type == 'comment':
+        return 'on'
+    else:
+        return 'to'

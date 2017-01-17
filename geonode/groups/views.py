@@ -328,34 +328,8 @@ class GroupActivityView(ListView):
         if not self.group:
             return None
         else:
-            contenttypes = ContentType.objects.all()
-            for ct in contenttypes:
-                if ct.name == 'layer':
-                    ct_layer_id = ct.id
-                if ct.name == 'map':
-                    ct_map_id = ct.id
-                if ct.name == 'comment':
-                    ct_comment_id = ct.id
-
             members = ([(member.user.id) for member in self.group.member_queryset()])
-            type = self.request.GET.get('type')
-            if type == 'layers':
-                return Action.objects.filter(
-                public=True,
-                actor_object_id__in=members,
-                action_object_content_type__id=ct_layer_id)
-            elif type == 'maps':
-                return Action.objects.filter(
-                public=True,
-                actor_object_id__in=members,
-                action_object_content_type__id=ct_map_id)[:15]
-            elif type == 'comments':
-                return Action.objects.filter(
-                public=True,
-                actor_object_id__in=members,
-                action_object_content_type__id=ct_comment_id)[:15]
-            else:
-                return Action.objects.filter(public=True, actor_object_id__in=members, )
+            return Action.objects.filter(public=True, actor_object_id__in=members, )
 
     def get(self, request, *args, **kwargs):
         self.group = None
@@ -370,8 +344,31 @@ class GroupActivityView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(GroupActivityView, self).get_context_data(**kwargs)
-        
+        # for filtering contenttype as ContentType model in 1.8.7 does not contain name field
+        from django.contrib.contenttypes.models import ContentType
+        contenttypes = ContentType.objects.all()
+        for ct in contenttypes:
+            if ct.name == 'layer':
+                ct_layer_id = ct.id
+            if ct.name == 'map':
+                ct_map_id = ct.id
+            if ct.name == 'comment':
+                ct_comment_id = ct.id
         context['group'] = self.group
+        # Additional Filtered Lists Below
+        members = ([(member.user.id) for member in self.group.member_queryset()])
+        context['action_list_layers'] = Action.objects.filter(
+            public=True,
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_layer_id)[:15]
+        context['action_list_maps'] = Action.objects.filter(
+            public=True,
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_map_id)[:15]
+        context['action_list_comments'] = Action.objects.filter(
+            public=True,
+            actor_object_id__in=members,
+            action_object_content_type__id=ct_comment_id)[:15]
         return context
 
 
