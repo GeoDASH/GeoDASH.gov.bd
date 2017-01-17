@@ -29,6 +29,7 @@ from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
+from django.utils.timesince import timesince
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
@@ -45,6 +46,7 @@ from geonode.base.models import ResourceBase
 from geonode.api.api import MetaFavorite
 from geonode.base.models import FavoriteResource
 from geonode.groups.models import GroupProfile
+from geonode.social.templatetags.social_tags import get_data
 
 from .authorization import GeoNodeAuthorization
 
@@ -735,10 +737,10 @@ class GroupActivity(ModelResource):
                 bundle.data['object_thumbnail'] = bundle.obj.action_object.thumbnail_url
         else:
             bundle.data['activity_class'] = ''
-        from geonode.social.templatetags.social_tags import get_data
         bundle.data['object_name'] = get_data(bundle.data, 'object_name')
         bundle.data['preposition'] = preposition
         bundle.data['fragment = None'] = fragment
+        bundle.data['timesince'] = timesince(bundle.obj.timestamp)
         return bundle
 
 
