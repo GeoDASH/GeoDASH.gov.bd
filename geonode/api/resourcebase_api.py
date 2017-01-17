@@ -689,10 +689,6 @@ class GroupActivity(ModelResource):
     class Meta:
         queryset = Action.objects.filter(public=True)
         resource_name = 'group_activity'
-        # fields =  [
-        #     '',
-        #
-        # ]
 
     def get_object_list(self, request):
         if request.user.is_authenticated():
@@ -777,9 +773,13 @@ class GroupActivity(ModelResource):
         bundle.data['username'] = username,
         bundle.data['verb'] = verb,
         bundle.data['fragment'] = fragment
-        # bundle.data['user_url'] = bundle.obj.actor.get_absolute_url()
-        # bundle.data['timesince'] = timesince(bundle.obj.timestamp)
-        # bundle.data['object_thumbnail'] = bundle.obj.target.thumbnail_url
-        # bundle.data['object_url'] = bundle.obj.target.get_absolute_url()
+        if object:
+            bundle.data['object_thumbnail_url'] = object.thumbnail_url
+            bundle.data['object_absolute_url'] = object.get_absolute_url()
+        bundle.data['actor_absolute_url'] = bundle.obj.actor.get_absolute_url()
+        bundle.data['object_name'] = object_name
+        if fragment:
+            bundle.data['target_absolute_url'] = target.get_absolute_url()
+        bundle.data['timesince'] = timesince(bundle.obj.timestamp)
 
         return bundle
