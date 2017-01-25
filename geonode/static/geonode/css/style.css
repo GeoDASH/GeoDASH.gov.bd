@@ -3338,4 +3338,9 @@ ul.termsuseandcondition li {
     text-decoration: inherit;
 }
 
-
+.home-back-act{
+    display:none;
+    }
+.shownextdata{
+    display:none;
+}

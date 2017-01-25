@@ -202,13 +202,82 @@
                           </div>
                         </div>
                     </article>
-                    <article id="acitivity" class="tab-pane">
-                        <div class="no-style-list" id="show_qroupactivity">
-                            <div class="text-center">
-                                <button class="btn button-loading btn-large btn-link btn-lg">
-                                    Loading...
-                                    <i class="fa fa-spinner fa-spin fa-large"></i>
-                                </button>
+                    <article id="acitivity" class="tab-pane ">
+                        <div class="gd-content">
+                            <div class="gd-content-heading">
+                                <div class="title small-content">
+                                    {%  trans "Activity Feed for"  %}
+                                        <a href="{% url "group_detail" object.slug %}">
+                                            {{ object.title }}
+                                        </a>
+                                </div>
+                                <div class="hr"></div>
+                            </div>
+                            <div class="gd-content-body gd-history transparent top-bottom-margin-20px">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="nav navbar-nav nav-pills">
+                                            <li class="active">
+                                                <a href="#all" data-toggle="tab">
+                                                    <i class=""></i>
+                                                    {% trans "All" %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#layers" id="layersdata" data-toggle="tab">
+                                                    <i class="fa fa-square-o rotate-45"></i>
+                                                    {% trans "Layers" %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#maps" id="mapsdata" data-toggle="tab">
+                                                    <i class="fa fa-map-marker"></i>
+                                                    {% trans "Maps" %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#comments" id="commentsdata" data-toggle="tab">
+                                                    <i class="fa fa-comment-o"></i>
+                                                    {% trans "Comments" %}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="tab-content activity-style-list">
+                                            <article id="all" class="tab-pane active">
+                                                <div class="no-style-list">
+                                                    <div id="showallactivite">
+
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            <article id="layers" class="tab-pane">
+                                                <div class="no-style-list">
+                                                    <div id="showallactivitelayers">
+
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            <article id="maps" class="tab-pane">
+                                                <div class="no-style-list">
+                                                    <div id="showallactivitemaps">
+
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            <article id="comments" class="tab-pane">
+                                                <div class="no-style-list" id="pagi_test">
+                                                    <div id="showallactivitecomments" class="list">
+
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </article>
@@ -421,6 +490,7 @@
                         console.log("error");
                     }
                  });
+                 $("#layers_list").unbind('click');
              });
         });
 
@@ -518,26 +588,567 @@
         });
     </script>
     <script type="text/javascript" language="JavaScript">
+        function showLimitData(targeturl){
+            var limit = 25;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ limit +"&group={{ object.slug }}";
+            }
+            else{
+                var url = targeturl;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                  $.each(data, function(i, item) {
+                    //alert(item.activity_class);
+                    output+='<div class="row" id="shownextact">';
+                    output+='<div class="col-md-1" style="padding:0px;">';
+                    output+='<div class="history-lines">';
+                    output+='<div class="history-lines-icon">';
+                                   if(item.activity_class == 'map'){
+                    output+='<i class="fa fa-map-marker"></i>';}
+                                   else if(item.activity_class == 'upload'){
+                    output+='<span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;margin-top: 0;">';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>';
+                    output+='</span>';}
+                                   else{
+                    output+='<i class="fa fa-comment-o" style="font-size: 20px;"></i>';
+                                   }
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='<div class="col-md-11" style="padding:0px;margin-top: 10px;">';
+                    output+='<div class="gd-history-content" >';
+                    output+='<div class="'+ item.activity_class +'">';
+
+                    if(item.object_thumbnail_url){
+                        output+='<img src="'+ item.object_thumbnail_url +'" />';
+                                   }
+                    output+='</div>';
+
+                    output+='<div class="details">';
+                    output+='<div class="usr-info">';
+
+                    output+='<a href="'+ item.actor_absolute_url +'" target="_self">'+ item.username +' </a>';
+
+                    output+=''+ item.verb +' ';
+
+
+                    if(item.object){
+                        if (item.object_absolute_url){
+                            output+='<a href=" '+ item.object_absolute_url +' " target="_self">'+ item.object +' </a>';
+                        }
+                        else{
+                            output+=''+ item.object_name +' ';
+                        }
+                     }
+
+                    else if(item.object_name){
+                        output+=''+ item.object_name + '';
+                        }
+
+
+                    if (item.target){
+                        output+=''+ item.preposition +' ';
+
+                        if (item.fragment){
+                            output+='<a href=" '+ item.target_absolute_url +' #'+ item.fragment+'" target="_self">'+  item.target +' </a>';
+                        }
+                        else {
+                            output+='<a href=" '+ item.target_absolute_url +' " target="_self">'+ item.target +' </a>';
+                        }
+                    }
+
+                    output+='</div>';
+                    output+='<div class="time-info">';
+                    output+='<span>'+ item.timesince +' {% trans "ago" %}</span>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                  });
+                  output+='<nav>';
+                  output+='<ul class="pagination pull-left">';
+
+                  var nexturl = meta.next;
+                  var previousurl = meta.previous;
+
+                  if(previousurl){
+                  output+='<li><a href="javascript:;" id="previousData"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  output+='<li><a href="javascript:;" id="nextData"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                  }
+                  output+='</ul>';
+                  output+='</nav>';
+                   $("#showallactivite").html(output);
+                   $("#nextData").click(function(){
+                        showLimitData(nexturl)
+                   });
+                   $("#previousData").click(function(){
+                        showLimitData(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
+
         $(document).ready(function(){
-            $("#qroup_activity").click(function(){
-                var url = "{% url "group_activity" object.slug %}";
+            showLimitData();
+        });
+ </script>
+    <script type="text/javascript" language="JavaScript">
+
+        function showLimitDatalayers(targeturl){
+            var limit = 25;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ limit +"&group={{ object.slug }}&option=layers";
+            }
+            else{
+                var url = targeturl;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                  $.each(data, function(i, item) {
+                    //alert(item.activity_class);
+                    output+='<div class="row" id="shownextact">';
+                    output+='<div class="col-md-1" style="padding:0px;">';
+                    output+='<div class="history-lines">';
+                    output+='<div class="history-lines-icon">';
+                                   if(item.activity_class == 'map'){
+                    output+='<i class="fa fa-map-marker"></i>';}
+                                   else if(item.activity_class == 'upload'){
+                    output+='<span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;margin-top: 0;">';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>';
+                    output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>';
+                    output+='</span>';}
+                                   else{
+                    output+='<i class="fa fa-comment-o" style="font-size: 20px;"></i>';
+                                   }
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='<div class="col-md-11" style="padding:0px;margin-top: 10px;">';
+                    output+='<div class="gd-history-content" >';
+                    output+='<div class="'+ item.activity_class +'">';
+
+                    if(item.object_thumbnail_url){
+                        output+='<img src="'+ item.object_thumbnail_url +'" />';
+                                   }
+                    output+='</div>';
+
+                    output+='<div class="details">';
+                    output+='<div class="usr-info">';
+
+                    output+='<a href="'+ item.actor_absolute_url +'" target="_self">'+ item.username +' </a>';
+
+                    output+=''+ item.verb +' ';
+
+
+                    if(item.object){
+                        if (item.object_absolute_url){
+                            output+='<a href=" '+ item.object_absolute_url +' " target="_self">'+ item.object +' </a>';
+                        }
+                        else{
+                            output+=''+ item.object_name +' ';
+                        }
+                     }
+
+                    else if(item.object_name){
+                        output+=''+ item.object_name + '';
+                        }
+
+
+                    if (item.target){
+                        output+=''+ item.preposition +' ';
+
+                        if (item.fragment){
+                            output+='<a href=" '+ item.target_absolute_url +' #'+ item.fragment+'" target="_self">'+  item.target +' </a>';
+                        }
+                        else {
+                            output+='<a href=" '+ item.target_absolute_url +' " target="_self">'+ item.target +' </a>';
+                        }
+                    }
+
+                    output+='</div>';
+                    output+='<div class="time-info">';
+                    output+='<span>'+ item.timesince +' {% trans "ago" %}</span>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                    output+='</div>';
+                  });
+                  output+='<nav>';
+                  output+='<ul class="pagination pull-left">';
+
+                  var nexturl = meta.next;
+                  var previousurl = meta.previous;
+
+                  if(previousurl){
+                  output+='<li><a href="javascript:;" id="previousDatalayers"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  output+='<li><a href="javascript:;" id="nextDatalayers"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                  }
+                  output+='</ul>';
+                  output+='</nav>';
+                   $("#showallactivitelayers").html(output);
+                   $("#nextDatalayers").click(function(){
+                        showLimitDatalayers(nexturl)
+                   });
+                   $("#previousDatalayers").click(function(){
+                        showLimitDatalayers(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
+
+        $(document).ready(function(){
+            $("#layersdata").click(function(){
+                showLimitDatalayers();
+                });
+             });
+ </script>
+    <script type="text/javascript" language="JavaScript">
+
+        function showLimitDatamaps(targeturl){
+                    var limit = 25;
+                    if(targeturl== undefined){
+                        var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ limit +"&group={{ object.slug }}&option=maps";
+                    }
+                    else{
+                        var url = targeturl;
+                    }
+                    //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                        $.ajax({
+                            cache: true,
+                            type: 'GET',
+                            url: url,
+                            data: {},
+                            dataType: "json",
+                            success: function(jsondata) {
+                                console.log("success");
+                                //console.log(JSON.stringify(jsondata));
+                            var data = eval(jsondata.objects);
+                            var meta = eval(jsondata.meta);
+                            var t_count = meta.total_count;
+                            var t_limit = meta.limit;
+                            var t_offset = meta.offset;
+                            var t_next = meta.next;
+                            var t_previous = meta.previous;
+                                //alert(t_offset);
+                            var output='';
+                          $.each(data, function(i, item) {
+                            //alert(item.activity_class);
+                            output+='<div class="row" id="shownextact">';
+                            output+='<div class="col-md-1" style="padding:0px;">';
+                            output+='<div class="history-lines">';
+                            output+='<div class="history-lines-icon">';
+                                           if(item.activity_class == 'map'){
+                            output+='<i class="fa fa-map-marker"></i>';}
+                                           else if(item.activity_class == 'upload'){
+                            output+='<span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;margin-top: 0;">';
+                            output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>';
+                            output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>';
+                            output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>';
+                            output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>';
+                            output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>';
+                            output+='</span>';}
+                                           else{
+                            output+='<i class="fa fa-comment-o" style="font-size: 20px;"></i>';
+                                           }
+                            output+='</div>';
+                            output+='</div>';
+                            output+='</div>';
+                            output+='<div class="col-md-11" style="padding:0px;margin-top: 10px;">';
+                            output+='<div class="gd-history-content" >';
+                            output+='<div class="'+ item.activity_class +'">';
+
+                            if(item.object_thumbnail_url){
+                                output+='<img src="'+ item.object_thumbnail_url +'" />';
+                                           }
+                            output+='</div>';
+
+                            output+='<div class="details">';
+                            output+='<div class="usr-info">';
+
+                            output+='<a href="'+ item.actor_absolute_url +'" target="_self">'+ item.username +' </a>';
+
+                            output+=''+ item.verb +' ';
+
+
+                            if(item.object){
+                                if (item.object_absolute_url){
+                                    output+='<a href=" '+ item.object_absolute_url +' " target="_self">'+ item.object +' </a>';
+                                }
+                                else{
+                                    output+=''+ item.object_name +' ';
+                                }
+                             }
+
+                            else if(item.object_name){
+                                output+=''+ item.object_name + '';
+                                }
+
+
+                            if (item.target){
+                                output+=''+ item.preposition +' ';
+
+                                if (item.fragment){
+                                    output+='<a href=" '+ item.target_absolute_url +' #'+ item.fragment+'" target="_self">'+  item.target +' </a>';
+                                }
+                                else {
+                                    output+='<a href=" '+ item.target_absolute_url +' " target="_self">'+ item.target +' </a>';
+                                }
+                            }
+
+                            output+='</div>';
+                            output+='<div class="time-info">';
+                            output+='<span>'+ item.timesince +' {% trans "ago" %}</span>';
+                            output+='</div>';
+                            output+='</div>';
+                            output+='</div>';
+                            output+='</div>';
+                            output+='</div>';
+                          });
+                          output+='<nav>';
+                          output+='<ul class="pagination pull-left">';
+
+                          var nexturl = meta.next;
+                          var previousurl = meta.previous;
+
+                          if(previousurl){
+                          output+='<li><a href="javascript:;" id="previousDatamaps"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                          }
+                          if(nexturl){
+                          output+='<li><a href="javascript:;" id="nextDatamaps"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                          }
+                          output+='</ul>';
+                          output+='</nav>';
+                           $("#showallactivitemaps").html(output);
+                           $("#nextDatamaps").click(function(){
+                                showLimitDatamaps(nexturl)
+                           });
+                           $("#previousDatamaps").click(function(){
+                                showLimitDatamaps(previousurl)
+                           });
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                console.log("error");
+                            }
+                        });
+                }
+
+    $(document).ready(function(){
+        $("#mapsdata").click(function(){
+               showLimitDatamaps();
+            });
+         });
+ </script>
+
+    <script type="text/javascript" language="JavaScript">
+
+        function showLimitDatacomments(targeturl){
+                var limit = 25;
+                if(targeturl== undefined){
+                    var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ limit +"&group={{ object.slug }}&option=comments";
+                }
+                else{
+                    var url = targeturl;
+                }
+                //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
                     $.ajax({
                         cache: true,
                         type: 'GET',
                         url: url,
                         data: {},
-                        dataType: "html",
+                        dataType: "json",
                         success: function(jsondata) {
                             console.log("success");
-                            $('#acitivity').html(jsondata);
+                            //console.log(JSON.stringify(jsondata));
+                        var data = eval(jsondata.objects);
+                        var meta = eval(jsondata.meta);
+                        var t_count = meta.total_count;
+                        var t_limit = meta.limit;
+                        var t_offset = meta.offset;
+                        var t_next = meta.next;
+                        var t_previous = meta.previous;
+                            //alert(t_offset);
+                        var output='';
+                      $.each(data, function(i, item) {
+                        //alert(item.activity_class);
+                        output+='<div class="row" id="shownextact">';
+                        output+='<div class="col-md-1" style="padding:0px;">';
+                        output+='<div class="history-lines">';
+                        output+='<div class="history-lines-icon">';
+                                       if(item.activity_class == 'map'){
+                        output+='<i class="fa fa-map-marker"></i>';}
+                                       else if(item.activity_class == 'upload'){
+                        output+='<span class="fa-layers-group fa-stack fa-rotate-90" style="font-size:12px;margin-top: 0;">';
+                        output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: 0;"></i>';
+                        output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.15em;color:#fff;"></i>';
+                        output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.3em;"></i>';
+                        output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.45em;color:#fff;"></i>';
+                        output+='<i class="fa fa-stop fa-layers fa-stack-1x" style="left: -.6em;"></i>';
+                        output+='</span>';}
+                                       else{
+                        output+='<i class="fa fa-comment-o" style="font-size: 20px;"></i>';
+                                       }
+                        output+='</div>';
+                        output+='</div>';
+                        output+='</div>';
+                        output+='<div class="col-md-11" style="padding:0px;margin-top: 10px;">';
+                        output+='<div class="gd-history-content" >';
+                        output+='<div class="'+ item.activity_class +'">';
+
+                        if(item.object_thumbnail_url){
+                            output+='<img src="'+ item.object_thumbnail_url +'" />';
+                                       }
+                        output+='</div>';
+
+                        output+='<div class="details">';
+                        output+='<div class="usr-info">';
+
+                        output+='<a href="'+ item.actor_absolute_url +'" target="_self">'+ item.username +' </a>';
+
+                        output+=''+ item.verb +' ';
+
+
+                        if(item.object){
+                            if (item.object_absolute_url){
+                                output+='<a href=" '+ item.object_absolute_url +' " target="_self">'+ item.object +' </a>';
+                            }
+                            else{
+                                output+=''+ item.object_name +' ';
+                            }
+                         }
+
+                        else if(item.object_name){
+                            output+=''+ item.object_name + '';
+                            }
+
+
+                        if (item.target){
+                            output+=''+ item.preposition +' ';
+
+                            if (item.fragment){
+                                output+='<a href=" '+ item.target_absolute_url +' #'+ item.fragment+'" target="_self">'+  item.target +' </a>';
+                            }
+                            else {
+                                output+='<a href=" '+ item.target_absolute_url +' " target="_self">'+ item.target +' </a>';
+                            }
+                        }
+
+                        output+='</div>';
+                        output+='<div class="time-info">';
+                        output+='<span>'+ item.timesince +' {% trans "ago" %}</span>';
+                        output+='</div>';
+                        output+='</div>';
+                        output+='</div>';
+                        output+='</div>';
+                        output+='</div>';
+                      });
+                      output+='<nav>';
+                      output+='<ul class="pagination pull-left">';
+
+                      var nexturl = meta.next;
+                      var previousurl = meta.previous;
+
+                      if(previousurl){
+                      output+='<li><a href="javascript:;" id="previousDatacomments"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                      }
+                      if(nexturl){
+                      output+='<li><a href="javascript:;" id="nextDatacomments"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                      }
+                      output+='</ul>';
+                      output+='</nav>';
+                       $("#showallactivitecomments").html(output);
+                       $("#nextDatacomments").click(function(){
+                            showLimitDatacomments(nexturl)
+                       });
+                       $("#previousDatacomments").click(function(){
+                            showLimitDatacomments(previousurl)
+                       });
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
                             console.log("error");
                         }
-                     });
-            });
-        });
-    </script>
+                    });
+            }
 
+        $(document).ready(function(){
+            $("#commentsdata").click(function(){
+                showLimitDatacomments();
+                });
+             });
+    </script>
+    <script type="text/javascript" language="JavaScript">
+        <!--$(document).ready(function(){-->
+            <!--$("#qroup_activity").click(function(){-->
+                <!--var url = "{% url "group_activity" object.slug %}";-->
+                    <!--$.ajax({-->
+                        <!--cache: true,-->
+                        <!--type: 'GET',-->
+                        <!--url: url,-->
+                        <!--data: {},-->
+                        <!--dataType: "html",-->
+                        <!--success: function(jsondata) {-->
+                            <!--console.log("success");-->
+                            <!--$('#acitivity').html(jsondata);-->
+                        <!--},-->
+                        <!--error: function(xhr, ajaxOptions, thrownError) {-->
+                            <!--console.log("error");-->
+                        <!--}-->
+                     <!--});-->
+            <!--});-->
+        <!--});-->
+    </script>
 {% endblock extra_script %}
 

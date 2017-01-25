@@ -34,9 +34,9 @@
                   <div id="viewuserlist_none">
                         <ul class="nav nav-tabs">
                           <li class="active"><a href="#user-approval-request" data-toggle="tab">{% trans "User Approval Request" %}</a></li>
-                          <li><a href="#approved" data-toggle="tab">{% trans "Approved" %}</a></li>
-                          <li><a href="#user-drafts" data-toggle="tab">{% trans "User Drafts" %}</a></li>
-                          <li><a href="#denied-layers" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
+                          <li><a href="#approved" id="Approved_list_layers_admin" data-toggle="tab">{% trans "Approved" %}</a></li>
+                          <li><a href="#user-drafts" id="Admin_userdraft" data-toggle="tab">{% trans "User Drafts" %}</a></li>
+                          <li><a href="#denied-layers" id="Admin_dined_list" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
                         </ul>
                     <div class="tab-content">
                       <article id="user-approval-request" class="tab-pane active">
@@ -53,22 +53,25 @@
                                         <!--<th>Denied Layer</th>-->
                                     </tr>
                                 </thead>
-                                {% for user_approval in user_approval_request_list %}
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ forloop.counter}}</td>
-                                            <td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>
-                                            <td>{{ user_approval.group }}</td>
-                                            <td>{{ user_approval.current_iteration }}</td>
-                                            <td>{{ user_approval.date_updated }}</td>
-                                            <td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>
-                                            <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>-->
-                                        </tr>
+                                <!--{% for user_approval in user_approval_request_list %}-->
+                                    <tbody id="showallAdminDraftlayers">
+                                        <!--<tr>-->
+                                            <!--<td>{{ forloop.counter}}</td>-->
+                                            <!--<td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>-->
+                                            <!--<td>{{ user_approval.group }}</td>-->
+                                            <!--<td>{{ user_approval.current_iteration }}</td>-->
+                                            <!--<td>{{ user_approval.date_updated }}</td>-->
+                                            <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>-->
+                                            <!--&lt;!&ndash;<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>&ndash;&gt;-->
+                                        <!--</tr>-->
                                     </tbody>
-                                {% empty %}
-                                    <p>{% trans "No pending requests yet" %}</p>
-                                {% endfor %}
+                                <!--{% empty %}-->
+                                    <!--<p>{% trans "No pending requests yet" %}</p>-->
+                                <!--{% endfor %}-->
                             </table>
+                            <div id="showallAdminDraftlayerspag">
+
+                            </div>
                         </ul>
                       </article>
                       <article id="approved" class="tab-pane">
@@ -85,22 +88,25 @@
                                         <th>Layer Edit</th>
                                     </tr>
                                 </thead>
-                                {% for approved in approved_list %}
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ forloop.counter}}</td>
-                                            <td>{{ approved.title }}</td>
-                                            <td>{{ approved.group }}</td>
-                                            <td>{{ approved.owner }}</td>
-                                            <td>{{ approved.last_auditor }}</td>
-                                            <td>{{ approved.date_updated }}</td>
-                                            <td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>
-                                        </tr>
+                                <!--{% for approved in approved_list %}-->
+                                    <tbody id="allAdminDraftlayers_pen">
+                                        <!--<tr>-->
+                                            <!--<td>{{ forloop.counter}}</td>-->
+                                            <!--<td>{{ approved.title }}</td>-->
+                                            <!--<td>{{ approved.group }}</td>-->
+                                            <!--<td>{{ approved.owner }}</td>-->
+                                            <!--<td>{{ approved.last_auditor }}</td>-->
+                                            <!--<td>{{ approved.date_updated }}</td>-->
+                                            <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>-->
+                                        <!--</tr>-->
                                     </tbody>
-                                {% empty %}
-                                    <p>{% trans "No approved layers yet" %}</p>
-                                {% endfor %}
+                                <!--{% empty %}-->
+                                    <!--<p>{% trans "No approved layers yet" %}</p>-->
+                                <!--{% endfor %}-->
                             </table>
+                            <div id="showallAdminDraftlayerspag_panding">
+
+                            </div>
                         </ul>
                       </article>
                       <article id="user-drafts" class="tab-pane">
@@ -116,23 +122,26 @@
                                         <th>Layer Delete</th>
                                     </tr>
                                 </thead>
-                                {% for draft in user_draft_list %}
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ forloop.counter}}</td>
-                                            <td>{{ draft.title }}</td>
-                                            <td>{{ draft.group }}</td>
-                                            <td>{{ draft.owner }}</td>
-                                            <td>{{ draft.date_created }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-gd-primary" onclick="deleteLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>
-                                            </td>
-                                        </tr>
+                                <!--{% for draft in user_draft_list %}-->
+                                    <tbody id="allAdminDraftlayers_denied">
+                                        <!--<tr>-->
+                                            <!--<td>{{ forloop.counter}}</td>-->
+                                            <!--<td>{{ draft.title }}</td>-->
+                                            <!--<td>{{ draft.group }}</td>-->
+                                            <!--<td>{{ draft.owner }}</td>-->
+                                            <!--<td>{{ draft.date_created }}</td>-->
+                                            <!--<td>-->
+                                                <!--<button type="button" class="btn btn-gd-primary" onclick="deleteLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
                                     </tbody>
-                                {% empty %}
-                                    <p>{% trans "No user drafts yet" %}</p>
-                                {% endfor %}
+                                <!--{% empty %}-->
+                                    <!--<p>{% trans "No user drafts yet" %}</p>-->
+                                <!--{% endfor %}-->
                             </table>
+                            <div id="showallAdminDraftlayerspag_denied">
+
+                            </div>
                         </ul>
                       </article>
 
@@ -149,21 +158,24 @@
                                         <th>Denied Date</th>
                                     </tr>
                                 </thead>
-                                {% for deny in denied_list %}
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ forloop.counter}}</td>
-                                            <td>{{ deny.title}}</td>
-                                            <td>{{ deny.group}}</td>
-                                            <td>{{ deny.owner }}</td>
-                                            <td>{{ deny.last_auditor }}</td>
-                                            <td>{{ deny.date_updated }}</td>
-                                        </tr>
+                                <!--{% for deny in denied_list %}-->
+                                    <tbody id="allAdminDraftlayers_active">
+                                        <!--<tr>-->
+                                            <!--<td>{{ forloop.counter}}</td>-->
+                                            <!--<td>{{ deny.title}}</td>-->
+                                            <!--<td>{{ deny.group}}</td>-->
+                                            <!--<td>{{ deny.owner }}</td>-->
+                                            <!--<td>{{ deny.last_auditor }}</td>-->
+                                            <!--<td>{{ deny.date_updated }}</td>-->
+                                        <!--</tr>-->
                                     </tbody>
-                                {% empty %}
-                                    <p>{% trans "No denied layers yet" %}</p>
-                                {% endfor %}
+                                <!--{% empty %}-->
+                                    <!--<p>{% trans "No denied layers yet" %}</p>-->
+                                <!--{% endfor %}-->
                             </table>
+                            <div id="showallAdminDraftlayerspag_active">
+
+                            </div>
                         </ul>
                       </article>
                     </div>
@@ -295,7 +307,314 @@
         });
     });
     </script>
+<script type="text/javascript" language="JavaScript">
+        function showAdminDraftLayer(targeturl){
+            var limit = 25;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='workspace_layer_api' %}?limit="+ limit +"&resource_state=user_approval_request_list&user_type=admin";
+            }
+            else{
+                var url = targeturl;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                    var outputpag='';
+                  $.each(data, function(i, item) {
+                    output+='<tr>';
+                    output+='<td>'+ i++ +'</td>';
+                    output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
+                    output+='<td>'+ item.group +'</td>';
+                    output+='<td>'+ item.current_iteration +'</td>';
+                    output+='<td>'+ item.date_updated +'</td>';
+                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                    output+='</tr>';
+                  });
+                  outputpag+='<div>';
+                  outputpag+='<nav>';
+                  outputpag+='<ul class="pagination pull-left">';
+                  var nexturl = meta.next;
+                  //alert(t_count);
+                  var previousurl = meta.previous;
+                  if(previousurl){
+                  outputpag+='<li><a href="javascript:;" id="previousAdminDraftlayers"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  outputpag+='<li><a href="javascript:;" id="nextAdminDraftlayers"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                    }
+                  outputpag+='</ul>';
+                  outputpag+='</nav>';
+                  outputpag+='</div>';
+                   $("#showallAdminDraftlayers").html(output);
+                   $("#showallAdminDraftlayerspag").html(outputpag);
+                   $("#nextAdminDraftlayers").click(function(){
+                        showAdminDraftLayer(nexturl)
+                   });
+                   $("#previousAdminDraftlayers").click(function(){
+                        showAdminDraftLayer(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
 
+        $(document).ready(function(){
+            showAdminDraftLayer();
+        });
+ </script>
+<script type="text/javascript" language="JavaScript">
+        function showAdminDatalayers_pending(targeturl){
+            var limit = 25;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='workspace_layer_api' %}?limit="+ limit +"&resource_state=approved_list&user_type=admin";
+            }
+            else{
+                var url = targeturl;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                    var outputpag='';
+                    var i =1;
+                  $.each(data, function(i, item) {
+                  //alert(item.date_created)
+                    output+='<tr>';
+                    output+='<td>'+ i++ +'</td>';
+                    output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
+                    output+='<td>'+ item.group +'</td>';
+                    output+='<td>'+ item.owner +'</td>';
+                    output+='<td>'+ item.last_auditor +'</td>';
+                    output+='<td>'+ item.date_updated +'</td>';
+                    output+='<td><a href="'+ item.detail_url +'" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>';
+                    output+='</tr>';
+                  });
+                  outputpag+='<div>';
+                  outputpag+='<nav>';
+                  outputpag+='<ul class="pagination pull-left">';
+                  var nexturl = meta.next;
+                  //alert(t_count);
+                  var previousurl = meta.previous;
+                  if(previousurl){
+                  outputpag+='<li><a href="javascript:;" id="previousAdminDraftlayers_pen"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  outputpag+='<li><a href="javascript:;" id="nextAdminDraftlayers_pen"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                    }
+                  outputpag+='</ul>';
+                  outputpag+='</nav>';
+                  outputpag+='</div>';
+                   $("#allAdminDraftlayers_pen").html(output);
+                   $("#showallAdminDraftlayerspag_panding").html(outputpag);
+                   $("#nextAdminDraftlayers_pen").click(function(){
+                        showAdminDatalayers_pending(nexturl)
+                   });
+                   $("#previousAdminDraftlayers_pen").click(function(){
+                        showAdminDatalayers_pending(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
+
+        $(document).ready(function(){
+            $("#Approved_list_layers_admin").click(function(){
+                showAdminDatalayers_pending();
+                });
+         });
+ </script>
+<script type="text/javascript" language="JavaScript">
+        function showAdminDatalayers_draft(targeturl,counturl){
+            var limit = 2;
+            var counut = counturl;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='workspace_layer_api' %}?limit="+ limit +"&resource_state=user_draft_list&user_type=admin";
+            }
+            else{
+                var url = targeturl;
+            }
+            if(counturl== undefined){
+                counturl = 0;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        //console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                    var outputpag='';
+                  $.each(data, function(i, item) {
+                    counturl = counturl+1;
+                    output+='<tr>';
+                    output+='<td>'+ counturl +'</td>';
+                    output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
+                    output+='<td>'+ item.group +'</td>';
+                    output+='<td>'+ item.owner +'</td>';
+                    output+='<td>'+ item.date_created +'</td>';
+                    output+='<td><button type="button" class="btn btn-gd-primary" onclick="deleteLayer('+ item.id +')" style="color:#fff;">{% trans "Delete Layer" %}</button></td>';
+                    output+='</tr>';
+                  });
+                  outputpag+='<div>';
+                  outputpag+='<nav>';
+                  outputpag+='<ul class="pagination pull-left">';
+                  var nexturl = meta.next;
+                  //alert(t_count);
+                  var previousurl = meta.previous;
+                  if(previousurl){
+                  outputpag+='<li><a href="javascript:;" id="previousAdminDraftlayers_denied"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  outputpag+='<li><a href="javascript:;" id="nextAdminDraftlayers_denied"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                    }
+                  outputpag+='</ul>';
+                  outputpag+='</nav>';
+                  outputpag+='</div>';
+                   $("#allAdminDraftlayers_denied").html(output);
+                   $("#showallAdminDraftlayerspag_denied").html(outputpag);
+                   $("#nextAdminDraftlayers_denied").click(function(){
+                        showAdminDatalayers_draft(nexturl,counturl)
+                   });
+                   $("#previousAdminDraftlayers_denied").click(function(){
+                        showAdminDatalayers_draft(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
+
+        $(document).ready(function(){
+            $("#Admin_userdraft").click(function(){
+                showAdminDatalayers_draft();
+                });
+         });
+ </script>
+
+<script type="text/javascript" language="JavaScript">
+        function showAdminDatalayers_active(targeturl){
+            var limit = 25;
+            if(targeturl== undefined){
+                var url = "{% url 'api_dispatch_list' api_name='api' resource_name='workspace_layer_api' %}?limit="+ limit +"&resource_state=denied_list&user_type=admin";
+            }
+            else{
+                var url = targeturl;
+            }
+            //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
+                $.ajax({
+                    cache: true,
+                    type: 'GET',
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function(jsondata) {
+                        console.log("success");
+                        console.log(JSON.stringify(jsondata));
+                    var data = eval(jsondata.objects);
+                    var meta = eval(jsondata.meta);
+                    var t_count = meta.total_count;
+                    var t_limit = meta.limit;
+                    var t_offset = meta.offset;
+                    var t_next = meta.next;
+                    var t_previous = meta.previous;
+                        //alert(t_offset);
+                    var output='';
+                    var outputpag='';
+                    var i =1;
+                  $.each(data, function(i, item) {
+                    output+='<tr>';
+                    output+='<td>'+ i++ +'</td>';
+                    output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
+                    output+='<td>'+ item.group +'</td>';
+                    output+='<td>'+ item.owner +'</td>';
+                    output+='<td>'+ item.last_auditor +'</td>';
+                    output+='<td>'+ item.date_updated +'</td>';
+                    output+='</tr>';
+                  });
+                  outputpag+='<div>';
+                  outputpag+='<nav>';
+                  outputpag+='<ul class="pagination pull-left">';
+                  var nexturl = meta.next;
+                  //alert(t_count);
+                  var previousurl = meta.previous;
+                  if(previousurl){
+                  outputpag+='<li><a href="javascript:;" id="previousAdminDraftlayers_active"><strong><i class="fa fa-angle-left"> <span>Previous</span></i></strong></a></li>';
+                  }
+                  if(nexturl){
+                  outputpag+='<li><a href="javascript:;" id="nextAdminDraftlayers_active"><strong><span>Next</span> <i class="fa fa-angle-right"></i></strong></a></li>';
+                    }
+                  outputpag+='</ul>';
+                  outputpag+='</nav>';
+                  outputpag+='</div>';
+                   $("#allAdminDraftlayers_active").html(output);
+                   $("#showallAdminDraftlayerspag_active").html(outputpag);
+                   $("#nextAdminDraftlayers_active").click(function(){
+                        showAdminDatalayers_active(nexturl)
+                   });
+                   $("#previousAdminDraftlayers_active").click(function(){
+                        showAdminDatalayers_active(previousurl)
+                   });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log("error");
+                    }
+                });
+        }
+
+        $(document).ready(function(){
+            $("#Admin_dined_list").click(function(){
+                showAdminDatalayers_active();
+                });
+         });
+ </script>
 {% endblock %}
 
 
