@@ -851,7 +851,7 @@ class WorkSpaceLayerApi(ModelResource):
         bundle.data['current_iteration'] = bundle.obj.current_iteration
         bundle.data['time'] = bundle.obj.date_updated.ctime()
         bundle.data['owner'] = bundle.obj.owner.username
-
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle
 
 
@@ -927,6 +927,7 @@ class WorkSpaceDocumentApi(ModelResource):
         bundle.data['current_iteration'] = bundle.obj.current_iteration
         bundle.data['time'] = bundle.obj.date_updated.ctime()
         bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle
 
 
@@ -999,4 +1000,5 @@ class WorkSpaceMapApi(ModelResource):
         bundle.data['current_iteration'] = bundle.obj.current_iteration
         bundle.data['time'] = bundle.obj.date_updated.ctime()
         bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle
