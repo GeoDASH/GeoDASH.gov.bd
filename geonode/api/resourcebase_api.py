@@ -871,9 +871,6 @@ class WorkSpaceDocumentApi(ModelResource):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'workspace_document_api'
-        fields = [
-            'name',
-        ]
 
     def get_object_list(self, request):
         nothing = Document.objects.all()[:0]
@@ -924,12 +921,12 @@ class WorkSpaceDocumentApi(ModelResource):
             return nothing
 
 
-    def dehydrate(self, bundle):
-        bundle.data['group'] = bundle.obj.group
-        bundle.data['current_iteration'] = bundle.obj.current_iteration
-        bundle.data['time'] = bundle.obj.date_updated.ctime()
-
-        return bundle
+    # def dehydrate(self, bundle):
+    #     bundle.data['group'] = bundle.obj.group
+    #     bundle.data['current_iteration'] = bundle.obj.current_iteration
+    #     bundle.data['time'] = bundle.obj.date_updated.ctime()
+    #
+    #     return bundle
 
 
 class WorkSpaceMapApi(ModelResource):
@@ -948,9 +945,6 @@ class WorkSpaceMapApi(ModelResource):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'workspace_map_api'
-        fields = [
-            'name',
-        ]
 
     def get_object_list(self, request):
         nothing = Map.objects.all()[:0]
