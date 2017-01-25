@@ -846,6 +846,14 @@ class WorkSpaceLayerApi(ModelResource):
         else:
             return nothing
 
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+
+        return bundle
+
+
 
 class WorkSpaceDocumentApi(ModelResource):
     """
@@ -916,6 +924,14 @@ class WorkSpaceDocumentApi(ModelResource):
             return nothing
 
 
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+
+        return bundle
+
+
 class WorkSpaceMapApi(ModelResource):
     """
     This API is a Big one.
@@ -981,3 +997,11 @@ class WorkSpaceMapApi(ModelResource):
 
         else:
             return nothing
+
+
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+
+        return bundle
