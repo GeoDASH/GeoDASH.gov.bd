@@ -850,6 +850,7 @@ class WorkSpaceLayerApi(ModelResource):
         bundle.data['group'] = bundle.obj.group
         bundle.data['current_iteration'] = bundle.obj.current_iteration
         bundle.data['time'] = bundle.obj.date_updated.ctime()
+        bundle.data['owner'] = bundle.obj.owner.username
 
         return bundle
 
@@ -921,12 +922,12 @@ class WorkSpaceDocumentApi(ModelResource):
             return nothing
 
 
-    # def dehydrate(self, bundle):
-    #     bundle.data['group'] = bundle.obj.group
-    #     bundle.data['current_iteration'] = bundle.obj.current_iteration
-    #     bundle.data['time'] = bundle.obj.date_updated.ctime()
-    #
-    #     return bundle
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+        bundle.data['owner'] = bundle.obj.owner.username
+        return bundle
 
 
 class WorkSpaceMapApi(ModelResource):
@@ -997,5 +998,5 @@ class WorkSpaceMapApi(ModelResource):
         bundle.data['group'] = bundle.obj.group
         bundle.data['current_iteration'] = bundle.obj.current_iteration
         bundle.data['time'] = bundle.obj.date_updated.ctime()
-
+        bundle.data['owner'] = bundle.obj.owner.username
         return bundle
