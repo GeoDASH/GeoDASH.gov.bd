@@ -272,10 +272,11 @@ INSTALLED_APPS = (
     # 'django_admin_bootstrapped',
 
     # Apps bundled with Django
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+
     'django.contrib.admin',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',

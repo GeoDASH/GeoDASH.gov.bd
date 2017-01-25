@@ -783,3 +783,201 @@ class GroupActivity(ModelResource):
         bundle.data['timesince'] = timesince(bundle.obj.timestamp)
 
         return bundle
+
+
+class WorkSpaceLayerApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+    class Meta:
+        queryset = Layer.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_layer_api'
+        excludes = ['csw_anytext', 'metadata_xml']
+
+    def get_object_list(self, request):
+        nothing = Layer.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'layer'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+                    if resource_type == 'layer':
+                        if resource_state == 'user_approval_request_list':
+                            return Layer.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Layer.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Layer.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Layer.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+                if resource_type == 'layer':
+                    if resource_state == 'draft_list':
+                        return Layer.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Layer.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Layer.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Layer.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                        return nothing
+
+        else:
+            return nothing
+
+
+class WorkSpaceDocumentApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+    class Meta:
+        queryset = Document.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_document_api'
+        fields = [
+            'name',
+        ]
+
+    def get_object_list(self, request):
+        nothing = Document.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'document'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+
+                    if resource_type == 'document':
+                        if resource_state == 'user_approval_request_list':
+                            return Document.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Document.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Document.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Document.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                    else:
+                        return nothing
+
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+
+                if resource_type == 'document':
+                    if resource_state == 'draft_list':
+                        return Document.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Document.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Document.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Document.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                    return nothing
+
+        else:
+            return nothing
+
+
+class WorkSpaceMapApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+    class Meta:
+        queryset = Map.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_map_api'
+        fields = [
+            'name',
+        ]
+
+    def get_object_list(self, request):
+        nothing = Map.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'map'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+                    if resource_type == 'map':
+                        if resource_state == 'user_approval_request_list':
+                            return Map.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Map.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Map.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Map.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                    else:
+                        return nothing
+
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+                if resource_type == 'map':
+                    if resource_state == 'draft_list':
+                        return Map.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Map.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Map.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Map.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                    return nothing
+
+        else:
+            return nothing
