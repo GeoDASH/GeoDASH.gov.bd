@@ -223,9 +223,11 @@ $(function () {
                         //alert(t_offset);
                     var output='';
                     var outputpag='';
+                  var offset = meta.offset;
                   $.each(data, function(i, item) {
+                    offset = offset + 1;
                     output+='<tr>';
-                    output+='<td>'+ i++ +'</td>';
+                    output+='<td>'+ offset +'</td>';
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.date_created +'</td>';
@@ -299,10 +301,13 @@ $(function () {
                     var output='';
                     var outputpag='';
                     var i =1;
+                  var offset = meta.offset;
                   $.each(data, function(i, item) {
+
                   //alert(item.date_created)
+                    offset = offset + 1;
                     output+='<tr>';
-                    output+='<td>'+ i++ +'</td>';
+                    output+='<td>'+ offset +'</td>';
                     output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
@@ -374,9 +379,11 @@ $(function () {
                     var output='';
                     var outputpag='';
                     var i =1;
+                    var offset = meta.offset;
                   $.each(data, function(i, item) {
+                    offset = offset + 1;
                     output+='<tr>';
-                    output+='<td>'+ i++ +'</td>';
+                    output+='<td>'+ offset +'</td>';
                     output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.last_auditor +'</td>';
@@ -451,9 +458,11 @@ $(function () {
                     var output='';
                     var outputpag='';
                     var i =1;
+                    var offset = meta.offset;
                   $.each(data, function(i, item) {
+                    offset = offset + 1;
                     output+='<tr>';
-                    output+='<td>'+ i++ +'</td>';
+                    output+='<td>'+ offset +'</td>';
                     output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.last_auditor +'</td>';
