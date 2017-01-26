@@ -796,6 +796,12 @@ class WorkSpaceLayerApi(ModelResource):
         admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
         member('draft_list', 'pending_list', 'denied_list', 'active_list')
     """
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
     class Meta:
         queryset = Layer.objects.all()
         if settings.RESOURCE_PUBLISHING:
@@ -867,6 +873,13 @@ class WorkSpaceDocumentApi(ModelResource):
         admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
         member('draft_list', 'pending_list', 'denied_list', 'active_list')
     """
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
     class Meta:
         queryset = Document.objects.all()
         if settings.RESOURCE_PUBLISHING:
@@ -942,6 +955,13 @@ class WorkSpaceMapApi(ModelResource):
         admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
         member('draft_list', 'pending_list', 'denied_list', 'active_list')
     """
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
     class Meta:
         queryset = Map.objects.all()
         if settings.RESOURCE_PUBLISHING:
