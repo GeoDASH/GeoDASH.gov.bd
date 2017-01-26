@@ -491,10 +491,12 @@
                         //alert(t_offset);
                     var output='';
                     var outputpag='';
+                    var offset = meta.offset;
                   $.each(data, function(i, item) {
                     counturl = counturl+1;
+                    offset = offset + 1;
                     output+='<tr>';
-                    output+='<td>'+ counturl +'</td>';
+                    output+='<td>'+ offset +'</td>';
                     output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.owner +'</td>';
@@ -520,7 +522,7 @@
                    $("#allAdminDraftlayers_denied").html(output);
                    $("#showallAdminDraftlayerspag_denied").html(outputpag);
                    $("#nextAdminDraftlayers_denied").click(function(){
-                        showAdminDatalayers_draft(nexturl,counturl)
+                        showAdminDatalayers_draft(nexturl, counturl)
                    });
                    $("#previousAdminDraftlayers_denied").click(function(){
                         showAdminDatalayers_draft(previousurl)
