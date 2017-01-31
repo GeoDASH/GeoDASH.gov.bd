@@ -135,7 +135,8 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
 
     # check if any cql_filter is sent from the user
     # filter_map method returns config after adding filter
-    config = filter_map(request, config)
+    if request.GET('layers'):
+        config = filter_map(request, config)
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
     approve_form = ResourceApproveForm()
