@@ -133,6 +133,9 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
     else:
         config = snapshot_config(snapshot, map_obj, request.user)
 
+    # check if any cql_filter is sent from the user
+    # filter_map method returns config after adding filter
+    config = filter_map(request, config)
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
     approve_form = ResourceApproveForm()
@@ -1182,3 +1185,15 @@ class WmsServerDelete(DeleteView):
     def get_object(self):
         return WmsServer.objects.get(pk=self.kwargs['server_pk'])
 
+
+
+def filter_map(request, config):
+    layers = request.GET['layers']
+    layers = json.loads(layers)['layers']
+    if layers:
+        for layer in layers:
+            if layer['name'] == config['map']['layers'][layer['index']]['name']:
+                config['map']['layers'][layer['index']]['cql_filter'] = layer['cql_filter']
+
+
+    return config
