@@ -1196,8 +1196,7 @@ def filter_map(request, config):
         for layer in layers:
             if layer['name'] == config['map']['layers'][layer['index']]['name']:
                 config['map']['layers'][layer['index']]['cql_filter'] = layer['cql_filter']
-                url = settings.OGC_SERVER['default']['PUBLIC_LOCATION'] + 'wfs?service=wfs&outputFormat=application/json& ' \
-                                         'version=2.0.0&request=GetFeature&typeNames=' + layer['name'] + '&PropertyName=' + layer['property_name']
+                url = settings.OGC_SERVER['default']['PUBLIC_LOCATION'] + 'wfs?service=wfs&outputFormat=application/json&version=2.0.0&request=GetFeature&typeNames=' + layer['name'] + '&PropertyName=' + layer['property_name']
                 feature = req.get(url)
                 features = json.loads(feature.content)
                 for f in features['features']:
