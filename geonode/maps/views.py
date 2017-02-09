@@ -21,6 +21,7 @@
 import math
 import logging
 from guardian.shortcuts import get_perms
+import requests as req
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -45,6 +46,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from notify.signals import notify
+from pyproj import Proj, transform
 
 from geonode.layers.models import Layer
 from geonode.maps.models import Map, MapLayer, MapSnapshot
@@ -1187,7 +1189,6 @@ class WmsServerDelete(DeleteView):
         return WmsServer.objects.get(pk=self.kwargs['server_pk'])
 
 
-
 def filter_map(request, config):
     layers = request.GET['layers']
     layers = json.loads(layers)['layers']
@@ -1195,6 +1196,22 @@ def filter_map(request, config):
         for layer in layers:
             if layer['name'] == config['map']['layers'][layer['index']]['name']:
                 config['map']['layers'][layer['index']]['cql_filter'] = layer['cql_filter']
+                url = settings.OGC_SERVER['default']['PUBLIC_LOCATION'] + 'wfs?service=wfs&outputFormat=application/json& ' \
+                                         'version=2.0.0&request=GetFeature&typeNames=' + layer['name'] + '&PropertyName=' + layer['property_name']
+                feature = req.get(url)
+                features = json.loads(feature.content)
+                for f in features['features']:
+                    if f['properties']['DISTNAME'] == layer['property_name']:
+                        bbox = f['properties']['DISTNAME']
+
+                lat = bbox[0]
+                lon = bbox[3]
+                inProj = Proj(init='epsg:4326')
+                outProj = Proj(init='epsg:3857')
+
+                centerx, centery = transform(inProj, outProj, lat, lon)
+                config['map']['center'] = [centerx, centery]
+                config['map']['zoom']= 1
 
 
     return config
