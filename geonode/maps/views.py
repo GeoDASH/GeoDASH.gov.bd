@@ -1196,21 +1196,42 @@ def filter_map(request, config):
         for layer in layers:
             if layer['name'] == config['map']['layers'][layer['index']]['name']:
                 config['map']['layers'][layer['index']]['cql_filter'] = layer['cql_filter']
-                url = settings.OGC_SERVER['default']['PUBLIC_LOCATION'] + 'wfs?service=wfs&outputFormat=application/json&version=2.0.0&request=GetFeature&typeNames=' + layer['name'] + '&PropertyName=' + layer['property_name']
-                feature = req.get(url)
-                features = json.loads(feature.content)
-                for f in features['features']:
-                    if f['properties']['DISTNAME'] == layer['property_name']:
-                        bbox = f['properties']['DISTNAME']
-
-                lat = bbox[0]
-                lon = bbox[3]
-                inProj = Proj(init='epsg:4326')
-                outProj = Proj(init='epsg:3857')
-
-                centerx, centery = transform(inProj, outProj, lat, lon)
-                config['map']['center'] = [centerx, centery]
-                config['map']['zoom']= 1
+                bbox = layer['bbox']
+                # lat = bbox[0]
+                # lon = bbox[3]
+                # inProj = Proj(init='epsg:4326')
+                # outProj = Proj(init='epsg:3857')
+                #
+                # center_lon, center_lat = transform(inProj, outProj, lon, lat)
+                zoom, center_x, center_y = set_bounds_from_bbox(bbox)
+                config['map']['center'] = [center_x, center_y]
+                config['map']['zoom']= zoom
 
 
     return config
+
+
+
+def set_bounds_from_bbox(bbox):
+        """
+        Calculate zoom level and center coordinates in mercator.
+        """
+        minx, miny, maxx, maxy = [float(c) for c in bbox]
+        x = (minx + maxx) / 2
+        y = (miny + maxy) / 2
+        (center_x, center_y) = forward_mercator((y, x))
+
+        xdiff = maxx - minx
+        ydiff = maxy - miny
+
+        zoom = 0
+
+        if xdiff > 0 and ydiff > 0:
+            width_zoom = math.log(360 / xdiff, 2)
+            height_zoom = math.log(360 / ydiff, 2)
+            zoom = math.ceil(min(width_zoom, height_zoom))
+
+        zoom = zoom
+        center_x = center_x
+        center_y = center_y
+        return zoom, center_x, center_y
