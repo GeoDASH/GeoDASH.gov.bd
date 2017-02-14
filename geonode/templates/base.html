@@ -191,14 +191,43 @@
                                     {% if HAYSTACK_SEARCH %}
                                         <input id="search_input"  type="text" placeholder="" name="q" style="color:#5a5d63;">
                                     {% else %}
-                                        <input id="search_input"  type="text" placeholder="" style="color:#5a5d63;" name="title__icontains">
+                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="color:#5a5d63;" name="title__icontains">
                                     {% endif %}
-                                    <span>
-                                        <select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">
-                                            <option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>
-                                            <option value="Organization" id="organizationsearch">Organization</option>
-                                            <option value="User" id="userssearch">User</option>
-                                        </select><div class="caret" id="show_d_p" style="cursor:pointer;"></div>
+                                    <span style="padding-left:20px;">
+                                        <!--<select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">-->
+                                            <!--<option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>-->
+                                            <!--<option value="Organization" id="organizationsearch" >Organization</option>-->
+                                            <!--<option value="User" id="userssearch">User</option>-->
+                                        <!--</select><div class="caret" id="show_d_p" style="cursor:pointer;"></div>-->
+                                        <!--<div class="dropdown">-->
+                                            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"-->
+                                               <!--aria-haspopup="true" aria-expanded="false">{% trans "Orga" %}<span class="caret"></span></a>-->
+                                            <!--&lt;!&ndash;<a href="#">explore<span class="sr-only">(current)</span></a> &ndash;&gt;-->
+                                            <!--<ul class="dropdown-menu">-->
+                                                <!--<li id="nav_maps">-->
+                                                  <!--<a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>-->
+                                                <!--</li>-->
+                                                <!--{% if user.is_authenticated %}-->
+                                                <!--<li id="nav_layers">-->
+                                                  <!--<a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>-->
+                                                <!--</li>-->
+                                                <!--{% endif %}-->
+                                            <!--</ul>-->
+                                        <!--</div>-->
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                               aria-haspopup="true" aria-expanded="false">{% trans "" %} <span class="caret"></span>
+                                        </a>
+                                            <ul class="dropdown-menu" >
+                                                <li id="layermapdocsearch">
+                                                  <a href="javascript:;" id="layermapdocsearchval" data-isadmin="Default">{% trans "Layer/Map/Document" %}</a>
+                                                </li>
+                                                <li id="organizationsearch">
+                                                  <a href="javascript:;" id="organizationsearchval" data-isadmin="Organization" value="Organization">{% trans "Organization" %}</a>
+                                                </li>
+                                                <li id="userssearch">
+                                                  <a href="javascript:;" id="userssearchval" data-isadmin="User" value="User">{% trans "User" %}</a>
+                                                </li>
+                                            </ul>
                                     </span>
                                     <span class="input-group-btn">
                                       <button class="btn btn-gd-primary" type="submit">
@@ -350,12 +379,12 @@
                     </button> -->
                     <!--<div class="collapse navbar-collapse" id="gd-footer-navbar-collapse">-->
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url "termsandcondition" %}">{% trans "Terms and Condition" %}</a></li>
-                        <li><a href="{% url "policy" %}">{% trans "Privacy Policy" %}</a></li>
-                        <li><a href="{% url "termsofuse" %}">{% trans "Terms of use" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
+                        <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
                         <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
                         <li>
-                            <div class="tooltip_use">Useful Resource
+                            <div class="tooltip_use" style="cursor:pointer;">Useful Resource
                               <span class="tooltiptext_use">
                                   <ul>
                                       <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
@@ -391,7 +420,7 @@
 					</div>
 				</div>
                 <div class="col-md-2">
-                    <div class="gd-footer-language">
+                    <div class="gd-footer-language" >
                         <label class="hidden">{% trans "Language" %}</label>
                         {% if csrf_token != "NOTPROVIDED" %}
                         {% get_current_language as LANGUAGE %}
@@ -770,7 +799,7 @@
             </li>
             {% endif %}
             {% if user.is_manager_of_any_group %}
-                <li class="c-menu__item">
+            <li class="c-menu__item">
                 <a href="{% url "invite_user" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User">
                     <span style="text-align:left;color:#fff;margin-left:-14px;">{% trans "Invite User" %}</span>
@@ -807,10 +836,10 @@
                     <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Media Backup" %}</span>
                 </a>
             </li>
-                <li class="c-menu__item">
+            <li class="c-menu__item">
                 <a href="{% url "data-folder-backup" %}" class="c-menu__link">
                     <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Data Backup" %}</span>
+                    <span style="text-align:left;color:#fff;margin-left:-10px;">{% trans "Geoserver Data Backup" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -902,28 +931,39 @@
                 }
             });
         }
-        function drop_sec(sel) {
-            var url = '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}';
-            if (sel.value == 'User') {
-                url = '{% url "autocomplete_light_autocomplete" "ProfileAutocomplete" %}';
-                $('#search_input').attr('placeholder','Search users');
-                $('#search_input').attr('name', 'username__icontains');
-                $('#search').attr('action', '/searchuser/');
-            }
-            else if (sel.value == 'Organization'){
-                url = '{% url "autocomplete_light_autocomplete" "GroupProfileAutocomplete" %}';
-                $('#search_input').attr('placeholder','Search organizations');
-                $('#search').attr('action', '/searchorg/');
-            }
-            else if (sel.value == 'Default'){
-                url = '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}';
-                $('#search_input').attr('placeholder','Search layer/map/doc');
-                $('#search').attr('action', '/search/');
-            }
-            //console.log(url);
-            reInityourlabsAutocomplete(url);
-        }
 
+        $("#layermapdocsearch").click(function () {
+                var capacityValue = $('#layermapdocsearchval').data('isadmin');
+                if(capacityValue == 'Default'){
+                    url = '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}';
+                    $('#search_input').attr('placeholder','Search layer/map/doc');
+                    $('#search').attr('action', '/search/');
+                }
+                reInityourlabsAutocomplete(url)
+                //alert(capacityValue);
+         });
+         $("#organizationsearch").click(function () {
+                //var orgnization_select_data = layermapdocsearch.attr("data-isadmin");
+                var capacityValue = $('#organizationsearchval').data('isadmin');
+                if(capacityValue == 'Organization'){
+                    url = '{% url "autocomplete_light_autocomplete" "GroupProfileAutocomplete" %}';
+                    $('#search_input').attr('placeholder','Search organizations');
+                    $('#search').attr('action', '/searchorg/');
+                }
+                reInityourlabsAutocomplete(url)
+                //alert(capacityValue);
+         });
+         $("#userssearch").click(function () {
+                var capacityValue = $('#userssearchval').data('isadmin');
+                if(capacityValue == 'User'){
+                    url = '{% url "autocomplete_light_autocomplete" "ProfileAutocomplete" %}';
+                    $('#search_input').attr('placeholder','Search users');
+                    $('#search_input').attr('name', 'username__icontains');
+                    $('#search').attr('action', '/searchuser/');
+                }
+                reInityourlabsAutocomplete(url)
+                //alert(capacityValue);
+         });
         $(document).ready(function (){
             $("#lang-selection").click(function(){
                 var lang = $("#set-language-of-site #langOfSite").val();

@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
 
 from views import SliderImageList, SliderImageCreate, SliderImageUpdate, SliderImageDelete, \
     SectionList, SectionUpdate, IndexPageImageCreateView, IndexPageImageListView, IndexPageImageDelete, \
-    IndexPageImageUpdate
+    IndexPageImageUpdate, TermsAndConditionView, TermsAndConditionUpdateView
 
 urlpatterns = patterns(
     'geonode.cms.views',
@@ -31,5 +32,12 @@ urlpatterns = patterns(
     url(r'^index-page-image/(?P<image_pk>[0-9]+)/(?P<section_pk>[0-9]+)/delete$', IndexPageImageDelete.as_view(), name='Index-page-image-delete'),
     url(r'^index-page-image/(?P<image_pk>[0-9]+)/(?P<section_pk>[0-9]+)/update$', IndexPageImageUpdate.as_view(), name='index-page-image-update'),
     url(r'^index-page-image/(?P<image_pk>[0-9]+)/(?P<section_pk>[0-9]+)/active-deactive$', 'activateimage', name='active-inactive-indexpage-image'),
+
+
+    # crud for terms and condition in footer section
+    url(r'^footer-section/(?P<slug>[-\w]+)/$', TermsAndConditionView.as_view(), name='footer-section-view'),
+    url(r'^footer-section/(?P<slug>[-\w]+)/update$', TermsAndConditionUpdateView.as_view(), name='footer-section-update'),
+
+
 
 )

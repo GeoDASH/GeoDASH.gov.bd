@@ -19,23 +19,25 @@
 #########################################################################
 
 import re
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.conf.urls import url
+from django.core.paginator import Paginator, InvalidPage
+from django.http import Http404
+from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.models import ContentType
+from django.utils.timesince import timesince
+from django.utils.translation import ugettext as _
 
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.utils import trailing_slash
-
+from actstream.models import Action
 from guardian.shortcuts import get_objects_for_user
-
-from django.conf.urls import url
-from django.core.paginator import Paginator, InvalidPage
-from django.http import Http404
-from django.core.urlresolvers import reverse
-
 from tastypie.utils.mime import build_content_type
 
 from geonode.layers.models import Layer
@@ -45,6 +47,7 @@ from geonode.base.models import ResourceBase
 from geonode.api.api import MetaFavorite
 from geonode.base.models import FavoriteResource
 from geonode.groups.models import GroupProfile
+from geonode.social.templatetags.social_tags import get_data
 
 from .authorization import GeoNodeAuthorization
 
@@ -665,4 +668,357 @@ class GroupsResourceWithFavorite(ModelResource):
                 bundle.data['favorite'] = FavoriteResource.objects.get(user=bundle.request.user, group=GroupProfile.objects.get(id=bundle.obj.id)).active
             except FavoriteResource.DoesNotExist:
                 bundle.data['favorite'] = False
+        return bundle
+
+
+class GroupActivity(ModelResource):
+    """
+    This API return Activities for a specific group.
+    it takes three parameters.
+    limit = limit of queryset. used for pagination.
+    group = slug for a specific group and the api will return
+        activities for that group.
+    option = layers, maps, comments. the option for activity.
+        if layers is given then it will return layer activity
+        if maps is given thenn it will return maps activity
+        if comments is given it will return comments activity
+        if no options is given then it will return all the activity of that group
+    if no group slug is given then the API will return empty queryset
+    if the requested user is not authenticated, it will return empty queryset.
+    """
+    class Meta:
+        queryset = Action.objects.filter(public=True)
+        resource_name = 'group_activity'
+
+    def get_object_list(self, request):
+        if request.user.is_authenticated():
+            contenttypes = ContentType.objects.all()
+            for ct in contenttypes:
+                if ct.name == 'layer':
+                    ct_layer_id = ct.id
+                if ct.name == 'map':
+                    ct_map_id = ct.id
+                if ct.name == 'comment':
+                    ct_comment_id = ct.id
+            group_slug = request.GET.get('group')
+            option = request.GET.get('option')
+            if group_slug:
+                group = get_object_or_404(GroupProfile, slug=group_slug)
+                members = ([(member.user.id) for member in group.member_queryset()])
+                if option == 'comments':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_comment_id)
+                elif option == 'maps':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_map_id)
+                elif option == 'layers':
+                    return Action.objects.filter(public=True, actor_object_id__in=members, action_object_content_type__id=ct_layer_id)
+                else:
+                    return Action.objects.filter(public=True, actor_object_id__in=members)
+            else:
+                return Action.objects.filter(public=True)[:0]
+        else:
+            return Action.objects.filter(public=True)[:0]
+
+    def dehydrate(self, bundle):
+        actor = bundle.obj.actor
+        activity_class = 'activity'
+        verb = bundle.obj.verb
+        username = bundle.obj.actor.username
+        target = bundle.obj.target
+        object_type = None
+        object = bundle.obj.action_object
+        raw_action = get_data(bundle.obj, 'raw_action')
+        object_name = get_data(bundle.obj, 'object_name')
+        preposition = _("to")
+        fragment = None
+        thumbnail_url = None
+        object_url = None
+
+        if object:
+            object_type = object.__class__._meta.object_name.lower()
+
+        if target:
+            target_type = target.__class__._meta.object_name.lower()  # noqa
+
+        if actor is None:
+            return str()
+
+    # Set the item's class based on the object.
+        if object:
+            if object_type == 'comment':
+                activity_class = 'comment'
+                preposition = _("on")
+                object = None
+                fragment = "comments"
+
+            if object_type == 'map':
+                activity_class = 'map'
+
+            if object_type == 'layer':
+                activity_class = 'layer'
+
+        if raw_action == 'deleted':
+            activity_class = 'delete'
+
+        if raw_action == 'created' and object_type == 'layer':
+            activity_class = 'upload'
+
+        bundle.data['activity_class'] = activity_class,
+        bundle.data['action'] = bundle.obj,
+        bundle.data['actor'] = actor,
+        bundle.data['object'] = object,
+        bundle.data['object_name'] = object_name,
+        bundle.data['preposition'] = preposition,
+        bundle.data['target'] = target,
+        bundle.data['timestamp'] = bundle.obj.timestamp,
+        bundle.data['username'] = username,
+        bundle.data['verb'] = verb,
+        bundle.data['fragment'] = fragment
+        if object:
+            bundle.data['object_thumbnail_url'] = object.thumbnail_url
+            bundle.data['object_absolute_url'] = object.get_absolute_url()
+        bundle.data['actor_absolute_url'] = bundle.obj.actor.get_absolute_url()
+        bundle.data['object_name'] = object_name
+        if fragment:
+            bundle.data['target_absolute_url'] = target.get_absolute_url()
+        bundle.data['timesince'] = timesince(bundle.obj.timestamp)
+
+        return bundle
+
+
+class WorkSpaceLayerApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
+    class Meta:
+        queryset = Layer.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_layer_api'
+        excludes = ['csw_anytext', 'metadata_xml']
+
+    def get_object_list(self, request):
+        nothing = Layer.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'layer'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+                    if resource_type == 'layer':
+                        if resource_state == 'user_approval_request_list':
+                            return Layer.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Layer.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Layer.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Layer.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+                if resource_type == 'layer':
+                    if resource_state == 'draft_list':
+                        return Layer.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Layer.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Layer.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Layer.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                        return nothing
+
+        else:
+            return nothing
+
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
+        return bundle
+
+
+
+class WorkSpaceDocumentApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
+    class Meta:
+        queryset = Document.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_document_api'
+
+    def get_object_list(self, request):
+        nothing = Document.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'document'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+
+                    if resource_type == 'document':
+                        if resource_state == 'user_approval_request_list':
+                            return Document.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Document.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Document.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Document.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                    else:
+                        return nothing
+
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+
+                if resource_type == 'document':
+                    if resource_state == 'draft_list':
+                        return Document.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Document.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Document.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Document.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                    return nothing
+
+        else:
+            return nothing
+
+
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
+        return bundle
+
+
+class WorkSpaceMapApi(ModelResource):
+    """
+    This API is a Big one.
+    It returns all the required data to show member and admin workspaces.
+    it takes three parameters as below:
+    user_type = type of user. 'member' or 'admin'
+    resource_state = state of resource according to member or user.
+        options for this field are:
+        admin ('user_approval_request_list', 'approved_list', 'user_draft_list', 'denied_list')
+        member('draft_list', 'pending_list', 'denied_list', 'active_list')
+    """
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+    def dehydrate_date_updated(self, bundle):
+        return bundle.obj.date_updated.strftime('%b %d %Y  %H:%M:%S ')
+
+    class Meta:
+        queryset = Map.objects.all()
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'workspace_map_api'
+
+    def get_object_list(self, request):
+        nothing = Map.objects.all()[:0]
+        if request.user.is_authenticated():
+            user_type = request.GET.get('user_type')
+            resource_state = request.GET.get('resource_state')
+            resource_type = 'map'
+            user = request.user
+
+            if user_type == 'admin':
+                if user.is_manager_of_any_group:
+                    groups = GroupProfile.objects.filter(groupmember__user=user, groupmember__role='manager')
+                    if resource_type == 'map':
+                        if resource_state == 'user_approval_request_list':
+                            return Map.objects.filter(status='PENDING', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'approved_list':
+                            return Map.objects.filter(status='ACTIVE', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'user_draft_list':
+                            return Map.objects.filter(status='DRAFT', group__in=groups).order_by('date_updated')
+                        elif resource_state == 'denied_list':
+                            return Map.objects.filter(status='DENIED', group__in=groups).order_by('date_updated')
+                        else:
+                            return nothing
+                    else:
+                        return nothing
+
+                else:
+                    return nothing
+
+            elif user_type == 'member':
+                if resource_type == 'map':
+                    if resource_state == 'draft_list':
+                        return Map.objects.filter(owner=user, status='DRAFT').order_by('date_updated')
+                    elif resource_state == 'pending_list':
+                        return Map.objects.filter(owner=user, status='PENDING').order_by('date_updated')
+                    elif resource_state == 'denied_list':
+                        return Map.objects.filter(owner=user, status='DENIED').order_by('date_updated')
+                    elif resource_state == 'active_list':
+                        return Map.objects.filter(owner=user, status='ACTIVE').order_by('date_updated')
+                    else:
+                        return nothing
+                else:
+                    return nothing
+
+        else:
+            return nothing
+
+
+    def dehydrate(self, bundle):
+        bundle.data['group'] = bundle.obj.group
+        bundle.data['current_iteration'] = bundle.obj.current_iteration
+        bundle.data['time'] = bundle.obj.date_updated.ctime()
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle

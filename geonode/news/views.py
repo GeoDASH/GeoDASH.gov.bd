@@ -51,11 +51,11 @@ class NewsList(ListView):
     model = News
 
     def get_queryset(self):
-        return News.objects.all().order_by('-date_created')[:15]
+        return News.objects.all().order_by('-publish_date')[:15]
 
     def get_context_data(self, *args, **kwargs):
         context = super(ListView, self).get_context_data(*args, **kwargs)
-        context['latest_news_list'] = News.objects.all().order_by('-date_created')[:5]
+        context['latest_news_list'] = News.objects.all().order_by('-publish_date')[:5]
         return context
 
 
@@ -66,6 +66,20 @@ class NewsCreate(CreateView):
     template_name = 'news_create.html'
     model = News
     form_class = NewsUpdateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsCreate, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(reverse('news-list'))
+        else:
+            return response
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.publish_date = form.data['publish_date']
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
 
     def get_success_url(self):
         return reverse('news-details', kwargs={'news_pk': self.object.id})
@@ -78,6 +92,13 @@ class NewsUpdate(UpdateView):
     template_name = 'news_create.html'
     model = News
     form_class = NewsUpdateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsUpdate, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return response
 
     def get_object(self):
         return News.objects.get(pk=self.kwargs['news_pk'])
@@ -92,6 +113,13 @@ class NewsDelete(DeleteView):
     """
     template_name = 'news_delete.html'
     model = News
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(NewsDelete, self).dispatch(request, *args, **kwargs)
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return response
 
     def get_success_url(self):
         return reverse('news-list')

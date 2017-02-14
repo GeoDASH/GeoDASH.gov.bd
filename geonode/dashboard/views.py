@@ -13,8 +13,6 @@ from geonode import settings
 from forms import DataFolderBackupForm
 
 
-# Create your views here.
-
 def metadatabackup(request):
     """
     This view is for database metadata backup.
@@ -93,9 +91,10 @@ def geoserverDataFolderBackup(request):
         if request.user.is_superuser and request.user.is_authenticated():
             form = DataFolderBackupForm(request.POST)
             if form.is_valid():
-                tempdir = tempfile.mkdtemp()
+                tempdir = settings.TEMP_DIR
+                os.system('mkdir ' + tempdir)
                 host_user = form.cleaned_data['user']
-                host = urlparse(settings.OGC_SERVER['LOCATION']).hostname
+                host = urlparse(settings.OGC_SERVER['default']['LOCATION']).hostname
                 password = form.cleaned_data['password']
                 form = DataFolderBackupForm()
                 # sshpass -p "Geodash@bcc@world@123" scp -r  root@103.48.16.34:/home/geodash/geodash_200/geodash/geonode/maps /home/jaha/Music

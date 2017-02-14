@@ -154,6 +154,7 @@ NOTIFY_UPDATE_TIME_INTERVAL = 100
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "uploaded")
+TEMP_DIR = os.path.join(MEDIA_ROOT, "tempdir")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -272,10 +273,11 @@ INSTALLED_APPS = (
     # 'django_admin_bootstrapped',
 
     # Apps bundled with Django
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+
     'django.contrib.admin',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',

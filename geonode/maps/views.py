@@ -21,6 +21,7 @@
 import math
 import logging
 from guardian.shortcuts import get_perms
+import requests as req
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -45,6 +46,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from notify.signals import notify
+from pyproj import Proj, transform
 
 from geonode.layers.models import Layer
 from geonode.maps.models import Map, MapLayer, MapSnapshot
@@ -133,6 +135,10 @@ def map_detail(request, mapid, snapshot=None, template='maps/map_detail.html'):
     else:
         config = snapshot_config(snapshot, map_obj, request.user)
 
+    # check if any cql_filter is sent from the user
+    # filter_map method returns config after adding filter
+    if request.GET.get('layers'):
+        config = filter_map(request, config)
     config = json.dumps(config)
     layers = MapLayer.objects.filter(map=map_obj.id)
     approve_form = ResourceApproveForm()
@@ -1182,3 +1188,50 @@ class WmsServerDelete(DeleteView):
     def get_object(self):
         return WmsServer.objects.get(pk=self.kwargs['server_pk'])
 
+
+def filter_map(request, config):
+    layers = request.GET['layers']
+    layers = json.loads(layers)['layers']
+    if layers:
+        for layer in layers:
+            if layer['name'] == config['map']['layers'][layer['index']]['name']:
+                config['map']['layers'][layer['index']]['cql_filter'] = layer['cql_filter']
+                bbox = layer['bbox']
+                # lat = bbox[0]
+                # lon = bbox[3]
+                # inProj = Proj(init='epsg:4326')
+                # outProj = Proj(init='epsg:3857')
+                #
+                # center_lon, center_lat = transform(inProj, outProj, lon, lat)
+                zoom, center_x, center_y = set_bounds_from_bbox(bbox)
+                config['map']['center'] = [center_x, center_y]
+                config['map']['zoom']= zoom
+
+
+    return config
+
+
+
+def set_bounds_from_bbox(bbox):
+        """
+        Calculate zoom level and center coordinates in mercator.
+        """
+        minx, miny, maxx, maxy = [float(c) for c in bbox]
+        x = (minx + maxx) / 2
+        y = (miny + maxy) / 2
+        (center_x, center_y) = forward_mercator((y, x))
+
+        xdiff = maxx - minx
+        ydiff = maxy - miny
+
+        zoom = 0
+
+        if xdiff > 0 and ydiff > 0:
+            width_zoom = math.log(360 / xdiff, 2)
+            height_zoom = math.log(360 / ydiff, 2)
+            zoom = math.ceil(min(width_zoom, height_zoom))
+
+        zoom = zoom
+        center_x = center_x
+        center_y = center_y
+        return zoom, center_x, center_y

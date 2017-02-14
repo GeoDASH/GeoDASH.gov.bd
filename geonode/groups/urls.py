@@ -22,7 +22,6 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
 from .views import GroupDetailView, GroupActivityView, AnswerUpdate, UserInvitationListView, UserInvitationDeleteView
-
 urlpatterns = patterns('geonode.groups.views',
                        url(r'^$', TemplateView.as_view(template_name='groups/group_list.html'), name="group_list"),
                        url(r'^create/$', 'group_create', name="group_create"),
