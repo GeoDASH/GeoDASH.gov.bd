@@ -791,7 +791,7 @@
             {% endif %}
             {% if request.user.is_superuser or request.user.is_manager_of_any_group %}
               <li class="c-menu__item">
-                  <a href="{% url "create-user" %}" class="c-menu__link">
+                  <a href="{% url "account_signup" %}" class="c-menu__link">
                     <i class="fa fa-fire"></i>
                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Create User" %}</span>
                   </a>
