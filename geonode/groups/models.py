@@ -34,6 +34,8 @@ from django.core.mail import send_mail
 from taggit.managers import TaggableManager
 from guardian.shortcuts import get_objects_for_group
 
+from geonode.nsdi.models import DepartmentModel
+
 
 class GroupProfile(models.Model):
     GROUP_CHOICES = [
@@ -55,6 +57,7 @@ class GroupProfile(models.Model):
     slug = models.SlugField(unique=True)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
+    department = models.ForeignKey(DepartmentModel, related_name='department')
     favorite = models.BooleanField(_("Favorite"), default=False,
                                    help_text=_('Should this organization be in favorite list ?'))
     docked = models.BooleanField(_("Docked"), default=False,
