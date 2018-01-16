@@ -337,3 +337,20 @@ class UserInvitationModel(models.Model):
 
     class Meta:
         unique_together = [("group", "user", "state")]
+
+
+class SectionModel(models.Model):
+     """
+     This model is for managing Sections under departments. Only admin of an
+     organization can manage sections under that organization.
+     """
+
+     title = models.CharField(max_length=50, default='')
+     organization = models.ForeignKey(GroupProfile, related_name='groupprofile')
+     slug = models.SlugField(max_length=100, null=True, blank=True)
+     is_active = models.BooleanField(default=True)
+     date_created = models.DateTimeField(auto_now_add=True)
+     date_updated = models.DateTimeField(auto_now=True)
+
+     def __unicode__(self):
+         return self.title

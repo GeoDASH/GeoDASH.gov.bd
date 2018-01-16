@@ -112,7 +112,19 @@
                                             {% trans "Delete this Group" %}
                                           </a>
                                       </li>
+
                                       {% endif %}
+
+                                      <li class="list-group-item">
+                                           <a href="{% url "section_new" %}">
+                                             {% trans "Add Section" %}
+                                           </a>
+                                       </li>
+                                       <li class="list-group-item">
+                                           <a href="{% url "section_list" %}">
+                                             {% trans "Manage Sections" %}
+                                           </a>
+                                       </li>
                                   </ul>
                                 {% endif %}
                                 <!-- <div class="row">

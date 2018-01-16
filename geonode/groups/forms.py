@@ -25,7 +25,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import get_user_model
 
-from geonode.groups.models import GroupProfile
+from geonode.groups.models import GroupProfile, SectionModel
 from geonode.people.models import Profile
 from geonode.groups.models import QuestionAnswer
 
@@ -196,3 +196,8 @@ class AnsewerForm(forms.ModelForm):
         widgets = {
             'answer': forms.Textarea(attrs={'placeholder': 'Answer this question'}),
         }
+
+class SectionForm(forms.ModelForm):
+     class Meta:
+         model = SectionModel
+         fields = ('title', 'slug', 'organization')
