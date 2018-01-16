@@ -720,6 +720,18 @@
                 </a>
             </li>
             {% endif %}
+
+
+             {% if request.user.is_superuser and request.user.is_authenticated %}
+             <li class="c-menu__item">
+                 <a href="{% url "sector_list" %}" class="c-menu__link">
+                     <i class="fa fa-tasks"></i>
+                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Sector" %}</span>
+                 </a>
+             </li>
+             {% endif %}
+
+
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "topiccategory-list" %}" class="c-menu__link">

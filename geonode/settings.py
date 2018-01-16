@@ -236,6 +236,7 @@ GEONODE_APPS = (
     'geonode.groups',
     'geonode.services',
     'geonode.workspace',
+    'geonode.nsdi',
     'geonode.news',
     'geonode.dashboard',
     'geonode.cms',
