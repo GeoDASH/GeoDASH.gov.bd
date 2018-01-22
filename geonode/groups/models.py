@@ -346,7 +346,7 @@ class SectionModel(models.Model):
      """
 
      title = models.CharField(max_length=50, default='')
-     organization = models.ForeignKey(GroupProfile, related_name='groupprofile')
+     organization = models.ForeignKey(GroupProfile, related_name='groupprofile', blank=True, null=True)
      slug = models.SlugField(max_length=100, null=True, blank=True)
      is_active = models.BooleanField(default=True)
      date_created = models.DateTimeField(auto_now_add=True)

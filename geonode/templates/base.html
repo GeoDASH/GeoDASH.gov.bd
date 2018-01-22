@@ -716,7 +716,7 @@
             <li class="c-menu__item">
                 <a href="{% url "section-list-table" %}" class="c-menu__link">
                     <i class="fa fa-tasks"></i>
-                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section Index Page Sections" %}</span>
+                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Index Page Sections" %}</span>
                 </a>
             </li>
             {% endif %}
@@ -738,13 +738,13 @@
              {% endif %}
 
             {% if request.user.is_manager_of_any_group %}
- +                <li class="c-menu__item">
- +                <a href="{% url "section_list" %}" class="c-menu__link">
- +                    <i class="fa fa-tasks"></i>
- +                    <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
- +                </a>
- +                </li>
- +            {% endif%}
+                 <li class="c-menu__item">
+                 <a href="{% url "section_list" %}" class="c-menu__link">
+                     <i class="fa fa-tasks"></i>
+                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
+                 </a>
+                 </li>
+             {% endif%}
 
 
             {% if request.user.is_superuser %}

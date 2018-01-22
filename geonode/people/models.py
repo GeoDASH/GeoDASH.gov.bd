@@ -35,7 +35,7 @@ from django.http import HttpResponseRedirect, Http404
 from taggit.managers import TaggableManager
 
 from geonode.base.enumerations import COUNTRIES
-from geonode.groups.models import GroupProfile, SectionModel
+from geonode.groups.models import GroupProfile
 
 from account.models import EmailAddress
 from user_messages.models import UserThread
@@ -101,7 +101,7 @@ class Profile(AbstractUser):
         blank=True,
         null=True,
         help_text=_('country of the physical address'))
-    section = models.ForeignKey(SectionModel, related_name='section', null=True)
+    section = models.ForeignKey('groups.SectionModel', related_name='section', null=True)
     keywords = TaggableManager(_('keywords'), blank=True, help_text=_(
         'commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject \
             (space or comma-separated'))
