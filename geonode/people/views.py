@@ -42,7 +42,7 @@ from account.models import SignupCode
 
 from geonode.people.models import Profile
 from geonode.people.forms import ProfileForm
-from geonode.people.forms import ForgotUsernameForm, UserSignupFormExtend
+from geonode.people.forms import ForgotUsernameForm, UserSignupFormExtend, UserSignupFormWithWorkingGroup
 from geonode.tasks.email import send_email
 from geonode.groups.models import GroupProfile, GroupMember
 
@@ -139,7 +139,7 @@ class CreateUser(SignupView):
 
     def get_form_class(self):
         if self.request.user.is_superuser:
-            return SignupForm
+            return UserSignupFormWithWorkingGroup
         else:
             return UserSignupFormExtend
 
@@ -194,6 +194,12 @@ class CreateUser(SignupView):
             section = form.cleaned_data.get("section")
             user.email = form.cleaned_data["email"].strip()
             password = form.cleaned_data.get("password")
+            working_group_admin = form.cleaned_data.get("is_working_group_admin")
+            if section:
+                user.section = section
+
+            if working_group_admin:
+                user.is_working_group_admin = working_group_admin
 
             if password:
                 user.set_password(password)

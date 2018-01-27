@@ -61,6 +61,7 @@ class Profile(AbstractUser):
         null=True,
         help_text=_('name of the responsible organization'))
     profile = models.TextField(_('Profile'), null=True, blank=True, help_text=_('introduce yourself'))
+    is_working_group_admin = models.BooleanField(default=False)
     position = models.CharField(
         _('Position Name'),
         max_length=255,

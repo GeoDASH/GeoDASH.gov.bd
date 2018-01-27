@@ -114,3 +114,9 @@ class UserSignupFormExtend(SignupForm):
                                     label=_('Section'),
 
                                     )
+
+
+class UserSignupFormWithWorkingGroup(SignupForm):
+
+    is_working_group_admin = forms.BooleanField(help_text=_('Select if the user is a member of working group'),
+                                    label=_('Is member of working group?'),)
