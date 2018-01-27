@@ -7,11 +7,11 @@ from geonode.nsdi.models import SectorModel, DepartmentModel
 class SectorForm(ModelForm):
     class Meta:
         model = SectorModel
-        fields = ('title', 'slug',)
+        fields = ('title',)
 
 
 class DepartmentForm(ModelForm):
     class Meta:
         model = DepartmentModel
-        fields = ('title', 'slug', 'sector')
+        fields = ('sector', 'title')
 

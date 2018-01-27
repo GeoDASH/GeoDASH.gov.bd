@@ -200,4 +200,4 @@ class AnsewerForm(forms.ModelForm):
 class SectionForm(forms.ModelForm):
      class Meta:
          model = SectionModel
-         fields = ('title', 'slug', 'organization')
+         fields = ('organization', 'title')

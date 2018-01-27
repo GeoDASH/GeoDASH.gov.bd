@@ -115,6 +115,10 @@ class UserSignupFormExtend(SignupForm):
 
                                     )
 
+    def __init__(self, *args, **kwargs):
+        super(UserSignupFormExtend, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['section', 'username', 'password','password_confirm', 'email']
+
 
 class UserSignupFormWithWorkingGroup(SignupForm):
 
