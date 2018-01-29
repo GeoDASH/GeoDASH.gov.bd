@@ -198,6 +198,11 @@ class AnsewerForm(forms.ModelForm):
         }
 
 class SectionForm(forms.ModelForm):
-     class Meta:
+
+    class Meta:
          model = SectionModel
          fields = ('organization', 'title')
+
+    def __init__(self, user, *args, **kwargs):
+        super(SectionForm, self).__init__(*args, **kwargs)
+        self.fields['organization'].queryset = GroupProfile.objects.filter(groupmember__user=user)

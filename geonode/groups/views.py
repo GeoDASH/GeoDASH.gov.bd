@@ -574,7 +574,10 @@ class SectionCreate(CreateView):
 
     template_name = 'section_create.html'
     model = SectionModel
-    form_class = SectionForm
+
+    def get_form(self):
+        form = SectionForm(self.request.user)
+        return  form
 
     def get_success_url(self):
         return reverse('section_list')
