@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('taggit', '0002_auto_20150616_2121'),
         ('auth', '0006_require_contenttypes_0002'),
+        ('groups', '0001_initial'),
     ]
 
     operations = [
@@ -33,6 +34,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('organization', models.CharField(help_text='name of the responsible organization', max_length=255, null=True, verbose_name='Organization Name', blank=True)),
                 ('profile', models.TextField(help_text='introduce yourself', null=True, verbose_name='Profile', blank=True)),
+                ('is_working_group_admin', models.BooleanField(default=False)),
                 ('position', models.CharField(help_text='role or position of the responsible person', max_length=255, null=True, verbose_name='Position Name', blank=True)),
                 ('voice', models.CharField(help_text='telephone number by which individuals can speak to the responsible organization or individual', max_length=255, null=True, verbose_name='Voice', blank=True)),
                 ('fax', models.CharField(help_text='telephone number of a facsimile machine for the responsible organization or individual', max_length=255, null=True, verbose_name='Facsimile', blank=True)),
@@ -44,6 +46,7 @@ class Migration(migrations.Migration):
                 ('last_notification_view', models.DateTimeField(default=datetime.datetime.now)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
                 ('keywords', taggit.managers.TaggableManager(to='taggit.Tag', through='taggit.TaggedItem', blank=True, help_text='commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject             (space or comma-separated', verbose_name='keywords')),
+                ('section', models.ForeignKey(related_name='section', to='groups.SectionModel', null=True)),
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
             options={
