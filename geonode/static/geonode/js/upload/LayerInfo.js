@@ -158,12 +158,25 @@ define(function (require, exports) {
             form_data = new FormData();
         }
         // this should be generate from the permission widget
-        if (typeof permissionsString == 'undefined'){
-            perm = {}
-        }
-        else {
-            perm = permissionsString('#permission_form','layers');
-        }
+        var permissions = {
+            'users': {},
+            'groups': {}
+          };
+          permissions.users['AnonymousUser'] = [];
+          var permissionAttributes=
+          ['view_resourcebase', 'download_resourcebase', 'change_resourcebase_metadata',
+           'change_layer_data','change_layer_style','change_resourcebase','delete_resourcebase',
+            'change_resourcebase_permissions','publish_resourcebase'];
+          $('#organization-checkbox input:checked').each(function() {
+            permissions.groups[$(this).attr('value')]= permissionAttributes;
+          });
+          perm=permissions;
+        // if (typeof permissionsString == 'undefined'){
+        //     perm = {}
+        // }
+        // else {
+        //     perm = permissionsString('#permission_form','layers');
+        // }
 
         if (geogig_enabled) {
             geogig = $('#' + base_name + '\\:geogig_toggle').is(':checked');
@@ -196,7 +209,7 @@ define(function (require, exports) {
 
         // new field added
         form_data.append('category', $('#id-select-category').val());
-        form_data.append('organization', $('#id-select-organization').val());
+        // form_data.append('organization', $('#id-select-organization').val());
         // osm or csv file/layer uploaded
         var fileType = $("#fileType").val();
         if(fileType == "osm"){
