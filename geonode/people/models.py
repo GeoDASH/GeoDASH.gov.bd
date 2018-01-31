@@ -61,6 +61,7 @@ class Profile(AbstractUser):
         null=True,
         help_text=_('name of the responsible organization'))
     profile = models.TextField(_('Profile'), null=True, blank=True, help_text=_('introduce yourself'))
+    is_working_group_admin = models.BooleanField(default=False)
     position = models.CharField(
         _('Position Name'),
         max_length=255,
@@ -101,6 +102,7 @@ class Profile(AbstractUser):
         blank=True,
         null=True,
         help_text=_('country of the physical address'))
+    section = models.ForeignKey('groups.SectionModel', related_name='section', null=True)
     keywords = TaggableManager(_('keywords'), blank=True, help_text=_(
         'commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject \
             (space or comma-separated'))

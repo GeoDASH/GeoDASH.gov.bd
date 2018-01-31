@@ -74,6 +74,9 @@ urlpatterns = patterns('',
                        # workspace views
                        (r'^workspace/', include('geonode.workspace.urls')),
 
+                       # nsdi views
+                       url(r'^nsdi/', include('geonode.nsdi.urls')),
+
                        # Map views
                        (r'^maps/', include('geonode.maps.urls')),
 
@@ -102,7 +105,7 @@ urlpatterns = patterns('',
 
                        # Social views
                        (r"^account/", include("account.urls")),
-                       (r'^people/', include('geonode.people.urls')),
+                       (r'^user/', include('geonode.people.urls')),
                        (r'^avatar/', include('avatar.urls')),
                        (r'^comments/', include('geonode.dialogos.urls')),
                        (r'^ratings/', include('agon_ratings.urls')),
@@ -135,7 +138,7 @@ urlpatterns = patterns('',
                        (r'^i18n/', include('django.conf.urls.i18n')),
                        (r'^autocomplete/', include('autocomplete_light.urls')),
                        (r'^admin/', include(admin.site.urls)),
-                       (r'^groups/', include('geonode.groups.urls')),
+                       (r'^organization/', include('geonode.groups.urls')),
                        (r'^documents/', include('geonode.documents.urls')),
                        (r'^services/', include('geonode.services.urls')),
                        url(r'', include(api.urls)),

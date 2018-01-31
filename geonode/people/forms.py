@@ -28,6 +28,8 @@ from geonode.people.models import Profile
 from geonode.base.models import ContactRole
 from geonode import settings
 from account.models import EmailAddress
+from account.forms import SignupForm
+from geonode.groups.models import SectionModel
 
 # Ported in from django-registration
 attrs_dict = {'class': 'required'}
@@ -104,3 +106,21 @@ class ProfileForm(forms.ModelForm):
         if not qs.exists() or not settings.ACCOUNT_EMAIL_UNIQUE or value==self.instance.email:
             return value
         raise forms.ValidationError(_("A user is registered with this email address."))
+
+
+class UserSignupFormExtend(SignupForm):
+    section = forms.ModelChoiceField(queryset=SectionModel.objects.all(),
+                                  help_text=_('select section for this user'),
+                                    label=_('Section'),
+
+                                    )
+
+    def __init__(self, *args, **kwargs):
+        super(UserSignupFormExtend, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['section', 'username', 'password','password_confirm', 'email']
+
+
+class UserSignupFormWithWorkingGroup(SignupForm):
+
+    is_working_group_admin = forms.BooleanField(help_text=_('Select if the user is a member of working group'),
+                                    label=_('Is member of working group?'),)
