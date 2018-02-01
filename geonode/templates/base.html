@@ -81,8 +81,8 @@
                     </button>
                     <a class="navbar-brand" href="{% url "home" %}">
                         <div class="logo">
-                            <img src="{{ STATIC_URL }}geonode/images/logo.png" />
-                            <div class="gd-title-geodash">GeoDASH</div>
+                            <img src="{{ STATIC_URL }}geonode/images/logo.png" title="Jica"/>
+                            <!-- <div class="gd-title-geodash">Jica</div> -->
                         </div>
                     </a>
                 </div>
@@ -164,6 +164,20 @@
                                 {% endif %}
                             </ul>
                         </li>
+
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">administration<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                    <li id="nav_maps">
+                                      <a href="">Layers</a>
+                                      <a href="">Users</a>
+                                      <a href="">Setup</a>
+                                    </li>
+ 
+                                </ul>
+                        </li>
+
+
                         <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                         {% if user.is_authenticated %}
                         <li class="notification">
@@ -191,9 +205,9 @@
                                     {% if HAYSTACK_SEARCH %}
                                         <input id="search_input"  type="text" placeholder="" name="q" style="color:#5a5d63;">
                                     {% else %}
-                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="color:#5a5d63;" name="title__icontains">
+                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="color:#fff;" class="map-search" name="title__icontains">
                                     {% endif %}
-                                    <span style="padding-left:20px;">
+                                    <span style="padding-left:0;">
                                         <!--<select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">-->
                                             <!--<option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>-->
                                             <!--<option value="Organization" id="organizationsearch" >Organization</option>-->
@@ -215,7 +229,7 @@
                                             <!--</ul>-->
                                         <!--</div>-->
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                               aria-haspopup="true" aria-expanded="false">{% trans "" %} <span class="caret"></span>
+                                               aria-haspopup="true" aria-expanded="false">{% trans "" %} <span class="caret search-caret"></span>
                                         </a>
                                             <ul class="dropdown-menu" >
                                                 <li id="layermapdocsearch">
@@ -382,7 +396,7 @@
                         <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
                         <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
                         <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
-                        <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
+                        <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "NSDI Wiki" %}</a></li>
                         <li>
                             <div class="tooltip_use" style="cursor:pointer;">Useful Resource
                               <span class="tooltiptext_use">
