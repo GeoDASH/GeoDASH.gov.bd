@@ -1041,6 +1041,7 @@ def layer_permission_preview(request, layername, template='layers/layer_attribut
         return render_to_response(template, RequestContext(request, ctx))
 
 
+
 def getPermittedAttributes(layer, user):
     if user == layer.owner or user.is_working_group_admin:
         return Attribute.objects.filter(layer=layer)
@@ -1048,3 +1049,5 @@ def getPermittedAttributes(layer, user):
         return Attribute.objects.filter(layer=layer, is_permitted=True)
     else:
         return Attribute.objects.none()
+
+

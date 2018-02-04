@@ -849,7 +849,6 @@ class ViewNotificationTimeSaving(TypeFilteredResource):
 
 
 
-
 class LayerDownloadCountApi(TypeFilteredResource):
 
     class Meta:
@@ -879,6 +878,7 @@ class LayerDownloadCountApi(TypeFilteredResource):
                 out['success'] = False
                 status_code = 400
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
 
 class LayerPermissionPreviewApi(TypeFilteredResource):
 
