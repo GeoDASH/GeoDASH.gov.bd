@@ -69,6 +69,8 @@ from geonode.maps.models import WmsServer
 from geonode.security.views import _perms_info, _perms_info_json
 from .authorization import GeoNodeAuthorization
 
+from geonode.layers.models import Attribute
+
 
 CONTEXT_LOG_FILE = None
 
@@ -847,6 +849,7 @@ class ViewNotificationTimeSaving(TypeFilteredResource):
 
 
 
+
 class LayerDownloadCountApi(TypeFilteredResource):
 
     class Meta:
@@ -876,3 +879,42 @@ class LayerDownloadCountApi(TypeFilteredResource):
                 out['success'] = False
                 status_code = 400
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+class LayerPermissionPreviewApi(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'layer-attribute-permission-set'
+        allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        out = {'success': False}
+        if not request.user.is_authenticated():
+            out['errors'] = 'User is not authenticated'
+            return HttpResponse(json.dumps(out), content_type='application/json', status=200)
+
+        if request.method == 'POST':
+            out = {'success': False}
+            layer_pk = request.POST.get('layer_pk')
+            try:
+                layer = Layer.objects.get(id=layer_pk)
+            except:
+                out['errors'] = 'No layer found with this layer pk'
+                return HttpResponse(json.dumps(out), content_type='application/json', status=200)
+
+            if request.user.is_working_group_admin or request.user == layer.owner:
+                permissions = request.POST.get('permissions')
+                attributes = request.POST.get('attributes')
+                if permissions is not None and len(permissions.keys()) > 0:
+                    permissions = layer.resolvePermission(permissions)
+                    layer.set_permissions(permissions)
+                for attr_pk in attributes:
+                    attr = Attribute.objects.get(pk=attr_pk).is_permitted = True
+                    attr.save()
+                out['success'] = True
+
+
+            else:
+                out['errors'] = 'You dont have permission to update permissions'
+        out['errors'] = 'Only post method is permitted'
+        return HttpResponse(json.dumps(out), content_type='application/json', status=200)
+
