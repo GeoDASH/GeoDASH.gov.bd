@@ -2,9 +2,10 @@
     angular.module('layerApp').controller('approveLayerController',
     function($scope,layerService,uiGridConstants){
         $scope.layer={};
+        $scope.layer_id="";
         $scope.departments=[];
         $scope.gridApi={};
-        $scope.layerApprovalUrl="";
+        $scope.layerApprovalUrl="/api/layer-attribute-permission-set/";
         $scope.gridOption = {
             enableRowSelection: true,
             enableSelectAll: true,
@@ -14,8 +15,10 @@
             exporterCsvFilename: self.layerName + '.csv',
             enableHorizontalScrollbar: uiGridConstants.scrollbars.ALWAYS,
             columnDefs: [
-                { field: 'Name' , displayName : 'Name'},
-                { field: 'DateType',displayName : 'Data Type' }
+                { field: 'attribute' , displayName : 'Name'},
+                { field: 'attribute_type',displayName : 'Data Type' },
+                { name: 'id', visible: false,displayName:"Id" },
+                { name: 'resource_uri', visible: false,displayName:"Resource Uri" }
             ]
         };
         $scope.gridOption.onRegisterApi = function(gridApi) {
@@ -23,14 +26,24 @@
           };
 
         function getPostLayerDataInformation(){
+            var permissions = {
+                'users': {},
+                'groups': {}
+              };
+            permissions.users['AnonymousUser'] = [];
+            var permissionAttributes=
+          ['view_resourcebase', 'download_resourcebase'];
             var data={};
-            data.layerId=$scope.layer.Id;
+            data.layer_pk =$scope.layer_id;
             var permittedOrganizations=_.map(_.filter($scope.departments,function(department){
                 return department.IsChecked;
                 }),"id");
-            data.permittedOrganizations=permittedOrganizations;
-            var selectedAttributes=_.map($scope.gridApi.selection.getSelectedRows(),"Name");
-            data.permittedAttributes=selectedAttributes;
+            angular.forEach(permittedOrganizations,function(organizationId){
+                permissions.groups[organizationId]= permissionAttributes;
+            });
+            data.permissions =JSON.stringify(permissions);
+            var selectedAttributes=_.map($scope.gridApi.selection.getSelectedRows(),"id");
+            data.attributes =JSON.stringify(selectedAttributes);
             return data;
         }
 
@@ -45,21 +58,26 @@
 
         $scope.approveLayer=function(){
             var data=getPostLayerDataInformation();
-            data.methodType="ApproveLayer";
+            console.log(data);
             postLayerData($scope.layerApprovalUrl,data);
         };
 
         $scope.publishLayer=function(){
             var data=getPostLayerDataInformation();
-            data.methodType="SubmitForApproval";
-            postLayerData($scope.layerApprovalUrl,data);
+            console.log(data);
+            // postLayerData($scope.layerApprovalUrl,data);
         };
-
-        function getLayerInformation(){
-            layerService.getLayerInformation('/static/geonode/js/workspace/layer/layer.json').then(function(response){
-                $scope.layer=response.layer;
-                $scope.departments=response.organizations;
-                $scope.gridOption.data=response.layer.Attributes;
+        angular.isUndefinedOrNull = function(val) {
+            return angular.isUndefined(val) || val === null ;
+        };
+        function getLayerInformation(layerId){
+            layerService.getLayerInformation('/api/layer-attributes-permission/'+layerId+'/').then(function(response){
+                $scope.layer=response;
+                $scope.layer.access_level=response.limited_access ? 'Public' : 'Limited';
+                $scope.layer.belongs_to="" + (angular.isUndefinedOrNull(response.department) ? 'N/A' : response.department) +' > '+
+                                        (angular.isUndefinedOrNull(response.organization) ? 'N/A' : response.organization) +' > '+
+                                        (angular.isUndefinedOrNull(response.sector) ? 'N/A' : response.sector ) +"";
+                $scope.gridOption.data=response.attributes;
             },function(error){
                 console.log(error);
             });
@@ -70,9 +88,9 @@
                 });
         }
 
-        function inIt(){
-            getLayerInformation();
-        }
-        inIt();
+        $scope.inIt=function(layerId){
+            getLayerInformation(layerId);
+            $scope.layer_id=layerId;
+        };
     });
 })();

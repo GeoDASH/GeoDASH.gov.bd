@@ -14,8 +14,11 @@
 
          function post(url,data){
             var deferred = $q.defer();
-            $http.post(url,data)
-                .success(function (res) {
+            $http({
+                url: url,
+                method: "POST",
+                params: data
+                }).success(function (res) {
                     deferred.resolve(res);
                 }).error(function (error, status) {
                 deferred.reject({error: error, status: status});

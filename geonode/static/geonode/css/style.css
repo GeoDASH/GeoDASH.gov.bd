@@ -2662,7 +2662,8 @@ ul#global-errors li{
     text-align: center;
 }
 .grid-container.lmd .summery{
-    margin-top: 15px;
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 .grid-container.lmd .bottom-content{
     margin: 15px;

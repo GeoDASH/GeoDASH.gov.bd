@@ -164,9 +164,7 @@ define(function (require, exports) {
           };
           permissions.users['AnonymousUser'] = [];
           var permissionAttributes=
-          ['view_resourcebase', 'download_resourcebase', 'change_resourcebase_metadata',
-           'change_layer_data','change_layer_style','change_resourcebase','delete_resourcebase',
-            'change_resourcebase_permissions','publish_resourcebase'];
+          ['view_resourcebase', 'download_resourcebase'];
           $('#organization-checkbox input:checked').each(function() {
             permissions.groups[$(this).attr('value')]= permissionAttributes;
           });

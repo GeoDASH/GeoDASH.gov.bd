@@ -51,6 +51,8 @@ from geonode.social.templatetags.social_tags import get_data
 
 from .authorization import GeoNodeAuthorization
 
+import unicodedata
+
 from .api import TagResource, RegionResource, ProfileResource, \
     TopicCategoryResource, \
     FILTER_TYPES
@@ -1025,41 +1027,44 @@ class WorkSpaceMapApi(ModelResource):
         bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle
 
+# class MyEncoder(JSONEncoder):
+#         def default(self, o):
+#             return o.__dict__
+
+class AttributeApi(ModelResource):
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'layer-attributes'
+        allowed_method = 'get'
+        fields = ['attribute', 'attribute_type', 'id']       
+
+
 class LayerAttributeApi(ModelResource):
-    organization_list = fields.ListField()
-    attributes_list = fields.ListField()
-    department = fields.CharField()
+    
+    attributes = fields.ToManyField('geonode.api.resourcebase_api.AttributeApi', 'attributes', full=True, null=True)
+    
+    def dehydrate(self, bundle):
+        bundle.data['limited_access'] = True
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['is_wg_admin'] = False
+        bundle.data['layer_type'] = bundle.obj.display_type
 
-    def dehydrate_organization_list(self, bundle):
-        return GroupProfile.objects.all().values_list('title', 'slug')
+        if bundle.obj.group is not None:
+            bundle.data['department'] = bundle.obj.group.department.title if bundle.obj.group.department else None
+            bundle.data['sector'] = bundle.obj.group.department.sector.title if bundle.obj.group.department else None
+            bundle.data['organization'] = bundle.obj.group.title
+        else:
+            bundle.data['department'] = None
+            bundle.data['sector'] = None
+            bundle.data['organization'] = None
 
-    def dehydrate_attributes_list(self, bundle):
-        layer_id = bundle.request.GET.get('layer_id', None)
-        if layer_id:
-            return  Attribute.objects.filter(layer_id=layer_id).values_list('id', 'attribute', 'attribute_type')
-
-
-    def dehydrate_department(self, bundle):
-        layer_id = bundle.request.GET.get('layer_id', None)
-        if layer_id:
-            return  Layer.objects.get(id=layer_id).group.department
-
-
+        return  bundle
 
     class Meta:
         queryset = Layer.objects.all()
         resource_name = 'layer-attributes-permission'
         allowed_method = 'get'
-        fields = ['title', 'owner', 'section', 'date_created', 'thumbnail_url']
-
-
-
-    def get_object_list(self, request):
-        layer_id = request.GET.get('layer_id', None)
-        if layer_id:
-            return super(LayerAttributeApi, self).get_object_list(request).filter(id=layer_id)
-        else:
-            return super(LayerAttributeApi, self).get_object_list(request).none()
+        fields = ['title', 'section', 'date_created', 'thumbnail_url']    
 
     def dehydrate_date_created(self, bundle):
         return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')

@@ -218,17 +218,7 @@
                           {{ item.abstract | limitTo: 220 }}{{ item.abstract.length  > 220 ? '...' : ''}}
                       </div>
                   </div>
-                  <div class="row">
-                        <a class="avater-img-mid center-block" href="/organization/organization/{{item.organization_slug}}" >
-                          <img 
-                          height="50px"
-                          width="50px"
-                          ng-src="/uploaded/{{item.organization_logo}}" 
-                          class="img-responsive center-block"
-                          alt="{{ group.title }}"/>
-                        </a>
-                      </div>
-                  <div class="summery">
+                  <!-- <div class="summery">
                       <div class="item-items">
                           <ul class="list-inline lmd">
                               <li>
@@ -263,8 +253,21 @@
                               </li>
                           </ul>
                       </div>
-                  </div>
-              </div>
+                  </div> -->
+                  <div class="summery" style="float: left;width:255px;border: 1px solid #e7e7e7;height: 79px;background-color: #f6f6f6;padding: 9px;border-right: 0;"> <div class="item-items"> <ul class="list-inline lmd"> <li> <a href="/people/profile/{{ item.owner__username }}" title="{{item.resource_type}} owner"> <i class="fa fa-user"></i> {{ item.owner__username }} </a> </li> <li> <a href="{{ item.detail_url }}#info" title="{{item.resource_type}} creation date"> <i class="fa fa-calendar-o"></i> {{ item.date|date:'d MMM y' }} </a> </li> <li> <a href="{{ item.detail_url }}" title="{{item.resource_type}} view count"> <i class="fa fa-eye"></i> {{ item.popular_count }} </a> </li> <li> <a href="{{ item.detail_url }}#share" title="{{item.resource_type}} share count"> <i class="fa fa-share"></i> {{ item.share_count }} </a> </li> <li> <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating"> <i class="fa fa-star"></i> {{ item.rating }} </a> </li> </ul> </div> </div> 
+                  <div style="float:left;padding:5px;border: 1px solid #c8d2d8;"> 
+                      <div style="font-size: 11px;color:rgb(255, 255, 255); font-weight: bold;background-color:#00489c; text-align: center;margin:-6px -6px 5px;">Shared by </div> 
+                      <a href="/organization/organization/{{item.organization_slug}}" >
+                            <img ng-src="/uploaded/{{item.organization_logo}}" 
+                            height="53px"
+                            width="50px"
+                            class="center-block" 
+                            alt="{{ group.title }}"
+                            title="{{ group.title }}"> 
+                      </a>
+                      
+                    </div>
+                </div>
               {% endverbatim %}
               <div>
                   <div class="bottom-content">
