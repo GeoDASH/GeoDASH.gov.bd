@@ -55,7 +55,7 @@ from notify.signals import notify
 
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
-from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm, LayerAttributePermissionPreviewForm
+from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
 from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
