@@ -27,7 +27,7 @@
             data.layerId=$scope.layer.Id;
             var permittedOrganizations=_.map(_.filter($scope.departments,function(department){
                 return department.IsChecked;
-                }),"Id");
+                }),"id");
             data.permittedOrganizations=permittedOrganizations;
             var selectedAttributes=_.map($scope.gridApi.selection.getSelectedRows(),"Name");
             data.permittedAttributes=selectedAttributes;
@@ -63,6 +63,11 @@
             },function(error){
                 console.log(error);
             });
+            layerService.getOrganizations('/api/groups').then(function(response){
+                    $scope.departments=response.objects;
+                },function(error){
+                    console.log(error);
+                });
         }
 
         function inIt(){

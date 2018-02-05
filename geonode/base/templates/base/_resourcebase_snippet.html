@@ -70,6 +70,12 @@
                           {{ item.rating }}
                       </a>
                   </li>
+                  <li>
+                        <a href="{{ item.detail_url }}#rate" title="{{item.resource_type}} rating">
+                            <i class="fa fa-star"></i>
+                            {{item.organization_logo}}
+                        </a>
+                    </li>
                   {% endverbatim %}
                   {% if request.user.is_manager_of_any_group %}
                   <!--{{ request.user.group_list_all }}-->
@@ -212,7 +218,16 @@
                           {{ item.abstract | limitTo: 220 }}{{ item.abstract.length  > 220 ? '...' : ''}}
                       </div>
                   </div>
-
+                  <div class="row">
+                        <a class="avater-img-mid center-block" href="/organization/organization/{{item.organization_slug}}" >
+                          <img 
+                          height="50px"
+                          width="50px"
+                          ng-src="/uploaded/{{item.organization_logo}}" 
+                          class="img-responsive center-block"
+                          alt="{{ group.title }}"/>
+                        </a>
+                      </div>
                   <div class="summery">
                       <div class="item-items">
                           <ul class="list-inline lmd">

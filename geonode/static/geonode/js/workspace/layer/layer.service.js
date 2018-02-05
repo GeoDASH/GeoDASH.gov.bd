@@ -38,5 +38,8 @@
         this.unpublishLayer=function(url,data){
             return post(url,data);
         };
+        this.getOrganizations=function(url){
+            return get(url);
+        };
     });
 })();

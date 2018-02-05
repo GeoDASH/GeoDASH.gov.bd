@@ -14,7 +14,7 @@
     <div class="gd-content">
         <div class="gd-content-heading">
             <div class="title small-content">
-                {% trans "Approve Layer" %}
+                {% trans "Approve Layer By default" %}
             </div>
             <div class="hr"></div>
         </div>
@@ -55,10 +55,10 @@
                                                                 <label class="control-label">
                                                                         <span class="glyphicon glyphicon-list-alt"></span> Department</label> 
                                                                         <div class="checkbox" ng-repeat="department in departments">
-                                                                                <label><input type="checkbox" value="true" ng-model="department.IsChecked">[{department.Name}]</label>
+                                                                                <label><input type="checkbox" value="true" ng-model="department.IsChecked">[{department.title}]</label>
                                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                   </div>
                                             <div class="form-group">
@@ -118,11 +118,11 @@
                                     </div>
                             </div>
                             <div class="col-md-4">
-                                    <img ng-src="{{layer.thumbnail_url}}"
+                                    <img src="{{layer.thumbnail_url}}"
                                     class="img-responsive center-block"
                                     alt="No Image Found">
                             </div>
-                            <img ng-src="{{ layer.get_thumbnail_url }}" src="{{ layer.get_thumbnail_url }}"
+                            <!-- <img ng-src="{{ layer.get_thumbnail_url }}" src="{{ layer.get_thumbnail_url }}"> -->
                             <div class="col-md-12">
                                 <div class="col-md-4 pull-right">
                                     <button type="button" class="btn btn-default pull-right" ng-click="approveLayer()">Submit For Approval</button>

@@ -350,7 +350,7 @@
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.current_iteration +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
-                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Publish/Approve Layer" %}</a> <a href="'+ item.detail_url +'" class="btn btn-gd-primary">{% trans "Edit Layer" %}</a> <a onclick="deleteLayer('+ item.id +')" class="btn btn-gd-primary">{% trans "Inactive Layer" %}</a></td>';
+                    output+='<td><a href="/layers/'+ item.typename +'/preview" class="btn btn-gd-primary">{% trans "Publish/Approve Layer" %}</a> <a href="'+ item.detail_url +'" class="btn btn-gd-primary">{% trans "Edit Layer" %}</a> <a onclick="deleteLayer('+ item.id +')" class="btn btn-gd-primary">{% trans "Inactive Layer" %}</a></td>';
                     output+='</tr>';
                   });
                   outputpag+='<div>';
