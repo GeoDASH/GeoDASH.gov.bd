@@ -1039,7 +1039,6 @@ def layer_permission_preview(request, layername, template='layers/layer_attribut
 
         }
         return render_to_response(template, RequestContext(request, ctx))
-<<<<<<< 4e3f623a48cc1df3e1f30cf1264bc382a6a50580
 
 
 
@@ -1052,5 +1051,3 @@ def getPermittedAttributes(layer, user):
         return Attribute.objects.none()
 
 
-=======
->>>>>>> layer attribute level permission
