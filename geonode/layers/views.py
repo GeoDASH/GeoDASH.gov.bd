@@ -1042,7 +1042,9 @@ def layer_permission_preview(request, layername, template='layers/layer_attribut
 
 
 def getPermittedAttributes(layer, user):
-    if user == layer.owner or user.is_working_group_admin or user.has_perm('download_resourcebase', layer.get_self_resource()):
+    if user == layer.owner or user.is_working_group_admin:
+        return Attribute.objects.filter(layer=layer)
+    elif user.has_perm('download_resourcebase', layer.get_self_resource()):
         return Attribute.objects.filter(layer=layer, is_permitted=True)
     else:
         return Attribute.objects.none()
