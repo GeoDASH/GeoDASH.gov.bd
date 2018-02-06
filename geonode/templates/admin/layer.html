@@ -37,6 +37,9 @@
                           <li><a href="#approved" id="Approved_list_layers_admin" data-toggle="tab">{% trans "Approved" %}</a></li>
                           <li><a href="#user-drafts" id="Admin_userdraft" data-toggle="tab">{% trans "User Drafts" %}</a></li>
                           <li><a href="#denied-layers" id="Admin_dined_list" data-toggle="tab">{% trans "Denied Layers" %}</a></li>
+                          <li><a href="#free-layers" id="Admin_dined_list" data-toggle="tab">{% trans "Free" %}</a></li>
+                          <li><a href="#limited-layers" id="Admin_dined_list" data-toggle="tab">{% trans "Limited" %}</a></li>
+                          <li><a href="#archived-layers" id="Admin_dined_list" data-toggle="tab">{% trans "Archived" %}</a></li>
                         </ul>
                     <div class="tab-content">
                       <article id="user-approval-request" class="tab-pane active">
@@ -144,7 +147,6 @@
                             </div>
                         </ul>
                       </article>
-
                       <article id="denied-layers" class="tab-pane" style="background:#ffffff;">
                         <ul class="no-style-list">
                             <table class="table table-hover">
@@ -178,8 +180,109 @@
                             </div>
                         </ul>
                       </article>
+                      <article id="free-layers" class="tab-pane" style="background:#ffffff;">
+                            <ul class="no-style-list">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Serial No</th>
+                                            <th>Layer Title</th>
+                                            <th>Organization</th>
+                                            <th>Who Requested</th>
+                                            <th>Who Denied</th>
+                                            <th>Denied Date</th>
+                                        </tr>
+                                    </thead>
+                                    <!--{% for deny in denied_list %}-->
+                                        <tbody id="allAdminDraftlayers_active">
+                                            <!--<tr>-->
+                                                <!--<td>{{ forloop.counter}}</td>-->
+                                                <!--<td>{{ deny.title}}</td>-->
+                                                <!--<td>{{ deny.group}}</td>-->
+                                                <!--<td>{{ deny.owner }}</td>-->
+                                                <!--<td>{{ deny.last_auditor }}</td>-->
+                                                <!--<td>{{ deny.date_updated }}</td>-->
+                                            <!--</tr>-->
+                                        </tbody>
+                                    <!--{% empty %}-->
+                                        <!--<p>{% trans "No denied layers yet" %}</p>-->
+                                    <!--{% endfor %}-->
+                                </table>
+                                <div id="showallAdminDraftlayerspag_active">
+    
+                                </div>
+                            </ul>
+                          </article>
+                      <article id="limited-layers" class="tab-pane" style="background:#ffffff;">
+                                <ul class="no-style-list">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Serial No</th>
+                                                <th>Layer Title</th>
+                                                <th>Organization</th>
+                                                <th>Who Requested</th>
+                                                <th>Who Denied</th>
+                                                <th>Denied Date</th>
+                                            </tr>
+                                        </thead>
+                                        <!--{% for deny in denied_list %}-->
+                                            <tbody id="allAdminDraftlayers_active">
+                                                <!--<tr>-->
+                                                    <!--<td>{{ forloop.counter}}</td>-->
+                                                    <!--<td>{{ deny.title}}</td>-->
+                                                    <!--<td>{{ deny.group}}</td>-->
+                                                    <!--<td>{{ deny.owner }}</td>-->
+                                                    <!--<td>{{ deny.last_auditor }}</td>-->
+                                                    <!--<td>{{ deny.date_updated }}</td>-->
+                                                <!--</tr>-->
+                                            </tbody>
+                                        <!--{% empty %}-->
+                                            <!--<p>{% trans "No denied layers yet" %}</p>-->
+                                        <!--{% endfor %}-->
+                                    </table>
+                                    <div id="showallAdminDraftlayerspag_active">
+        
+                                    </div>
+                                </ul>
+                              </article>
+                    <article id="archived-layers" class="tab-pane" style="background:#ffffff;">
+                                    <ul class="no-style-list">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Serial No</th>
+                                                    <th>Layer Title</th>
+                                                    <th>Organization</th>
+                                                    <th>Who Requested</th>
+                                                    <th>Who Denied</th>
+                                                    <th>Denied Date</th>
+                                                </tr>
+                                            </thead>
+                                            <!--{% for deny in denied_list %}-->
+                                                <tbody id="allAdminDraftlayers_active">
+                                                    <!--<tr>-->
+                                                        <!--<td>{{ forloop.counter}}</td>-->
+                                                        <!--<td>{{ deny.title}}</td>-->
+                                                        <!--<td>{{ deny.group}}</td>-->
+                                                        <!--<td>{{ deny.owner }}</td>-->
+                                                        <!--<td>{{ deny.last_auditor }}</td>-->
+                                                        <!--<td>{{ deny.date_updated }}</td>-->
+                                                    <!--</tr>-->
+                                                </tbody>
+                                            <!--{% empty %}-->
+                                                <!--<p>{% trans "No denied layers yet" %}</p>-->
+                                            <!--{% endfor %}-->
+                                        </table>
+                                        <div id="showallAdminDraftlayerspag_active">
+            
+                                        </div>
+                                    </ul>
+                                  </article>
+                        </div>
+                  
+                  
                     </div>
-                  </div>
               </div>
             </div>
         </div>
