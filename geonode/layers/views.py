@@ -153,6 +153,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
             'allowed_file_types': ['.cst', '.dbf', '.prj', '.shp', '.shx'],
             'categories': TopicCategory.objects.all(),
             'organizations': GroupProfile.objects.filter(groupmember__user=request.user),
+            'user_organization' : GroupProfile.objects.filter(groupmember__user=request.user).first()
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':

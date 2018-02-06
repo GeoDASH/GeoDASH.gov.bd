@@ -61,7 +61,52 @@
                           </div>
                           <div class="block-separator"></div>
                           <div class="row">
-                              {% for user in value %}
+                              {% if value %}
+                                <table class="table table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Section</th>
+                                            <th>Role</th>
+                                            <th>Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for user in value %}
+                                            <tr>
+                                                <td>{{user.username}}</td>
+                                                <td>
+                                                    {% if user.section %}
+                                                    {{user.section}}
+                                                    {% else %}
+                                                    No Section
+                                                    {% endif %}
+
+                                                </td>
+                                                <td>
+                                                        {% if user.section %}
+                                                        {{user.role}}
+                                                        {% else %}
+                                                        No Role
+                                                        {% endif %}
+                                                </td>
+                                                <td>
+                                                 <form style="display: inline;" method="POST" action="{% url "remove-group-member" key.slug user.username %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-danger btn-gd-remove btn-xs" type="submit" >
+                                                            Remove
+                                                        </button>
+                                                        </form>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                          
+                                        </tbody>
+                                      </table>
+                                      {% else %}
+                                    <div></div>
+                                    {% endif %}
+                                      <!-- {% for user in value %}
                                 <article>
                                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" >
                                         <div class="grid-container">
@@ -139,11 +184,11 @@
                                         </div>
                                     </div>
                                 </article>
-                              {% endfor %}
+                              {% endfor %} -->
                           </div>
                         {% endfor %}
                     </div>
-                    <div ng-app="userApp">
+                    <!-- <div ng-app="userApp">
                         <div ng-controller="userListController">
                             <h3>User List</h3>
                             <div class="col-md-6">
@@ -229,7 +274,7 @@
                                       </form>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
               </div>
             </div>
         </div>

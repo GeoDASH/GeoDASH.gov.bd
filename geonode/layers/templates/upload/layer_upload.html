@@ -127,8 +127,14 @@
                             </div>
                         </div>
                         <div class="row">
+                                <input 
+                                style="display: none" 
+                                type="text" 
+                                id="id-select-organization"
+                                value={{user_organization.id}}>
                             <div class="col-md-4" id="organization-checkbox">
                                     {% for organization in organizations %}
+                                    
                                     <div class="checkbox" style="padding-top: 0%;margin-top: 0%">
                                             <label><input type="checkbox" value={{ organization.slug }}>{{ organization.title }}</label>
                                     </div>

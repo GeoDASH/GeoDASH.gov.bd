@@ -207,7 +207,7 @@ define(function (require, exports) {
 
         // new field added
         form_data.append('category', $('#id-select-category').val());
-        // form_data.append('organization', $('#id-select-organization').val());
+        form_data.append('organization', $('#id-select-organization').val());
         // osm or csv file/layer uploaded
         var fileType = $("#fileType").val();
         if(fileType == "osm"){
