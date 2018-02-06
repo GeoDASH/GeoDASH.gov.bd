@@ -235,6 +235,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 upload_session.save()
                 permissions = form.cleaned_data["permissions"]
                 if permissions is not None and len(permissions.keys()) > 0:
+                    permissions = saved_layer.resolvePermission(permissions)
                     saved_layer.set_permissions(permissions)
             finally:
                 if tempdir is not None:

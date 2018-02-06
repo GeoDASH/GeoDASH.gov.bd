@@ -27,6 +27,8 @@ from django.conf import settings
 from guardian.utils import get_user_obj_perms_model
 from guardian.shortcuts import assign_perm, get_groups_with_perms
 
+from geonode.groups.models import GroupProfile
+
 
 ADMIN_PERMISSIONS = [
     'view_resourcebase',
@@ -151,6 +153,18 @@ class PermissionLevelMixin(object):
         if self.__class__.__name__ == 'Layer':
             assign_perm('change_layer_data', self.owner, self)
             assign_perm('change_layer_style', self.owner, self)
+
+    def resolvePermission(self, permissions):
+        for gr_slug in permissions["groups"]:
+            if gr_slug != 'default':
+                group = GroupProfile.objects.get(slug=gr_slug)
+                groupMembers = group.member_queryset()
+                for gr_member in groupMembers:
+                    permissions['users'][gr_member.user.username] = []
+                    permissions['users'][gr_member.user.username].append('view_resourcebase')
+                    permissions['users'][gr_member.user.username].append('download_resourcebase')
+
+        return permissions
 
     def set_permissions(self, perm_spec):
         """
