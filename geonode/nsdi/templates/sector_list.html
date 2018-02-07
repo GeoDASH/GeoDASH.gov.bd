@@ -1,0 +1,73 @@
+{% extends "site_base.html" %}
+{% load bootstrap_tags %}
+
+{% load i18n %}
+{% block title %} {% trans "Sector List" %} - {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+<div class="gd-content">
+    <div class="gd-content-heading">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="title small-content">
+                  {% trans "Sector List" %}
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="small-content text-right">
+                  <a href="{% url "sector_new" %}" class="btn btn-gd-primary pull-right icon-btn-color" style="font-size:12px;">
+                        {% trans "Add Sector" %} <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+      <div class="hr"></div>
+    </div>
+    <div class="gd-content-body transparent top-bottom-margin-20px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gd-content-body1 full-pad-40px1">
+                  <form id=""  method="post"  action="">
+                    {% csrf_token %}
+                    <div class="row topic-cat-list">
+                        <div class="col-md-2" style="color:#fff;">
+                            <h4 >No.</h4>
+                        </div>
+                        <div class="col-md-3" style="color:#fff;">
+                            <h4>Title </h4>
+                        </div>
+
+                        <div class="col-md-2" style="color:#fff;">
+                            <h4>Action</h4>
+                        </div>
+                    </div>
+                      {% for data in object_list %}
+                        <div class="row topic-cat-list-data">
+                            <div class="col-md-2">
+                                {{ forloop.counter }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ data.title }}
+                            </div>
+
+                            <div class="col-md-2">
+                                <a href="{% url "sector_edit" data.id %}"  class="" style="font-size:12px;">Edit</a>
+                                &nbsp &nbsp
+
+                                 <a href="{% url "sector_delete" data.id %}"  class="btn " style="font-size:12px;">Delete
+
+                                </a>
+                            </div>
+                        </div>
+                      {% endfor %}
+
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

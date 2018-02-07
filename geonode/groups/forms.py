@@ -25,7 +25,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import get_user_model
 
-from geonode.groups.models import GroupProfile
+from geonode.groups.models import GroupProfile, SectionModel
 from geonode.people.models import Profile
 from geonode.groups.models import QuestionAnswer
 
@@ -73,7 +73,7 @@ class GroupForm(forms.ModelForm):
 
     class Meta:
         model = GroupProfile
-        exclude = ['group', 'favorite', 'docked']
+        exclude = ['group', 'favorite', 'docked', 'access']
 
 
 class GroupUpdateForm(forms.ModelForm):
@@ -196,3 +196,16 @@ class AnsewerForm(forms.ModelForm):
         widgets = {
             'answer': forms.Textarea(attrs={'placeholder': 'Answer this question'}),
         }
+
+
+class SectionForm(forms.ModelForm):
+
+    class Meta:
+         model = SectionModel
+         fields = ('organization', 'title')
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        import pdb; pdb.set_trace()
+        super(SectionForm, self).__init__(*args, **kwargs)
+        self.fields['organization'].queryset = GroupProfile.objects.filter(groupmember__user=self.user)

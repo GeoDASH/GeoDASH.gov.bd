@@ -31,6 +31,7 @@ js_info_dict = {
 
 urlpatterns = patterns(
     'geonode.workspace.views',
+    url(r'^approve-layer/$', TemplateView.as_view(template_name='admin/approve_layer.html'), name='workspace-abcdef'),
     url(r'^member/layer$', MemberWorkspaceLayer.as_view(), name='member-workspace-layer'),
     url(r'^member/document$', MemberWorkspaceDocument.as_view(), name='member-workspace-document'),
     url(r'^member/map$', MemberWorkspaceMap.as_view(), name='member-workspace-map'),
