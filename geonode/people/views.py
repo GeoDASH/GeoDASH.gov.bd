@@ -251,7 +251,7 @@ def inbox(request):
     return HttpResponseRedirect(reverse('messages_inbox'))
 
 
-class InviteUser():
+class InviteUser(SignupView):
     pass
     """
 
