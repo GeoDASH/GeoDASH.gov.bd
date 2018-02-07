@@ -473,6 +473,7 @@ class Attribute(models.Model):
         default=datetime.now,
         help_text=_('date when attribute statistics were last updated'))  # passing the method itself, not
 
+    is_permitted = models.NullBooleanField(_('is permitted'), null=True, default=False, help_text=_('if true, permitted groups will see this attribute'))
     objects = AttributeManager()
 
     def __str__(self):

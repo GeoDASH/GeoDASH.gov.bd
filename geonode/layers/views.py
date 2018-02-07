@@ -55,7 +55,7 @@ from notify.signals import notify
 
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
-from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
+from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm, LayerAttributePermissionPreviewForm
 from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
@@ -1019,3 +1019,32 @@ def finding_xlink(dic):
 
 
 
+def layer_permission_preview(request, layername, template='layers/layer_attribute_permissions_preview.html'):
+    try:
+        user_role = request.GET['user_role']
+    except:
+        user_role=None
+
+    layer = _resolve_layer(
+        request,
+        layername,
+        'base.view_resourcebase',
+        _PERMISSION_MSG_VIEW)
+
+    if request.method == 'GET':
+        ctx = {
+            'layer': layer,
+            'organizations': GroupProfile.objects.all(),
+            'user_role': user_role,
+
+        }
+        return render_to_response(template, RequestContext(request, ctx))
+
+
+def getPermittedAttributes(layer, user):
+    if user == layer.owner or user.is_working_group_admin:
+        return Attribute.objects.filter(layer=layer)
+    elif user.has_perm('download_resourcebase', layer.get_self_resource()):
+        return Attribute.objects.filter(layer=layer, is_permitted=True)
+    else:
+        return Attribute.objects.none()
