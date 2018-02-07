@@ -917,4 +917,3 @@ class LayerPermissionPreviewApi(TypeFilteredResource):
                 out['errors'] = 'You dont have permission to update permissions'
         out['errors'] = 'Only post method is permitted'
         return HttpResponse(json.dumps(out), content_type='application/json', status=200)
-

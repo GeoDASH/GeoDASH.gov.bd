@@ -2662,7 +2662,8 @@ ul#global-errors li{
     text-align: center;
 }
 .grid-container.lmd .summery{
-    margin-top: 15px;
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 .grid-container.lmd .bottom-content{
     margin: 15px;
@@ -3362,3 +3363,14 @@ font-weight: bold;
 #lang-selection {
     color: #fff;
 }
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 10px;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+    background: #00489c;
+  }
