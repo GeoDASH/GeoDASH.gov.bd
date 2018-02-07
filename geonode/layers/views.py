@@ -189,7 +189,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 # Moved this inside the try/except block because it can raise
                 # exceptions when unicode characters are present.
                 # This should be followed up in upstream Django.
-                tempdir, base_file = form.write_files()
+                tempdir, base_file, file_type = form.write_files()
                 saved_layer = file_upload(
                     base_file,
                     name=name,
@@ -203,6 +203,10 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
+                file = form.cleaned_data['base_file']
+                saved_layer.file_size = file.size
+                saved_layer.file_type = file_type
+                saved_layer.save()
                 if admin_upload:
                     saved_layer.status = 'ACTIVE'
                     saved_layer.save()
@@ -631,7 +635,7 @@ def layer_replace(request, layername, template='layers/layer_replace.html'):
 
         if form.is_valid():
             try:
-                tempdir, base_file = form.write_files()
+                tempdir, base_file, file_type = form.write_files()
                 if layer.is_vector() and is_raster(base_file):
                     out['success'] = False
                     out['errors'] = _("You are attempting to replace a vector layer with a raster.")
@@ -649,6 +653,10 @@ def layer_replace(request, layername, template='layers/layer_replace.html'):
                         overwrite=True,
                         charset=form.cleaned_data["charset"],
                     )
+                    file = form.cleaned_data['base_file']
+                    saved_layer.file_size = file.size
+                    saved_layer.file_type = file_type
+                    saved_layer.save()
                     out['success'] = True
                     out['url'] = reverse(
                         'layer_detail', args=[

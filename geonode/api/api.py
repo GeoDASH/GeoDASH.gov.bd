@@ -446,7 +446,7 @@ class LayerUpload(TypeFilteredResource):
                     # Moved this inside the try/except block because it can raise
                     # exceptions when unicode characters are present.
                     # This should be followed up in upstream Django.
-                    tempdir, base_file = form.write_files()
+                    tempdir, base_file, file_type = form.write_files()
                     saved_layer = file_upload(
                         base_file,
                         name=name,
@@ -461,6 +461,10 @@ class LayerUpload(TypeFilteredResource):
                         title=form.cleaned_data["layer_title"],
                         metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                     )
+                    file = form.cleaned_data['base_file']
+                    saved_layer.file_size = file.size
+                    saved_layer.file_type = file_type
+                    saved_layer.save()
                 except Exception as e:
                     exception_type, error, tb = sys.exc_info()
                     logger.exception(e)
@@ -840,3 +844,35 @@ class ViewNotificationTimeSaving(TypeFilteredResource):
         user.last_notification_view = timezone.now()
         user.save()
         return super(ViewNotificationTimeSaving, self).get_object_list(request).filter(recipient=user, created__gt = user.last_notification_view)
+
+
+
+class LayerDownloadCountApi(TypeFilteredResource):
+
+    class Meta:
+        resource_name = 'layer-download-count'
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+
+            layer_id = json.loads(request.body).get('resource_id')
+
+            if layer_id:
+                try:
+                    resource = Layer.objects.get(pk=layer_id)
+                except Layer.DoesNotExist:
+                    status_code = 404
+                    out['errors'] = 'layer does not exist'
+                else:
+                    layer = Layer.objects.get(id=layer_id)
+                    layer.download_count = layer.download_count + 1
+                    layer.save()
+                    out['success'] = 'True'
+                    status_code = 200
+
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
