@@ -264,7 +264,7 @@ def save_step_view(req, session):
     tempdir = None
 
     if form.is_valid():
-        tempdir, base_file = form.write_files()
+        tempdir, base_file, file_type = form.write_files()
         logger.debug('Tempdir: {0}, basefile: {1}'.format(tempdir, base_file))
         name, ext = os.path.splitext(os.path.basename(base_file))
         logger.debug('Name: {0}, ext: {1}'.format(name, ext))
