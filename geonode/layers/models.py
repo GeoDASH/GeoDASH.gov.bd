@@ -101,6 +101,10 @@ class Layer(ResourceBase):
     name = models.CharField(max_length=128)
     typename = models.CharField(max_length=128, null=True, blank=True)
 
+    download_count = models.IntegerField(null=True, blank=True)
+    file_size = models.FloatField(null=True, blank=True)
+    file_type = models.CharField(max_length=200, blank=True, null=True)
+
     is_mosaic = models.BooleanField(default=False)
     has_time = models.BooleanField(default=False)
     has_elevation = models.BooleanField(default=False)
@@ -469,6 +473,7 @@ class Attribute(models.Model):
         default=datetime.now,
         help_text=_('date when attribute statistics were last updated'))  # passing the method itself, not
 
+    is_permitted = models.NullBooleanField(_('is permitted'), null=True, default=False, help_text=_('if true, permitted groups will see this attribute'))
     objects = AttributeManager()
 
     def __str__(self):

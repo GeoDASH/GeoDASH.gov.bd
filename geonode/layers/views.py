@@ -55,7 +55,7 @@ from notify.signals import notify
 
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
-from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
+from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm, LayerAttributePermissionPreviewForm
 from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
@@ -189,7 +189,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 # Moved this inside the try/except block because it can raise
                 # exceptions when unicode characters are present.
                 # This should be followed up in upstream Django.
-                tempdir, base_file = form.write_files()
+                tempdir, base_file, file_type = form.write_files()
                 saved_layer = file_upload(
                     base_file,
                     name=name,
@@ -203,6 +203,10 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
                 )
+                file = form.cleaned_data['base_file']
+                saved_layer.file_size = file.size
+                saved_layer.file_type = file_type
+                saved_layer.save()
                 if admin_upload:
                     saved_layer.status = 'ACTIVE'
                     saved_layer.save()
@@ -235,6 +239,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 upload_session.save()
                 permissions = form.cleaned_data["permissions"]
                 if permissions is not None and len(permissions.keys()) > 0:
+                    permissions = saved_layer.resolvePermission(permissions)
                     saved_layer.set_permissions(permissions)
             finally:
                 if tempdir is not None:
@@ -630,7 +635,7 @@ def layer_replace(request, layername, template='layers/layer_replace.html'):
 
         if form.is_valid():
             try:
-                tempdir, base_file = form.write_files()
+                tempdir, base_file, file_type = form.write_files()
                 if layer.is_vector() and is_raster(base_file):
                     out['success'] = False
                     out['errors'] = _("You are attempting to replace a vector layer with a raster.")
@@ -648,6 +653,10 @@ def layer_replace(request, layername, template='layers/layer_replace.html'):
                         overwrite=True,
                         charset=form.cleaned_data["charset"],
                     )
+                    file = form.cleaned_data['base_file']
+                    saved_layer.file_size = file.size
+                    saved_layer.file_type = file_type
+                    saved_layer.save()
                     out['success'] = True
                     out['url'] = reverse(
                         'layer_detail', args=[
@@ -1010,3 +1019,32 @@ def finding_xlink(dic):
 
 
 
+def layer_permission_preview(request, layername, template='layers/layer_attribute_permissions_preview.html'):
+    try:
+        user_role = request.GET['user_role']
+    except:
+        user_role=None
+
+    layer = _resolve_layer(
+        request,
+        layername,
+        'base.view_resourcebase',
+        _PERMISSION_MSG_VIEW)
+
+    if request.method == 'GET':
+        ctx = {
+            'layer': layer,
+            'organizations': GroupProfile.objects.all(),
+            'user_role': user_role,
+
+        }
+        return render_to_response(template, RequestContext(request, ctx))
+
+
+def getPermittedAttributes(layer, user):
+    if user == layer.owner or user.is_working_group_admin:
+        return Attribute.objects.filter(layer=layer)
+    elif user.has_perm('download_resourcebase', layer.get_self_resource()):
+        return Attribute.objects.filter(layer=layer, is_permitted=True)
+    else:
+        return Attribute.objects.none()

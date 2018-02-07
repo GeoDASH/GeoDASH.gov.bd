@@ -45,6 +45,9 @@ urlpatterns = patterns(
     url(r'^(?P<layer_pk>[0-9]+)/deny$', 'layer_deny', name='layer-deny'),
     url(r'^(?P<layer_pk>[0-9]+)/delete$', 'layer_delete', name='layer-delete'),
 
+    url(r'^(?P<layername>[^/]*)/preview$', 'layer_permission_preview', name="layer_permission_preview"),
+
+
     # url(r'^api/batch_permissions/?$', 'batch_permissions',
     #    name='batch_permssions'),
     # url(r'^api/batch_delete/?$', 'batch_delete', name='batch_delete'),

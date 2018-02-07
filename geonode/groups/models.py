@@ -34,6 +34,8 @@ from django.core.mail import send_mail
 from taggit.managers import TaggableManager
 from guardian.shortcuts import get_objects_for_group
 
+from geonode.nsdi.models import DepartmentModel
+
 
 class GroupProfile(models.Model):
     GROUP_CHOICES = [
@@ -55,6 +57,7 @@ class GroupProfile(models.Model):
     slug = models.SlugField(unique=True)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
+    department = models.ForeignKey(DepartmentModel, related_name='department', null=True)
     favorite = models.BooleanField(_("Favorite"), default=False,
                                    help_text=_('Should this organization be in favorite list ?'))
     docked = models.BooleanField(_("Docked"), default=False,
@@ -334,3 +337,20 @@ class UserInvitationModel(models.Model):
 
     class Meta:
         unique_together = [("group", "user", "state")]
+
+
+class SectionModel(models.Model):
+     """
+     This model is for managing Sections under departments. Only admin of an
+     organization can manage sections under that organization.
+     """
+
+     title = models.CharField(max_length=50, default='')
+     organization = models.ForeignKey(GroupProfile, related_name='groupprofile', blank=True, null=True)
+     slug = models.SlugField(max_length=100, null=True, blank=True)
+     is_active = models.BooleanField(default=True)
+     date_created = models.DateTimeField(auto_now_add=True)
+     date_updated = models.DateTimeField(auto_now=True)
+
+     def __unicode__(self):
+         return self.title
