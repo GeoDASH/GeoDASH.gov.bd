@@ -55,7 +55,7 @@ from notify.signals import notify
 
 from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
-from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm, LayerAttributePermissionPreviewForm
+from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
 from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyForm
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
@@ -1041,6 +1041,7 @@ def layer_permission_preview(request, layername, template='layers/layer_attribut
         return render_to_response(template, RequestContext(request, ctx))
 
 
+
 def getPermittedAttributes(layer, user):
     if user == layer.owner or user.is_working_group_admin:
         return Attribute.objects.filter(layer=layer)
@@ -1048,3 +1049,5 @@ def getPermittedAttributes(layer, user):
         return Attribute.objects.filter(layer=layer, is_permitted=True)
     else:
         return Attribute.objects.none()
+
+

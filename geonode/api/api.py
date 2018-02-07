@@ -849,7 +849,6 @@ class ViewNotificationTimeSaving(TypeFilteredResource):
 
 
 
-
 class LayerDownloadCountApi(TypeFilteredResource):
 
     class Meta:
@@ -880,6 +879,7 @@ class LayerDownloadCountApi(TypeFilteredResource):
                 status_code = 400
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
+
 class LayerPermissionPreviewApi(TypeFilteredResource):
 
     class Meta:
@@ -893,8 +893,8 @@ class LayerPermissionPreviewApi(TypeFilteredResource):
             return HttpResponse(json.dumps(out), content_type='application/json', status=200)
 
         if request.method == 'POST':
-            out = {'success': False}
-            layer_pk = request.POST.get('layer_pk')
+            layer_pk = json.loads(request.body).get('layer_pk')
+
             try:
                 layer = Layer.objects.get(id=layer_pk)
             except:
@@ -902,8 +902,8 @@ class LayerPermissionPreviewApi(TypeFilteredResource):
                 return HttpResponse(json.dumps(out), content_type='application/json', status=200)
 
             if request.user.is_working_group_admin or request.user == layer.owner:
-                permissions = request.POST.get('permissions')
-                attributes = request.POST.get('attributes')
+                permissions = json.loads(request.body).get('permissions')
+                attributes = json.loads(request.body).get('attributes')
                 if permissions is not None and len(permissions.keys()) > 0:
                     permissions = layer.resolvePermission(permissions)
                     layer.set_permissions(permissions)
