@@ -251,10 +251,11 @@ def inbox(request):
     return HttpResponseRedirect(reverse('messages_inbox'))
 
 
-# class InviteUser(InviteUserView):
-#     """
-#
-#     """
-#     def get_success_url(self, fallback_url=None, **kwargs):
-#
-#         return reverse('invite_user')
+class InviteUser():
+    pass
+    """
+
+    """
+    def get_success_url(self, fallback_url=None, **kwargs):
+
+        return reverse('invite_user')
