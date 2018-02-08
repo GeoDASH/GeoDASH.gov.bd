@@ -17,7 +17,7 @@
             $http({
                 url: url,
                 method: "POST",
-                params: data
+                data: data
                 }).success(function (res) {
                     deferred.resolve(res);
                 }).error(function (error, status) {
