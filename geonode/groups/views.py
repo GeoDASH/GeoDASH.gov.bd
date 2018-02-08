@@ -575,9 +575,17 @@ class SectionCreate(CreateView):
     template_name = 'section_create.html'
     model = SectionModel
 
-    def get_form(self):
-        form = SectionForm(self.request.user)
-        return  form
+    def get_form_class(self):
+        return SectionForm
+        # return  form
+
+    def get_form_kwargs(self):
+        kwargs = super(SectionCreate, self).get_form_kwargs()
+
+        # get users, note: you can access request using: self.request
+
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_success_url(self):
         return reverse('section_list')
