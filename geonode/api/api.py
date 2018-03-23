@@ -1012,3 +1012,43 @@ def createToken(user):
                                expires=datetime.datetime.now() + datetime.timedelta(
                                    seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS),
                                token=token)
+
+
+
+class ChangeLayerVersionApi(TypeFilteredResource):
+    """
+    This api sets layers as base layer
+    it takes body parameters:
+        'layer_ids'
+    """
+
+    class Meta:
+        resource_name = 'set-layers-base-layer'
+        list_allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+
+            if request.user.is_authenticated() and request.user.is_superuser:
+
+                layer_ids = json.loads(request.body).get('layer_ids')
+
+                layers = Layer.objects.all()
+                for layer in layers:
+                    if layer.id in layer_ids:
+                        layer.is_base_layer = True
+                        layer.save()
+                    else:
+                        if layer.is_base_layer:
+                            layer.is_base_layer = False
+                            layer.save()
+
+                        out['success'] = 'True'
+                        status_code = 200
+
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
