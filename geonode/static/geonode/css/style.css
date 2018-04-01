@@ -462,13 +462,8 @@ table.gd-list-table tr td .media-body {
   /* .navbar-collapse.collapse{
     width:1240px;
   } */
-  .brow_widt{
-    width:230px;
-    height: 30px;
-  }
-  #search_input{
-    width:150px;
-  }
+
+
   #search_input_user{
     width:100px;
   }
@@ -488,24 +483,13 @@ table.gd-list-table tr td .media-body {
     width: 38px;
     border-radius: 50%;
 }
-#gd-header .navbar{
-    margin-bottom: 0px;
-}
 #gd-header .navbar-toggle {
     margin-top:40px;
 }
 #gd-header .navbar-brand{
     padding-top: 8px;
 }
-#gd-header .navbar-default {
-    /*background-color: transparent;*/
-    background-color: #FFFFFF;
-    border-color: transparent;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.26);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.26);
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.26);
-    z-index: 500;
-}
+
 #gd-header .navbar-nav {
     margin-top:15px;
     margin-left:15px;
@@ -558,12 +542,6 @@ table.gd-list-table tr td .media-body {
     color: #dddddd;
     /*text-decoration: underline;*/
     border-bottom: 1px solid #53a4e6;
-}
-#search_input{
-    height: 30px;
-    /*width: 150px;*/
-    border: none;
-    background:#fff;
 }
 
 #search .input-group .yourlabs-autocomplete {
@@ -791,49 +769,6 @@ table.gd-list-table tr td .media-body {
 
 
 /* start footer style*/
-/* #gd-wrapper{
-    min-height:100%;
-} */
-#gd-footer{
-    position: relative;
-    margin-top: -100px; /* negative value of footer height */
-    clear:both;
-    background:#5a5d63;
-    color:#FFF;
-    min-height:100px;
-    width:100%;
-    z-index:100;
-}
-#gd-footer .navbar-toggle {
-    background:#cbcaca;
-    color:#FFF;
-}
-#gd-footer .navbar-toggle .icon-bar {
-    background:#FFF;
-    color:#FFF;
-}
-#gd-footer .navbar-nav {
-    margin-top:40px;
-    margin-left:20px;
-    font-size: 12px;
-    font-weight: bold;
-}
-#gd-footer .navbar-nav > li > a{
-    color:#fff;
-    font-size:11px;
-    padding: 0px 12px;
-    text-transform: uppercase;
-    border-right:1px solid #7e8186;
-}
-#gd-footer .navbar-nav > li:last-child > a{
-    border-right:none;
-}
-#gd-footer .navbar-nav > li > a:hover{
-    color: #fff;
-    text-decoration: none;
-    background:#5a5d63;
-}
-/* end footer style*/
 
 /* start button style*/
 /* start primary button style*/

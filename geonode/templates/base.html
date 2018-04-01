@@ -11,12 +11,14 @@
       {% if DEBUG_STATIC %}
       <link href="{{ STATIC_URL }}lib/css/jquery.dataTables.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}lib/css/select2.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+     
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/bootstrap.css?v={{ VERSION }}" rel="stylesheet" />
+
       <link href="{{ STATIC_URL }}lib/css/jquery-ui.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       {% else %}
       <link href="{{ STATIC_URL }}lib/css/main.4df7c95f.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/bootstrap.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}lib/css/font-awesome.min.css" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       <!--<link href="{{ STATIC_URL }}lib/css/bootstrap-select.min.css?v={{ VERSION }}" rel="stylesheet"/>-->
@@ -29,7 +31,10 @@
       <link href="{{ STATIC_URL }}geonode/css/fixed-style.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/jquery.mCustomScrollbar.css?v={{ VERSION }}" rel="stylesheet" />
 
-      <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700" rel="stylesheet"> 
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/custom.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/animations.css?v={{ VERSION }}" rel="stylesheet" />
+
+      <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 
 
       <style type="text/css">[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}</style>
@@ -70,9 +75,9 @@
 
   <body class="{% block body_class %}{% endblock %}">
     {% block header %}
-    <section id="gd-header" class="navsticky" >
+    <section class="navsticky" >
         <!-- <nav class="navbar navbar-default"> -->
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gd-navbar-collapse" aria-expanded="false">
@@ -89,7 +94,8 @@
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="gd-navbar-collapse">
-                    <ul class="nav navbar-nav gd-menu">
+                    <div id="navbar">
+                    <ul class="nav navbar-nav header-nav nav-left">
                         {% block tabs %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -179,7 +185,7 @@
                         <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
                         {% endblock %}
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" style="width: 548px;">
                         <!--<li class="dropdown" style="margin-top:5px;">-->
                             <!--<select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">-->
                                 <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
@@ -189,13 +195,13 @@
                         <!--</li>-->
                         <li class="nav-search-index brow_widt" id="search_lay_map_doc" style=""> <!-- nav-search-index -->
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
-                                <div class="input-group">
+                                <div class="input-group" style="width: 250px;">
                                     {% if HAYSTACK_SEARCH %}
-                                        <input id="search_input"  type="text" placeholder="" name="q" style="color:#5a5d63;">
+                                        <input id="search_input"  type="text" placeholder="" name="q" style="height: 38px;border-radius:0;" class="form-control">
                                     {% else %}
-                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="color:#5a5d63;" class="map-search" name="title__icontains">
+                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="height: 38px;border-radius:0;" class="form-control" name="title__icontains">
                                     {% endif %}
-                                    <span style="padding-left:0;">
+                                    <span class="input-group-btn search-sub-menu">
                                         <!--<select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">-->
                                             <!--<option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>-->
                                             <!--<option value="Organization" id="organizationsearch" >Organization</option>-->
@@ -232,7 +238,7 @@
                                             </ul>
                                     </span>
                                     <span class="input-group-btn">
-                                      <button class="btn btn-gd-primary" type="submit">
+                                      <button class="btn btn-primary" type="submit" style="padding: 8px 12px;font-size: 14px;">
                                           <i class="fa fa-search"></i>
                                       </button>
                                     </span>
@@ -250,15 +256,15 @@
                             </a>
                         </li> -->
                         {% if not user.is_authenticated %}
-                        <li class="nav-search-index">
-                            <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">sign in</a>
+                        <li class="nav-search-index" style="margin-left: 30px;">
+                            <a href="#" data-toggle="modal" data-target="#SigninModal" role="button" class="btn btn-default btn-signin">SIGN IN</a>
                         </li>
                         {% endif %}
                         {% if not user.is_authenticated and REGISTRATION_OPEN %}
-                        <li class="normal-fon">
-                            <a href="#" data-toggle="modal" data-target="#SignupModal" role="button" href="{% url "account_signup" %}">
+                        <li class="normal-fon" style="margin-left: 10px">
+                            <a href="#" data-toggle="modal" data-target="#SignupModal" role="button" href="{% url "account_signup" %}" class="btn btn-success">
 {#                                {% trans "Register" %}#}
-                                Register
+                                REGISTER
                             </a>
                         </li>
                         {% endif %}
@@ -310,7 +316,7 @@
                             </a>
                         </li>
                         {% endif %}
-                        <li style="margin-top:6px;">
+                        <li style="margin-left:30px;">
                             <!-- <div class="btn-group" role="group">
                                 <a href="javascript:;" title="English" class="btn btn-default">
                                     <img width="20" src="{{ STATIC_URL }}geonode/images/flag/us.png" />
@@ -321,12 +327,13 @@
                             </div> -->
                            <span>
 
-                               <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}">
-                                   {% trans "LANGUAGE" %}
+                               <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}" class="btn btn-primary btn-language">
+                                   {% trans "LN" %}
                                </a>
                            </span>
                         </li>
                     </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -369,86 +376,49 @@
 
     {% block footer %}
     <footer id="gd-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-7">
-                    <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#gd-footer-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button> -->
-                    <!--<div class="collapse navbar-collapse" id="gd-footer-navbar-collapse">-->
-                    <ul class="nav navbar-nav">
+            <div class="container text-center" style="max-width:1300px">
+            <div class="row" style="margin-bottom: 30px;">
+                <div class="col-md-12" style="margin-bottom: 30px;">
+                
+                    <ul class="nav navbar-nav" style="display: inline-block;float: none;vertical-align: top">
                         <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
                         <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
                         <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
                         <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
                         <li>
-                            <div class="tooltip_use" style="cursor:pointer;">Useful Resource
-                              <span class="tooltiptext_use">
-                                  <ul>
-                                      <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
-                                      <li><a href="https://github.com/GeoNode/geonode" target="_blank">Github</a></li>
-                                      <li><a href="https://openlayers.org/" target="_blank">OpenLayers</a></li>
-                                      <li><a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a></li>
-                                      <li><a href="http://leafletjs.com/" target="_blank">Leaflet</a></li>
-                                      <li><a href="http://demo.f4map.com/#camera.theta=0.9" target="_blank">F4 Map</a></li>
-                                      <li><a href="https://www.facebook.com/groups/GeoDASH/" target="_blank">GeoDASH BD FB Group</a></li>
-                                      <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
-                                  </ul>
-                              </span>
-                            </div>
+                                <div class="btn-group">
+                                        <button type="button" class="btn btn-link dropdown-toggle" style="padding: 6px 12px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Useful Resources <span class="caret"></span> </button>
+                                        <ul class="dropdown-menu" style="top: -320px">
+                                          <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
+                                          <li><a href="https://github.com/GeoNode/geonode" target="_blank">Github</a></li>
+                                          <li><a href="https://openlayers.org/" target="_blank">OpenLayers</a></li>
+                                          <li><a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a></li>
+                                          <li><a href="http://leafletjs.com/" target="_blank">Leaflet</a></li>
+                                          <li><a href="http://demo.f4map.com/#camera.theta=0.9" target="_blank">F4 Map</a></li>
+                                          <li><a href="https://www.facebook.com/groups/GeoDASH/" target="_blank">GeoDASH BD FB Group</a></li>
+                                          <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
+                                        </ul>
+                                      </div>
                         </li>
                         <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
                     </ul>
                     <!--</div>-->
                 </div>
-                <div class="col-md-2">
-					<div class="footer-admin-app">
+                
+					
                                 Admin APP
                             <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
-                                <img src="{{ STATIC_URL }}geonode/images/googleplay.png" class="img-responsive" style=""/>
+                                <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="margin-right: 15px;"/>
                             </a>
-					</div>
-				</div>
-				<div class="col-md-1">
-					<div style="margin-top:15px;" class="ssl-certify-logo">
-							<script language="JavaScript" type="text/javascript">
-							TrustLogo("https://geodash.gov.bd/static/geonode/images/comodo_secure_seal_113x59_transp.png", "CL1", "none");
-							</script>
-							<a  href="https://ssl.comodo.com" id="comodoTL">Comodo SSL</a>
-					</div>
-				</div>
-                <div class="col-md-1">
-                    <div class="gd-footer-language" >
-                        <label class="hidden">{% trans "Language" %}</label>
-                        {% if csrf_token != "NOTPROVIDED" %}
-                        {% get_current_language as LANGUAGE %}
-                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                        {% csrf_token %}
-                          <select id="langOfSite" class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
-                            {% for lang in LANGUAGES %}
-                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                              {% trans lang.1 %}
-                            </option>
-                            {% endfor %}
-                          </select>
-                        </form>
-                        {% endif %}
-                    </div>
-                    <!-- <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <select class="selectpicker" data-width="auto">
-                                <option>English</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                            </select>
-                        </li>
-                    </ul> -->
-                </div>
+				
+			
+				
+					
+						
+							<a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
+					
+			
+                
             </div>
         </div>
       </div>
