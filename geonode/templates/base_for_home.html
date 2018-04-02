@@ -417,6 +417,36 @@
                                       </div>
                         </li>
                         <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
+                        <li>
+                                
+                                        <div class="gd-footer-language" >
+                                            <label class="hidden">{% trans "Language" %}</label>
+                                            {% if csrf_token != "NOTPROVIDED" %}
+                                            {% get_current_language as LANGUAGE %}
+                                            <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
+                                            {% csrf_token %}
+                                              <select id="langOfSite" name="language" onchange="javascript:form.submit()">
+                                                {% for lang in LANGUAGES %}
+                                                <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
+                                                  {% trans lang.1 %}
+                                                </option>
+                                                {% endfor %}
+                                              </select>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                        <!-- <ul class="nav navbar-nav navbar-right">
+                                            <li>
+                                                <select class="selectpicker" data-width="auto">
+                                                    <option>English</option>
+                                                    <option>Bangla</option>
+                                                    <option>Bangla</option>
+                                                    <option>Bangla</option>
+                                                </select>
+                                            </li>
+                                        </ul> -->
+                                   
+                        </li>
                     </ul>
                     <!--</div>-->
                 </div>
@@ -433,34 +463,7 @@
 						
 							<a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
 					
-                            <div class="col-md-1">
-                                    <div class="gd-footer-language" >
-                                        <label class="hidden">{% trans "Language" %}</label>
-                                        {% if csrf_token != "NOTPROVIDED" %}
-                                        {% get_current_language as LANGUAGE %}
-                                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                                        {% csrf_token %}
-                                          <select id="langOfSite" class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
-                                            {% for lang in LANGUAGES %}
-                                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                                              {% trans lang.1 %}
-                                            </option>
-                                            {% endfor %}
-                                          </select>
-                                        </form>
-                                        {% endif %}
-                                    </div>
-                                    <!-- <ul class="nav navbar-nav navbar-right">
-                                        <li>
-                                            <select class="selectpicker" data-width="auto">
-                                                <option>English</option>
-                                                <option>Bangla</option>
-                                                <option>Bangla</option>
-                                                <option>Bangla</option>
-                                            </select>
-                                        </li>
-                                    </ul> -->
-                                </div>
+                            
                 
             </div>
         </div>

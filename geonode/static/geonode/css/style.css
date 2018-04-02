@@ -73,9 +73,11 @@ label
     -ms-transform:rotate(50deg) skewX(24deg) skewY(12deg);
 }
 .gd-footer-language{
-    /*margin-left: 20px;*/
-    margin-top: 40px;
-    width:200px;
+    margin: 0;
+    padding: 0;
+    width:100px;
+    margin-top: 6px;
+    color: #000;
 }
 @media (max-width: 767px) {
   .gd-footer-language{
