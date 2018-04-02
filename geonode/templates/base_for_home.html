@@ -21,7 +21,7 @@
       <!--<link href="{{ STATIC_URL }}lib/css/bootstrap-select.min.css?v={{ VERSION }}" rel="stylesheet"/>-->
       {% endif %}
       <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/bootstrap.css?v={{ VERSION }}" rel="stylesheet" />
-      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="{{ STATIC_URL }}geonode/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
       
       <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}geonode/css/ext-compatibility.css?v={{ VERSION }}" rel="stylesheet" />
@@ -186,7 +186,7 @@
                         {% if user.is_authenticated %}
                         <li class="notification">
                             <a class="usi" href="{% url "_dashboard" %}" title="Dashboard" style="padding: 0">
-                                <button class="btn btn-default btn-link" style="padding: 0">
+                                <button class="btn btn-default btn-link" style="padding: 10px">
                                     <img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" style="margin-top:-15px;" title="Dashboard"  />
                                 </button>
                             </a>
@@ -195,7 +195,7 @@
                         <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
                         {% endblock %}
                     </ul>
-                    <ul class="nav navbar-nav navbar-right" style="width: 548px;">
+                    <ul class="nav navbar-nav navbar-right">
                         <!--<li class="dropdown" style="margin-top:5px;">-->
                             <!--<select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">-->
                                 <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
@@ -205,7 +205,7 @@
                         <!--</li>-->
                         <li class="nav-search-index brow_widt" id="search_lay_map_doc" style=""> <!-- nav-search-index -->
                             <form class="top-site-search" id="search" action="{% url "search" %}" >
-                                <div class="input-group" style="width: 250px;">
+                                <div class="input-group" style="width: 225px;">
                                     {% if HAYSTACK_SEARCH %}
                                         <input id="search_input"  type="text" placeholder="" name="q" style="height: 38px;border-radius:0;" class="form-control">
                                     {% else %}
@@ -281,8 +281,8 @@
                         {% if user.is_authenticated %}
 
                         <li class="notification">
-                            <a href="{% url "message-inbox-extend" %}" >
-                                <button class="btn btn-default btn-link">
+                            <a href="{% url "message-inbox-extend" %}" style="padding: 0">
+                                <button class="btn" style="margin: 0 14px">
                                     <i class="fa fa-envelope"></i>
                                 </button>
                                 <span class="badge badge-notifymsg">{% if user.message_unread %}{{ request.user.message_unread }}{% endif %}</span>
@@ -290,7 +290,7 @@
                         </li>
                         <li class="notification" id="show-notification">
                             <a href="javascript:;" id="a_href" style="padding: 0">
-                                <button class="btn btn-default btn-link unreadfalse" style="padding: 0">
+                                <button class="btn unreadfalse" style="margin: 0 14px 0 0">
                                     <i class="fa fa-bell" ></i>
                                 </button>
                                 <span class="badge badge-notify" id="rload">{% if user.notification_count %}{{ request.user.notification_count }}{% endif %}</span>
@@ -318,15 +318,15 @@
                             <!--</a>-->
                             <!--<div class="gd-username">{{ user.username }}</div>-->
                         <!--</li>-->
-                        <li class="profile_picture">
-                            <a href="javascript:;" title="{{ user.username }}">
+                        <li class="profile_picture" style="padding: 0;margin-top:-6px;">
+                            <a href="javascript:;" title="{{ user.username }}" style="padding: 0">
                                 <div id="c-button--slide-right" class="c-button profile_pic">
                                     {% avatar user 50 %}
                                 </div>
                             </a>
                         </li>
                         {% endif %}
-                        <li style="margin-left:30px;">
+                        <li style="margin-left:30px;float:right">
                             <!-- <div class="btn-group" role="group">
                                 <a href="javascript:;" title="English" class="btn btn-default">
                                     <img width="20" src="{{ STATIC_URL }}geonode/images/flag/us.png" />
