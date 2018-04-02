@@ -4,6 +4,9 @@ html,body{
     height: 100%;
     font-family: 'Roboto', sans-serif;
 }
+body{
+    padding-top: 107px;
+}
 *:focus {
     /*outline: none;*/
     outline: 0;
@@ -397,7 +400,6 @@ table.gd-list-table tr td .media-body {
     height:100%;
 }
 #gd-header {
-    min-height: 50px;
     background: #fff;
     z-index:100;
 }
@@ -475,33 +477,6 @@ table.gd-list-table tr td .media-body {
 
  }
 
-#gd-header.sticky .navbar-nav.navbar-right{
-    margin-top: 12px;
-}
-#gd-header.sticky .navbar-brand{
-    padding-top: 6px;
-}
-#gd-header.sticky .profile_picture img{
-    width: 38px;
-    border-radius: 50%;
-}
-#gd-header .navbar-toggle {
-    margin-top:40px;
-}
-#gd-header .navbar-brand{
-    padding-top: 8px;
-}
-
-#gd-header .navbar-nav {
-    margin-top:15px;
-    margin-left:15px;
-    font-size: 12px;
-    font-weight: bold;
-}
-#gd-header .navbar-nav.navbar-right{
-    margin-top: 10px;
-}
-
 .btn-group-sm > .btn, .btn-sm >a{
    color:#666666;
    font-size: 12px;
@@ -520,15 +495,6 @@ table.gd-list-table tr td .media-body {
     margin-top: 0;
     padding: 5px 10px;
     width: 40px;
-}
-#gd-header .navbar-nav > li > a{
-    color:#666666;
-    font-size:12px;
-    position: relative;
-    /*padding: 10px 15px;*/
-    padding: 7px 10px;
-
-    text-transform: uppercase;
 }
 #search .btn-gd-primary{
     padding: 5px 12px;
@@ -3058,31 +3024,7 @@ ul.termsuseandcondition li {
     padding-bottom:3px;
 }
 
-#gd-header.navsticky{
-    min-height: 61px;
-    background: #fff;
-}
-#gd-header.navsticky .navbar-nav {
-    /*margin-top:10px;*/
-    margin-top:12px;
-    margin-left:10px;
-    font-size: 12px;
-    font-weight: bold;
-}
-#gd-header.navsticky .navbar-nav.navbar-right{
-    margin-top: 12px;
-}
-#gd-header.navsticky .navbar-brand{
-    padding-top: 6px;
-}
-#gd-header.navsticky .profile_picture img{
-    width: 38px;
-    border-radius: 50%;
-}
-#gd-header.navsticky .navbar-brand{
-    padding-top: 4px;
-    height: 60px;
-}
+
 .show-org-pro{
     text-align:left;
     padding-left:25px;
@@ -3796,4 +3738,38 @@ background-color: #fff;
     left: 0 !important;
     top: 3px;
 }
+
+/* Home page Style start */
+.navbar {
+	background-color: rgba(255, 255, 255, 0.97);
+	padding: 15px;
+	border-bottom: 1px solid #ccc;
+}
+.navbar-brand {
+	background-image: url(geodash-logo.png);
+	height: 76px;
+	width: 172px;
+	text-indent: -99999px;
+}
+.navbar-nav > li > a {
+	font-size: 16px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.header-nav li a {
+	color: #4b4b4b;
+}
+#navbar {
+	margin-top: 18px;
+}
+.header-nav li a span.caret {
+	color: #3896e2;
+}
+.navbar-nav > li > .dropdown-menu {
+	border-radius: 0;
+}
+#navbar {
+    margin-top: 18px;
+}
+/* Home page Style End*/
 
