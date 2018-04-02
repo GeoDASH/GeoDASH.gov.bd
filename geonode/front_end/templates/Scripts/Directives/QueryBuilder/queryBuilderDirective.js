@@ -129,6 +129,8 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
             content = element.contents().remove();
             return function (scope, element, attrs) {
 
+                 var numberControlsTypes=['xsd:number','xsd:integer','xsd:int','xsd:byte','xsd:short','xsd:long','xsd:decimal','xsd:float','xsd:double'];
+                 var stringControlTypes=['xsd:string','xsd:text'];
                  scope.conditionDictionary ={
                     undefined:[
                         { name: '<>',value:'<>' },
@@ -153,13 +155,13 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
                 scope.options  = {
                     addGroup:false,
                     removeGroup:false,
-                    customFields:[],
+                    customFields:[]
                 };
                 function generateOptions(featureTypesArray){
                    angular.forEach(featureTypesArray.properties,function(featureType){
-                        if(featureType.type=='xsd:int'){
+                        if( _.contains(numberControlsTypes,featureType.type)){
                             scope.options.customFields.push({name:featureType.name});
-                        }else{
+                        }else if( _.contains(stringControlTypes,featureType.type)) {
                             scope.options.customFields.push({name:featureType.name,controlType:"text"});
                         }
                    });
