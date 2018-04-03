@@ -249,6 +249,10 @@
                 showFeatures(params);
             }
 
+            $scope.removeBoxZooming=function () {
+                $scope.mapTools.zoomToExtentTool.removeDrawBox();
+            };
+
             var box=new BoxDrawTool();
             $scope.action.boundingBoxSearch = function() {
                 // box.Stop();

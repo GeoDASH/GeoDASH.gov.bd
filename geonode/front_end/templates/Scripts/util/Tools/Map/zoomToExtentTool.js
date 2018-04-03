@@ -25,5 +25,8 @@ function ZoomToExtentTool(mapService) {
             mapService.removeUserInteractions();
             mapService.addInteraction(draw);
         };
+        this.removeDrawBox=function () {
+            mapService.removeInteraction(draw);
+        }
     };
 }
