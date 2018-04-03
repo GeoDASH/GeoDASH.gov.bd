@@ -447,9 +447,10 @@
             getMap: function() {
                 return map.getMap();
             },
-            getBbox: function(destinationProj) {
+            getBbox: function(destinationProj,extent) {
                 var epsg4326Extent, projection;
-                var extent = this.getMapExtent();
+                if(!extent)
+                        extent = this.getMapExtent();
                 if (destinationProj) {
                     projection = this.getProjection();
                     epsg4326Extent = ol.proj.transformExtent(extent, projection, destinationProj);

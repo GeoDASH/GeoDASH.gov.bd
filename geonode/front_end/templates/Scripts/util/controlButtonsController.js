@@ -1,5 +1,6 @@
-﻿appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q',
-    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q) {
+﻿appModule.controller("controlButtonsController",
+    ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q','BoxDrawTool',
+    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q,BoxDrawTool) {
         $scope.mapService = mapService;
         $scope.mapTools = mapTools;
 
@@ -234,7 +235,27 @@
                 });
             };
 
+            function boundingBoxSearch(feature,boundingBox) {
+                var extent=feature.getGeometry().getExtent();
+                var bbox = mapService.getBbox('EPSG:4326',extent);
+                var params = {
+                    version: '1.0.0',
+                    request: 'GetFeature',
+                    outputFormat: 'JSON',
+                    srsName: 'EPSG:3857',
+                    typeNames: '',
+                    bbox: bbox
+                };
+                showFeatures(params);
+            }
+
+            var box=new BoxDrawTool();
             $scope.action.boundingBoxSearch = function() {
+                // box.Stop();
+                // box.Remove();
+                box.Draw();
+                box.OnBoxModificationEnd(boundingBoxSearch);
+                box.OnBoxDrawEnd(boundingBoxSearch);
                 var bbox = mapService.getBbox('EPSG:4326');
                 var params = {
                     version: '1.0.0',
@@ -242,9 +263,9 @@
                     outputFormat: 'JSON',
                     srsName: 'EPSG:3857',
                     typeNames: '',
-                    bbox: bbox,
+                    bbox: bbox
                 };
-                showFeatures(params);
+                // showFeatures(params);
             };
 
             $scope.action.shareMap = function() {
