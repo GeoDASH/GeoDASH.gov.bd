@@ -4,8 +4,8 @@ html,body{
     font-family: 'Roboto', sans-serif;
 }
 html {
-    height: 100%;
-    box-sizing: border-box;
+    min-height: 100%;
+    position: relative;
   }
   body {
     position: relative;

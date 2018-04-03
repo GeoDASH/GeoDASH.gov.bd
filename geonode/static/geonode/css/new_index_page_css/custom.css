@@ -1,6 +1,7 @@
 body {
 	font-family: 'Roboto', sans-serif;
 	padding-top: 107px;
+	padding-bottom: 248px;
 	overflow-x: hidden;
 }
 .navbar {
@@ -121,6 +122,9 @@ footer {
 	background-color: #1c2025;
 	color: #a8aeb7;
 	padding: 50px 0;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 .social ul {
 	list-style: outside none none;
