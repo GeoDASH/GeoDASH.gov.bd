@@ -43,11 +43,13 @@ from geonode.layers.utils import (
     collect_epsg
 )
 import zipfile
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.gis.db import models
 from guardian.shortcuts import get_perms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -84,7 +86,7 @@ from geonode.base.models import TopicCategory
 from geonode.utils import default_map_config
 from geonode.utils import GXPLayer
 from geonode.utils import GXPMap
-from geonode.layers.utils import file_upload, is_raster, is_vector
+from geonode.layers.utils import file_upload, is_raster, is_vector, SafeDict
 from geonode.utils import resolve_object, llbbox_to_mercator
 from geonode.people.forms import ProfileForm, PocForm
 from geonode.security.views import _perms_info_json
@@ -101,7 +103,7 @@ from geonode.base.models import KeywordIgnoreListModel
 from geonode.system_settings.models import SystemSettings
 from geonode.system_settings.system_settings_enum import SystemSettingsEnum
 # from geonode.authentication_decorators import login_required as custom_login_required
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from .serializers import StyleExtensionSerializer
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import permissions, status
@@ -135,6 +137,7 @@ _PERMISSION_MSG_MODIFY = _("You are not permitted to modify this layer")
 _PERMISSION_MSG_METADATA = _(
     "You are not permitted to modify this layer's metadata")
 _PERMISSION_MSG_VIEW = _("You are not permitted to view this layer")
+_PERMISSION_MSG_CHANGE_STYLE = ("You are not permitted to modify this style")
 
 
 def log_snippet(log_file):
@@ -1336,7 +1339,7 @@ class LayerStyleListAPIView(ListAPIView):
         return StyleExtension.objects.filter(style__in=styles)
 
 
-class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
+class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
     queryset = StyleExtension.objects.all()
     serializer_class = StyleExtensionSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -1345,13 +1348,21 @@ class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         data = json.loads(request.body)
         # check already style extension created or not
         try:
-            style_extension = StyleExtension.objects.get(pk=pk)
+            style_extension = self.queryset.get(pk=pk)
+            if style_extension.created_by != request.user:
+                layer_obj = resolve_object(request, 
+                                    Layer, 
+                                    dict(typename=style_extension.style.layer_styles.first().typename),
+                                    'layers.change_layer_style',
+                                    _PERMISSION_MSG_CHANGE_STYLE)
             style_extension.json_field = data.get("StyleString", None)
             style_extension.sld_body = data.get('SldStyle', None)
             style_extension.title = data.get('Title', style_extension.title)
             style_extension.style.sld_title = style_extension.title
-        except Exception as ex:
-            raise ex
+        except PermissionDenied as ex:
+            return HttpResponse(ex,status=403,content_type='application/javascript')
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
 
         style_extension.style.save()
         style_extension.save()
@@ -1370,23 +1381,42 @@ class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
                 ensure_ascii=False),
             status=200,
             content_type='application/javascript')
+    
+    def delete(self, request, pk, **kwargs):
+        try:
+            style_extension = self.queryset.get(pk=pk)
+            if not (style_extension.created_by == request.user or request.user.is_superuser):
+                raise PermissionDenied('You are not authorized to delete this style');
+            style_extension.style.delete()
+
+            full_path = '/gs/rest/styles/{0}.xml'.format(style_extension.style.name)
+            save_sld_geoserver(request_method='DELETE', full_path=full_path, sld_body=style_extension.sld_body)
+        except PermissionDenied as ex:
+            return HttpResponse(ex,status=403,content_type='application/javascript')
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
+        else:
+            return HttpResponse(True, status=200, content_type='application/javascript')
 
 
 class LayerStyleView(View):
     def get(self, request, layername):
-        layer_obj = _resolve_layer(request, layername)
-        layer_style = layer_obj.default_style
-        serializer = StyleExtensionSerializer(layer_style.styleextension)
-        return HttpResponse(
-            json.dumps(
-                serializer.data,
-                ensure_ascii=False),
-            status=200,
-            content_type='application/javascript')
+        try:
+            layer_obj = _resolve_layer(request, layername)
+            serializer = StyleExtensionSerializer(layer_obj.default_style.styleextension)
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
+        else:    
+            return HttpResponse(
+                json.dumps(
+                    serializer.data,
+                    ensure_ascii=False),
+                status=200,
+                content_type='application/javascript')
 
     @custom_login_required
     def put(self, request, layername, **kwargs):
-        layer_obj = _resolve_layer(request, layername)
+        layer_obj = _resolve_layer(request, layername, 'layers.change_layer_style')
         data = json.loads(request.body)
         # check already style extension created or not
         try:
@@ -1416,7 +1446,10 @@ class LayerStyleView(View):
 
     @custom_login_required
     def post(self, request, layername, **kwargs):
-        layer_obj = _resolve_layer(request, layername)
+        layer_obj = _resolve_layer(request, 
+                    layername,
+                    'base.view_resourcebase',
+                    _PERMISSION_MSG_VIEW)
         data = json.loads(request.body)
         json_field = data.get("StyleString", None)
         sld_body = data.get('SldStyle', None)
@@ -1427,7 +1460,8 @@ class LayerStyleView(View):
             json_field=json_field, created_by=request.user, modified_by=request.user)
 
         title = data.get('Title', str(style_extension.uuid))
-        sld_body = sld_body.format(style_name=str(style_extension.uuid))
+        formatter = string.Formatter()
+        sld_body = formatter.vformat(sld_body, (), SafeDict(style_name=str(style_extension.uuid)))
 
         style = Style(name=str(style_extension.uuid),
                       sld_body=sld_body, sld_title=title)
