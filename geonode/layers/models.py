@@ -108,7 +108,7 @@ class Layer(ResourceBase):
     time_regex = models.CharField(max_length=128, null=True, blank=True, choices=TIME_REGEX)
     elevation_regex = models.CharField(max_length=128, null=True, blank=True)
     user_data_epsg = models.CharField(max_length=128, null=True, blank=True)
-
+    is_base_layer = models.BigIntegerField(default=False)
     default_style = models.ForeignKey(
         Style,
         related_name='layer_default_style',
