@@ -48,7 +48,7 @@
                 source: new ol.source.ImageWMS({
                     url: urlResolver.resolveGeoserverTile(),
                     params: {
-                        LAYERS: 'cite:analytics_pinpointuseractivity',
+                        LAYERS: 'geonode:analytics_pinpointuseractivity',
                         FORMAT: 'image/png',
                         TRANSPARENT: true,
                         CQL_FILTER: cqlFilter
@@ -127,10 +127,7 @@
          }
 
          function getMapId(){
-            if(!isLayerPage()){
-                return user_href[4];
-            }else 
-                return "";
+            return self.MapConfig.id;
          }
 
         function getMapOrLayerLoadNonGISData(){
@@ -182,7 +179,7 @@
                 if(isLayerPage()){
                     analyticsData.layer_id=layer_info;
                 }else{
-                    analyticsData.map_id=user_href[4];
+                    analyticsData.map_id=getMapId();
                 }
                 return analyticsData;
             }
