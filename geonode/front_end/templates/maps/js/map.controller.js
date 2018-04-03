@@ -121,9 +121,9 @@
             return url;
         }
 
-        var user_href = window.location.href.split('/');
+        var mapId = window.location.pathname.split('/').pop();
         function isLayerPage(){
-            return _.contains(user_href,"layers");
+            return /\/layers\//g.test(window.location.pathname);
          }
 
          function getMapId(){
