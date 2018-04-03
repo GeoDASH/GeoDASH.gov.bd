@@ -8,7 +8,6 @@ html {
     position: relative;
   }
   body {
-    position: relative;
     margin: 0;
     min-height: 100%;
     background-color: #f7f7f7;
@@ -16,6 +15,7 @@ html {
 
 body{
     padding-top: 107px;
+    padding-bottom: 248px;
 }
 *:focus {
     /*outline: none;*/
@@ -3863,6 +3863,14 @@ background-color: #fff;
 	padding: 2px 5px !important;
 	margin-top: 5px;
 	border-radius: 4px;
+}
+footer {
+	background-color: #1c2025;
+	color: #a8aeb7;
+	padding: 50px 0;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 /* Home page Style End*/
 

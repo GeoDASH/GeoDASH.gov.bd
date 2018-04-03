@@ -372,27 +372,20 @@
     </section>
 
     {% block footer %}
-    <footer id="gd-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7">
-                    <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#gd-footer-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button> -->
-                    <!--<div class="collapse navbar-collapse" id="gd-footer-navbar-collapse">-->
-                    <ul class="nav navbar-nav">
-                        <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
-                        <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
-                        <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
-                        <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
-                        <li>
-                            <div class="tooltip_use" style="cursor:pointer;">Useful Resource
-                              <span class="tooltiptext_use">
-                                  <ul>
+    <footer>
+        <div class="container text-center" style="max-width:1300px">
+        <div class="row" style="margin-bottom: 30px;">
+            <div class="col-md-12" style="margin-bottom: 30px;">
+            
+                <ul class="nav navbar-nav" style="display: inline-block;float: none;vertical-align: top">
+                    <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
+                    <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
+                    <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
+                    <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
+                    <li>
+                            <div class="btn-group">
+                                    <button type="button" class="btn btn-link dropdown-toggle" style="padding: 6px 12px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Useful Resources <span class="caret"></span> </button>
+                                    <ul class="dropdown-menu" style="top: -320px">
                                       <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
                                       <li><a href="https://github.com/GeoNode/geonode" target="_blank">Github</a></li>
                                       <li><a href="https://openlayers.org/" target="_blank">OpenLayers</a></li>
@@ -401,62 +394,62 @@
                                       <li><a href="http://demo.f4map.com/#camera.theta=0.9" target="_blank">F4 Map</a></li>
                                       <li><a href="https://www.facebook.com/groups/GeoDASH/" target="_blank">GeoDASH BD FB Group</a></li>
                                       <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
-                                  </ul>
-                              </span>
-                            </div>
-                        </li>
-                        <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
-                    </ul>
-                    <!--</div>-->
-                </div>
-                <div class="col-md-2">
-					<div class="footer-admin-app">
-                                Admin APP
-                            <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
-                                <img src="{{ STATIC_URL }}geonode/images/googleplay.png" class="img-responsive" style=""/>
-                            </a>
-					</div>
-				</div>
-				<div class="col-md-1">
-					<div style="margin-top:15px;" class="ssl-certify-logo">
-							<script language="JavaScript" type="text/javascript">
-							TrustLogo("https://geodash.gov.bd/static/geonode/images/comodo_secure_seal_113x59_transp.png", "CL1", "none");
-							</script>
-							<a  href="https://ssl.comodo.com" id="comodoTL">Comodo SSL</a>
-					</div>
-				</div>
-                <div class="col-md-1">
-                    <div class="gd-footer-language" >
-                        <label class="hidden">{% trans "Language" %}</label>
-                        {% if csrf_token != "NOTPROVIDED" %}
-                        {% get_current_language as LANGUAGE %}
-                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                        {% csrf_token %}
-                          <select id="langOfSite" class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
-                            {% for lang in LANGUAGES %}
-                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                              {% trans lang.1 %}
-                            </option>
-                            {% endfor %}
-                          </select>
-                        </form>
-                        {% endif %}
-                    </div>
-                    <!-- <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <select class="selectpicker" data-width="auto">
-                                <option>English</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                            </select>
-                        </li>
-                    </ul> -->
-                </div>
+                                    </ul>
+                                  </div>
+                    </li>
+                    <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
+                    <li>
+                            
+                                    <div class="gd-footer-language" >
+                                        <label class="hidden">{% trans "Language" %}</label>
+                                        {% if csrf_token != "NOTPROVIDED" %}
+                                        {% get_current_language as LANGUAGE %}
+                                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
+                                        {% csrf_token %}
+                                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
+                                            {% for lang in LANGUAGES %}
+                                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
+                                              {% trans lang.1 %}
+                                            </option>
+                                            {% endfor %}
+                                          </select>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                    <!-- <ul class="nav navbar-nav navbar-right">
+                                        <li>
+                                            <select class="selectpicker" data-width="auto">
+                                                <option>English</option>
+                                                <option>Bangla</option>
+                                                <option>Bangla</option>
+                                                <option>Bangla</option>
+                                            </select>
+                                        </li>
+                                    </ul> -->
+                               
+                    </li>
+                </ul>
+                <!--</div>-->
             </div>
+            
+                
+                            Admin APP
+                        <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
+                            <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="margin-right: 15px;"/>
+                        </a>
+            
+        
+            
+                
+                    
+                        <a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
+                
+                        
+            
         </div>
-      </div>
-    </footer>
+    </div>
+  </div>
+</footer>
     {% endblock footer %}
 
 
