@@ -674,26 +674,6 @@ table.gd-list-table tr td .media-body {
     color: #53a4e6;
     background-color: #fff;
 }
-#gd-header .dropdown-menu{
-    min-width:125px;
-}
-#gd-header .navbar-nav > li > .dropdown-menu{
-    border-radius: 0px;
-    padding:0px;
-}
-#gd-header .gd-menu .dropdown-menu > li > a{
-    padding: 6px 20px;;
-}
-#gd-header .dropdown-menu > li > a{
-     color:#666666;
-    font-size: 12px;
-    font-weight: bold;
-}
-#gd-header .dropdown-menu > li > a:hover{
-     color:#53a4e6;
-    font-size: 12px;
-    font-weight: bold;
-}
 
 #gd-header .navbar-default .navbar-nav.gd-menu > .active > a,
 #gd-header .navbar-default .navbar-nav.gd-menu > .active > a:focus,
@@ -3871,6 +3851,9 @@ footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+}
+.dropdown-menu > li > a {
+	padding: 9px 20px;
 }
 /* Home page Style End*/
 
