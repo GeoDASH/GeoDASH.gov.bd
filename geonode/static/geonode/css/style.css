@@ -645,10 +645,7 @@ table.gd-list-table tr td .media-body {
     padding-left: 10px;
     padding-right: 0px;
 }
-#gd-header .navbar-nav.navbar-right > li > a > .btn > .fa {
-    font-size: 20px;
-    color: #9f9f9f;
-}
+
 #gd-header .navbar-default .navbar-nav.gd-menu > li > a{
     /*height:40px;*/
     height:48px;
@@ -3806,6 +3803,7 @@ background-color: #fff;
 }
 .btn {
 	border-radius: 0;
+	padding: 8px 12px;
 }
 .btn-primary {
 	background-color: #3896e2;
