@@ -24,7 +24,7 @@ from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, RegionResource, OwnersResource, UserOrganizationList, LayerUpload, MakeFeatured, MesseagesUnread, \
         UndockResources, FavoriteUnfavoriteResources, OsmOgrInfo, LayerSourceServer, LayersWithFavoriteAndDoocked, \
     MapsWithFavoriteAndDoocked, GroupsWithFavoriteAndDoocked, DocumentsWithFavoriteAndDoocked, UserNotifications, \
-    ViewNotificationTimeSaving, ThesaurusKeywordResource, AccessTokenApi, ChangeLayerVersionApi
+    ViewNotificationTimeSaving, ThesaurusKeywordResource, AccessTokenApi, SetBaseLayerAPI
 
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
@@ -89,5 +89,5 @@ api.register(WorkSpaceDocumentApi())
 
 #get token api
 api.register(AccessTokenApi())
-api.register(ChangeLayerVersionApi())
+api.register(SetBaseLayerAPI())
 api.register(LayerResourceForBaseLayers())
