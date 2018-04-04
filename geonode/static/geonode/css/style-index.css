@@ -8,7 +8,7 @@
     width:100%;
 }
 .carousel-inner {
-    /*min-height:675px;*/
+    min-height:243px;
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -237,9 +237,10 @@
 }
 #gd-featurd-maps .gd-featurd-maps-content-dash .gd-featurd-maps-container-dash .contents {
     padding: 15px;
-    background-color: #aedaee;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
+    border-top: 1px solid #e6e6e6;
+
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .title{
     text-align: center;

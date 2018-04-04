@@ -10,6 +10,11 @@
 <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
 {% endblock %}
 {% block middle %}
+<style>
+    #gd-wrapper {
+        background: #fff;
+    }
+</style>
     <div id="gd-dashboard">
        
          
@@ -45,16 +50,48 @@
                               {% trans "Dashboard" %}
                           </div>
                      
-                          <div class="panel panel-info">
+                          <div class="panel panel-info dashboard-panel">
 
 
 
 
 
-                                <div class="panel-heading"><span class="label label-success pull-right">{% trans "Docked" %} <span id="total_layers-fav"></span></span> {% trans "Layers" %} </div>
-                                <div class="panel-body">
+                                <div class="panel-heading dashboard-heading">
+                                    <span class="pull-right">
+                                        {% trans "Docked" %} <span class="badge dashboard-badge" id="total_layers-fav"></span>
+
+
+                                        <div class="btn-group" role="group">
+                                                
+                                                                                   
+
+                                                                                                 <!-- Controls -->
+                                                                                                 <a class="btn btn-default btn-sx" href="#carousel-home-dash-layer" role="button" data-slide="prev">
+                                                                                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" ></span>
+                                                                                                    </a>
+                                                                                                    <a class="btn btn-default btn-sx" href="#carousel-home-dash-layer" role="button" data-slide="next">
+                                                                                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"  ></span>
+                                                                                                    </a>
+                                                
+                                                                                   
+                                                
+                                                                                   
+                                                </div>
+
+
+                                    </span> 
+
+
+
+                                        {% trans "Layers" %} 
+
+
+                                    </div>
+                                
+                                
+                                    <div class="panel-body dashboard-panel-body">
                                  
-                                        <div class="gd-content-body">
+                                     
                                                 
                                                 
                                                                     <div class="row">
@@ -106,13 +143,7 @@
                                                                                                       </div>
                                                                                                      <div class="item"></div>-->
                                                                                                   </div>
-                                                                                                  <!-- Controls -->
-                                                                                                  <a class="left-panel carousel-control" style="left:-28px;" href="#carousel-home-dash-layer" role="button" data-slide="prev">
-                                                                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" ></span>
-                                                                                                  </a>
-                                                                                                  <a class="right-panel carousel-control" style="right:-28px;" href="#carousel-home-dash-layer" role="button" data-slide="next">
-                                                                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"  ></span>
-                                                                                                  </a>
+                                                                                                 
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -123,7 +154,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                              
 
                                 </div>
                               </div>
@@ -139,14 +170,28 @@
                             
     
                             
-                            <div class="panel panel-info">
-                                    <div class="panel-heading"><span class="label label-success pull-right">{% trans "Docked" %} <span id="total_maps-fav"></span></span> {% trans "Maps" %}</div>
-                                    <div class="panel-body">
-                                            <div class="gd-content-body transparent top-bottom-margin-20px">
+                            <div class="panel panel-info dashboard-panel">
+                                    <div class="panel-heading dashboard-heading">
+                                        <span class="pull-right">{% trans "Docked" %} <span class="badge dashboard-badge" id="total_maps-fav"></span>
+             
+                                        <div class="btn-group" role="group">
+ <!-- Controls -->
+ <a class="btn btn-default btn-sx" href="#carousel-home-dash" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </a>
+    <a class="btn btn-default btn-sx" href="#carousel-home-dash" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </a>
+    </div>
+
+                                    </span> {% trans "Maps" %}
+                                    </div>
+                                    <div class="panel-body dashboard-panel-body">
+                                           
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="gd-content-body1 full-pad-40px1">
-                                                              <div id="gd-featurd-maps" style="background:#fff;">
+                                                              <div id="gd-featurd-maps">
                                                                     <div class="row">
                                                                         <div class="gd-stastic">
                                                                             <div class="gd-featurd-maps-content-dash">
@@ -196,13 +241,7 @@
                                                                                       <!--<div class="item">-->
                                                                                       <!--</div>-->
                                                                                   </div>
-                                                                                  <!-- Controls -->
-                                                                                  <a class="left-panel carousel-control" style="left:-28px;" href="#carousel-home-dash" role="button" data-slide="prev">
-                                                                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                                                                  </a>
-                                                                                  <a class="right-panel carousel-control" style="right:-28px;" href="#carousel-home-dash" role="button" data-slide="next">
-                                                                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                                                                  </a>
+                                                                                 
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -211,22 +250,42 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                
                                     </div>
                                   </div>
 
 
 
 
-                                  <div class="panel panel-info">
-                                    <div class="panel-heading"><span class="label label-success pull-right">{% trans "Docked" %} <span id="total_documents_fav"></span></span> {% trans "Documents" %}</div>
-                                    <div class="panel-body">
-                                        <div class="gd-content-body">
+                                  <div class="panel panel-info dashboard-panel">
+                                    <div class="panel-heading dashboard-heading">
+                                        
+                                        <span class="pull-right">
+                                            {% trans "Docked" %} <span class="badge dashboard-badge" id="total_documents_fav"></span>
+
+                                            <div class="btn-group" role="group">
+                                                    
+                                                                                            <a class="btn btn-default btn-sx" href="#carousel-home-dash-doc" role="button" data-slide="prev">
+                                                                                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                                                                </a>
+                                                                                                <a class="btn btn-default btn-sx" href="#carousel-home-dash-doc" role="button" data-slide="next">
+                                                                                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                                                                </a>
+                                                                                                </div>
+
+                                        </span> 
+                                        
+                                      
+                                        
+                                        {% trans "Documents" %}
+                                    </div>
+                                    <div class="panel-body dashboard-panel-body">
+                                       
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="gd-content-body1 full-pad-40px1">
+                                                    
                                                       <div id="gd-featurd-maps">
-                                                        <div class="block-separator"></div>
+                                                        
                                                             <div class="row">
                                                                 <div class="gd-stastic">
                                                                     <div class="gd-featurd-maps-content-dash">
@@ -279,38 +338,53 @@
                                                                               <!--</div>-->
                                                                           </div>
                                                                           <!-- Controls -->
-                                                                          <a class="left-panel carousel-control" style="left: -28px;" href="#carousel-home-dash-doc" role="button" data-slide="prev">
-                                                                              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                                                          </a>
-                                                                          <a class="right-panel carousel-control" style="right: -28px;" href="#carousel-home-dash-doc" role="button" data-slide="next">
-                                                                              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                                                          </a>
+                                                                        
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                
                                                 </div>
                                             </div>
-                                        </div>
+                                    
                                     </div>
                                   </div>
 
 
 
-                                  <div class="panel panel-info">
-                                    <div class="panel-heading"><span class="label label-success pull-right">{% trans "Docked" %} <span id="total_org-fav"></span></span> {% trans "Organizations" %}</div>
-                                    <div class="panel-body">
-                                        <div class="gd-content-body">
+                                  <div class="panel panel-info dashboard-panel">
+                                    <div class="panel-heading dashboard-heading">
+                                       
+                                        <span class="pull-right">
+                                            {% trans "Docked" %} 
+                                            <span class="badge dashboard-badge" id="total_org-fav"></span>
+
+                                            <div class="btn-group" role="group">
+                                             <!-- Controls -->
+                                             <a class="btn btn-default btn-sx" href="#carousel-home-dash-org" role="button" data-slide="prev">
+                                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                </a>
+                                                <a class="btn btn-default btn-sx" href="#carousel-home-dash-org" role="button" data-slide="next">
+                                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                </a>
+                                                </div>
+
+
+                                        </span>
+
+                                         {% trans "Organizations" %}
+                                    </div>
+                                    <div class="panel-body dashboard-panel-body">
+                                     
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="gd-content-body1 full-pad-40px1">
-                                                      <div id="gd-featurd-maps" style="background:#fff;">
-                                                        <div class="block-separator"></div>
+                                                      <div id="gd-featurd-maps">
+                                                       
                                                             <div class="row">
                                                                 <div class="gd-stastic">
-                                                                    <div class="gd-featurd-maps-content-dash" style="background:#fff;">
+                                                                    <div class="gd-featurd-maps-content-dash">
                                                                         <div id="carousel-home-dash-org" class="carousel slide" data-ride="carousel4">
                                                                           <!-- Indicators -->
                                                                           <!-- <ol class="carousel-indicators">
@@ -359,13 +433,7 @@
                         
                                                                               <!--</div>-->
                                                                           </div>
-                                                                          <!-- Controls -->
-                                                                          <a class="left-panel carousel-control" style="left: -28px;" href="#carousel-home-dash-org" role="button" data-slide="prev">
-                                                                              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                                                          </a>
-                                                                          <a class="right-panel carousel-control" style="right: -28px;" href="#carousel-home-dash-org" role="button" data-slide="next">
-                                                                              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                                                          </a>
+                                                                         
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -374,7 +442,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                      
                                     </div>
                                   </div>
 
@@ -422,7 +490,7 @@
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
-                output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd">';
                 output +='<div class="avater">';
                 output +='<div class="avater-img">';
                 output +='<div class="avater-img-mid" href="#" >';
@@ -437,7 +505,7 @@
                 output +='<div class="checkbox" style="margin:0;padding:0">';
                 output +='<label>';
                 output +='<span>';
-                output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                output +='<a href="#" class="btn" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                 output +='</span>';
                 output +='</label>';
                 output +='</div>';
@@ -497,7 +565,7 @@
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
-                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<div class="avater-img-mid" href="#" >';
@@ -512,7 +580,7 @@
                     output +='<div class="checkbox" style="margin:0;padding:0">';
                     output +='<label>';
                     output +='<span>';
-                    output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                    output +='<a href="#" class="btn" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -567,7 +635,7 @@
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
-                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<div class="avater-img-mid" href="#" >';
@@ -582,7 +650,7 @@
                     output +='<div class="checkbox" style="margin:0;padding:0">';
                     output +='<label>';
                     output +='<span>';
-                    output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                    output +='<a href="#" class="btn" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
@@ -637,7 +705,7 @@
                     output += '</div><div class="item">';
                     output += '<article class="gd-featurd-maps-container-dash">';
                 }
-                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd" style="background:none;">';
+                    output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="grid-container-dash lmd">';
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<div class="avater-img-mid" href="#" >';
@@ -652,7 +720,7 @@
                     output +='<div class="checkbox" style="margin:0;padding:0">';
                     output +='<label>';
                     output +='<span>';
-                    output +='<a href="javascript:;" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times"></i></a>';
+                    output +='<a href="javascript:;" class="btn" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';

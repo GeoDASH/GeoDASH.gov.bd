@@ -2831,9 +2831,10 @@ ul.termsuseandcondition li {
 
 .grid-container-dash.lmd{
     padding: 0;
-    border: 1px solid #3896e2;
+    border: 1px solid #e1e1e1;
      margin-bottom: 0;
      border-radius: 6px;
+     background-color: #fff;
 }
 
 .grid-container-dash.lmd .avater{
@@ -2843,9 +2844,9 @@ ul.termsuseandcondition li {
     position: relative;
 }
 .grid-container-dash.lmd .avater .checkbox-overlay{
-    right: -15px;
+    right: 0;
     position: absolute;
-    top: -15px;
+    top: 0;
 }
 .grid-container-dash.lmd .avater img{
     /*height: 200px;*/
@@ -3304,7 +3305,6 @@ width: 80%;
 }
 #gd-featurd-maps .carousel-control span
 {
-   background-color: #f0ad4e;
    border-radius: 50%;
    color: #fff;
    font-size: 18px;
@@ -3324,7 +3324,7 @@ width: 80%;
 }
 #gd-featurd-maps .carousel-inner 
 {
-    padding: 10px;
+    padding: 0;
 }
 .globalNav
 {
@@ -3774,6 +3774,50 @@ background-color: #fff;
     font-weight: bold;
     font-size: 17px;
 }
+.dashboard-panel
+{
+    border: none;
+    background: transparent;
+    border-top: 1px solid #e3e3e3;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    border: 1px solid #ededed;
+    margin-bottom: 15px;
+}
+.panel-info > .panel-heading.dashboard-heading
+{
+    background: transparent;
+     border: none;
+     padding: 0 0 10px 0;
+     color: #3aa583;
+     font-size: 25px;
+}
+.dashboard-panel-body
+{
+    padding: 0;
+}
+.panel-info > .panel-heading .dashboard-badge
+{
+    color: #fff;
+    background-color: #ff8831;
+    font-size: 15px;
+    margin-right: 30px;
+}
+#gd-header .profile_pic img
+{
+    border-radius: 50%;
+}
+
+
+
+
+
+
+
+
 
 /* Home page Style start */
 .navbar {
