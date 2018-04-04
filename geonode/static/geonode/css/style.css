@@ -3301,11 +3301,16 @@ width: 80%;
 }
 .layerNav > li.active > a, .layerNav > li.active > a:focus, .layerNav > li.active > a:hover
 {
-    border-width: 0 0 3px;
+    border-width: 3px 0 0;
     border-color: #f2555b;
-    border-top: none;
-    color: #000;
-    background: transparent;
+    color: rgb(68, 68, 68);
+    background-color: #ffffff;
+
+}
+.layerNav > li.active > a i
+{
+  color: #15ac4f;
+
 }
 .layerNav > li > a:focus, .layerNav > li > a:hover
 {
@@ -3342,7 +3347,7 @@ width: 80%;
 .globalNav
 {
     margin: 0 -14px;
-    padding: 5px 23px 0;
+    padding: 0 15px 0;
 }
 .globalNavHeading
 {
@@ -3350,7 +3355,7 @@ width: 80%;
 }
 .panel-default > .panel-heading
 {
-    background-color: #fff;
+    background-color: #f0f0f0;
     border-bottom: none;
 }
 .bottom-content
