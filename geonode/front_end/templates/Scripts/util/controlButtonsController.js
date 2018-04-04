@@ -1,6 +1,6 @@
 ﻿appModule.controller("controlButtonsController",
-    ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q','BoxDrawTool',
-    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q,BoxDrawTool) {
+    ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q','BoxDrawTool','SurfMap',
+    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q,BoxDrawTool,SurfMap) {
         $scope.mapService = mapService;
         $scope.mapTools = mapTools;
 
@@ -251,6 +251,15 @@
 
             $scope.removeBoxZooming=function () {
                 $scope.mapTools.zoomToExtentTool.removeDrawBox();
+            };
+            var ifSelectFeatureToolActive=false;
+            $scope.toggleSelectFeatureTool=function () {
+                    if(!ifSelectFeatureToolActive){
+                        mapTools.activeLayer.setActiveLayerSelectInteractions();
+                    }else {
+                        mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                    }
+                    ifSelectFeatureToolActive=!ifSelectFeatureToolActive;
             };
 
             var box=new BoxDrawTool();
