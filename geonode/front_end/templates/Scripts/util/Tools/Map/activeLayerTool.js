@@ -64,7 +64,7 @@
             };
             this.disableActiveLayerSelectInteractions=function () {
                 var layer=getLayer(_activeLayerId);
-                activateFeatureSelectTool(layer);
+                deactivateAllTools(layer);
                 isFeatureSelectEnabled=!isFeatureSelectEnabled;
             };
 
