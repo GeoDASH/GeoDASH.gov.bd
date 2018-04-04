@@ -693,7 +693,7 @@ table.gd-list-table tr td .media-body {
 }
 #gd-header .profile_pic{
     border:none;
-    margin-top:-10px;
+    margin-top:-6px;
 }
 #gd-header .badge{
     /*padding: 6px 10px;*/
@@ -2273,7 +2273,8 @@ ul.resources-summery li a .fa{
     margin-top: 0;
     position: absolute;
     width: 50%;
-    z-index: 2;
+    z-index: 500;
+    left: 30%;
 }
 #user_messages .alert{
     margin-bottom: 0px;
@@ -2831,10 +2832,12 @@ ul.termsuseandcondition li {
 
 .grid-container-dash.lmd{
     padding: 0;
-    border: 1px solid #e1e1e1;
+    
      margin-bottom: 0;
-     border-radius: 6px;
+     border-radius: 0;
      background-color: #fff;
+     border: 1px solid #f8f8f8;
+     border-top: 2px solid #8ec999;
 }
 
 .grid-container-dash.lmd .avater{
@@ -2842,11 +2845,21 @@ ul.termsuseandcondition li {
 }
 .grid-container-dash.lmd .avater{
     position: relative;
+    background-color: #f5f5f5;
+    
+    background: rgba(255,255,255,1);
+background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(237,237,237,1)));
+background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=1 );
 }
 .grid-container-dash.lmd .avater .checkbox-overlay{
     right: 0;
     position: absolute;
-    top: 0;
+    top: -47px;
 }
 .grid-container-dash.lmd .avater img{
     /*height: 200px;*/
@@ -3781,11 +3794,12 @@ background-color: #fff;
     border-top: 1px solid #e3e3e3;
     border-radius: 0;
     margin-bottom: 0;
-    padding: 15px;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    border: 1px solid #ededed;
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    border: 0;
     margin-bottom: 15px;
+    padding-bottom: 15px;
 }
 .panel-info > .panel-heading.dashboard-heading
 {
@@ -3810,7 +3824,10 @@ background-color: #fff;
 {
     border-radius: 50%;
 }
-
+.close-btn
+{
+     color: #d2d2d2;
+}
 
 
 

@@ -412,6 +412,10 @@ ul.offer-list li {
 	-webkit-align-items: center;
 	align-items: center;
 }
+.profile_picture img
+{
+    border-radius: 50%;
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
