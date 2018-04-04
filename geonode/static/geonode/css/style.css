@@ -1908,7 +1908,6 @@ fieldset[disabled] .btn-gd-yellow.focus {
  }
 .d-title{
     color:#5a5d63;
-    font-weight: bold;
     font-size: 25px;
     padding: 15px 0;
 }
@@ -3760,6 +3759,20 @@ background-color: #fff;
 .style-editor-shown {
     left: 0 !important;
     top: 3px;
+}
+.table
+{
+    background-color: #fff;
+    border: 1px solid #ececec;
+    border-top: 2px solid #8ec999;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
+{
+    padding: 15px 10px;
+}
+.table thead tr td{
+    font-weight: bold;
+    font-size: 17px;
 }
 
 /* Home page Style start */
