@@ -136,3 +136,4 @@ django-db-logger==0.1.6
 
 celery==4.1.0
 markdown==2.6.9
+geopandas

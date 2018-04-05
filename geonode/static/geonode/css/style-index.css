@@ -8,7 +8,7 @@
     width:100%;
 }
 .carousel-inner {
-    /*min-height:675px;*/
+    min-height:243px;
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -223,6 +223,8 @@
     width: 63%;
     height: 150px;
     margin-left: 45px;
+    border-radius: 50%;
+    border: 7px solid #ffffff;
 }
 @media (max-width: 767px) {
   #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .avater img{
@@ -237,21 +239,16 @@
 }
 #gd-featurd-maps .gd-featurd-maps-content-dash .gd-featurd-maps-container-dash .contents {
     padding: 15px;
-    background-color: #aedaee;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
+    border-bottom: 1px solid #e6e6e6;
+
 }
-#gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .title{
-    text-align: center;
-    text-transform: none;
-    font-size: 20px;
-    color: #333333;
-}
-#gd-featurd-maps .gd-featurd-maps-content-dash .gd-featurd-maps-container-dash .contents .title{
-    text-align: center;
-    text-transform: none;
-    font-size: 16px;
-    color: #333333;
+
+
+#gd-featurd-maps .gd-featurd-maps-content-dash .gd-featurd-maps-container-dash .contents .title a{
+
+    color: #676a6c;
+    font-weight: bold;
+    font-size: 15px;
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container .contents .details{
     text-align: justify;
@@ -723,6 +720,7 @@
     padding-top:20px;
     padding-bottom:30px;
     margin:0 auto;
+    text-align: center;
 }
 #gd-partners-content .title{
     color:#fff;
@@ -890,9 +888,9 @@
 /* dashboard style start */
 
 #gd-dashboard{
-    /*background: #f7f7f7;*/
+    background: #fbfbfb;
     /*margin-bottom: 20px;*/
-    padding: 0 20px;
+    padding: 0 40px;
 }
 #gd-dashboard .header-title{
     color:#6e6b6b;
