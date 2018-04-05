@@ -17,25 +17,18 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
     '$timeout',
 
     function (urlResolver,
-
-        Event,
-
-        $http,
-
-        SurfFeature,surfFeatureFactory,layerRepository,$window,$timeout
-
-        ) {
+              Event,
+              $http,
+              SurfFeature, surfFeatureFactory, layerRepository, $window, $timeout) {
 
         function parseId(olFeature) {
 
             var idParts = (olFeature.getId() || '.').split('.');
 
 
-
-            return { dataId: idParts[0], fid: idParts[1] };
+            return {dataId: idParts[0], fid: idParts[1]};
 
         }
-
 
 
         function WmsMultiSelectFeatureTool(olMap, surfMap) {
@@ -48,26 +41,23 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
 
             this.isActivated = false;
 
-            this.activate();
+            // this.activate();
 
         }
 
 
-
         function getFeature(event) {
 
-            var _this = this;
 
+            var _this = this;
 
 
             var layers = _this.surfMap.getLayers();
 
 
-
             var dataIds = [];
 
             var styleIds = [];
-
 
 
             angular.forEach(layers, function (sl) {
@@ -89,8 +79,6 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
             var bbox = _this.olMap.getView().calculateExtent(size);
 
             var layersParamValue = dataIds.join(',');
-
-            
 
             var urlParams = {
 
@@ -127,20 +115,19 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
             };
 
 
-
             var wmsSource = $window.GeoServerTileRoot + '?access_token=' + $window.mapConfig.access_token;
 
-            layerRepository.getWMS(wmsSource,urlParams).then(function (response) {
+            layerRepository.getWMS(wmsSource, urlParams).then(function (response) {
 
                 var geoJson = response;
 
-                geoJson.features.map(function(feature){
+                geoJson.features.map(function (feature) {
 
-                    if(!feature.geometry){
+                    if (!feature.geometry) {
 
-                        feature.geometry = { 
+                        feature.geometry = {
 
-                            type: "MultiPolygon", 
+                            type: "MultiPolygon",
 
                             coordinates: [],
 
@@ -157,9 +144,6 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
                 var olFeatures = parser.readFeatures(geoJson);
 
 
-
-
-
                 _this.featuresData = olFeatures.map(function (of) {
 
                     var id = parseId(of);
@@ -174,7 +158,8 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
 
                         }
 
-                    };
+                    }
+                    ;
 
                     var surfLayer = lookup[id.dataId];
 
@@ -193,9 +178,6 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
                 _this.setSelected(0);
 
 
-
-
-
             }).catch(function () {
 
                 //featureReceived(null);
@@ -203,23 +185,20 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
             });
 
 
-
             /* surfRepository.getGeoserver('wms', urlParams).then(function (response) {
 
-                 var surfFeatures = surfFeatureParser.fromGeoJson(response, _this.surfMap);
+             var surfFeatures = surfFeatureParser.fromGeoJson(response, _this.surfMap);
 
-                 _this.broadcast('selected', surfFeatures, event.coordinate);
+             _this.broadcast('selected', surfFeatures, event.coordinate);
 
              });*/
 
         }
 
 
-
         WmsMultiSelectFeatureTool.prototype = Object.create(Event.prototype);
 
         WmsMultiSelectFeatureTool.prototype.constructor = WmsMultiSelectFeatureTool;
-
 
 
         WmsMultiSelectFeatureTool.prototype.activate = function () {
@@ -235,9 +214,7 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
         };
 
 
-
         WmsMultiSelectFeatureTool.prototype.setSelected = function (index) {
-
 
 
             if (index >= 0 && index < this.featuresData.length) {
@@ -257,7 +234,6 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
         };
 
 
-
         WmsMultiSelectFeatureTool.prototype.selectNext = function () {
 
             this.setSelected(this.selectedIndex + 1);
@@ -265,13 +241,11 @@ mapModule.factory('WmsMultiSelectFeatureTool', [
         };
 
 
-
         WmsMultiSelectFeatureTool.prototype.selectPrevious = function () {
 
             this.setSelected(this.selectedIndex - 1);
 
         };
-
 
 
         return WmsMultiSelectFeatureTool;
