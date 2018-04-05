@@ -3842,6 +3842,22 @@ background-color: #fff;
 {
     width: 465px;
 }
+.vNav.nav-tabs > li
+{
+    float: none;
+}
+.tableViewSidebar
+{
+    position: absolute;
+    height: 100%;
+     width: 300px;
+    background-color: #308d62;
+}
+.nav-tabs
+{
+    margin-bottom: 15px;
+}
+
 
 
 
