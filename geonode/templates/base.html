@@ -11,12 +11,12 @@
       {% if DEBUG_STATIC %}
       <link href="{{ STATIC_URL }}lib/css/jquery.dataTables.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}lib/css/select2.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/bootstrap.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/jquery-ui.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       {% else %}
       <link href="{{ STATIC_URL }}lib/css/main.4df7c95f.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
+      <link href="{{ STATIC_URL }}lib/css/bootstrap.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/font-awesome.min.css" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       <!--<link href="{{ STATIC_URL }}lib/css/bootstrap-select.min.css?v={{ VERSION }}" rel="stylesheet"/>-->
@@ -72,261 +72,265 @@
     {% block header %}
     <section id="gd-header" class="navsticky" >
         <!-- <nav class="navbar navbar-default"> -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gd-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{% url "home" %}">
-                        <div class="logo">
-                            <img src="{{ STATIC_URL }}geonode/images/logo.png" />
-                            <div class="gd-title-geodash">GeoDASH</div>
+        <nav class="navbar navbar-fixed-top">
+            <div class="container-fluid">
+                    <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gd-navbar-collapse" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="{% url "home" %}">
+                                <div class="logo">
+                                    <img src="{{ STATIC_URL }}geonode/images/logo.png" />
+                                    <div class="gd-title-geodash">GeoDASH</div>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                </div>
                 <div class="collapse navbar-collapse" id="gd-navbar-collapse">
-                    <ul class="nav navbar-nav gd-menu">
-                        {% block tabs %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">{% trans "Layers" %}<span class="caret"></span></a>
-                            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
-                            <ul class="dropdown-menu">
-                                <li id="nav_layers">
-                                  <a href="{% url "layer_browse" %}">{% trans "Explore Layers" %}</a>
-                                </li>
-                                {% if not user.is_authenticated %}
-                                    <li id="nav_maps">
-                                      <a  onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Layers" %}</a>
-                                    </li>
-                                {% endif %}
-                                {% if user.is_authenticated %}
-                                    <li id="nav_maps">
-                                      <a href="{% url "layer_upload"  %}">{% trans "Upload Layers" %}</a>
-                                    </li>
-                                {% endif %}
-{#                                <!--<li id="nav_layers">-->#}
-{#                                  <!--<a href="{% url "overpass_turbo" %}">{% trans "OSM Layer Wizard" %}</a>-->#}
-{#                                <!--</li>-->#}
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">{% trans "Maps" %}<span class="caret"></span></a>
-                            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
-                            <ul class="dropdown-menu">
-                                <li id="nav_layers">
-                                  <a href="{% url "maps_browse" %}">{% trans "Explore Maps" %}</a>
-                                </li>
-{#                                {% if user.is_authenticated %}#}
-                                <li id="nav_maps">
-                                  <a href="{% url "new_map" %}">{% trans "Create a New Map" %}</a>
-                                </li>
-{#                                {% endif %}#}
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">{% trans "Documents" %}<span class="caret"></span></a>
-                            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
-                            <ul class="dropdown-menu">
-                                <li id="nav_layers">
-                                  <a href="{% url "document_browse" %}" >{% trans "Explore Documents" %}</a>
-                                </li>
-                                {% if not user.is_authenticated %}
-                                <li id="nav_maps">
-                                  <a onclick="documentpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Documents" %}</a>
-                                </li>
-                                {% endif %}
-                                {% if user.is_authenticated %}
-                                <li id="nav_maps">
-                                  <a href="{% url "document_upload" %}">{% trans "Upload Documents" %}</a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                        {% block extra_tab %}
-                        {% endblock %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">{% trans "Organizations" %}<span class="caret"></span></a>
-                            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
-                            <ul class="dropdown-menu">
-                                <li id="nav_maps">
-                                  <a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>
-                                </li>
-                                {% if user.is_authenticated %}
-                                <li id="nav_layers">
-                                  <a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                        <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
-                        {% if user.is_authenticated %}
-                        <li class="notification">
-                            <a class="usi" href="{% url "_dashboard" %}" title="Dashboard">
-                                <button class="btn btn-default btn-link" >
-                                    <img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" style="margin-top:-15px;" title="Dashboard"  />
-                                </button>
-                            </a>
-                        </li>
-                        {% endif %}
-                        <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
-                        {% endblock %}
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <!--<li class="dropdown" style="margin-top:5px;">-->
-                            <!--<select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">-->
-                                <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
-                                <!--<option value="Organization" id="drop_org">Organization</option>-->
-                                <!--<option value="User" id="drop_user">User</option>-->
-                            <!--</select>-->
-                        <!--</li>-->
-                        <li class="nav-search-index brow_widt" id="search_lay_map_doc" style=""> <!-- nav-search-index -->
-                            <form class="top-site-search" id="search" action="{% url "search" %}" >
-                                <div class="input-group">
-                                    {% if HAYSTACK_SEARCH %}
-                                        <input id="search_input"  type="text" placeholder="" name="q" style="color:#5a5d63;">
-                                    {% else %}
-                                        <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="color:#5a5d63;" class="map-search" name="title__icontains">
-                                    {% endif %}
-                                    <span style="padding-left:0;">
-                                        <!--<select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">-->
-                                            <!--<option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>-->
-                                            <!--<option value="Organization" id="organizationsearch" >Organization</option>-->
-                                            <!--<option value="User" id="userssearch">User</option>-->
-                                        <!--</select><div class="caret" id="show_d_p" style="cursor:pointer;"></div>-->
-                                        <!--<div class="dropdown">-->
-                                            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"-->
-                                               <!--aria-haspopup="true" aria-expanded="false">{% trans "Orga" %}<span class="caret"></span></a>-->
-                                            <!--&lt;!&ndash;<a href="#">explore<span class="sr-only">(current)</span></a> &ndash;&gt;-->
-                                            <!--<ul class="dropdown-menu">-->
-                                                <!--<li id="nav_maps">-->
-                                                  <!--<a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>-->
-                                                <!--</li>-->
-                                                <!--{% if user.is_authenticated %}-->
-                                                <!--<li id="nav_layers">-->
-                                                  <!--<a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>-->
-                                                <!--</li>-->
-                                                <!--{% endif %}-->
-                                            <!--</ul>-->
-                                        <!--</div>-->
+                   
+                        <div id="navbar">
+                                <ul class="nav navbar-nav header-nav nav-left">
+                                    {% block tabs %}
+                                    <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                               aria-haspopup="true" aria-expanded="false">{% trans "" %} <span class="caret search-caret"></span>
+                                           aria-haspopup="true" aria-expanded="false">{% trans "Layers" %}<span class="caret"></span></a>
+                                        <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
+                                        <ul class="dropdown-menu">
+                                            <li id="nav_layers">
+                                              <a href="{% url "layer_browse" %}">{% trans "Explore Layers" %}</a>
+                                            </li>
+                                            {% if not user.is_authenticated %}
+                                                <li id="nav_maps">
+                                                  <a  onclick="layerpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Layers" %}</a>
+                                                </li>
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                                <li id="nav_maps">
+                                                  <a href="{% url "layer_upload"  %}">{% trans "Upload Layers" %}</a>
+                                                </li>
+                                            {% endif %}
+            {#                                <!--<li id="nav_layers">-->#}
+            {#                                  <!--<a href="{% url "overpass_turbo" %}">{% trans "OSM Layer Wizard" %}</a>-->#}
+            {#                                <!--</li>-->#}
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">{% trans "Maps" %}<span class="caret"></span></a>
+                                        <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
+                                        <ul class="dropdown-menu">
+                                            <li id="nav_layers">
+                                              <a href="{% url "maps_browse" %}">{% trans "Explore Maps" %}</a>
+                                            </li>
+            {#                                {% if user.is_authenticated %}#}
+                                            <li id="nav_maps">
+                                              <a href="{% url "new_map" %}">{% trans "Create a New Map" %}</a>
+                                            </li>
+            {#                                {% endif %}#}
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">{% trans "Documents" %}<span class="caret"></span></a>
+                                        <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
+                                        <ul class="dropdown-menu">
+                                            <li id="nav_layers">
+                                              <a href="{% url "document_browse" %}" >{% trans "Explore Documents" %}</a>
+                                            </li>
+                                            {% if not user.is_authenticated %}
+                                            <li id="nav_maps">
+                                              <a onclick="documentpopup('SigninModal');" style="cursor:pointer;">{% trans "Upload Documents" %}</a>
+                                            </li>
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                            <li id="nav_maps">
+                                              <a href="{% url "document_upload" %}">{% trans "Upload Documents" %}</a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+                                    {% block extra_tab %}
+                                    {% endblock %}
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">{% trans "Organizations" %}<span class="caret"></span></a>
+                                        <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
+                                        <ul class="dropdown-menu">
+                                            <li id="nav_maps">
+                                              <a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>
+                                            </li>
+                                            {% if user.is_authenticated %}
+                                            <li id="nav_layers">
+                                              <a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+                                    <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
+                                    {% if user.is_authenticated %}
+                                    <li class="notification">
+                                        <a class="usi" href="{% url "_dashboard" %}" title="Dashboard" style="padding: 0">
+                                            <button class="btn btn-default btn-link" style="padding: 10px">
+                                                <img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" style="margin-top:-10px;" title="Dashboard"  />
+                                            </button>
                                         </a>
-                                            <ul class="dropdown-menu" >
-                                                <li id="layermapdocsearch">
-                                                  <a href="javascript:;" id="layermapdocsearchval" data-isadmin="Default">{% trans "Layer/Map/Document" %}</a>
-                                                </li>
-                                                <li id="organizationsearch">
-                                                  <a href="javascript:;" id="organizationsearchval" data-isadmin="Organization" value="Organization">{% trans "Organization" %}</a>
-                                                </li>
-                                                <li id="userssearch">
-                                                  <a href="javascript:;" id="userssearchval" data-isadmin="User" value="User">{% trans "User" %}</a>
-                                                </li>
-                                            </ul>
-                                    </span>
-                                    <span class="input-group-btn">
-                                      <button class="btn btn-gd-primary" type="submit">
-                                          <i class="fa fa-search"></i>
-                                      </button>
-                                    </span>
-                                </div>
-                                <!-- <button class="btn btn-default btn-link">
-                                    <a href="#" >
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </a>
-                                </button> -->
-                            </form>
-                        </li>
-                        <!-- <li class="advanced-search" id="advanced-search-menu" style="display: none;">
-                            <a href="javascript:;" id="advanced-search-control">
-                                Advanced
-                            </a>
-                        </li> -->
-                        {% if not user.is_authenticated %}
-                        <li class="nav-search-index">
-                            <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">sign in</a>
-                        </li>
-                        {% endif %}
-                        {% if not user.is_authenticated and REGISTRATION_OPEN %}
-                        <li class="normal-fon">
-                            <a href="#" data-toggle="modal" data-target="#SignupModal" role="button" href="{% url "account_signup" %}">
-{#                                {% trans "Register" %}#}
-                                Register
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-
-                        <li class="notification">
-                            <a href="{% url "message-inbox-extend" %}" >
-                                <button class="btn btn-default btn-link">
-                                    <i class="fa fa-envelope"></i>
-                                </button>
-                                <span class="badge badge-notifymsg">{% if user.message_unread %}{{ request.user.message_unread }}{% endif %}</span>
-                            </a>
-                        </li>
-                        <li class="notification" id="show-notification">
-                            <a href="javascript:;" id="a_href">
-                                <button class="btn btn-default btn-link unreadfalse">
-                                    <i class="fa fa-bell" ></i>
-                                </button>
-                                <span class="badge badge-notify" id="rload">{% if user.notification_count %}{{ request.user.notification_count }}{% endif %}</span>
-                            </a>
-                        </li>
-                        <div id="show-notification-msg" style="display:none;">
-                            <div class="dropBox directions notifications" style="right:86px;top:61px;padding:0">
-                                    <div class="arrow-up"></div>
-                                <ul class="text-center">
-                                    {% load notification_tags %}
-                                    {% include_notify_js_variables %}
-                                    {% user_notifications %}
+                                    </li>
+                                    {% endif %}
+                                    <!--<li><a href="{% url "_dashboard" %}">{% trans "Dashboard" %}</a></li>-->
+                                    {% endblock %}
                                 </ul>
-                                <a class="btn btn-gd-primary icon-btn-color btn-block" href="{% url "notifications_all" %}" target="_self">
-                                    Show All Notifications
-                            </a>
-                            </div>
-                           
-                        </div>
-                        <!--<li class="notification">-->
-                            <!--<a class="usi" href="{% url "_dashboard" %}" >-->
-                                <!--<button class="btn btn-default btn-link" >-->
-                                    <!--<img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" title="Dashboard"  />-->
-                                <!--</button>-->
-                            <!--</a>-->
-                            <!--<div class="gd-username">{{ user.username }}</div>-->
-                        <!--</li>-->
-                        <li class="profile_picture">
-                            <a href="javascript:;" title="{{ user.username }}">
-                                <div id="c-button--slide-right" class="c-button profile_pic">
-                                    {% avatar user 50 %}
+                                <ul class="nav navbar-nav navbar-right">
+                                    <!--<li class="dropdown" style="margin-top:5px;">-->
+                                        <!--<select name="" id="drop_sec" class="user_dropdown" onchange="drop_sec(this);">-->
+                                            <!--<option value="Default" selected="selected" id="drop_defsult">Default</option>-->
+                                            <!--<option value="Organization" id="drop_org">Organization</option>-->
+                                            <!--<option value="User" id="drop_user">User</option>-->
+                                        <!--</select>-->
+                                    <!--</li>-->
+                                    <li class="nav-search-index brow_widt" id="search_lay_map_doc" style=""> <!-- nav-search-index -->
+                                        <form class="top-site-search" id="search" action="{% url "search" %}" >
+                                            <div class="input-group" style="width: 225px;">
+                                                {% if HAYSTACK_SEARCH %}
+                                                    <input id="search_input"  type="text" placeholder="" name="q" style="height: 38px;border-radius:0;" class="form-control">
+                                                {% else %}
+                                                    <input id="search_input"  type="text" placeholder="Search layer/map/doc" style="height: 38px;border-radius:0;" class="form-control" name="title__icontains">
+                                                {% endif %}
+                                                <span class="input-group-btn search-sub-menu">
+                                                    <!--<select name="" class="user_dropdown" id="user_dropdown_onch" onchange="drop_sec(this);">-->
+                                                        <!--<option value="Default" id="layermapdocsearch" selected="selected">Layer/Map/Document</option>-->
+                                                        <!--<option value="Organization" id="organizationsearch" >Organization</option>-->
+                                                        <!--<option value="User" id="userssearch">User</option>-->
+                                                    <!--</select><div class="caret" id="show_d_p" style="cursor:pointer;"></div>-->
+                                                    <!--<div class="dropdown">-->
+                                                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"-->
+                                                           <!--aria-haspopup="true" aria-expanded="false">{% trans "Orga" %}<span class="caret"></span></a>-->
+                                                        <!--&lt;!&ndash;<a href="#">explore<span class="sr-only">(current)</span></a> &ndash;&gt;-->
+                                                        <!--<ul class="dropdown-menu">-->
+                                                            <!--<li id="nav_maps">-->
+                                                              <!--<a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>-->
+                                                            <!--</li>-->
+                                                            <!--{% if user.is_authenticated %}-->
+                                                            <!--<li id="nav_layers">-->
+                                                              <!--<a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>-->
+                                                            <!--</li>-->
+                                                            <!--{% endif %}-->
+                                                        <!--</ul>-->
+                                                    <!--</div>-->
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                                           aria-haspopup="true" aria-expanded="false">{% trans "" %} <span class="caret search-caret"></span>
+                                                    </a>
+                                                        <ul class="dropdown-menu" >
+                                                            <li id="layermapdocsearch">
+                                                              <a href="javascript:;" id="layermapdocsearchval" data-isadmin="Default">{% trans "Layer/Map/Document" %}</a>
+                                                            </li>
+                                                            <li id="organizationsearch">
+                                                              <a href="javascript:;" id="organizationsearchval" data-isadmin="Organization" value="Organization">{% trans "Organization" %}</a>
+                                                            </li>
+                                                            <li id="userssearch">
+                                                              <a href="javascript:;" id="userssearchval" data-isadmin="User" value="User">{% trans "User" %}</a>
+                                                            </li>
+                                                        </ul>
+                                                </span>
+                                                <span class="input-group-btn">
+                                                  <button class="btn btn-primary" type="submit" style="padding: 8px 12px;font-size: 14px;">
+                                                      <i class="fa fa-search"></i>
+                                                  </button>
+                                                </span>
+                                            </div>
+                                            <!-- <button class="btn btn-default btn-link">
+                                                <a href="#" >
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </a>
+                                            </button> -->
+                                        </form>
+                                    </li>
+                                    <!-- <li class="advanced-search" id="advanced-search-menu" style="display: none;">
+                                        <a href="javascript:;" id="advanced-search-control">
+                                            Advanced
+                                        </a>
+                                    </li> -->
+                                    {% if not user.is_authenticated %}
+                                    <li class="nav-search-index" style="margin-left: 30px;">
+                                        <a href="#" data-toggle="modal" data-target="#SigninModal" role="button" class="btn btn-default btn-signin">SIGN IN</a>
+                                    </li>
+                                    {% endif %}
+                                    {% if not user.is_authenticated and REGISTRATION_OPEN %}
+                                    <li class="normal-fon" style="margin-left: 10px">
+                                        <a href="#" data-toggle="modal" data-target="#SignupModal" role="button" href="{% url "account_signup" %}" class="btn btn-success">
+            {#                                {% trans "Register" %}#}
+                                            REGISTER
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% if user.is_authenticated %}
+            
+                                    <li class="notification">
+                                        <a href="{% url "message-inbox-extend" %}" style="padding: 0">
+                                            <button class="btn" style="margin: 0 14px">
+                                                <i class="fa fa-envelope"></i>
+                                            </button>
+                                            <span class="badge badge-notifymsg">{% if user.message_unread %}{{ request.user.message_unread }}{% endif %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="notification" id="show-notification">
+                                        <a href="javascript:;" id="a_href" style="padding: 0">
+                                            <button class="btn unreadfalse" style="margin: 0 14px 0 0">
+                                                <i class="fa fa-bell" ></i>
+                                            </button>
+                                            <span class="badge badge-notify" id="rload">{% if user.notification_count %}{{ request.user.notification_count }}{% endif %}</span>
+                                        </a>
+                                    </li>
+                                    <div id="show-notification-msg" style="display:none;">
+                                        <div class="dropBox directions notifications" style="right:86px;top:61px;padding:0">
+                                                <div class="arrow-up"></div>
+                                            <ul class="text-center">
+                                                {% load notification_tags %}
+                                                {% include_notify_js_variables %}
+                                                {% user_notifications %}
+                                            </ul>
+                                            <a class="btn btn-gd-primary icon-btn-color btn-block" href="{% url "notifications_all" %}" target="_self">
+                                                Show All Notifications
+                                        </a>
+                                        </div>
+                                       
+                                    </div>
+                                    <!--<li class="notification">-->
+                                        <!--<a class="usi" href="{% url "_dashboard" %}" >-->
+                                            <!--<button class="btn btn-default btn-link" >-->
+                                                <!--<img src="{{ STATIC_URL }}geonode/images/user-separator-icon.png" title="Dashboard"  />-->
+                                            <!--</button>-->
+                                        <!--</a>-->
+                                        <!--<div class="gd-username">{{ user.username }}</div>-->
+                                    <!--</li>-->
+                                    <li class="profile_picture" style="padding: 0;">
+                                        <a href="javascript:;" title="{{ user.username }}" style="padding: 0">
+                                            <div id="c-button--slide-right" class="c-button profile_pic">
+                                                {% avatar user 50 %}
+                                            </div>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    <li style="margin-left:30px;float:right">
+                                        <!-- <div class="btn-group" role="group">
+                                            <a href="javascript:;" title="English" class="btn btn-default">
+                                                <img width="20" src="{{ STATIC_URL }}geonode/images/flag/us.png" />
+                                            </a>
+                                            <a href="javascript:;" title="English" class="btn btn-default">
+                                                <img width="20" src="{{ STATIC_URL }}geonode/images/flag/bn.png" />
+                                            </a>
+                                        </div> -->
+                                       <span>
+            
+                                           <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}" class="btn btn-primary btn-language">
+                                               {% trans "language" %}
+                                           </a>
+                                       </span>
+                                    </li>
+                                </ul>
                                 </div>
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li style="margin-top:6px;">
-                            <!-- <div class="btn-group" role="group">
-                                <a href="javascript:;" title="English" class="btn btn-default">
-                                    <img width="20" src="{{ STATIC_URL }}geonode/images/flag/us.png" />
-                                </a>
-                                <a href="javascript:;" title="English" class="btn btn-default">
-                                    <img width="20" src="{{ STATIC_URL }}geonode/images/flag/bn.png" />
-                                </a>
-                            </div> -->
-                           <span>
-
-                               <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}">
-                                   {% trans "LANGUAGE" %}
-                               </a>
-                           </span>
-                        </li>
-                    </ul>
+                   
                 </div>
             </div>
         </nav>
@@ -368,27 +372,20 @@
     </section>
 
     {% block footer %}
-    <footer id="gd-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7">
-                    <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#gd-footer-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button> -->
-                    <!--<div class="collapse navbar-collapse" id="gd-footer-navbar-collapse">-->
-                    <ul class="nav navbar-nav">
-                        <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
-                        <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
-                        <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
-                        <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
-                        <li>
-                            <div class="tooltip_use" style="cursor:pointer;">Useful Resource
-                              <span class="tooltiptext_use">
-                                  <ul>
+    <footer>
+        <div class="container text-center" style="max-width:1300px">
+        <div class="row" style="margin-bottom: 30px;">
+            <div class="col-md-12" style="margin-bottom: 30px;">
+            
+                <ul class="nav navbar-nav" style="display: inline-block;float: none;vertical-align: top">
+                    <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
+                    <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
+                    <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
+                    <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
+                    <li>
+                            <div class="btn-group">
+                                    <button type="button" class="btn btn-link dropdown-toggle" style="padding: 6px 12px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Useful Resources <span class="caret"></span> </button>
+                                    <ul class="dropdown-menu" style="top: -320px">
                                       <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
                                       <li><a href="https://github.com/GeoNode/geonode" target="_blank">Github</a></li>
                                       <li><a href="https://openlayers.org/" target="_blank">OpenLayers</a></li>
@@ -397,62 +394,62 @@
                                       <li><a href="http://demo.f4map.com/#camera.theta=0.9" target="_blank">F4 Map</a></li>
                                       <li><a href="https://www.facebook.com/groups/GeoDASH/" target="_blank">GeoDASH BD FB Group</a></li>
                                       <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
-                                  </ul>
-                              </span>
-                            </div>
-                        </li>
-                        <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
-                    </ul>
-                    <!--</div>-->
-                </div>
-                <div class="col-md-2">
-					<div class="footer-admin-app">
-                                Admin APP
-                            <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
-                                <img src="{{ STATIC_URL }}geonode/images/googleplay.png" class="img-responsive" style=""/>
-                            </a>
-					</div>
-				</div>
-				<div class="col-md-1">
-					<div style="margin-top:15px;" class="ssl-certify-logo">
-							<script language="JavaScript" type="text/javascript">
-							TrustLogo("https://geodash.gov.bd/static/geonode/images/comodo_secure_seal_113x59_transp.png", "CL1", "none");
-							</script>
-							<a  href="https://ssl.comodo.com" id="comodoTL">Comodo SSL</a>
-					</div>
-				</div>
-                <div class="col-md-1">
-                    <div class="gd-footer-language" >
-                        <label class="hidden">{% trans "Language" %}</label>
-                        {% if csrf_token != "NOTPROVIDED" %}
-                        {% get_current_language as LANGUAGE %}
-                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                        {% csrf_token %}
-                          <select id="langOfSite" class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
-                            {% for lang in LANGUAGES %}
-                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                              {% trans lang.1 %}
-                            </option>
-                            {% endfor %}
-                          </select>
-                        </form>
-                        {% endif %}
-                    </div>
-                    <!-- <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <select class="selectpicker" data-width="auto">
-                                <option>English</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                                <option>Bangla</option>
-                            </select>
-                        </li>
-                    </ul> -->
-                </div>
+                                    </ul>
+                                  </div>
+                    </li>
+                    <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
+                    <li>
+                            
+                                    <div class="gd-footer-language" >
+                                        <label class="hidden">{% trans "Language" %}</label>
+                                        {% if csrf_token != "NOTPROVIDED" %}
+                                        {% get_current_language as LANGUAGE %}
+                                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
+                                        {% csrf_token %}
+                                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
+                                            {% for lang in LANGUAGES %}
+                                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
+                                              {% trans lang.1 %}
+                                            </option>
+                                            {% endfor %}
+                                          </select>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                    <!-- <ul class="nav navbar-nav navbar-right">
+                                        <li>
+                                            <select class="selectpicker" data-width="auto">
+                                                <option>English</option>
+                                                <option>Bangla</option>
+                                                <option>Bangla</option>
+                                                <option>Bangla</option>
+                                            </select>
+                                        </li>
+                                    </ul> -->
+                               
+                    </li>
+                </ul>
+                <!--</div>-->
             </div>
+            
+                
+                            Admin APP
+                        <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
+                            <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="margin-right: 15px;"/>
+                        </a>
+            
+        
+            
+                
+                    
+                        <a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
+                
+                        
+            
         </div>
-      </div>
-    </footer>
+    </div>
+  </div>
+</footer>
     {% endblock footer %}
 
 
