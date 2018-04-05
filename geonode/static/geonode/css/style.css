@@ -3597,9 +3597,9 @@ width: 80%;
 {
     position: fixed;
     width: 100%;
-    top: 61px;
-    z-index: 1;
-    background-color: #fff;
+    top: 107px;
+    z-index: 50;
+    background-color: #f3f3f3;
 }
 .x-toolbar
 {
@@ -3636,6 +3636,11 @@ background-color: #fff;
 {
     height: calc(100vh - 100px) !important;
 }
+#attribute_view_left
+{
+    height: calc(100vh - 200px) !important;
+}
+
 .x-toolbar
 {
     border-bottom: 1px solid #ddd !important;
@@ -3719,7 +3724,7 @@ background-color: #fff;
 }
 .layer-panel
 {
-    top: 141px !important;
+    top: 176px !important;
 }
 .round {
     line-height: 48px;
