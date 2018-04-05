@@ -61,11 +61,13 @@
                 var layer=getLayer(_activeLayerId);
                 activateFeatureSelectTool(layer);
                 isFeatureSelectEnabled=!isFeatureSelectEnabled;
+                return isFeatureSelectEnabled;
             };
             this.disableActiveLayerSelectInteractions=function () {
                 var layer=getLayer(_activeLayerId);
                 deactivateAllTools(layer);
                 isFeatureSelectEnabled=!isFeatureSelectEnabled;
+                return isFeatureSelectEnabled;
             };
 
             this.getActiveLayer = function () {

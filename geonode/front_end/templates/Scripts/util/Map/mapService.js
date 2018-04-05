@@ -100,6 +100,7 @@
                 factory.getInteractions = map.getInteractions;
                 factory.removeUserInteractions = map.removeUserInteractions;
                 factory.registerEvent = map.registerEvent;
+                factory.removeEvent=map.removeEvent;
                 factory.removeEvents = map.removeEvents;
                 factory.addVectorLayer = map.addVectorLayer;
                 factory.getProjection = map.getProjection;
