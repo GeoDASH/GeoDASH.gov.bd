@@ -6,6 +6,10 @@ function MeasurementTool(mapService) {
     return function MeasurementTool(map) {
         var wgs84Sphere = new ol.Sphere(6378137);
         var source = new ol.source.Vector();
+        var isLineMeasurementEnabled=false;
+        var isAreaMeasurementEnabled=false;
+        var lineMeasurementEvent=undefined;
+        var areaMeasurementEvent=undefined;
 
         var vector = new ol.layer.Vector({
             source: source,
@@ -247,17 +251,46 @@ function MeasurementTool(mapService) {
             });
             map.addOverlay(measureTooltip);
         }
-        this.lineMeasurement = function() {
+
+        function enableLineMeasurementEvent() {
             mapService.removeEvents();
             mapService.removeUserInteractions();
-            mapService.registerEvent('pointermove', pointerMoveHandler);
+            lineMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('LineString');
+            isLineMeasurementEnabled=true;
+        }
+        function disableLineMeasurementEvent() {
+            if(lineMeasurementEvent) {
+                mapService.removeEvent(lineMeasurementEvent);
+                mapService.removeInteraction(draw);
+                isLineMeasurementEnabled=false;
+            }
+        }
+
+        function enableAreaMeasurementEvent() {
+            mapService.removeEvents();
+            mapService.removeUserInteractions();
+            areaMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
+            addInteraction('Polygon');
+            isAreaMeasurementEnabled=true;
+        }
+        function disableAreaMeasurementEvent() {
+            if(areaMeasurementEvent) {
+                mapService.removeEvent(areaMeasurementEvent);
+                mapService.removeInteraction(draw);
+                isAreaMeasurementEnabled=false;
+            }
+        }
+
+        this.lineMeasurement = function() {
+            if(!isLineMeasurementEnabled) enableLineMeasurementEvent();
+            else disableLineMeasurementEvent();
+            return isLineMeasurementEnabled;
         };
         this.areaMeasurement = function() {
-            mapService.removeEvents();
-            mapService.removeUserInteractions();
-            mapService.registerEvent('pointermove', pointerMoveHandler);
-            addInteraction('Polygon');
+            if(!isAreaMeasurementEnabled) enableAreaMeasurementEvent();
+            else disableAreaMeasurementEvent();
+            return isAreaMeasurementEnabled;
         };
 
     };

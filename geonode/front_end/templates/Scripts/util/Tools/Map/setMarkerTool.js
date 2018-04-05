@@ -7,6 +7,8 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
         var container, content, close, popup;
         this.showPopup = false;
         this.elevationLayerName = "";
+        var isMarkerToolEnabled=false;
+        this.markerToolEvent=undefined;
 
         function createPopup() {
             container = document.getElementById('popup');
@@ -109,12 +111,10 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
             content.innerHTML = feature.get('name');
             popup.setPosition(feature.get('coordinate'));
         }
-        this.setMarker = function() {
-            mapService.removeUserInteractions();
-            mapService.removeEvents();
+        
+        function enableSetMarkerTool() {
             createPopup();
-
-            mapService.registerEvent('singleclick', function(evt) {
+            this.markerToolEvent= mapService.registerEvent('singleclick', function(evt) {
                 var feature = map.forEachFeatureAtPixel(evt.pixel,
                     function(feature, layer) {
                         return feature;
@@ -124,7 +124,19 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
                 }
                 showPopup(feature, evt);
             });
-
+            isMarkerToolEnabled=true;
+        }
+        function disableSetMarkerTool() {
+            if(this.markerToolEvent){
+                mapService.removeEvent(this.markerToolEvent);
+                isMarkerToolEnabled=false;
+            }
+        }
+        
+        this.setMarker = function() {
+            if(!isMarkerToolEnabled) enableSetMarkerTool();
+            else disableSetMarkerTool();
+            return isMarkerToolEnabled;
         };
 
         function getSettings(){
