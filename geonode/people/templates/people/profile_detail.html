@@ -19,6 +19,26 @@
 {% block body_class %}people explore{% endblock %}
 
 {% block body %}
+<style>
+    .gd-txt-right {
+    text-align: left;
+}
+.show-org-pro
+{
+     text-align: center;
+     padding-left: 0;
+}
+.avater img
+{
+display: inline;
+margin: 7px;
+}
+.grid-container
+{
+    margin-bottom: 15px;
+}
+
+</style>
 <div class="gd-content">
     <div class="gd-content-body transparent top-bottom-margin-20px">
         <div class="row">
@@ -188,7 +208,7 @@
                     <!--</li>-->
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Email' %}
                             </div>
                             <div class="col-md-8">
@@ -200,7 +220,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Position' %}
                             </div>
                             <div class="col-md-8">
@@ -212,7 +232,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Organization'  %}
                             </div>
                             <div class="col-md-8">
@@ -225,11 +245,11 @@
                     {% if user.is_authenticated %}
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Location' %}
                             </div>
                             <div class="col-md-8">
-                                <div class="gd-txt-right">
+                                <div class="gd-txt-right text-left">
                                     {{ profile.location | default:_('Not provided.') }}
                                 </div>
                             </div>
@@ -237,7 +257,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Voice' %}
                             </div>
                             <div class="col-md-8">
@@ -253,7 +273,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Fax' %}
                             </div>
                             <div class="col-md-8">
@@ -265,7 +285,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Description' %}
                             </div>
                             <div class="col-md-8">
@@ -278,7 +298,7 @@
                     {% endif %}
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2 text-right">
                                 {% trans 'Keywords' %}
                             </div>
                             <div class="col-md-8">
@@ -299,18 +319,25 @@
                     <!--<div class="col-md-4">-->
                         <!--<div class="txt">{{ profile.first_name|default:profile.name_long }} {{ profile.last_name }}</div>-->
                     <!--</div>-->
-                    <div class="col-md-12">
+                    <div>
                         <div class="gd-txt-right">
-                            <div class="row">
+                         
                             {% if user.is_authenticated %}
                             {% if request.user == profile %}
                               {% for group in profile.group_list_all %}
-                              <div ng-if="group.logo != ''" class="col-md-3 pull-right group-logo">
-                                  {% if group.logo %}
-                                <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive" style="height:100px;border:none;" /></a>
+                              <div ng-if="group.logo != ''" class="col-md-3">
+                                  <div class="grid-container text-center">
+                                    <div class="avater">
+                                {% if group.logo %}
+                               
+                                  <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="/uploaded/{{ group.logo }}" class="img-responsive" style="height:100px;border:none;" /></a>
                                   {% else %}
                                   <a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="{{ STATIC_URL }}geonode/images/no-image.png" class="img-responsive"  style="height:100px;border:none;" /></a>
+                                  
                                   {% endif %}
+                                  </div>
+
+                                  <div class="bottom-content">
                                   <div class="show-org-pro">
                                       {% if group.title|length >= 15 %}
                                       <a href="{{ group.get_absolute_url }}" title="{{ group.title }}"> {{ group.title|truncatechars:15 }}.... </a>
@@ -325,6 +352,8 @@
                                           {{ '( Member )' }}
                                       {% endif %}
                                   </div>
+                                </div>
+                                </div>
                               </div>
                               <!--<div ng-if="group.logo = ''" class="col-md-3 pull-right group-logo">-->
                                 <!--<a href="{{ group.get_absolute_url }}" title="{{ group.slug }}"><img src="{{ STATIC_URL }}geonode/images/no-image.png" class="img-responsive"  style="height:150px;" /></a>-->
@@ -353,7 +382,7 @@
                               {% endfor %}
                             {% endif %}
                             {% endif %}
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
