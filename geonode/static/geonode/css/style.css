@@ -2274,7 +2274,7 @@ ul.resources-summery li a .fa{
     position: absolute;
     width: 50%;
     z-index: 500;
-    left: 30%;
+    left: 0;
 }
 #user_messages .alert{
     margin-bottom: 0px;
