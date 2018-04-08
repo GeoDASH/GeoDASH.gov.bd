@@ -233,7 +233,10 @@ def layer_upload(request, template='upload/layer_upload.html'):
 
                     if world.crs['init'] != 'epsg:4326':
                         out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
-                                         "and it will be converted to epsg:2346"
+                                         "and it will be converted to epsg:4326"
+                else:
+                    out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                     "and it will be converted to epsg:4326"
                 data_dict = reprojection(tmp_dir, str(
                     request.FILES['base_file'].name))
 
