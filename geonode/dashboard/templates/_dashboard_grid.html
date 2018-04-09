@@ -207,6 +207,19 @@
                 $.each(data, function(i, item) {
                     output += '<article class="gd-featurd-maps-container-dash">';
                     output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom:40px;"><div class="grid-container-dash lmd" style="background:none;">';
+                    
+                    output +='<div class="contents">';
+                    output +='<div class="title">';
+                    output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
+                    if (item.title.length >= 25){
+                    output +=''+item.title.slice(0,15)+'.....';
+                            }else{
+                    output +=''+ item.title +'';
+                            }
+                    output +='</a>';
+                    output +='</div>';
+                    output +='</div>';
+                    
                     output +='<div class="avater">';
                     output +='<div class="avater-img">';
                     output +='<div class="avater-img-mid"  >';
@@ -221,23 +234,13 @@
                     output +='<div class="checkbox" style="margin:0;padding:0">';
                     output +='<label>';
                     output +='<span>';
-                    output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                    output +='<a href="#" class="btn close-btn" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                     output +='</span>';
                     output +='</label>';
                     output +='</div>';
                     output +='</div>';
                     output +='</div>';
-                    output +='<div class="contents">';
-                    output +='<div class="title">';
-                    output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                    if (item.title.length >= 25){
-                    output +=''+item.title.slice(0,15)+'.....';
-                            }else{
-                    output +=''+ item.title +'';
-                            }
-                    output +='</a>';
-                    output +='</div>';
-                    output +='</div>';
+                    
                     output +='</div></div>';
                     output +='</article>';
                });
@@ -265,6 +268,19 @@
                 $.each(data, function(i, item) {
                         output += '<article class="gd-featurd-maps-container-dash">';
                         output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom:40px;"><div class="grid-container-dash lmd" style="background:none;">';
+                        
+                        output +='<div class="contents">';
+                        output +='<div class="title">';
+                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
+                        if (item.title.length >= 25){
+                        output +=''+item.title.slice(0,15)+'.....';
+                                }else{
+                        output +=''+ item.title +'';
+                                }
+                        output +='</a>';
+                        output +='</div>';
+                        output +='</div>';
+                        
                         output +='<div class="avater">';
                         output +='<div class="avater-img">';
                         output +='<div class="avater-img-mid" >';
@@ -279,23 +295,13 @@
                         output +='<div class="checkbox" style="margin:0;padding:0">';
                         output +='<label>';
                         output +='<span>';
-                        output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                        output +='<a href="#" class="btn close-btn" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                         output +='</span>';
                         output +='</label>';
                         output +='</div>';
                         output +='</div>';
                         output +='</div>';
-                        output +='<div class="contents">';
-                        output +='<div class="title">';
-                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                        if (item.title.length >= 25){
-                        output +=''+item.title.slice(0,15)+'.....';
-                                }else{
-                        output +=''+ item.title +'';
-                                }
-                        output +='</a>';
-                        output +='</div>';
-                        output +='</div>';
+                        
                         output +='</div></div>';
                         output +='</article>';
                });
@@ -325,6 +331,19 @@
                 $.each(data, function(i, item) {
                         output += '<article class="gd-featurd-maps-container-dash">';
                         output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom:40px;"><div class="grid-container-dash lmd" style="background:none;">';
+                        
+                        output +='<div class="contents">';
+                        output +='<div class="title">';
+                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
+                        if (item.title.length >= 25){
+                        output +=''+item.title.slice(0,15)+'.....';
+                                }else{
+                        output +=''+ item.title +'';
+                                }
+                        output +='</a>';
+                        output +='</div>';
+                        output +='</div>';
+                        
                         output +='<div class="avater">';
                         output +='<div class="avater-img">';
                         output +='<div class="avater-img-mid"  >';
@@ -339,23 +358,13 @@
                         output +='<div class="checkbox" style="margin:0;padding:0">';
                         output +='<label>';
                         output +='<span>';
-                        output +='<a href="#" class="btn btn-primary" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
+                        output +='<a href="#" class="btn close-btn" style="border-radius:50%" title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udock('+item.id+');"><i class="fa fa-times"></i></a>';
                         output +='</span>';
                         output +='</label>';
                         output +='</div>';
                         output +='</div>';
                         output +='</div>';
-                        output +='<div class="contents">';
-                        output +='<div class="title">';
-                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                        if (item.title.length >= 25){
-                        output +=''+item.title.slice(0,15)+'.....';
-                                }else{
-                        output +=''+ item.title +'';
-                                }
-                        output +='</a>';
-                        output +='</div>';
-                        output +='</div>';
+                        
                         output +='</div></div>';
                         output +='</article>';
                });
@@ -386,6 +395,19 @@
                 $.each(data, function(i, item) {
                         output += '<article class="gd-featurd-maps-container-dash">';
                         output +='<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom:40px;"><div class="grid-container-dash lmd" style="background:none;">';
+                        
+                        output +='<div class="contents">';
+                        output +='<div class="title">';
+                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
+                        if (item.title.length >= 25){
+                        output +=''+item.title.slice(0,15)+'.....';
+                                }else{
+                        output +=''+ item.title +'';
+                                }
+                        output +='</a>';
+                        output +='</div>';
+                        output +='</div>';
+                        
                         output +='<div class="avater">';
                         output +='<div class="avater-img">';
                         output +='<div class="avater-img-mid"  >';
@@ -400,23 +422,13 @@
                         output +='<div class="checkbox" style="margin:0;padding:0">';
                         output +='<label>';
                         output +='<span>';
-                        output +='<a href="javascript:;" class="btn btn-primary" style="border-radius:50%"  title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times"></i></a>';
+                        output +='<a href="javascript:;" class="btn close-btn" style="border-radius:50%"  title="Undock" id="undock" data-favouriteID="'+item.id+'" data-favouriteStatus="true" onclick="udockorg('+item.id+');"><i class="fa fa-times"></i></a>';
                         output +='</span>';
                         output +='</label>';
                         output +='</div>';
                         output +='</div>';
                         output +='</div>';
-                        output +='<div class="contents">';
-                        output +='<div class="title">';
-                        output +='<a href="'+item.detail_url+'" title="'+ item.title  +'">';
-                        if (item.title.length >= 25){
-                        output +=''+item.title.slice(0,15)+'.....';
-                                }else{
-                        output +=''+ item.title +'';
-                                }
-                        output +='</a>';
-                        output +='</div>';
-                        output +='</div>';
+                        
                         output +='</div></div>';
                         output +='</article>';
                });

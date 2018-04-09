@@ -312,7 +312,10 @@ function BoxDrawTool(mapService) {
         };
 
         this.Remove = function() {
+            mapService.removeInteraction(drawInteraction);
+            mapService.removeInteraction(dragInteraction);
             mapService.removeVectorLayer(layer);
+            return false;
         };
 
         this.Stop = function() {

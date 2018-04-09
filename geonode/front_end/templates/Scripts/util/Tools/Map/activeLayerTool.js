@@ -4,6 +4,7 @@
         return function ActiveLayerTool(surfMap, interactionHandler) {
             var _thisTool = this;
             var _activeLayerId;
+            var isFeatureSelectEnabled=false;
 
             this.events = new Event();
 
@@ -31,6 +32,12 @@
                     }
                 }
             }
+            function activateFeatureSelectTool(surfLayer) {
+                if (surfLayer.tools) {
+                    surfLayer.tools.selectFeature.activate && surfLayer.tools.selectFeature.activate();
+                    surfLayer.tools.displayAttribute.activate && surfLayer.tools.displayAttribute.activate();
+                }
+            }
 
             this.setActiveLayer = function (newActiveLayerId) {
                 var oldActiveLayerId = _activeLayerId;
@@ -41,7 +48,7 @@
 
                 if (oldActiveLayerId != newActiveLayerId) {
                     deactivateAllTools(oldActiveLayer);
-                    interactionHandler.setSurfLayer(newActiveLayer);
+                    if(isFeatureSelectEnabled) activateFeatureSelectTool(newActiveLayer);
                     _thisTool.events.broadcast('changed', newActiveLayer, oldActiveLayer);
                 }
 
@@ -49,6 +56,18 @@
                 newActiveLayer.setActive(true);
 
                 return newActiveLayer;
+            };
+            this.setActiveLayerSelectInteractions=function () {
+                var layer=getLayer(_activeLayerId);
+                activateFeatureSelectTool(layer);
+                isFeatureSelectEnabled=!isFeatureSelectEnabled;
+                return isFeatureSelectEnabled;
+            };
+            this.disableActiveLayerSelectInteractions=function () {
+                var layer=getLayer(_activeLayerId);
+                deactivateAllTools(layer);
+                isFeatureSelectEnabled=!isFeatureSelectEnabled;
+                return isFeatureSelectEnabled;
             };
 
             this.getActiveLayer = function () {

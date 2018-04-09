@@ -27,7 +27,7 @@ import shutil
 import sys
 import traceback
 import uuid
-
+import geopandas
 import requests
 import xmltodict
 import requests
@@ -195,11 +195,10 @@ def layer_upload(request, template='upload/layer_upload.html'):
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':
-
+        out = {'success': False}
         file_extension = request.FILES['base_file'].name.split('.')[1].lower()
         data_dict = dict()
         tmp_dir = ''
-        epsg_code = ''
         if str(file_extension).lower() == 'shp' or zipfile.is_zipfile(request.FILES['base_file']):
             # Check if zip file then, extract into tmp_dir and convert
             if zipfile.is_zipfile(request.FILES['base_file']):
@@ -207,22 +206,19 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 with zipfile.ZipFile(request.FILES['base_file']) as zf:
                     zf.extractall(tmp_dir)
 
-                prj_file_name = ''
                 shp_file_name = ''
                 for file in os.listdir(tmp_dir):
-                    if file.endswith(".prj"):
-                        prj_file_name = file
-
-                    elif file.endswith(".shp"):
+                    if file.endswith(".shp"):
                         shp_file_name = file
 
-                srs = checking_projection(tmp_dir, prj_file_name)
+                world = geopandas.read_file(tmp_dir + '/' + shp_file_name)
+                if 'init' in world.crs:
 
-                # collect epsg code
-                epsg_code = collect_epsg(tmp_dir, prj_file_name)
+                    if world.crs['init'] != 'epsg:4326':
+                        out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                         "and it will be converted to epsg:2346"
 
-                if epsg_code:
-                    data_dict = reprojection(tmp_dir, shp_file_name)
+                data_dict = reprojection(tmp_dir, shp_file_name)
 
             if str(file_extension) == 'shp':
 
@@ -232,35 +228,23 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 # Upload files
                 upload_files(tmp_dir, request.FILES)
 
-                # collect epsg code
-                epsg_code = collect_epsg(tmp_dir, str(
-                    request.FILES['prj_file'].name))
+                world = geopandas.read_file(tmp_dir + '/' + request.FILES['base_file'].name)
+                if 'init' in world.crs:
 
-                # Checking projection
-                srs = checking_projection(
-                    tmp_dir, str(request.FILES['prj_file'].name))
-
-                # if srs.IsProjected:
-                if epsg_code:
-
-                    if srs.GetAttrValue('projcs'):
-                        if "WGS" not in srs.GetAttrValue('projcs'):
-
-                            data_dict = reprojection(tmp_dir, str(
-                                request.FILES['base_file'].name))
-
-                    # check WGS84 projected
-                    else:
-                        # call projection util function
-                        data_dict = reprojection(tmp_dir, str(
-                            request.FILES['base_file'].name))
+                    if world.crs['init'] != 'epsg:4326':
+                        out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                         "and it will be converted to epsg:4326"
+                else:
+                    out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                     "and it will be converted to epsg:4326"
+                data_dict = reprojection(tmp_dir, str(
+                    request.FILES['base_file'].name))
 
         form = NewLayerUploadForm(request.POST, request.FILES)
         tempdir = None
         errormsgs = []
-        out = {'success': False}
         if form.is_valid():
-            if str(file_extension) == 'shp' and srs.IsProjected:
+            if str(file_extension) == 'shp': # and srs.IsProjected:
                 form.cleaned_data['base_file'] = data_dict['base_file']
                 form.cleaned_data['shx_file'] = data_dict['shx_file']
                 form.cleaned_data['dbf_file'] = data_dict['dbf_file']
@@ -316,7 +300,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     abstract=form.cleaned_data["abstract"],
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"],
-                    user_data_epsg=epsg_code
+                    # user_data_epsg=epsg_code
                 )
                 if admin_upload:
                     saved_layer.status = 'ACTIVE'

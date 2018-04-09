@@ -19,18 +19,22 @@
             factory.registerEvent = function(type, cb) {
                 var id = olMap.on(type, cb);
                 _userEvents.push(id);
+                return id;
             };
             factory.removeEvents = function() {
                 _userEvents.forEach(function(element) {
                     olMap.unByKey(element);
                 }, this);
             };
+            factory.removeEvent=function (element) {
+                olMap.unByKey(element);
+            };
             factory.getInteractions = function() {
                 return olMap.getInteractions();
-            }
+            };
             factory.removeInteraction = function(interaction) {
                 olMap.removeInteraction(interaction);
-            }
+            };
             factory.addVectorLayer = function(layer){
                 olMap.addLayer(layer);
             };
