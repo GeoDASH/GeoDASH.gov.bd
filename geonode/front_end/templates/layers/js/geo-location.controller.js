@@ -61,9 +61,15 @@
                     $timeout(function() {
                         self.fileHeaders = lines[0].split(',');
                         for (var i = 0; i < self.fileHeaders.length; i++) {
-                            self.fileHeaders[i] = self.fileHeaders[i].split('"')[1];
+                            if( self.fileHeaders[i].startsWith("'") && self.fileHeaders[i].endsWith("'")){
+                                self.fileHeaders[i] = self.fileHeaders[i].split("'")[1];
+                            }
+                            else if( self.fileHeaders[i].startsWith('"') && self.fileHeaders[i].endsWith('"')){
+                                self.fileHeaders[i] = self.fileHeaders[i].split('"')[1];
+                            }
                         }
                     });
+
                 };
                 fileReader.readAsText(item._file);
             },

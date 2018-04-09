@@ -28,4 +28,4 @@ class PinpointUserActivity(CommonField):
     the_geom = models.GeometryField(_('Geometry'), blank=True, null=True, help_text='Geometry')
 
     def __str__(self):
-        return self.user.username
+        return self.activity_type
