@@ -2274,7 +2274,7 @@ ul.resources-summery li a .fa{
     position: absolute;
     width: 50%;
     z-index: 500;
-    left: 30%;
+    left: 0;
 }
 #user_messages .alert{
     margin-bottom: 0px;
@@ -3797,6 +3797,9 @@ background-color: #fff;
     font-weight: bold;
     font-size: 17px;
 }
+.table thead tr th{
+font-weight: bold;   
+}
 .dashboard-panel
 {
     border: none;
@@ -3857,7 +3860,10 @@ background-color: #fff;
 {
     margin-bottom: 15px;
 }
-
+.control-button
+{
+    border-right: 1px solid #ccc;
+}
 
 
 

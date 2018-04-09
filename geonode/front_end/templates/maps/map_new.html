@@ -3,6 +3,13 @@
  {% include 'Templates/_base-headers.html' %}
  {% endblock %}
   {% block middle %}
+  <style>
+  .layout-content {
+    top: 107px;
+    bottom: 20px;
+}
+
+  </style>
 <div class="surfgis" ng-controller="appController"  ng-app="appModule" ng-click="bodyClicked()">
     <div class="application-font all-children-application-font" ng-controller="MapController" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
        
