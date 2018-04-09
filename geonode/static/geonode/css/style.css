@@ -3860,7 +3860,10 @@ font-weight: bold;
 {
     margin-bottom: 15px;
 }
-
+.control-button
+{
+    border-right: 1px solid #ccc;
+}
 
 
 

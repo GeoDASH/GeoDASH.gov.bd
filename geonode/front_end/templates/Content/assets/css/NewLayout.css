@@ -477,13 +477,14 @@ a
 } */
 .map-toolbar {
     background: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid #ccc;
     right: 0;
     top: 12px;
     width: 591px;
     height: 36px;
     position: absolute;
     right: 119px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.30);
+    border-radius: 4px;
 }
 .map-toolbar ul li
 {
