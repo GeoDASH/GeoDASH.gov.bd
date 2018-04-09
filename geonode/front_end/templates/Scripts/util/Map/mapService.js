@@ -100,6 +100,7 @@
                 factory.getInteractions = map.getInteractions;
                 factory.removeUserInteractions = map.removeUserInteractions;
                 factory.registerEvent = map.registerEvent;
+                factory.removeEvent=map.removeEvent;
                 factory.removeEvents = map.removeEvents;
                 factory.addVectorLayer = map.addVectorLayer;
                 factory.getProjection = map.getProjection;
@@ -447,9 +448,10 @@
             getMap: function() {
                 return map.getMap();
             },
-            getBbox: function(destinationProj) {
+            getBbox: function(destinationProj,extent) {
                 var epsg4326Extent, projection;
-                var extent = this.getMapExtent();
+                if(!extent)
+                        extent = this.getMapExtent();
                 if (destinationProj) {
                     projection = this.getProjection();
                     epsg4326Extent = ol.proj.transformExtent(extent, projection, destinationProj);

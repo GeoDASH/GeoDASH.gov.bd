@@ -199,9 +199,13 @@ function CircleDrawTool(mapService) {
             _addInteraction();
         };
         this.Remove = function() {
+            mapService.removeInteraction(drawInteraction);
+            mapService.removeInteraction(dragInteraction);
             layer && mapService.removeVectorLayer(layer);
+            return false;
         };
         this.Stop = function() {
+            mapService.removeInteraction(drawInteraction);
             mapService.removeInteraction(dragInteraction);
         };
 

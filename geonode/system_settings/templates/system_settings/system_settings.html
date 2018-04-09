@@ -25,7 +25,7 @@
                     <select 
                     name="elevation-raster"
                     class="form-control"
-                    ng-model="elevationRasterLayer"
+                    ng-model="addressGeocodeLayer"
                     ng-options="item.uuid as item.title for item in vectorLayers"
                     id="elevation-raster">
                     <option value="" style="display: none">Select a vector layer</option>
@@ -47,7 +47,7 @@
                     <select name="layer" 
                     id="layer"
                     class="form-control" 
-                    ng-model="addressGeocodeLayer"
+                    ng-model="elevationRasterLayer"
                     ng-options="item.uuid as item.title for item in rasterLayers"
                     >
                         <option value="" style="display: none">Select a raster layer</option>
@@ -59,6 +59,27 @@
             </div>
         </div>
         <br>
+        <div class="row">
+            <div class="col-md-3">
+                Custom Base Layer: <br>
+                <small style="color: #B2ACAB;">Will be used in Base map Settings</small>
+            </div>
+
+            <div class="col-md-4">
+                    <select name="layer"
+                    id="layer"
+                    class="form-control"
+                    ng-model="customBaseMap"
+                    ng-options="item.id as item.title for item in baseLayers"
+                    >
+                        <option value="" style="display: none">Select a layer</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary layer-settings" ng-click="saveBaseMapLayer()">Save</button>
+            </div>
+        </div>
 
     </div>
 

@@ -11,12 +11,14 @@
         $scope.elevationRasterLayer=undefined; 
         $scope.vectorLayers=[];
         $scope.rasterLayers=[];
+        $scope.baseLayers=[];
+        $scope.customBaseMap=undefined;
 
         var systemSettings = SettingsService.getSystemSettings();
 
         systemSettings.then(function (res) {
 
-                var value=res.results;
+                var value=res;
                 $.each(value, function (index, element) {                    
                     if (element.settings_code == "location") {
                         $scope.addressGeocodeLayer = element.content_object.uuid;
@@ -33,6 +35,7 @@
 
         var rasterLayerSettings = SettingsService.getLayers("type__in=raster");
         var vectorLayerSettings = SettingsService.getLayers("type__in=vector");
+        var baseLayerSettings=SettingsService.getLayersForBaseMaps();
 
         // var layersObject;
 
@@ -65,6 +68,15 @@
             }
          );
 
+        baseLayerSettings.then(function (data) {
+            $scope.baseLayers=data.objects;
+            angular.forEach(data.objects,function (layer) {
+                if(layer.is_base_layer=='1') $scope.customBaseMap=layer.id;
+            });
+        },function (error) {
+            console.log(error)
+        });
+
         function checkSelectedLayerAttrhave(uuid) {
             var addressColumnsStatus = SettingsService.getAddressAttributes(uuid);
     
@@ -88,9 +100,17 @@
         $scope.layerSettingSave = function (settingType,layerUUID) {
             var data = {
                 'uuid': layerUUID,
-                'settings_code': settingType,
+                'settings_code': settingType
             };
             SettingsService.saveSystemSettings(data);
+        };
+
+        $scope.saveBaseMapLayer=function () {
+            SettingsService.saveCustomBaseLayer({layer_ids : [$scope.customBaseMap]}).then(function (response) {
+                console.log(response);
+            },function (error) {
+                console.log(error);
+            })
         };
 
         $scope.changedValue = function () {

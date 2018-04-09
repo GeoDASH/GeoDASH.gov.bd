@@ -234,7 +234,7 @@ def post_save_document(instance, *args, **kwargs):
 def create_thumbnail(sender, instance, created, **kwargs):
     from geonode.tasks.update import create_document_thumbnail
 
-    create_document_thumbnail.delay(object_id=instance.id)
+    create_document_thumbnail(object_id=instance.id)
 
 
 def update_documents_extent(sender, **kwargs):

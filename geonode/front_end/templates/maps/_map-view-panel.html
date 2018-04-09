@@ -1,4 +1,4 @@
-<div class="navbar" style="min-height: 36px;margin-bottom:0;" ng-cloak ng-controller="controlButtonsController">
+<div class="navbar" style="margin: 0; padding: 0;min-height:0;" ng-cloak ng-controller="controlButtonsController">
     <div class="navbar-inner map-toolbar">
 
 
@@ -25,14 +25,34 @@
             <li>
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
-            <li>
-                <measurement-buttons></measurement-buttons>
+            <li class="divider-vertical" draft-only></li>
+            <li draft-only >
+                <button class="control-button icon" ng-class="{'active' : !toggleButtonsList['zoomTool'].isActive}"
+                ng-click="removeBoxZooming()" title="Drag">
+                    <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
+                                </button>
             </li>
             <li>
-                <set-marker></set-marker>
+                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList"></measurement-buttons>
             </li>
             <li>
-                <button class="control-button icon" ng-click="action.drawCircle()" title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i>                                            </button>
+                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList"></set-marker>
+            </li>
+            <li>
+                <div class="btn-group">
+                    <button type="button" title="Measure" class="control-button icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <span class="caret"></span>
+                        </button>
+                    <ul class="dropdown-menu" style="width: 165px;">
+                        <li style="float:none" ng-class="{'active' : toggleButtonsList['radiusSearchTool'].isActive}">
+                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i> Radius Search</a>
+                        </li>
+                        <li style="float:none" ng-class="{'active' : toggleButtonsList['bboxSearchTool'].isActive}">
+                            <a class="control-button icon" ng-click="action.boundingBoxSearch()" title="BBOX search"><i class="fa fa-square-o" aria-hidden="true"></i>  Bounding Box Search</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="divider-vertical" draft-only></li>
             <!-- <li draft-only>

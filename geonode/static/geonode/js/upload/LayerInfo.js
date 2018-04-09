@@ -288,7 +288,7 @@ define(function (require, exports) {
             }
         }
         self.logStatus({
-            msg: '<p>' + gettext('Your layer has been uploaded successfully') + '<br/>' + msg_col + '<br/>' + a + '&nbsp;&nbsp;&nbsp;' + b + '&nbsp;&nbsp;&nbsp;' + c + '</p>',
+            msg: '<p>' + gettext('Your layer has been uploaded successfully') + '<br/>'+ resp.warning + '<br/>' + msg_col + '<br/>' + a + '&nbsp;&nbsp;&nbsp;' + b + '&nbsp;&nbsp;&nbsp;' + c + '</p>',
             level: 'alert-success',
             empty: 'true'
         });

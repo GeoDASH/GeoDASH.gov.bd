@@ -48,6 +48,17 @@
                 );
         }
 
+        function post(url,data) {
+            var deferred = $q.defer();
+            $http.post(url,data).then(function (response) {
+                deferred.resolve(res);
+            },function (error) {
+                deferred.reject({error: error, status: status});
+                console.log(error);
+            });
+            return deferred.promise;
+        }
+
         return {
             getLayers: function (data) {
                 return get('/api/layers/?'+data);
@@ -60,6 +71,12 @@
             },
             getAddressAttributes: function(uuid){
                 return get('/settings/api/address/attributes/'+uuid+"/");
+            },
+            getLayersForBaseMaps : function () {
+                return get('/api/layers-list/');
+            },
+            saveCustomBaseLayer : function (data) {
+                return post("/api/set-layers-base-layer/",data);
             }
 
         }
