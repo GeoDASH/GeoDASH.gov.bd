@@ -174,7 +174,7 @@ class MapListAPIView(AnalyticsMixin, ListAPIView):
             else:
                 r.update(dict(name=map_obj.title,
                         user_organization = map_obj.owner.organization,                        
-                        map_category=map_obj.category.identifier, 
+                        map_category=map_obj.category.identifier if map_obj.category else None, 
                         map_organization=map_obj.group.title))
 
         return Response(data=results, status=status.HTTP_200_OK)
@@ -207,7 +207,7 @@ class LayerListAPIView(AnalyticsMixin, ListAPIView):
             else:
                 r.update(dict(name=layer.title, 
                         user_organization = layer.owner.organization,
-                        layer_category=layer.category.identifier, 
+                        layer_category=layer.category.identifier if layer.category else None, 
                         layer_organization=layer.group.title))
                 
 
@@ -241,7 +241,7 @@ class DocumentListAPIView(AnalyticsMixin, ListAPIView):
             else:
                 r.update(dict(name=document.title, 
                         user_organization = document.owner.organization,
-                        document_category=document.category.identifier, 
+                        document_category=document.category.identifier if document.category else None, 
                         document_organization=document.group.title))
 
         return Response(data=results, status=status.HTTP_200_OK)
