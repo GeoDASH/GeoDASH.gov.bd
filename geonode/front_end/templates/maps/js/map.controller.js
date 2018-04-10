@@ -140,7 +140,7 @@
             if(!overlay){
                 container = document.getElementById('property-grid-in-overlay');
                     // content = document.getElementById('route-popup-content');
-                    // var closer = document.getElementById('route-popup-closer');
+                    var closer = document.getElementById('attribute-popup-closer');
                     container.style.visibility = 'none';
 
                      overlay = new ol.Overlay({
@@ -150,6 +150,11 @@
                             duration: 250
                         }
                     });
+                closer.onclick = function (e) {
+                    overlay.setPosition(undefined);
+                    closer.blur();
+                    return false;
+                };
                 map.addOverlay(overlay);
             }else {
                 overlay.setPosition(undefined);

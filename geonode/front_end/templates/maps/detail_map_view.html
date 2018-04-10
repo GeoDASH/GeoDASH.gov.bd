@@ -31,7 +31,8 @@
 {#                   #}
 {#               </div>#}
 {#        <property-grid-overlay></property-grid-overlay>#}
-       <div class="property-grid-overlay">
+       <div class="property-grid-overlay" style="padding-top: 20px">
+           <a id="attribute-popup-closer" class="ol-route-popup-closer" style="cursor: pointer;top: -1px"></a>
                    <div class="col-md-12" style="margin-bottom: 8px" ng-if="featureList.length>0">
                        <button class="btn-sm btn-primary pull-left col-md-3" ng-hide="currentIndex==0" ng-click="getPreviousFeature()">Prev</button>
                        <div class="text-center col-md-7 text-primary col-md-6" style="padding: 5px">[{currentIndex+1}] of [{featureList.length}]</div>

@@ -15,7 +15,7 @@ mapModule.directive('routePopUpDirective', [
                     var routeFeature = {};
                     $scope.coordinate = [];
                     $scope.layers = [];
-                    var container, content, close, popup;
+                    var container, content, closer, popup;
                     container = document.getElementById('route-popup');
                     content = document.getElementById('route-popup-content');
                     closer = document.getElementById('route-popup-closer');
