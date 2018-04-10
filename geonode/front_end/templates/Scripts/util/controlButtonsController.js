@@ -437,9 +437,14 @@
             $scope.toggleSelectFeatureTool=function () {
                     if(!$scope.toggleButtonsList['featureSelectionTool'].isActive){
                         $scope.disableAllDependentTools($scope.toggleButtonsList['featureSelectionTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
-                        $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
+
+                        $scope.$parent.enableFeatureIdentifier();
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=true;
                     }else {
-                        $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                        $scope.$parent.disableFeatureIdentifier();
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=false;
                     }
             };
 
