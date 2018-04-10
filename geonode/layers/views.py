@@ -1539,6 +1539,7 @@ class GeoLocationApiView(CreateAPIView):
         response = []
         success_count, failed_count = 0, 0
         for row in csv_reader:
+            # import pdb;pdb.set_trace()
             mapped_row = dict(zip(headers, row))
             values = [mapped_row[filtered_dict[k]] for k in keys]
             data = dict(zip(keys, values))
@@ -1553,7 +1554,8 @@ class GeoLocationApiView(CreateAPIView):
             except Exception as ex:
                 row += ['', '']
                 failed_count += 1
-            response.append(dict(zip(response_headers, row)))
+            else:
+                response.append(dict(zip(response_headers, row)))
 
         return Response(data=dict(data=response, success=success_count, error=failed_count), status=status.HTTP_200_OK)
 # end
