@@ -156,7 +156,6 @@
             }
 
             getFeature(event).then(function (response) {
-                    console.log(response);
                     $scope.featureList=response;
                     if($scope.featureList){
                         if($scope.featureList.length>0){
