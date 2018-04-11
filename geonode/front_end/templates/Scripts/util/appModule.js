@@ -130,7 +130,7 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
 
             // if (result.propertiesChanged || labelChanged) {
                 updatedLayer.style.classifierDefinitions = result.classifierDefinitions;
-                layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false)
+                layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false);
                 /*.success(function() {
                     // saveClassificationOnNeed();
                     $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });

@@ -75,16 +75,18 @@
             LayerService.getStyle($scope.nodeData.selectedStyle.id)
                 .then(function(res) {
                     $scope.nodeData.layer.style = res;
-                    
+
                     $scope.settingsData = $scope.nodeData.layer.style.classifierDefinitions || {};
                     $scope.classifierBinder = { classType: undefined, colorPaletteGenerator: undefined };
                     $scope.visualizationSettings = { selected: $scope.nodeData.layer.style.visualizationSettings };
 
-                    layer.setStyle({
+                    $scope.visualizationSettings = { selected: $scope.nodeData.layer.style.visualizationSettings };
+                    angular.extend($scope.nodeData.layer.style, {
                         id: $scope.nodeData.selectedStyle.id,
                         Name: $scope.nodeData.selectedStyle.style.name,
-                        Title: $scope.nodeData.selectedStyle.title
+                        Title: $scope.nodeData.selectedStyle.title,
                     });
+                    layer.setStyle($scope.nodeData.layer.style);
                     layer.refresh();
                 }, function() {
 
