@@ -71,7 +71,11 @@
             $scope.disableAllDependentTools= function(dependentTools,mapTools,toggleButtonList) {
                 angular.forEach(dependentTools,function (tool,key) {
                    if(toggleButtonList[key].isActive){
-                       toggleButtonList[key].isActive=mapTools[tool.toolName][tool.disableFunction]();
+                       if(key=='featureSelectionTool'){
+                           $scope.$parent.disableFeatureIdentifier();
+                           toggleButtonList[key].isActive=false;
+                       }else
+                           toggleButtonList[key].isActive=mapTools[tool.toolName][tool.disableFunction]();
                    }
                 })
             };
