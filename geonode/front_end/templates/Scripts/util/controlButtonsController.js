@@ -71,7 +71,11 @@
             $scope.disableAllDependentTools= function(dependentTools,mapTools,toggleButtonList) {
                 angular.forEach(dependentTools,function (tool,key) {
                    if(toggleButtonList[key].isActive){
-                       toggleButtonList[key].isActive=mapTools[tool.toolName][tool.disableFunction]();
+                       if(key=='featureSelectionTool'){
+                           $scope.$parent.disableFeatureIdentifier();
+                           toggleButtonList[key].isActive=false;
+                       }else
+                           toggleButtonList[key].isActive=mapTools[tool.toolName][tool.disableFunction]();
                    }
                 })
             };
@@ -437,9 +441,14 @@
             $scope.toggleSelectFeatureTool=function () {
                     if(!$scope.toggleButtonsList['featureSelectionTool'].isActive){
                         $scope.disableAllDependentTools($scope.toggleButtonsList['featureSelectionTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
-                        $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
+
+                        $scope.$parent.enableFeatureIdentifier();
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=true;
                     }else {
-                        $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                        $scope.$parent.disableFeatureIdentifier();
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=false;
                     }
             };
 

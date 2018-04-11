@@ -2,13 +2,208 @@
     appModule
         .controller('MapController', MapController);
 
-    MapController.$inject = ['mapService', '$window', 'analyticsService', 'LayerService', '$scope', 'layerService', 'queryOutputFactory', '$rootScope','$interval','urlResolver'];
+    MapController.$inject = ['mapService', '$window', 'analyticsService', 'LayerService', '$scope', 'layerService', 'queryOutputFactory', '$rootScope','$interval','urlResolver','mapTools','layerRepository','$q','SurfFeature','$timeout'];
 
-    function MapController( mapService, $window, analyticsService, LayerService, $scope, oldLayerService, queryOutputFactory, $rootScope,$interval,urlResolver) {
+    function MapController( mapService, $window, analyticsService, LayerService, $scope, oldLayerService, queryOutputFactory, $rootScope,$interval,urlResolver,mapTools,layerRepository,$q,SurfFeature,$timeout) {
         var self = this;
         var re = /\d*\/embed/;
         var map = mapService.getMap();
         self.MapConfig = $window.mapConfig;
+        $scope.properties=[];
+        $scope.featureList=[];
+        $scope.currentIndex=undefined;
+
+        function parseId(olFeature) {
+            var idParts = (olFeature.getId() || '.').split('.');
+            return {dataId: idParts[0], fid: idParts[1]};
+        }
+
+        function getFeature(event) {
+            var deferred = $q.defer();
+            var layers = mapService.getLayers();
+            var dataIds = [];
+            var styleIds = [];
+            angular.forEach(layers, function (sl) {
+                if (sl.IsVisible) {
+                    dataIds.push(sl.LayerId);
+                    styleIds.push(sl.getStyleName());
+                }
+            });
+            if (dataIds.length === 0) return;
+            var size = map.getSize();
+            var bbox = map.getView().calculateExtent(size);
+            var layersParamValue = dataIds.join(',');
+            var urlParams = {
+                service: 'wms',
+                version: '1.1.0',
+                request: 'GetFeatureInfo',
+                layers: layersParamValue,
+                query_layers: layersParamValue,
+                styles: styleIds.join(','),
+                srs: 'EPSG:3857',
+                bbox: bbox.join(','),
+                width: size[0],
+                height: size[1],
+                info_format: 'application/json',
+                exceptions: 'application/json',
+                feature_count: 100,
+                x: Math.round(event.pixel[0]),
+                y: Math.round(event.pixel[1])
+            };
+
+
+            var wmsSource = $window.GeoServerTileRoot + '?access_token=' + $window.mapConfig.access_token;
+
+            layerRepository.getWMS(wmsSource, urlParams).then(function (response) {
+                var geoJson = response;
+                geoJson.features.map(function (feature) {
+                    if (!feature.geometry) {
+                        feature.geometry = {
+                            type: "MultiPolygon",
+                            coordinates: [],
+                            geometry_name: 'the_geom'
+                        };
+                    }
+                });
+                var parser = new ol.format.GeoJSON();
+                var olFeatures = parser.readFeatures(geoJson);
+                var featureList= olFeatures.map(function (of) {
+                    var id = parseId(of);
+                    var lookup = {};
+                    for (var key in layers) {
+                        if (layers.hasOwnProperty(key)) {
+                            lookup[layers[key].DataId] = layers[key];
+                        }
+                    }
+                    var surfLayer = lookup[id.dataId];
+                    var surfFeature = new SurfFeature(of, surfLayer);
+                    return {
+                        surfFeature: surfFeature,
+                        olFeature: of
+                    };
+                });
+                deferred.resolve(featureList);
+
+            }).catch(function () {
+
+            });
+            return deferred.promise
+        }
+
+        function adjustPopupPosition(map, coordinate,event) {
+                var center = map.getView().getCenter();
+                //var pixelPosition = map.getPixelFromCoordinate([coordinate[0], coordinate[1]]);
+                var pixelPosition = event.pixel;
+                var mapWidth = $("#map_canvas").width();
+                var mapHeight = $("#map_canvas").height();
+                var popoverHeight = $(".property-grid-overlay").height();
+                var popoverWidth = $(".property-grid-overlay").width();
+                var thresholdTop = popoverHeight + 50;
+                var thresholdBottom = mapHeight;
+                var thresholdLeft = popoverWidth / 2 - 80;
+                var thresholdRight = mapWidth - popoverWidth / 2 - 130;
+                var newX, newY;
+                if (pixelPosition[0] < thresholdLeft || pixelPosition[0] > thresholdRight || pixelPosition[1] < thresholdTop || pixelPosition[1] > thresholdBottom) {
+
+                    if (pixelPosition[0] < thresholdLeft) {
+                        newX = pixelPosition[0] + (thresholdLeft - pixelPosition[0]);
+                    } else if (pixelPosition[0] > thresholdRight) {
+                        newX = pixelPosition[0] - (pixelPosition[0] - thresholdRight);
+                    } else {
+                        newX = pixelPosition[0];
+                    }
+                    if (pixelPosition[1] < thresholdTop) {
+                        newY = pixelPosition[1] + (thresholdTop - pixelPosition[1]);
+                    } else if (pixelPosition[1] > thresholdBottom) {
+                        newY = pixelPosition[1] - (pixelPosition[1] - thresholdBottom);
+                    } else {
+                        newY = pixelPosition[1];
+                    }
+                    var newCoordinate = map.getCoordinateFromPixel([newX, newY]);
+                    var newCenter = [(center[0] - (newCoordinate[0] - coordinate[0])), (center[1] - (newCoordinate[1] - coordinate[1]))];
+                    var pan = ol.animation.pan({
+                        duration: 500,
+                        source: map.getView().getCenter()
+                    });
+                    map.beforeRender(pan);
+                    map.getView().setCenter(newCenter);
+                }
+            }
+
+
+        var overlay;
+        var container, content, close, popup;
+
+        function featureIdentifier(event) {
+            $scope.currentIndex=undefined;
+            $scope.properties=[];
+            if(!overlay){
+                container = document.getElementById('property-grid-in-overlay');
+                    // content = document.getElementById('route-popup-content');
+                    var closer = document.getElementById('attribute-popup-closer');
+                    container.style.visibility = 'none';
+
+                     overlay = new ol.Overlay({
+                        element: container,
+                        autoPan: true,
+                        autoPanAnimation: {
+                            duration: 250
+                        }
+                    });
+                closer.onclick = function (e) {
+                    overlay.setPosition(undefined);
+                    closer.blur();
+                    return false;
+                };
+                map.addOverlay(overlay);
+            }else {
+                overlay.setPosition(undefined);
+            }
+
+            getFeature(event).then(function (response) {
+                    $scope.featureList=response;
+                    if($scope.featureList){
+                        if($scope.featureList.length>0){
+                            $scope.currentIndex=0;
+                            $scope.properties=response[0].surfFeature.getAttributesWithType();
+                        }else {
+                            $scope.currentIndex=undefined;
+                            $scope.properties=[];
+                        }
+                    }
+                    var coordinate = map.getCoordinateFromPixel(event.pixel);
+                    overlay.setPosition(coordinate);
+                    container.style.visibility = 'visible';
+                    $timeout(function () {
+                        adjustPopupPosition(map, coordinate,event);
+                    });
+            },function (error) {
+                    console.log(error);
+            });
+        }
+
+
+
+        $scope.enableFeatureIdentifier=function () {
+            map.on('singleclick', featureIdentifier);
+        };
+        $scope.disableFeatureIdentifier=function () {
+            map.un('singleclick', featureIdentifier);
+            if(overlay){
+                map.removeOverlay(overlay);
+                overlay=undefined;
+                container=undefined;
+            }
+        };
+
+        $scope.getPreviousFeature=function () {
+            $scope.currentIndex=$scope.currentIndex-1;
+            $scope.properties=$scope.featureList[$scope.currentIndex].surfFeature.getAttributesWithType();
+        };
+        $scope.getNextFeature=function () {
+            $scope.currentIndex=$scope.currentIndex+1;
+            $scope.properties=$scope.featureList[$scope.currentIndex].surfFeature.getAttributesWithType();
+        };
 
         mapService.setMapName(self.MapConfig.about.title);
         mapService.setId(self.MapConfig.id);
