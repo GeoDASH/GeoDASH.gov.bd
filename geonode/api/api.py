@@ -1110,7 +1110,6 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
 
     def dispatch(self, request_type, request, **kwargs):
         if request.method == 'POST':
-            import pdb; pdb.set_trace()
             out = {'success': False}
 
             if request.user.is_authenticated():
@@ -1168,7 +1167,10 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
 
                         comment_body = json.loads(request.body).get('comment')
                         comment_subject = json.loads(request.body).get('comment_subject')
-                        resource.status = action
+                        if action.upper() == 'APPROVED':
+                            resource.status = 'APPROVED'
+                        elif action.upper() == 'DENIED':
+                            resource.status = 'APPROVED'
                         resource.last_auditor = request.user
                         resource.save()
 
@@ -1207,11 +1209,12 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
 
                         resource_audit_activity.comment_subject = comment_subject
                         resource_audit_activity.comment_body = comment_body
-                        resource_audit_activity.result = action
+                        resource_audit_activity.result = resource.status
                         resource_audit_activity.auditor = request.user
                         resource_audit_activity.save()
 
                         out['success'] = 'True'
+                        out['message'] = 'Approved Layer Successfully'
                         status_code = 200
 
 
