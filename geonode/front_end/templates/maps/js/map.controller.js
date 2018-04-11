@@ -13,7 +13,7 @@
         mapService.setMapName(self.MapConfig.about.title);
         mapService.setId(self.MapConfig.id);
         mapService.setMeta(self.MapConfig.about);
-        var extent = ol.extent.createEmpty();
+        var extent = [6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905]; // ol.extent.createEmpty();
 
 
         function setLayers() {

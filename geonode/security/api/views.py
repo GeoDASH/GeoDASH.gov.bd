@@ -17,14 +17,15 @@ class StylePermissionRetrieveAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticated, )
     def get(self,request, layername, pk, *args, **kwargs):
         flag = True
-        style = StyleExtension.objects.none()
+        style = None
         try:
+            layer = Layer.objects.get(typename=layername)
+            style = layer.styles.get(styleextension__id=pk)
             layer = resolve_object(request, 
                         Layer, 
                         dict(typename=layername),
                         'layers.change_layer_style',
                         _PERMISSION_MSG_CHANGE_STYLE)
-            style = layer.styles.get(styleextension__id=pk)
         except PermissionDenied as ex:
             flag=False
         except Style.DoesNotExist as ex:
@@ -32,5 +33,6 @@ class StylePermissionRetrieveAPIView(RetrieveAPIView):
         finally:
             if style and (request.user == style.styleextension.created_by or request.user.is_superuser):
                 flag = True
+                
         return Response(dict(has_permission=flag))
 
