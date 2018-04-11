@@ -1,5 +1,6 @@
 ﻿appModule.controller('layerPropertiesCtrl', ['$timeout', '$scope', '$http', '$filter', '$modalInstance', 'data', 'inputData', 'settingsData', 'layer', 'LayerService', 'surfToastr',
     function($timeout, $scope, $http, $filter, $modalInstance, data, inputData, settingsData, layer, LayerService, surfToastr) {
+        $scope.hasPermission = false;
         $scope.settingsData = settingsData;
         $scope.inputData = inputData;
         $scope.classifierBinder = { classType: undefined, colorPaletteGenerator: undefined };
@@ -29,6 +30,9 @@
                 zoomlevel: layer.getZoomLevel(),
                 //visualizationSettings: layer.visualizationSettings
             };
+        }
+        function removeUnsavedStyle(){
+            $scope.Styles = $scope.Styles.filter(e => e.id);
         }
 
         $scope.nodeData.fields = data.fields;
@@ -63,28 +67,44 @@
                     $scope.nodeData.selectedStyle = $scope.Styles.find(function(e) {
                         return e.id == $scope.nodeData.layer.style.id;
                     });
+                    if ($scope.nodeData.selectedStyle){
+                        checkPermission();       
+                    }
                 }, function() {
 
+                });
+        }
+
+        function checkPermission() {
+            LayerService.checkLayerStylePermision($scope.nodeData.layer.id, $scope.nodeData.selectedStyle.id)
+                .then(function(res) {
+                    $scope.hasPermission = res.has_permission;
+                }, function() {
+                    $scope.hasPermission = false;
                 });
         }
         initNodeData();
         (getLayerStyles)();
         $scope.onStyleChange = function() {
             if (!$scope.nodeData.selectedStyle || !$scope.nodeData.selectedStyle.hasOwnProperty('id'))
-                return;
+            return;
+            removeUnsavedStyle();
             LayerService.getStyle($scope.nodeData.selectedStyle.id)
                 .then(function(res) {
+                    checkPermission();
                     $scope.nodeData.layer.style = res;
-                    
+
                     $scope.settingsData = $scope.nodeData.layer.style.classifierDefinitions || {};
                     $scope.classifierBinder = { classType: undefined, colorPaletteGenerator: undefined };
                     $scope.visualizationSettings = { selected: $scope.nodeData.layer.style.visualizationSettings };
 
-                    layer.setStyle({
+                    $scope.visualizationSettings = { selected: $scope.nodeData.layer.style.visualizationSettings };
+                    angular.extend($scope.nodeData.layer.style, {
                         id: $scope.nodeData.selectedStyle.id,
                         Name: $scope.nodeData.selectedStyle.style.name,
-                        Title: $scope.nodeData.selectedStyle.title
+                        Title: $scope.nodeData.selectedStyle.title,
                     });
+                    layer.setStyle($scope.nodeData.layer.style);
                     layer.refresh();
                 }, function() {
 
@@ -92,6 +112,8 @@
         };
 
         $scope.newStyle = function() {
+            removeUnsavedStyle();
+            $scope.hasPermission = true;
             angular.copy(LayerService.getNewStyle(), $scope.nodeData.layer.style);
             $scope.nodeData.selectedStyle = $scope.nodeData.layer.style;
             $scope.settingsData = {};

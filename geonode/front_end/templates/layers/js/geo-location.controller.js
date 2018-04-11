@@ -5,9 +5,9 @@
         .module('LayerApp')
         .controller('GeoLocationController', GeoLocationController);
 
-    GeoLocationController.$inject = ['FileUploader', '$timeout', 'uiGridConstants'];
+    GeoLocationController.$inject = ['FileUploader', '$timeout', 'uiGridConstants', 'surfToastr'];
 
-    function GeoLocationController(FileUploader, $timeout, uiGridConstants) {
+    function GeoLocationController(FileUploader, $timeout, uiGridConstants, surfToastr) {
         var self = this;
 
         function initialize() {
@@ -45,8 +45,7 @@
                 fn: function(item) {
                     var fileExtension = item.name.split('.').pop();
                     if (fileExtension !== 'csv') {
-                        self.isError = true;
-                        self.Message.Error = "Currently supported .csv file only.";
+                        surfToastr.error("Currently supported .csv file only.", "ERROR!!!");
                     }
                     return fileExtension === 'csv';
                 }
@@ -59,12 +58,12 @@
                 fileReader.onloadend = function() {
                     var lines = this.result.split(/\r\n|\n/);
                     $timeout(function() {
+                        self.totalRows = lines.length - 1;
                         self.fileHeaders = lines[0].split(',');
                         for (var i = 0; i < self.fileHeaders.length; i++) {
-                            if( self.fileHeaders[i].startsWith("'") && self.fileHeaders[i].endsWith("'")){
+                            if (self.fileHeaders[i].startsWith("'") && self.fileHeaders[i].endsWith("'")) {
                                 self.fileHeaders[i] = self.fileHeaders[i].split("'")[1];
-                            }
-                            else if( self.fileHeaders[i].startsWith('"') && self.fileHeaders[i].endsWith('"')){
+                            } else if (self.fileHeaders[i].startsWith('"') && self.fileHeaders[i].endsWith('"')) {
                                 self.fileHeaders[i] = self.fileHeaders[i].split('"')[1];
                             }
                         }
@@ -80,12 +79,15 @@
 
         self.file.onSuccessItem = function(item, response, status, headers) {
             if (response.success) {
-                self.isSuccess = true;
-                self.Message.Success = "Success on: " + response.success + " rows";
+                // self.isSuccess = true;
+                // self.Message.Success = "Success on: " + response.success + " rows";
+                surfToastr.success("Success on: " + response.success + " rows", "Success!!!");
+
             }
             if (response.error) {
-                self.isError = true;
-                self.Message.Error = "Error on: " + response.error + " rows";
+                // self.isError = true;
+                // self.Message.Error = "Error on: " + response.error + " rows";
+                surfToastr.error("Error on: " + response.error + " rows", "ERROR!!!");
             }
 
             self.propertyNames = [];
@@ -105,6 +107,12 @@
         };
 
         self.upload = function() {
+            let unMapped = Object.entries(self.mappedHeaders).filter(([k, v]) => !v);
+            if (unMapped.length) {
+                surfToastr.error("You need to map header " + unMapped.map(([k, v]) => k).join(', '), "ERROR!!!");
+                return;
+            }
+
             if (self.file.queue.length) {
                 self.file.uploadItem(0);
             }

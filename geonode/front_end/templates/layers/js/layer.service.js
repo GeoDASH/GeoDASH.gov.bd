@@ -277,6 +277,9 @@
             },
             createLayerByWfs: function(data) {
                 return post('api/geoserver/wfs/create-layer/', data);
+            },
+            checkLayerStylePermision: function(layerName, styleId){
+                return get(`/api/security/layer/${layerName}/style/${styleId}/`);
             }
         };
     }

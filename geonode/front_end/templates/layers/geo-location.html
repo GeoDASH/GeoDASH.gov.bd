@@ -7,11 +7,13 @@
 {% block body_class %}layers upload{% endblock %}
 {% block head%}
 <link rel="stylesheet" href="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/toastr.min.css">
+
 {{ block.super }}
 {% endblock %}
 {% block body_outer %}
 <div ng-controller="GeoLocationController as ctrl" ng-app="LayerApp" ng-cloak>
-    <div class="alert alert-success  alert-dismissable" ng-show="ctrl.isSuccess">
+    <!-- <div class="alert alert-success  alert-dismissable" ng-show="ctrl.isSuccess">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Success!</strong> [{ctrl.Message.Success}]
         </div>
@@ -19,12 +21,16 @@
       <div class="alert alert-danger  alert-dismissable" ng-show="ctrl.isError">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>Error!</strong> [{ctrl.Message.Error}]
-      </div>
+      </div> -->
 
       
       <label for="">Upload CSV to get geo location</label>
       <input type="file" nv-file-select uploader="ctrl.file">
       <table ng-if="ctrl.fileHeaders.length > 0">
+          <tr>
+              <td>Total Rows</td>
+              <td style="text-align: right;">[{ctrl.totalRows}]</td>
+          </tr>
           <tr ng-repeat="head in ctrl.headers">
               <td>[{head}]</td>
               <td>
@@ -42,6 +48,9 @@
         {% block extra_script %}
         <script src="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.js"></script>
 <script src="{{ STATIC_URL }}.components/angular-file-upload/dist/angular-file-upload.js"></script>
+
+<script src="{{ STATIC_URL }}Scripts/lib/toastr.min.js"></script>
+<script src="{{ STATIC_URL }}Scripts/util/surfToastr.js"></script>
 
 <script src="{{ STATIC_URL }}layers/js/layer.module.js"></script>
 <script src="{{ STATIC_URL }}layers/js/layer.service.js"></script>

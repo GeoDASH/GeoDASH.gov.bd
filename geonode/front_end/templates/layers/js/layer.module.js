@@ -1,5 +1,5 @@
 (function() {
-    angular.module('LayerApp', ['ui.grid', 'ui.grid.pagination', 'ui.grid.exporter', 'angularFileUpload'])
+    angular.module('LayerApp', ['ui.grid', 'ui.grid.pagination', 'ui.grid.exporter', 'angularFileUpload', 'surfToastr'])
         .config(['$interpolateProvider', '$locationProvider', function($interpolateProvider, $locationProvider) {
             $interpolateProvider.startSymbol('[{');
             $interpolateProvider.endSymbol('}]');
