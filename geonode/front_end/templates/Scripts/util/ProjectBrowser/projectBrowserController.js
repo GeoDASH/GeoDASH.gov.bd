@@ -45,6 +45,11 @@ appModule.controller('projectBrowserController', ['$scope', '$window', '$rootSco
                     // projectService.executeAfterSuccessfulSave(data.layerIdToSavedDataIdMappings);
                     // subscriptionStatus.updateNumberOfProjects(data.numberOfProjects);
                     // window.location = 'maps/' + data.id + '/view';
+                    surfToastr.success("Map Saved Successfully", "Success");
+                    
+                }).error(function(res){
+                    surfToastr.error("Map Save Failed. Reason: " + res, "ERROR!!!");
+                    
                 });
                 $modalInstance.close();
             }

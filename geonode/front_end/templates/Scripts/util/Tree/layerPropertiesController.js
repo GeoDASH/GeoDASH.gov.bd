@@ -67,7 +67,9 @@
                     $scope.nodeData.selectedStyle = $scope.Styles.find(function(e) {
                         return e.id == $scope.nodeData.layer.style.id;
                     });
-                    checkPermission();
+                    if ($scope.nodeData.selectedStyle){
+                        checkPermission();       
+                    }
                 }, function() {
 
                 });
