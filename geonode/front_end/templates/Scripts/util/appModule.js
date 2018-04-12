@@ -131,11 +131,11 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             // if (result.propertiesChanged || labelChanged) {
                 updatedLayer.style.classifierDefinitions = result.classifierDefinitions;
                 layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false)
-                .success(function() {
+                .then(function() {
                     surfToastr.success('Style Saved Successfully', 'Success');
                     // saveClassificationOnNeed();
                     // $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });
-                }).error(function(res) {
+                },function(res) {
                     surfToastr.error('Style Save Failed. Reason: ' + res, 'Error!');                    
                     // saveClassificationOnNeed();
                 });

@@ -113,7 +113,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             var classificationSlds = getClassificationSld(surfLayer.getFeatureType(), style.classifierDefinitions, excludeSld);
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");
-            var chartSldRegex = new RegExp("<!--chartSld-->", "g");
+            var vizSldRegex = new RegExp("<!--vizSld-->", "g");
 
             defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
             defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
@@ -125,11 +125,12 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             if (surfLayer.Style.visualizationSettings) {
                 visualizationService.getVisualizationSld(surfLayer, surfLayer.Style.visualizationSettings)
                     .then(function(visSld) {
-                        if (visualizationService.isChart(surfLayer.Style.visualizationSettings)) {
-                            defaultStyleSld = defaultStyleSld.replace(chartSldRegex, visSld);
-                        } else if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {
+                        if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {
                             defaultStyleSld = visSld;
                         }
+                        else {
+                            defaultStyleSld = defaultStyleSld.replace(vizSldRegex, visSld);
+                        } 
 
                         return doAction();
                     });
