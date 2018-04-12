@@ -479,7 +479,7 @@ a
     background: rgba(255, 255, 255, 0.95);
     right: 0;
     top: 12px;
-    width: 591px;
+    /* width: 591px; */
     height: 36px;
     position: absolute;
     right: 119px;
