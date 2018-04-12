@@ -73,7 +73,7 @@
             return {
                 "Name": "",
                 "default": {
-                    "fillPattern": null,
+                    "fillPattern": "",
                     "textFillColor": "#0000ff",
                     "text": null,
                     "pixelDensity": null,
