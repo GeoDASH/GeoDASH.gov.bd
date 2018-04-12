@@ -114,5 +114,10 @@
                 <sub ng-if="styleHash.strokeDashstyle == 'dash' || styleHash.strokeDashstyle == 'dot'" style="margin-left:10px;">px</sub>
             </span>
         </div>
+        <div class="style-editor range">
+            <input type="text" ng-model="model.lineOpacity" fixed-number-range min="0" max="100" ng-change="transparencyChanged()" />
+            <span>0 </span>
+            <input type='range' min="0" max="100" step="1" ng-model='model.lineOpacity' ng-change="transparencyChanged()" /><span>100</span>
+        </div>
     </div>
 </div>
