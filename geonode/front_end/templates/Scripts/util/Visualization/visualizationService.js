@@ -2,25 +2,25 @@ appModule.factory('visualizationService', ['urlResolver', 'layerRepository', 'sl
 function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerStyleGenerator, layerRenderingModeFactory, dirtyManager, interactionHandler, mapModes, utilityService, $q) {
     var visualizationFolder = "Content/visualization/";
     var visualizationTypes = { heatmap: 'Heatmap', chart:'Chart',
-     weightedPoint: 'Weighted Point', 
+     weightedPoint: 'Bubble Map', 
     // choropleth: 'Choropleth', 
     // rasterBand: 'Raster Band', 
     };
+
+
     
     // style.graphicName, style.strokeColor, style.strokeWidth,
     // strokeDashstyles.getDashedArray(style),
     // style.fillColor, fillOpacity, style.pointRadius, style.name, style.userStyle,
     function getWeightedPointSld(config, layer, dataValues) {
-        var style = {
-            graphicName: 'circle', 
-            pointRadius: 0, 
-            strokeDashstyle: '', 
-            strokeColor: '#000000', 
-            fillColor: '#ffffff', 
-            strokeWidth: 1, 
-            transparency: 0.7, 
-            fillOpacity: 0.7
-         };
+        var style = factory.getDefaultStyleForPoint();
+        var styleSettings = config.default;
+        style.fillColor = styleSettings.fillColor;
+        style.fillOpacity = styleSettings.fillOpacity;
+        style.strokeColor = styleSettings.strokeColor;
+        style.strokeOpacity = styleSettings.strokeOpacity;
+        style.strokeWidth = styleSettings.strokeWidth;
+        style.transparency = styleSettings.transparency;
         //var style = angular.copy(layer.getDefaultStyle());
 
         for (var i = 0; i < config.kindOfPoints; i++) {
@@ -55,6 +55,19 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
     }
 
     var factory = {
+        getDefaultStyleForPoint: function(){
+            return {
+                graphicName: 'circle', 
+                pointRadius: 10, 
+                strokeDashstyle: 'solid', 
+                strokeColor: '#000000', 
+                strokeOpacity: 1,
+                fillColor: '#ffffff', 
+                strokeWidth: 1, 
+                transparency: 0.7, 
+                fillOpacity: 0.7
+             };
+        },
         getDefaultVisualizationSettings: function (layer) {
             if (layer.ShapeType == 'point') {
                 return [

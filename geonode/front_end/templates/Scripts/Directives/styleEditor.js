@@ -5,12 +5,13 @@
             restrict: 'EA',
             templateUrl: 'static/Templates/styleLabel.html',
             scope: {
-                featureType: '='
+                featureType: '=',
+                isWeightedPoint: '='
             },
             controller: [
                 '$scope',
                 function ($scope) {
-                    $scope.isPoint = $scope.featureType == featureTypes.point;
+                    $scope.isPoint = $scope.featureType == featureTypes.point || $scope.featureType === undefined;
                     $scope.isPolyline = $scope.featureType == featureTypes.polyline;
                     $scope.isPolygon = $scope.featureType == featureTypes.polygon;
                 }
@@ -25,7 +26,8 @@ appHelperModule.directive('styleEditor', [
             restrict: 'E',
             scope: {
                 styleHash: '=',
-                featureType: '='
+                featureType: '=',
+                isWeightedPoint: '='
             },
             templateUrl: 'static/Templates/styleEditor.html',
             controller: [
@@ -48,7 +50,7 @@ appHelperModule.directive('styleEditor', [
                     $scope.strokeDashstyles = strokeDashstyles;
                     $scope.pointGraphics = pointGraphics;
 
-                    $scope.isPoint = $scope.featureType == featureTypes.point;
+                    $scope.isPoint = $scope.featureType == featureTypes.point || $scope.featureType === undefined;
                     $scope.isPolyline = $scope.featureType == featureTypes.polyline;
                     $scope.isPolygon = $scope.featureType == featureTypes.polygon;
 

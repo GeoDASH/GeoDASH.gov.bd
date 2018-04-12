@@ -140,11 +140,30 @@
              </div>
          </div>-->
  
-         <div class="row" ng-if="option.selected.name == visualizationTypes.weightedPoint">
+         <div class="" ng-if="option.selected.name == visualizationTypes.weightedPoint">
              <div class="span2" style="text-align: right">&nbsp;</div>
-             <div class="span3">
-                 <img src="../Content/Visualization/weightedPoint.PNG" alt="weighted point" />
-             </div>
+             <!-- <div class="span3">
+                 <img src="../Content/Visualization/weightedPoint.PNG" alt="Bubble Map" />
+             </div> -->
+
+             <div class="form-horizontal">  
+                
+                <div class="form-group" >
+                    <label class="col-md-2" style="text-align: right">Number of Class: </label>
+                    <div class="col-md-4">
+                        <input type="number" minVal="1" maxval="20" defaultval="5" min-max-validator class="input-sm form-control" ng-model="option.selected.kindOfPoints" />
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-md-2" style="text-align: right">Radius difference: </label>
+                    <div class="col-md-4">
+                        <input type="number" minval="1" maxval="100" defaultval="10" min-max-validator class="input-sm form-control" ng-model="option.selected.differentiationPixel" />
+                    </div>
+                </div>
+                
+            </div>
+
+             <layer-style-editor layer-style='option.selected' is-weighted-point="true" ></layer-style-editor>
          </div>
  
          <!--<div ng-if="option.selected.name == visualizationTypes.rasterBand">

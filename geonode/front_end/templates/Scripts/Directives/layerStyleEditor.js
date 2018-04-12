@@ -4,7 +4,8 @@
             restrict: 'E',
             scope: {
                 layerStyle: '=',
-                featureType: '='
+                featureType: '=',
+                isWeightedPoint: '='
             },
             templateUrl: 'static/Templates/layerStyleEditor.html'
         };
