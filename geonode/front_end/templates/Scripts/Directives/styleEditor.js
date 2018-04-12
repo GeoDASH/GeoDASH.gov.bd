@@ -33,7 +33,8 @@ appHelperModule.directive('styleEditor', [
                 function ($scope) {
                     var _model = {
                         transparency: 100 - ($scope.styleHash.fillOpacity * 100),
-                        pointType: $scope.styleHash.externalGraphic || $scope.styleHash.graphicName || $scope.styleHash.textGraphicName
+                        pointType: $scope.styleHash.externalGraphic || $scope.styleHash.graphicName || $scope.styleHash.textGraphicName,
+                        lineOpacity : 100 - ($scope.styleHash.strokeOpacity * 100)
                     };
                     $scope.model = _model;
                     $scope.styleHash['cursor'] = 'pointer';
@@ -54,14 +55,23 @@ appHelperModule.directive('styleEditor', [
 
                     $scope.transparencyChanged = function () {
                         $scope.styleHash.fillOpacity = (100 - $scope.model.transparency) / 100;
+                        $scope.styleHash.strokeOpacity = (100 - $scope.model.lineOpacity) / 100;
                     };
+                    //
+                    // $scope.$watch('model.transparency + model.lineOpacity', function () {
+                    //     $scope.styleHash.fillOpacity = (100 - $scope.model.transparency) / 100;
+                    //     $scope.styleHash.strokeOpacity = (100 - $scope.model.lineOpacity) / 100;
+                    // });
 
-                    $scope.$watch('model.transparency', function () {
-                        $scope.styleHash.fillOpacity = (100 - $scope.model.transparency) / 100;
-                    });
+                    function inItOpacity() {
+                        $scope.model.transparency=100 - ($scope.styleHash.fillOpacity * 100);
+                        $scope.model.lineOpacity=100 - ($scope.styleHash.strokeOpacity * 100);
+                    }
+
                     var ftime = true;
                     var _mode = "text";
-                    $scope.$watch('model.pointType', function () {
+                    $scope.$watch('model.pointType + styleHash.strokeOpacity + styleHash.fillOpacity', function () {
+                        inItOpacity();
                         $scope.styleHash.textFontAwesome = false;
                         var mode = "";
                         if (pointGraphicNames.isValidGraphic(_model.pointType)) {
