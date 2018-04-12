@@ -3,6 +3,22 @@
 
         var types = { point: getPointTemplate, polyline: getPolylineTemplate, polygon: getPolygonTemplate, geoTiff: getRasterTemplate, geoPdf: getRasterTemplate };
 
+        function getPointTemplateForWeightedPoint(style, includeHeader, classification, labelConfig) {
+            
+            var fillOpacity = style.fillOpacity === 0 ? 0.005 : style.fillOpacity; //fix for transparent feature selection problem
+            var sld;
+            if (style.graphicName) {
+                sld = formatString(getSldTemplate(sldTemplateService.pointTemplateForWeightedPoint, includeHeader),
+                [
+                    style.graphicName, style.strokeColor, style.strokeWidth,
+                    strokeDashstyles.getDashedArray(style),
+                    style.fillColor, fillOpacity, style.pointRadius, style.name, style.userStyle,
+                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification))
+                ]);
+            } 
+            return sld;
+        }
+
         function getPointTemplate(style, includeHeader, classification, labelConfig) {
 
             var fillOpacity = style.fillOpacity === 0 ? 0.005 : style.fillOpacity; //fix for transparent feature selection problem
@@ -215,7 +231,7 @@
                     config.classes[0].isFirstClass = true;
                 }
                 for (var i in config.classes) {
-                    sldStyle += sldTemplateService.wrapWithRuleTag(getPointTemplate(config.classes[i].style, false, config.classes[i], null));
+                    sldStyle += sldTemplateService.wrapWithRuleTag(getPointTemplateForWeightedPoint(config.classes[i].style, false, config.classes[i], null));
                 }
                 return formatString(sldTemplateService.weightedPointTemplate, [sldStyle]);
             },

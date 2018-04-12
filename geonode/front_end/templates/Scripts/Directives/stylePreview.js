@@ -32,7 +32,7 @@
                         return strokeDashstyles.getDashedArray(_styleHash);
                     };
 
-                    $scope.isPoint = $scope.featureType == featureTypes.point;
+                    $scope.isPoint = $scope.featureType == featureTypes.point || $scope.featureType === undefined;
                     $scope.isPolyline = $scope.featureType == featureTypes.polyline;
                     $scope.isPolygon = $scope.featureType == featureTypes.polygon;
 
