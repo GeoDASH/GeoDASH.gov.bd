@@ -35,7 +35,11 @@
         Analytics
     </div>
 
+    <!-- Step 1: Create the containing elements. -->
 
+    <section id="auth-button"></section>
+    <section id="view-selector"></section>
+    <section id="timeline"></section>
            
     <div class="row">
       
@@ -54,7 +58,7 @@
                     
             <div class="round round-info pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
             <div class="pull-left">
-            <h3>{{ map_loads }}</h3>
+            <h3 id="map_load">{{ map_loads }}</h3>
             <p>Map Loads</p>
         </div>
             </div>
@@ -67,8 +71,8 @@
                         <div class="panel-body">
                                 <div class="round round-warning pull-left"><i class="fa fa-street-view" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-            <h3>{{ average_activity_load }}</h3>
-            <p>Avg. Activities / Load</p>
+            <h3 id="layer_load">{{ average_activity_load }}</h3>
+            <p>Layer Loads</p>
         </div>
             </div>
             </div>
@@ -84,8 +88,8 @@
                         <div class="panel-body">
                                 <div class="round round-primary pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-            <h3>2</h3>
-            <p>Avg. Visitor Duration (min)</p>
+            <h3 id="document_load">2</h3>
+            <p>Document Loads</p>
         </div>
             </div>
             </div>
@@ -98,8 +102,8 @@
                         <div class="panel-body">
                                 <div class="round round-primary pull-left"><i class="fa fa-clone" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-                                <h3>{{ average_layer_load }}</h3>
-            <p>Avg. Layer Load (sec)</p>
+                                        <h3 id="document_load">2</h3>
+                                        <p>Document Loads</p>
             </div>
             </div>
             </div>
@@ -151,7 +155,7 @@
 {% endblock %}
 
 {% block extra_script %}
-    {# { block.super } #}}
+    {# { block.super } #}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -165,6 +169,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.18.0/c3_renderers.min.js"></script>
     <script src="{{ STATIC_URL }}geonode/js/analytics/subtotal.js"></script>
     <script>
+        (function(){
+            $.ajax({
+                url: '/api/analytics/summary/'
+              }).done(function(data) {
+                  console.log(data);
+                  $('#map_load').html(data.map.load);
+                  $('#layer_load').html(data.layer.load);
+                  $('#document_load').html(data.document.load);
+              });
+        })();
 
 function showTable(url,rows){
     $( "#analyticsLoader" ).removeClass( "hidden");
@@ -269,6 +283,72 @@ function showTable(url,rows){
 
             
         });
+
+        
         
     </script>
+
+
+
+<!-- Step 2: Load the library. -->
+
+<script>
+(function(w,d,s,g,js,fjs){
+  g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
+  js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+  js.src='https://apis.google.com/js/platform.js';
+  fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
+}(window,document,'script'));
+</script>
+
+<script>
+gapi.analytics.ready(function() {
+
+  // Step 3: Authorize the user.
+
+  var CLIENT_ID = '416484469256-1nd7ao3j8nmdgr1a4hgessd8oqsbuk0r.apps.googleusercontent.com';
+
+  gapi.analytics.auth.authorize({
+    container: 'auth-button',
+    clientid: CLIENT_ID,
+  });
+
+  // Step 4: Create the view selector.
+
+  var viewSelector = new gapi.analytics.ViewSelector({
+    container: 'view-selector'
+  });
+
+  // Step 5: Create the timeline chart.
+
+  var timeline = new gapi.analytics.googleCharts.DataChart({
+    reportType: 'ga',
+    query: {
+      'dimensions': 'ga:country',
+      'metrics': 'ga:sessions',
+      'start-date': '30daysAgo',
+      'end-date': 'yesterday',
+    },
+    chart: {
+      type: 'LINE',
+      container: 'timeline'
+    }
+  });
+
+  // Step 6: Hook up the components to work together.
+
+  gapi.analytics.auth.on('success', function(response) {
+    viewSelector.execute();
+  });
+
+  viewSelector.on('change', function(ids) {
+    var newIds = {
+      query: {
+        ids: ids
+      }
+    }
+    timeline.set(newIds).execute();
+  });
+});
+</script>
 {% endblock %}

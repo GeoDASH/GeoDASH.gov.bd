@@ -8,4 +8,5 @@ from geonode.analytics.enum import ContentTypeEnum
 urlpatterns = [
     url(r'^non-gis/$', views.NonGISActivityCreateAPIView.as_view()),    
     url(r'^gis/$', views.GISActivityCreateAPIView.as_view()),    
+    url(r'^summary/$', views.SummaryAPIView.as_view()),    
 ]
