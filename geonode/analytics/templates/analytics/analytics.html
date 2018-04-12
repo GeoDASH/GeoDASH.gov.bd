@@ -58,7 +58,7 @@
                     
             <div class="round round-info pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
             <div class="pull-left">
-            <h3>{{ map_loads }}</h3>
+            <h3 id="map_load">{{ map_loads }}</h3>
             <p>Map Loads</p>
         </div>
             </div>
@@ -71,8 +71,8 @@
                         <div class="panel-body">
                                 <div class="round round-warning pull-left"><i class="fa fa-street-view" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-            <h3>{{ average_activity_load }}</h3>
-            <p>Avg. Activities / Load</p>
+            <h3 id="layer_load">{{ average_activity_load }}</h3>
+            <p>Layer Loads</p>
         </div>
             </div>
             </div>
@@ -88,8 +88,8 @@
                         <div class="panel-body">
                                 <div class="round round-primary pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-            <h3>2</h3>
-            <p>Avg. Visitor Duration (min)</p>
+            <h3 id="document_load">2</h3>
+            <p>Document Loads</p>
         </div>
             </div>
             </div>
@@ -102,8 +102,8 @@
                         <div class="panel-body">
                                 <div class="round round-primary pull-left"><i class="fa fa-clone" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-                                <h3>{{ average_layer_load }}</h3>
-            <p>Avg. Layer Load (sec)</p>
+                                        <h3 id="document_load">2</h3>
+                                        <p>Document Loads</p>
             </div>
             </div>
             </div>
@@ -169,6 +169,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.18.0/c3_renderers.min.js"></script>
     <script src="{{ STATIC_URL }}geonode/js/analytics/subtotal.js"></script>
     <script>
+        (function(){
+            $.ajax({
+                url: '/api/analytics/summary/'
+              }).done(function(data) {
+                  console.log(data);
+                  $('#map_load').html(data.map.load);
+                  $('#layer_load').html(data.layer.load);
+                  $('#document_load').html(data.document.load);
+              });
+        })();
 
 function showTable(url,rows){
     $( "#analyticsLoader" ).removeClass( "hidden");
@@ -273,6 +283,8 @@ function showTable(url,rows){
 
             
         });
+
+        
         
     </script>
 

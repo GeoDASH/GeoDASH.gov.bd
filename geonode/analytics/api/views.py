@@ -1,4 +1,4 @@
-
+from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from geonode.analytics.enum import ContentTypeEnum
 from geonode.analytics.models import MapLoad,Visitor,LayerLoad,PinpointUserActivity, LoadActivity
@@ -313,3 +313,35 @@ class GISActivityCreateAPIView(CreateAPIView):
                     )
 
         return Response(status=status.HTTP_201_CREATED)
+
+class SummaryAPIView(ListAPIView):
+    """
+    Send analytics summary
+    """
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    def _GisActivity(self, filter):
+        try:
+            return PinpointUserActivity.objects.filter(**filter).values('activity_type').annotate(total=Count('activity_type'))
+        except Exception:
+            return []
+
+    def _ActivityByContentModel(self, model):
+        try:
+            content_model = ContentType.objects.get_for_model(model)        
+            return LoadActivity.objects.filter(content_type=content_model).values('activity_type').annotate(total=Count('activity_type'))
+        except Exception:
+            return []
+    
+    def _getAnalytics(self, model, filter):
+        gis = self._GisActivity(filter)
+        no_gis = self._ActivityByContentModel(model)
+
+        response = dict()
+        for k in list(gis)+list(no_gis):
+            response.update({k["activity_type"]:k["total"]})
+        return response
+        
+    def list(self, request):
+        return Response(dict(map=self._getAnalytics(Map, dict(map_id__isnull=False)), 
+                        layer=self._getAnalytics(Layer, dict(layer_id__isnull=False)),
+                        document=self._getAnalytics(Document, dict(document_id__isnull=False))))

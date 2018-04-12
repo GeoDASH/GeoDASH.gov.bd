@@ -100,5 +100,8 @@
             }
             return post(url,data);
         };
+        this.getAnalyticsSummary = function(){
+            return this.post('/api/analytics/summary/');
+        };
     }
 })();
