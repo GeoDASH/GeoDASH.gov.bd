@@ -168,6 +168,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                             callBack();
                         } else {
                             surfLayer.refresh();
+                            $rootScope.$broadcast('classificationChanged', { layer: surfLayer });
                             $rootScope.$broadcast('refreshSelectionLayer');
                         }
                     });

@@ -1065,6 +1065,11 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     background-color: rgb(255, 255, 255);
     padding: 10px;
     border-radius: 4px;
+    top: 10%;
+    width: 30%;
+    height: 88%;
+    overflow: scroll;
+
 }
 
 .visulization-legend-container td {

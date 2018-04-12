@@ -12,6 +12,10 @@
         $scope.properties=[];
         $scope.featureList=[];
         $scope.currentIndex=undefined;
+        $scope.enableVisualizationTool=false;
+        $scope.toggleVisualizationTool=function () {
+            $scope.enableVisualizationTool=!$scope.enableVisualizationTool;
+        };
 
         function parseId(olFeature) {
             var idParts = (olFeature.getId() || '.').split('.');
@@ -183,8 +187,9 @@
         }
 
 
-
+        $scope.enableFeatureIdentification=false;
         $scope.enableFeatureIdentifier=function () {
+            $scope.enableFeatureIdentification=true;
             map.on('singleclick', featureIdentifier);
         };
         $scope.disableFeatureIdentifier=function () {
@@ -194,6 +199,7 @@
                 overlay=undefined;
                 container=undefined;
             }
+            $scope.enableFeatureIdentification=false;
         };
 
         $scope.getPreviousFeature=function () {
