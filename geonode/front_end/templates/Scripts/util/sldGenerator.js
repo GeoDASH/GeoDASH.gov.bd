@@ -29,14 +29,14 @@
                     style.graphicName, style.strokeColor, style.strokeWidth,
                     strokeDashstyles.getDashedArray(style),
                     style.fillColor, fillOpacity, style.pointRadius, style.name, style.userStyle,
-                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification))
+                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),style.strokeOpacity
                 ]);
             } else if (style.textGraphicName && !style.textFontAwesome) {
                 sld = formatString(getSldTemplate(sldTemplateService.pointTemplateForTextGraphic, includeHeader),
                 [
                     pointTextGraphics.getGraphicNameForSld(style.textGraphicName), style.strokeColor, style.strokeWidth,
                     style.fillColor, fillOpacity, style.text, pointTextGraphics.getDisplacementY(style.textGraphicName), style.textFillColor,
-                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification))
+                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),style.strokeOpacity
                 ]);
             } else if (style.textGraphicName && style.textFontAwesome) {
                
@@ -45,7 +45,7 @@
                 [
                     pointTextGraphics.getGraphicNameForSld(style.textGraphicName), style.strokeColor, style.strokeWidth,
                     style.fillColor, fillOpacity, style.text, pointTextGraphics.getDisplacementY(style.textGraphicName), style.textFillColor,
-                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),entityForSymbolInContainer(style.text)
+                    sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),entityForSymbolInContainer(style.text),style.strokeOpacity
                 ]);
             } else {
                 sld = formatString(getSldTemplate(sldTemplateService.pointWithExternalGraphicTemplate, includeHeader),
@@ -101,7 +101,7 @@
             return formatString(sldTemplateForPolyline,
             [
                 style.strokeColor, style.strokeWidth, strokeDashstyles.getDashedArray(style),
-                sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification))
+                sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),style.strokeOpacity
             ]);
         }
 
@@ -110,7 +110,7 @@
             var fillOpacity = style.fillOpacity === 0 ? 0.005 : style.fillOpacity; //fix for transparent feature selection problem
             var fillPatternSld = "";
             if (style.fillPattern) {
-                fillPatternSld = formatString(sldTemplateService.fillPatternTemplate, [style.fillPattern, style.fillColor, style.pixelDensity]);
+                fillPatternSld = formatString(sldTemplateService.fillPatternTemplate, [style.fillPattern, style.fillColor, style.pixelDensity,style.strokeOpacity]);
             }
 
             return formatString(sldTemplateForPolygon,
@@ -120,9 +120,10 @@
                 style.name, style.userStyle,  
                 sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification)),
                 getLabelSld(labelConfig, 'polygon')||'',
-                fillPatternSld,
+                fillPatternSld,style.strokeOpacity
             ]);
         }
+
 
         function getRasterTemplate(styles, includeHeader, classification) {
             var sldTemplateForRaster = getSldTemplate(sldTemplateService.simpleRasterTemplate, includeHeader);

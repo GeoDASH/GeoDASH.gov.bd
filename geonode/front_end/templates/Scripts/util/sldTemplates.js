@@ -20,6 +20,7 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
             '<CssParameter name="stroke-dasharray">{3}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>' +
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{4}</CssParameter> ' +
@@ -65,6 +66,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke> ' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
+            '<CssParameter name="stroke-opacity">{9}</CssParameter>'+
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{3}</CssParameter> ' +
@@ -105,6 +107,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke> ' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>'+
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{3}</CssParameter> ' +
@@ -146,6 +149,7 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke-width">{1}</CssParameter> ' +
             '<CssParameter name="stroke-linecap">round</CssParameter>' +
             '<CssParameter name="stroke-dasharray">{2}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{4}</CssParameter>'+
             '</Stroke> ' +
             '</LineSymbolizer>',
 
@@ -192,6 +196,7 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke">{2}</CssParameter> ' +
             '<CssParameter name="stroke-width">{3}</CssParameter> ' +
             '<CssParameter name="stroke-dasharray">{4}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>' +
             '</Stroke>' +
             '</PolygonSymbolizer>',
         fillPatternTemplate: '<GraphicFill>' +
@@ -201,6 +206,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke>' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">2</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{3}</CssParameter>'+
             '</Stroke>' +
             '</Mark>' +
             '<Size>{2}</Size>' +
