@@ -131,12 +131,14 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             // if (result.propertiesChanged || labelChanged) {
                 updatedLayer.style.classifierDefinitions = result.classifierDefinitions;
                 layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false)
-                /*.success(function() {
+                .success(function() {
+                    surfToastr.success('Style Saved Successfully', 'Success');
                     // saveClassificationOnNeed();
-                    $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });
-                }).error(function() {
+                    // $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });
+                }).error(function(res) {
+                    surfToastr.error('Style Save Failed. Reason: ' + res, 'Error!');                    
                     // saveClassificationOnNeed();
-                });*/
+                });
             // } else {
             //     saveClassificationOnNeed();
             // }
