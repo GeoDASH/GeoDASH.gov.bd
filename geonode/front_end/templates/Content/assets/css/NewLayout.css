@@ -483,13 +483,17 @@ a
     height: 36px;
     position: absolute;
     right: 119px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.30);
-    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.30);
+    border-radius: 0;
 }
 .map-toolbar ul li
 {
    float: left;
     position: relative;
+}
+.map-toolbar ul li button
+{
+ width: 35px;
 }
 .layout-center
 {
@@ -611,7 +615,13 @@ a
 .navbar .nav > li button.svg-ico-button
 
 {
-    padding: 5px 5px 0;
+    padding: 0;
+    height: 34px;
+}
+.navbar .nav > li button svg
+
+{
+   margin-top: 5px;
 }
 .map-toolbar .dropdown-menu
 {
