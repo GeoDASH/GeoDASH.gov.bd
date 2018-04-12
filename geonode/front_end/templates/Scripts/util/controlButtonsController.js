@@ -443,12 +443,13 @@
                         $scope.disableAllDependentTools($scope.toggleButtonsList['featureSelectionTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
                         // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
 
-                        $scope.$parent.enableFeatureIdentifier();
                         $scope.toggleButtonsList['featureSelectionTool'].isActive=true;
+                        $scope.$parent.enableFeatureIdentifier();
                     }else {
                         // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
-                        $scope.$parent.disableFeatureIdentifier();
                         $scope.toggleButtonsList['featureSelectionTool'].isActive=false;
+                        $scope.$parent.disableFeatureIdentifier();
+
                     }
             };
 

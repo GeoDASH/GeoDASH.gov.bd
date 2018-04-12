@@ -7,8 +7,8 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
         var container, content, close, popup;
         this.showPopup = false;
         this.elevationLayerName = "";
-        var isMarkerToolEnabled=false;
-        this.markerToolEvent=undefined;
+        var isMarkerToolEnabled = false;
+        this.markerToolEvent = undefined;
 
         function createPopup() {
             container = document.getElementById('popup');
@@ -76,10 +76,30 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
             return iconFeature;
         }
 
+        function insertPopupData(coordinate, lat, lon, properties) {
+            var html = "<div class='pop-up'> " +
+                "<p>Lat: " + lat + "</p>" +
+                "<p>Lon: " + lon + "</p>";
+            for (var key in properties) {
+                html += "<p>Elevation: " + properties[key] + "</p>";
+            }
+            html += "</div>";
+            content.innerHTML = html;
+            container.style.visibility = 'visible';
+            popup.setPosition(coordinate);
+        }
+
         function showPopup(feature, event) {
             var size = map.getSize();
             var bbox = map.getView().calculateExtent(size);
-
+            var lat = feature.get('lat');
+            var lon = feature.get('lon');
+            var coordinate = feature.get('coordinate');
+            insertPopupData(coordinate, lat, lon);
+            if(!this.elevationLayerName){
+                //No elevation layer setup in the settings;
+                return;
+            }
             var urlParams = {
                 bbox: bbox.join(','),
                 width: size[0],
@@ -91,30 +111,21 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
                 x: Math.round(event.pixel[0]),
                 y: Math.round(event.pixel[1])
             };
-            container.style.visibility = 'visible';
+            
             layerService.fetchWMSFeatures(urlParams)
                 .then(function(res) {
-                    var lat = feature.get('lat');
-                    var lon = feature.get('lon');
-                    var html = "<div class='pop-up'> " +
-                        "<p>Lat: " + lat + "</p>" +
-                        "<p>Lon: " + lon + "</p>";
                     var properties = res.features.length > 0 ? res.features[0].properties : {};
-                    for (var key in properties) {
-                        html += "<p>Elevation: " + res.features["0"].properties[key] + "</p>";
-                    }
-                    html += "</div>";
-                    content.innerHTML = html;
+                    insertPopupData(coordinate, lat, lon, properties);
                 }, function(error) {
 
                 });
-            content.innerHTML = feature.get('name');
-            popup.setPosition(feature.get('coordinate'));
+            // content.innerHTML = feature.get('name');
+            
         }
-        
+
         function enableSetMarkerTool() {
             createPopup();
-            this.markerToolEvent= mapService.registerEvent('singleclick', function(evt) {
+            this.markerToolEvent = mapService.registerEvent('singleclick', function(evt) {
                 var feature = map.forEachFeatureAtPixel(evt.pixel,
                     function(feature, layer) {
                         return feature;
@@ -124,32 +135,33 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
                 }
                 showPopup(feature, evt);
             });
-            isMarkerToolEnabled=true;
+            isMarkerToolEnabled = true;
         }
+
         function disableSetMarkerTool() {
-            if(this.markerToolEvent){
+            if (this.markerToolEvent) {
                 mapService.removeEvent(this.markerToolEvent);
-                isMarkerToolEnabled=false;
+                isMarkerToolEnabled = false;
             }
         }
-        
+
         this.setMarker = function() {
-            if(!isMarkerToolEnabled) enableSetMarkerTool();
+            if (!isMarkerToolEnabled) enableSetMarkerTool();
             else disableSetMarkerTool();
             return isMarkerToolEnabled;
         };
 
-        function getSettings(){
+        function getSettings() {
             SettingsService.getSystemSettings()
-            .then(function(res){
-                var elevation = res.find(function(e){
-                    return e.settings_code === 'elevation';
+                .then(function(res) {
+                    var elevation = res.find(function(e) {
+                        return e.settings_code === 'elevation';
+                    });
+                    this.elevationLayerName = elevation && elevation.content_object.typename;
                 });
-                this.elevationLayerName = elevation && elevation.content_object.typename;
-            });
         }
 
-        function init(){
+        function init() {
             getSettings();
         }
 

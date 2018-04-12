@@ -277,7 +277,7 @@ mapModule.directive('routePopUpDirective', [
                             $scope.showInput();
                             return;
                         }
-                        var radius = $scope.bufferArea * 1000;
+                        var radius = ($scope.bufferArea * 1000)/111325;
 
                         var requestObj = {
                             version: '1.0.0',
