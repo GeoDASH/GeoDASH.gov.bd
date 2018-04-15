@@ -114,6 +114,7 @@ footer
                                                                 <th>Map Title</th>
                                                                 <th>Organization</th>
                                                                 <th>Tried</th>
+                                                                <th>Who Requested</th>
                                                                 <th>Date of Request</th>
                                                                 <th>Approve/Deny Map</th>
                                                                 <!--<th>Denied Map</th>-->
@@ -152,7 +153,7 @@ footer
                                                                 <th>Who Approved</th>
                                                                 <th>Approve Date</th>
                                                                 <th>Map Edit</th>
-                                                                <th>Unapproved Map</th>
+                                                                <th>Unpublish Map</th>
                                                             </tr>
                                                         </thead>
                                                         <!--{% for approved in approved_list %}-->
@@ -426,6 +427,7 @@ $(function () {
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.current_iteration +'</td>';
+                    output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
                     output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
                     output+='</tr>';
