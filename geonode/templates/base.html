@@ -926,7 +926,7 @@
     {% block extra_script %}{% endblock extra_script %}
 
     <script type="text/javascript">
-        var autocomplete = autocomplete = $('#search_input').yourlabsAutocomplete({
+        var autocomplete = $('#search_input').yourlabsAutocomplete({
             url: '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}',
             choiceSelector: 'span',
             hideAfter: 200,

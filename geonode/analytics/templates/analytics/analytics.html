@@ -38,27 +38,18 @@
     <!-- Step 1: Create the containing elements. -->
 
     <section id="auth-button"></section>
-    <section id="view-selector"></section>
-    <section id="timeline"></section>
+    <!-- <section id="view-selector"></section> -->
+    <!-- <section id="bounce-rate"></section> -->
+    <!-- <section id="page-views"></section> -->
            
     <div class="row">
-      
-        
-        {% comment %}
-        <div class="col-md-2">
-            <h3 class="text-center">58%</h3>
-            <p class="text-center">Bounce Rate</p>
-        </div>
-        {% endcomment %}
-
-
         <div class="col-md-3">
                 <div class="panel panel-default analytics-box">
                 <div class="panel-body">
                     
             <div class="round round-info pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
             <div class="pull-left">
-            <h3 id="map_load">{{ map_loads }}</h3>
+            <h3 id="map_load">---</h3>
             <p>Map Loads</p>
         </div>
             </div>
@@ -71,38 +62,19 @@
                         <div class="panel-body">
                                 <div class="round round-warning pull-left"><i class="fa fa-street-view" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-            <h3 id="layer_load">{{ average_activity_load }}</h3>
+            <h3 id="layer_load">---</h3>
             <p>Layer Loads</p>
         </div>
             </div>
             </div>
         </div>
-       
-   
-   
-   
-       
-        {% comment %}
-        <div class="col-md-2">
-                <div class="panel panel-default analytics-box">
-                        <div class="panel-body">
-                                <div class="round round-primary pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
-                                <div class="pull-left">
-            <h3 id="document_load">2</h3>
-            <p>Document Loads</p>
-        </div>
-            </div>
-            </div>
-        </div>
-        {% endcomment %}
-
 
         <div class="col-md-3">
                 <div class="panel panel-default analytics-box">
                         <div class="panel-body">
                                 <div class="round round-primary pull-left"><i class="fa fa-clone" aria-hidden="true"></i></div>
                                 <div class="pull-left">
-                                        <h3 id="document_load">2</h3>
+                                        <h3 id="document_load">---</h3>
                                         <p>Document Loads</p>
             </div>
             </div>
@@ -114,14 +86,82 @@
                         <div class="panel-body">
                                 <div class="round round-danger pull-left"><i class="fa fa-search" aria-hidden="true"></i></div>
                             <div class="pull-left">
-            <h3>{{ zooms }}</h3>
-            <p>Zooms</p>
+            <h3 id="total_zoom">---</h3>
+            <p>Zoom</p>
             </div>
             </div>
         </div>
         
     </div>
 
+</div>
+<div class="row">      
+    <div class="col-md-3">
+            <div class="panel panel-default analytics-box">
+            <div class="panel-body">
+                
+        <div class="round round-info pull-left"><i class="fa fa-map-o" aria-hidden="true"></i></div>
+        <div class="pull-left">
+        <h3 id="total_pan">---</h3>
+        <p>Pan</p>
+    </div>
+        </div>
+        </div>
+    </div>
+
+    
+    <div class="col-md-3">
+            <div class="panel panel-default analytics-box">
+                    <div class="panel-body">
+                            <div class="round round-warning pull-left"><i class="fa fa-street-view" aria-hidden="true"></i></div>
+                            <div class="pull-left">
+        <h3 id="total_click">---</h3>
+        <p>Clicks</p>
+    </div>
+        </div>
+        </div>
+    </div>
+   
+
+
+    <div class="col-md-3">
+            <div class="panel panel-default analytics-box">
+                    <div class="panel-body">
+                            <div class="round round-primary pull-left"><i class="fa fa-clone" aria-hidden="true"></i></div>
+                            <div class="pull-left">
+                                    <h3 id="average_activity">---</h3>
+                                    <p>Average Activity</p>
+        </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+            <div class="panel panel-default analytics-box">
+                    <div class="panel-body">
+                            <div class="round round-danger pull-left"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        <div class="pull-left">
+        <h3 id="bounce-rate">---</h3>
+        <p>Bounce Rate</p>
+        </div>
+        </div>
+    </div>
+    
+</div>
+</div>
+<div class="row">
+        
+        <div class="col-md-3">
+                <div class="panel panel-default analytics-box">
+                        <div class="panel-body">
+                                <div class="round round-danger pull-left"><i class="fa fa-search" aria-hidden="true"></i></div>
+                            <div class="pull-left">
+            <h3 id="avg-session-duration">---</h3>
+            <p>Avg Session Duration</p>
+            </div>
+            </div>
+        </div>
+        
+    </div>
 </div>
 
     <!-- <div class="row">
@@ -158,8 +198,8 @@
     {# { block.super } #}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
@@ -169,6 +209,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.18.0/c3_renderers.min.js"></script>
     <script src="{{ STATIC_URL }}geonode/js/analytics/subtotal.js"></script>
     <script>
+        function getTotal(data, key){
+            return Object.entries(data).reduce( (s, o) => ( o[1][key] || 0) + s, 0);
+        }
         (function(){
             $.ajax({
                 url: '/api/analytics/summary/'
@@ -177,6 +220,13 @@
                   $('#map_load').html(data.map.load);
                   $('#layer_load').html(data.layer.load);
                   $('#document_load').html(data.document.load);
+                  $('#total_zoom').html(getTotal(data, 'zoom'));
+                  $('#total_pan').html(getTotal(data, 'pan'));
+                  $('#total_click').html(getTotal(data, 'click'));
+                  let mapLayerData = Object.entries(data).filter(([k,v]) => (k != 'document' ? true:false)).reduce( (r, [k,v]) => Object.assign(r, {[k]:v}), {});
+                  let sum = ['click', 'zoom', 'pan'].reduce( (s, o) => s + getTotal(mapLayerData, o), 0);
+                  $('#average_activity').html(sum / getTotal(mapLayerData, 'click'));
+                  
               });
         })();
 
@@ -229,6 +279,7 @@ function showTable(url,rows){
       var rows = ['name','layer_id','last_modified_date','activity_type','count'];
       showTable(url,rows);
     }
+    showLayerData();
 
     function showDocumentData(){
         $("#mapData").attr('class', '');
@@ -243,52 +294,6 @@ function showTable(url,rows){
     }
 
     </script>
-    <script>
-        $(function () {
-
-            Highcharts.chart('container-highchart', {
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
-                },
-                title: {
-                    text: 'User Pinpoint Activities'
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Activities',
-                    colorByPoint: true,
-                    data: {{ chart_data|safe }}
-                }]
-            });
-
-            showLayerData();
-
-            
-        });
-
-        
-        
-    </script>
-
-
 
 <!-- Step 2: Load the library. -->
 
@@ -302,53 +307,118 @@ function showTable(url,rows){
 </script>
 
 <script>
-gapi.analytics.ready(function() {
+    gapi.analytics.ready(function() {
 
-  // Step 3: Authorize the user.
+    // Step 3: Authorize the user.
 
-  var CLIENT_ID = '416484469256-1nd7ao3j8nmdgr1a4hgessd8oqsbuk0r.apps.googleusercontent.com';
+    var CLIENT_ID = '416484469256-1nd7ao3j8nmdgr1a4hgessd8oqsbuk0r.apps.googleusercontent.com';
 
-  gapi.analytics.auth.authorize({
-    container: 'auth-button',
-    clientid: CLIENT_ID,
-  });
+    gapi.analytics.auth.authorize({
+        container: 'auth-button',
+        clientid: CLIENT_ID,
+    });
+    // Step 4: Create the view selector.
 
-  // Step 4: Create the view selector.
+    var viewSelector = new gapi.analytics.ViewSelector({
+        container: 'view-selector'
+    });
 
-  var viewSelector = new gapi.analytics.ViewSelector({
-    container: 'view-selector'
-  });
+    // Step 5: Create the timeline chart.
 
-  // Step 5: Create the timeline chart.
+    var bounceRate = new gapi.analytics.googleCharts.DataChart({
+        reportType: 'ga',
+        query: {
+        'dimensions': 'ga:country',
+        'metrics': 'ga:bounceRate',
+        'start-date': '30daysAgo',
+        'end-date': 'yesterday',
+        },
+        chart: {
+        type: 'LINE',
+        container: 'bounce-rate'
+        }
+    });
 
-  var timeline = new gapi.analytics.googleCharts.DataChart({
-    reportType: 'ga',
-    query: {
-      'dimensions': 'ga:country',
-      'metrics': 'ga:sessions',
-      'start-date': '30daysAgo',
-      'end-date': 'yesterday',
-    },
-    chart: {
-      type: 'LINE',
-      container: 'timeline'
-    }
-  });
+    var pageViews = new gapi.analytics.googleCharts.DataChart({
+        reportType: 'ga',
+        query: {
+        'dimensions': 'ga:pageTitle, ga:pagePath',
+        'metrics': 'ga:pageviews',
+        'start-date': '30daysAgo',
+        'end-date': 'yesterday',
+        'sort': '-ga:pageviews',
+        // 'filters': 'ga:pagePath==/maps/',
+        'max-results': 15
+        },
+        chart: {
+        type: 'TABLE',
+        container: 'page-views'
+        }
+    });
 
-  // Step 6: Hook up the components to work together.
+    // Step 6: Hook up the components to work together.
 
-  gapi.analytics.auth.on('success', function(response) {
-    viewSelector.execute();
-  });
+    gapi.analytics.auth.on('success', function(response) {
+        // viewSelector.execute();
+        makeApiCall();
+    });
 
-  viewSelector.on('change', function(ids) {
-    var newIds = {
-      query: {
-        ids: ids
-      }
-    }
-    timeline.set(newIds).execute();
-  });
-});
+    viewSelector.on('change', function(ids) {
+        var newIds = {
+        query: {
+            ids: ids
+        }
+        }
+        bounceRate.set(newIds).execute();
+        pageViews.set(newIds).execute();
+        
+    });
+    });
 </script>
+
+<!-- <script src="https://apis.google.com/js/client.js?onload=loadLib"></script> -->
+    <script>
+    function getBounceRate(){
+        var apiQuery = gapi.client.analytics.data.ga.get({
+            'ids': 'ga:173184864',
+            'dimensions': 'ga:country',
+            'metrics': 'ga:bounceRate',
+            'start-date': '30daysAgo',
+            'end-date': 'yesterday',
+        });
+        
+        apiQuery.execute(handleCoreReportingResults.bind({
+            id: 'bounce-rate',
+            key: 'ga:bounceRate',
+            units: ''
+            
+        }));
+    }
+    function getAvgDuration(){
+        var apiQuery = gapi.client.analytics.data.ga.get({
+            'ids': 'ga:173184864',
+            'dimensions': 'ga:country',
+            'metrics': 'ga:avgSessionDuration',
+            'start-date': '30daysAgo',
+            'end-date': 'yesterday',
+        });
+        apiQuery.execute(handleCoreReportingResults.bind({
+            id: 'avg-session-duration',
+            key: 'ga:avgSessionDuration', 
+            units: 's'
+        }));
+    }
+    function makeApiCall() {
+        getAvgDuration();
+        getBounceRate();
+    }
+
+function handleCoreReportingResults(results) {
+  if (!results.error) {
+    // Success. Do something cool!
+    $('#' + this.id).html(results.totalsForAllResults[this.key] + ' ' + this.units); 
+  }
+}
+    </script>
+
 {% endblock %}
