@@ -33,11 +33,40 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             }
     }
     $rootScope.showAttributeGrid = function() {
+   
         $timeout(function(){
+
             // $( "#panel-bottom" ).removeClass( "slideOutDown" );
             animating();
+
         });
     };
+
+    var navAnCount = 0; 
+    function naVAnimating(){
+        if(navAnCount === 0){
+            // $("#panel-bottom").slideDown();
+            // $('#panel-bottom').css("top", "");
+            document.getElementById('gd-navbar').className = 'navbar navbar-fixed-top headerSlideOutDown'; 
+            navAnCount++;
+        }else{
+            document.getElementById('gd-navbar').className = ' navbar navbar-fixed-top headerSlideInUp ';
+            // $("#panel-bottom").slideUp();
+            // $('#panel-bottom').css("top", "");
+            navAnCount--;
+            }
+    }
+
+    $rootScope.navBarAnimation = function() {
+             $timeout(function(){
+                 // $( "#panel-bottom" ).removeClass( "slideOutDown" );
+                 naVAnimating();
+     
+             });
+         };
+
+
+    
 
     $rootScope.showProperties = function(selectedTabIndex) {
 

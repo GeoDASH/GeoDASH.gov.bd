@@ -2,7 +2,11 @@
 {% include 'Templates/_base-headers.html' %}
 {% endblock %}
 {% block middle %}
-<div class="surfgis" ng-controller="appController" ng-app="appModule" >
+
+
+
+<div class="surfgis" ng-controller="appController" ng-app="appModule">
+
    <div class="application-font all-children-application-font"  ng-controller="MapController" ng-click="bodyClicked()" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
       
 
@@ -32,5 +36,13 @@
                </div>
         <property-grid-overlay></property-grid-overlay>
 </div>
+<style>
+        .header-expand-button
+    {
+        display: block;
+    }
+    .layout-content {
+    top: 0;
+}
+    </style>
    {% endblock %} {% block footer %}{% endblock %}
-   

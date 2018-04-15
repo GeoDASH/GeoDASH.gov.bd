@@ -3707,6 +3707,22 @@ background-color: #fff;
     transform: translate3d(0, 0, 0);
     bottom: 0;   
 }
+.headerSlideOutDown
+{
+    top: 0;
+    transition-property: transform;
+	transition-duration: 0.2s;
+	transition-delay: 0.2s;
+    transform: translate3d(0, -100%, 0);
+}
+.headerSlideInUp
+{
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-delay: 0.2s;
+    transform: translate3d(0, 0, 0);
+    top: 0;   
+}
 
 .panel-bottom .table-hover tbody tr:hover > td, .table-hover tbody tr:hover > th
 {
@@ -3864,19 +3880,36 @@ font-weight: bold;
 {
     border-right: 1px solid #ccc;
 }
-
-
-
-
-
-
-
+.layers .navbar-fixed-top
+{
+    top: 0;
+}
+.navbar-fixed-top
+{
+    height: 111px;
+}
+.header-expand-button
+{
+    position: absolute;
+    top:110px;
+    left:50%;
+    z-index:999999;
+    display: none;
+}
+.header-expand-button button
+{
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 0 15px;
+    font-size: 24px;
+    border-top: 0;
+}
 
 /* Home page Style start */
 .navbar {
 	background-color: rgba(255, 255, 255, 0.97);
 	padding: 15px;
-	border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 .navbar-brand {
 	background-image: url(geodash-logo.png);

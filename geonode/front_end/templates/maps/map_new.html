@@ -10,10 +10,13 @@
 }
 
   </style>
+  
+
+
+
 <div class="surfgis" ng-controller="appController"  ng-app="appModule" ng-click="bodyClicked()">
     <div class="application-font all-children-application-font" ng-controller="MapController" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
-       
-
+    
         <div class="layout-content">
             <div class="layout-left donot-print" ng-style="layout.leftStyle">
              {% include 'maps/_layer-properties.html'%}

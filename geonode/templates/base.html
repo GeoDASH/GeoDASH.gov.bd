@@ -70,9 +70,19 @@
 
   <body class="{% block body_class %}{% endblock %}">
     {% block header %}
+
+    
+
     <section id="gd-header" class="navsticky" >
         <!-- <nav class="navbar navbar-default"> -->
-        <nav class="navbar navbar-fixed-top">
+        <nav id="gd-navbar" class="navbar navbar-fixed-top">
+
+                <div class="header-expand-button" ng-disabled="!gdNavbar()" onclick="naVAnimating()" title="click">
+                    <button>
+                            <i class="fa fa-angle-double-down" aria-hidden="true"></i>                            
+                    </button>
+                </div>
+
             <div class="container-fluid">
                     <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gd-navbar-collapse" aria-expanded="false">
