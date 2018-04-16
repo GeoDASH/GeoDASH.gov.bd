@@ -225,7 +225,7 @@
                   $('#total_click').html(getTotal(data, 'click'));
                   let mapLayerData = Object.entries(data).filter(([k,v]) => (k != 'document' ? true:false)).reduce( (r, [k,v]) => Object.assign(r, {[k]:v}), {});
                   let sum = ['click', 'zoom', 'pan'].reduce( (s, o) => s + getTotal(mapLayerData, o), 0);
-                  $('#average_activity').html(sum / getTotal(mapLayerData, 'click'));
+                  $('#average_activity').html((sum / getTotal(mapLayerData, 'click').toFixed(2)));
                   
               });
         })();
@@ -416,7 +416,8 @@ function showTable(url,rows){
 function handleCoreReportingResults(results) {
   if (!results.error) {
     // Success. Do something cool!
-    $('#' + this.id).html(results.totalsForAllResults[this.key] + ' ' + this.units); 
+    let value = parseFloat(results.totalsForAllResults[this.key]);
+    $('#' + this.id).html(value.toFixed(2) + ' ' + this.units); 
   }
 }
     </script>
