@@ -48,7 +48,6 @@
                         width : '*'
                     });
                 });
-                $('#attribute_view_left').hide();
             }, errorFn);
         }
 

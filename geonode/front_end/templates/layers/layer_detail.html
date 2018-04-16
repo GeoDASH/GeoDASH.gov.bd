@@ -837,7 +837,7 @@
           </div>
 
           
-          <div class="col-md-12" id="attribute_view_left">
+          <div class="col-md-12" id="attribute_view_left" style="visibility: hidden;display: block">
                 {% include "layers/_layer_attribute_view.html" %}
         </div>
           </div>
@@ -929,11 +929,11 @@
                         $('#myTabs a[id=#'+tabId+']').tab('show');
                         console.log($('#myTabs a[id=#'+tabId+']').tab('show'));
                         if(tabId == 'attribute'){
-                            $('#attribute_view_left').show();
-                            $('#myNav_map_left').hide();
+                             $('#myNav_map_left').css('visibility','hidden');
+                             $('#attribute_view_left').css('visibility','visible');
                         }else {
-                            $('#attribute_view_left').hide();
-                            $('#myNav_map_left').show();
+                            $('#attribute_view_left').css('visibility','hidden');
+                             $('#myNav_map_left').css('visibility','visible');
                         }           
                     }
     </script>
