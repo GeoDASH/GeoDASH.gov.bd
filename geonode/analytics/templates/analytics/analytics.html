@@ -225,8 +225,7 @@
                   $('#total_click').html(getTotal(data, 'click'));
                   let mapLayerData = Object.entries(data).filter(([k,v]) => (k != 'document' ? true:false)).reduce( (r, [k,v]) => Object.assign(r, {[k]:v}), {});
                   let sum = ['click', 'zoom', 'pan'].reduce( (s, o) => s + getTotal(mapLayerData, o), 0);
-                  $('#average_activity').html((sum / getTotal(mapLayerData, 'click').toFixed(2)));
-                  
+                  $('#average_activity').html((sum / getTotal(mapLayerData, 'click')).toFixed(2));
               });
         })();
 
