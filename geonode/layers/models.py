@@ -108,7 +108,7 @@ class Layer(ResourceBase):
     time_regex = models.CharField(max_length=128, null=True, blank=True, choices=TIME_REGEX)
     elevation_regex = models.CharField(max_length=128, null=True, blank=True)
     user_data_epsg = models.CharField(max_length=128, null=True, blank=True)
-
+    is_base_layer = models.BigIntegerField(default=False)
     default_style = models.ForeignKey(
         Style,
         related_name='layer_default_style',
@@ -629,7 +629,8 @@ class StyleExtension(models.Model):
         Style,
         verbose_name = _('Style'),
         help_text=_('Designats related Style'),
-        null=False, blank=False
+        null=False, blank=False,
+        on_delete=models.CASCADE
     )
     json_field = models.TextField(
         verbose_name=_('Json Field'),

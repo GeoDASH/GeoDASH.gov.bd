@@ -25,14 +25,34 @@
             <li>
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
-            <li>
-                <measurement-buttons></measurement-buttons>
+            <li class="divider-vertical" draft-only></li>
+            <li draft-only >
+                <button class="control-button icon" ng-class="{'active' : !toggleButtonsList['zoomTool'].isActive}"
+                ng-click="removeBoxZooming()" title="Drag">
+                    <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
+                                </button>
             </li>
             <li>
-                <set-marker></set-marker>
+                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList"></measurement-buttons>
             </li>
             <li>
-                <button class="control-button icon" ng-click="action.drawCircle()" title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i>                                            </button>
+                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList"></set-marker>
+            </li>
+            <li>
+                <div class="btn-group">
+                    <button type="button" title="Measure" class="control-button icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <span class="caret"></span>
+                        </button>
+                    <ul class="dropdown-menu" style="width: 165px;">
+                        <li style="float:none" ng-class="{'active' : toggleButtonsList['radiusSearchTool'].isActive}">
+                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i> Radius Search</a>
+                        </li>
+                        <li style="float:none" ng-class="{'active' : toggleButtonsList['bboxSearchTool'].isActive}">
+                            <a class="control-button icon" ng-click="action.boundingBoxSearch()" title="BBOX search"><i class="fa fa-square-o" aria-hidden="true"></i>  Bounding Box Search</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <!-- <li class="divider-vertical" draft-only></li> -->
             <!-- <li draft-only>
@@ -118,10 +138,10 @@
                 <div class="dropBox directions" ng-if="action.showOverPassDialog" style="right: -55px;" ng-controller="OverpassApiQueryBuilderController">
                     <div class="arrow-up"></div>
                     <form class="form-inline ng-pristine ng-valid" style="margin-bottom: 25px;" ng-submit="executeQuery(queryStr)">
-                        <textarea ng-model="queryStr" class="form-control" rows="3" style="width: 100%;margin-bottom:10px;"></textarea>
-                        <a href="" ng-click="executeQuery(queryStr)" class="btn btn-gd-primary pull-right icon-btn-color" target="_self">
+                        <textarea ng-required="true" ng-model="queryStr" class="form-control" rows="3" style="width: 100%;margin-bottom:10px;"></textarea>
+                        <button type="submit" class="btn btn-gd-primary pull-right icon-btn-color" target="_self">
                                                     Submit <i class="fa fa-arrow-right" aria-hidden="true"></i>    
-                                                </a>
+                        </button>
                         <a href="" ng-click="action.showOverPassDialog=false; closeDialog()" class="btn btn-default pull-right" target="_self" style="margin-right: 5px;">
                                                         Cancel <i class="fa fa-times" aria-hidden="true"></i></a>
                         <a href="" class="btn btn-default pull-right" target="_self" style="margin-right: 5px;" data-ng-click="dragBox()" title="Drag Box">Drag Box</a>
@@ -179,7 +199,7 @@
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
 </div>
 
-<visualization-legend></visualization-legend>
+<visualization-legend ng-if="enableVisualizationTool"></visualization-legend>
 
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>

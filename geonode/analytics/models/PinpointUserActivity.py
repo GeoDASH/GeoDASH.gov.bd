@@ -17,8 +17,8 @@ class PinpointUserActivity(CommonField):
         ('click', _('Click')),
     )
 
-    layer = models.ForeignKey(Layer, null=True, blank=True)
-    map = models.ForeignKey(Map, null=True, blank=True)
+    layer = models.ForeignKey(Layer, null=True, blank=True, on_delete=models.CASCADE)
+    map = models.ForeignKey(Map, null=True, blank=True, on_delete=models.CASCADE)
     activity_type = models.CharField(_('Activity Type'),
                                      choices=ACTIVITY_CHOICES,
                                      max_length=10,
@@ -28,4 +28,4 @@ class PinpointUserActivity(CommonField):
     the_geom = models.GeometryField(_('Geometry'), blank=True, null=True, help_text='Geometry')
 
     def __str__(self):
-        return self.user.username
+        return self.activity_type

@@ -15,7 +15,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
         }
         if (!layer.bbox) {
-            layer.bbox = [-9818543.41779904, 5183814.6260749, -9770487.95134629, 5235883.07751104];
+            layer.bbox = [8965757.669738032,2061965.2750209137,11499798.031448197,3514880.3086655443];
         }
         if (!layer.hasOwnProperty('visibility'))
             layer.visibility = true;
@@ -113,7 +113,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             var classificationSlds = getClassificationSld(surfLayer.getFeatureType(), style.classifierDefinitions, excludeSld);
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");
-            var chartSldRegex = new RegExp("<!--chartSld-->", "g");
+            var vizSldRegex = new RegExp("<!--vizSld-->", "g");
 
             defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
             defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
@@ -125,11 +125,12 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             if (surfLayer.Style.visualizationSettings) {
                 visualizationService.getVisualizationSld(surfLayer, surfLayer.Style.visualizationSettings)
                     .then(function(visSld) {
-                        if (visualizationService.isChart(surfLayer.Style.visualizationSettings)) {
-                            defaultStyleSld = defaultStyleSld.replace(chartSldRegex, visSld);
-                        } else if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {
+                        if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {
                             defaultStyleSld = visSld;
                         }
+                        else {
+                            defaultStyleSld = defaultStyleSld.replace(vizSldRegex, visSld);
+                        } 
 
                         return doAction();
                     });
@@ -168,6 +169,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                             callBack();
                         } else {
                             surfLayer.refresh();
+                            $rootScope.$broadcast('classificationChanged', { layer: surfLayer });
                             $rootScope.$broadcast('refreshSelectionLayer');
                         }
                     });
@@ -258,7 +260,11 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                     mappedLayer = res.map(function(e) {
                         return _map({
                             Name: e.detail_url.match(/\w+:\w+/)[0],
-                            bbox: ol.proj.transformExtent([e.bbox_x0, e.bbox_y0, e.bbox_x1, e.bbox_y1], 'EPSG:4326', 'EPSG:3857'),
+                            bbox: ol.proj.transformExtent([parseFloat(e.bbox_x0), 
+                                parseFloat(e.bbox_y0), 
+                                parseFloat(e.bbox_x1), 
+                                parseFloat(e.bbox_y1)], 
+                                'EPSG:4326', 'EPSG:3857'),
                             geoserverUrl: $window.GeoServerHttp2Root + 'wms?access_token=' + $window.mapConfig.access_token
                         });
                     });

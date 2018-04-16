@@ -18,6 +18,19 @@
     {# include "maps/map_include.html" #}
     {% include 'Templates/_base-headers.html' %}
     {% include "map_templates/_publish_map.html" %}
+    {% if resource.storeType != "remoteStore" %}
+        {% if user_role == "member" %}
+            {% if status == 'DENIED' %}
+               {% include "map_templates/_deny_comments.html" %}
+            {% endif %}
+        {% endif %}
+        {% if user_role == "manager" and status == 'PENDING' %}
+            {% include "map_templates/_deny_comments.html" %}
+            {% include "map_templates/_approve_map.html" %}
+            {% include "map_templates/_deny_map.html" %}
+         {% endif %}
+    {% endif %}
+
     {{ block.super }}
 {% endblock %}
 
@@ -51,9 +64,9 @@
                         {% if "change_resourcebase_permissions" in perms_list %}
                         {% include "_permissions_form.html" %}
                                                    {% endif %}
-                       
-                       
-                       
+
+
+
                        {% if resource.is_public and "change_resourcebase" in perms_list or resource.layer_group %}
                        {% include "_permissions_form.html" %}
                                                    {% endif %}
@@ -96,7 +109,7 @@
 
 
                     {% if "change_resourcebase" in perms_list  or "change_resourcebase_metadata" in perms_list %}
-                  
+
                     <div class="modal fade" id="edit-map" tabindex="-1" role="dialog"
                          aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog" style="width: 600px;">
@@ -173,7 +186,7 @@
                                            <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                            {{ resource.title }}
-                                            
+
                                         </a>
                                     </h4>
                                 </div>
@@ -187,27 +200,27 @@
                                                 {% if status == 'DENIED' %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                                                        {% include "map_templates/_deny_comments.html" %}
+{#                                                        {% include "map_templates/_deny_comments.html" %}#}
 
                                                 </li>
                                                 {% endif %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_map">{% trans "Push for Approval" %}</button>
 
-                                                    {% endif %}
+                                              {% endif %}
                                                 </li>
                                                 {% if user_role == "manager" and status == 'PENDING' %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                                                        {% include "map_templates/_deny_comments.html" %}
+{#                                                        {% include "map_templates/_deny_comments.html" %}#}
                                                 </li>
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_map">{% trans "Approve Map" %}</button>
-                                                        {% include "map_templates/_approve_map.html" %}
+{#                                                        {% include "map_templates/_approve_map.html" %}#}
                                                 </li>
                                                 <li class="list-group-item">
-                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_map">{% trans "Deny Map" %}</button>
-                                                        {% include "map_templates/_deny_map.html" %}
+                                                        <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_map">{% trans "Deny Map" %}</button>
+{#                                                        {% include "map_templates/_deny_map.html" %}#}
                                                     {% endif %}
                                                 </li>
                                                 {% if user_role == "manager" and status == 'ACTIVE' %}
@@ -225,7 +238,7 @@
                                                     <button class="btn btn-gd-primary btn-md btn-block"
                                                             data-toggle="modal"
                                                             data-target="#download-map">
-                                                        {% trans "Download Map" %} 
+                                                        {% trans "Download Map" %}
                                                     </button>
                                                 </li>
                                             {% endif %}
@@ -271,7 +284,7 @@
                                                         {% trans "Edit Map" %}
                                                     </button>
                                                 </li>
-                                                
+
                                             {% endif %}
                                             <li class="list-group-item">
                                                 <a href="{% url "map_view" resource.id %}"
@@ -288,7 +301,7 @@
                                             <a role="button" data-toggle="collapse"
                                                data-parent="#accordion3-per" href="#collapse4" aria-expanded="true"
                                                aria-controls="collapse4">
-                                                
+
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                                 {% trans "Permissions" %}
@@ -304,7 +317,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              
+
                             {% endif %}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading1">
@@ -312,7 +325,7 @@
                                         <a role="button" data-toggle="collapse"
                                            data-parent="#accordion2-map" href="#collapse2" aria-expanded="true"
                                            aria-controls="collapse2">
-                                           
+
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             {% trans "Map Layers" %}
@@ -346,7 +359,7 @@
                                             <a role="button" data-toggle="collapse"
                                                data-parent="#accordion" href="#collapse3" aria-expanded="true"
                                                aria-controls="collapse3">
-                                              
+
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                                 {% trans "Documents related to this map" %}
@@ -373,7 +386,7 @@
                                         <a role="button" data-toggle="collapse"
                                            data-parent="#accordion4" href="#collapse5" aria-expanded="true"
                                            aria-controls="collapse5">
-                                           
+
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             {% trans "Copy this map" %}
@@ -396,7 +409,7 @@
                                             <a role="button" data-toggle="collapse"
                                                data-parent="#accordion5" href="#collapse11" aria-expanded="true"
                                                aria-controls="collapse11">
-                                               
+
                                                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                                 {% trans "Map WMS" %}
@@ -428,7 +441,7 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+
                             {% endif %}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading6">
@@ -436,7 +449,7 @@
                                         <a role="button" data-toggle="collapse"
                                            data-parent="#accordion6" href="#collapse7" aria-expanded="true"
                                            aria-controls="collapse7">
-                                           
+
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             {% trans "About" %}
@@ -474,7 +487,7 @@
                                         <a role="button" data-toggle="collapse"
                                            data-parent="#accordion7" href="#collapse8" aria-expanded="true"
                                            aria-controls="collapse8">
-                                           
+
                                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             Information
@@ -522,7 +535,7 @@
                     </div>
                 </div>
                 </div>
-                
+
                 <div class="panel-right">
                 <div class="col-md-8  margin-zero left-pad-zero r surfgis" ng-controller="appController" style="width: 100%;padding-right: 0;" ng-app="appModule" ng-click="bodyClicked()">
                     <div class="gd-content-body map-details-info" ng-controller="MapController">
@@ -539,7 +552,7 @@
           </div>
         </div>
     </div>
-   
+
 {% endblock %}
 
 {% block extra_script %}
@@ -756,7 +769,7 @@
         });
         // $('#sidebar').enhsplitter();
     });
-    
+
 
 
 </script>
@@ -772,17 +785,17 @@
         function animating(){
             if(count === 0){
                 $('#sidebar').animate({
-                        'left' : -$( "#sidebar" ).width()    
+                        'left' : -$( "#sidebar" ).width()
                     });
                 count++;
             }else{
                 $('#sidebar').animate({
-                        'left' : '0px'    
+                        'left' : '0px'
                     });
                 count--;
                 }
             }
-    
+
     </script>
 
 {% endblock %}

@@ -27,27 +27,31 @@ import shutil
 import sys
 import traceback
 import uuid
-
+import geopandas
 import requests
 import xmltodict
 import requests
 import string
 import random
 import shutil
+import re
 from osgeo import gdal, osr
 from geonode.layers.utils import (
     reprojection,
     create_tmp_dir,
     upload_files,
     checking_projection,
-    collect_epsg
+    collect_epsg,
+    get_epsg_code
 )
 import zipfile
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.gis.db import models
 from guardian.shortcuts import get_perms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -84,7 +88,7 @@ from geonode.base.models import TopicCategory
 from geonode.utils import default_map_config
 from geonode.utils import GXPLayer
 from geonode.utils import GXPMap
-from geonode.layers.utils import file_upload, is_raster, is_vector
+from geonode.layers.utils import file_upload, is_raster, is_vector, SafeDict
 from geonode.utils import resolve_object, llbbox_to_mercator
 from geonode.people.forms import ProfileForm, PocForm
 from geonode.security.views import _perms_info_json
@@ -101,7 +105,7 @@ from geonode.base.models import KeywordIgnoreListModel
 from geonode.system_settings.models import SystemSettings
 from geonode.system_settings.system_settings_enum import SystemSettingsEnum
 # from geonode.authentication_decorators import login_required as custom_login_required
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from .serializers import StyleExtensionSerializer
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import permissions, status
@@ -135,6 +139,7 @@ _PERMISSION_MSG_MODIFY = _("You are not permitted to modify this layer")
 _PERMISSION_MSG_METADATA = _(
     "You are not permitted to modify this layer's metadata")
 _PERMISSION_MSG_VIEW = _("You are not permitted to view this layer")
+_PERMISSION_MSG_CHANGE_STYLE = ("You are not permitted to modify this style")
 
 
 def log_snippet(log_file):
@@ -192,11 +197,13 @@ def layer_upload(request, template='upload/layer_upload.html'):
         }
         return render_to_response(template, RequestContext(request, ctx))
     elif request.method == 'POST':
-
+        out = {'success': False}
+        out['warning'] = ''
         file_extension = request.FILES['base_file'].name.split('.')[1].lower()
         data_dict = dict()
         tmp_dir = ''
         epsg_code = ''
+
         if str(file_extension).lower() == 'shp' or zipfile.is_zipfile(request.FILES['base_file']):
             # Check if zip file then, extract into tmp_dir and convert
             if zipfile.is_zipfile(request.FILES['base_file']):
@@ -204,22 +211,28 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 with zipfile.ZipFile(request.FILES['base_file']) as zf:
                     zf.extractall(tmp_dir)
 
-                prj_file_name = ''
                 shp_file_name = ''
                 for file in os.listdir(tmp_dir):
+                    if file.endswith(".shp"):
+                        shp_file_name = file
                     if file.endswith(".prj"):
                         prj_file_name = file
 
-                    elif file.endswith(".shp"):
-                        shp_file_name = file
-
-                srs = checking_projection(tmp_dir, prj_file_name)
-
-                # collect epsg code
-                epsg_code = collect_epsg(tmp_dir, prj_file_name)
-
+                epsg_code = get_epsg_code(tmp_dir + '/' + prj_file_name)
                 if epsg_code:
+                    if epsg_code != '4326':
+                        out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                         "and it will be converted to epsg:4326"
                     data_dict = reprojection(tmp_dir, shp_file_name)
+                else:
+                    out['success'] = False
+                    out['errors'] = "Geodash can not detect projection for the uploaded layer" \
+                                    "Please upload layer with known projection"
+                    status_code = 400
+                    return HttpResponse(
+                        json.dumps(out),
+                        content_type='application/json',
+                        status=status_code)
 
             if str(file_extension) == 'shp':
 
@@ -229,35 +242,27 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 # Upload files
                 upload_files(tmp_dir, request.FILES)
 
-                # collect epsg code
-                epsg_code = collect_epsg(tmp_dir, str(
-                    request.FILES['prj_file'].name))
-
-                # Checking projection
-                srs = checking_projection(
-                    tmp_dir, str(request.FILES['prj_file'].name))
-
-                # if srs.IsProjected:
+                epsg_code = get_epsg_code(tmp_dir + '/' + request.FILES['prj_file'].name)
                 if epsg_code:
-
-                    if srs.GetAttrValue('projcs'):
-                        if "WGS" not in srs.GetAttrValue('projcs'):
-
-                            data_dict = reprojection(tmp_dir, str(
-                                request.FILES['base_file'].name))
-
-                    # check WGS84 projected
-                    else:
-                        # call projection util function
-                        data_dict = reprojection(tmp_dir, str(
-                            request.FILES['base_file'].name))
+                    if epsg_code != '4326':
+                        out['warning'] = "Your uploaded layers projection is not in epsg:4326 " \
+                                         "and it will be converted to epsg:4326"
+                    data_dict = reprojection(tmp_dir, str(request.FILES['base_file'].name))
+                else:
+                    out['success'] = False
+                    out['errors'] = "Geodash can not detect projection for the uploaded layer" \
+                                    "Please upload layer with known projection"
+                    status_code = 400
+                    return HttpResponse(
+                        json.dumps(out),
+                        content_type='application/json',
+                        status=status_code)
 
         form = NewLayerUploadForm(request.POST, request.FILES)
         tempdir = None
         errormsgs = []
-        out = {'success': False}
         if form.is_valid():
-            if str(file_extension) == 'shp' and srs.IsProjected:
+            if str(file_extension) == 'shp': # and srs.IsProjected:
                 form.cleaned_data['base_file'] = data_dict['base_file']
                 form.cleaned_data['shx_file'] = data_dict['shx_file']
                 form.cleaned_data['dbf_file'] = data_dict['dbf_file']
@@ -598,7 +603,7 @@ def layer_detail(request, layername, template='layers/layer_detail.html'):
         srs = osr.SpatialReference(wkt=srstext)
         if srs.IsProjected:
             print srs.GetAttrValue('projcs')
-        user_proj = srs.GetAttrValue('geogcs')
+        user_proj = srs.GetAttrValue('projcs')
 
         context_dict['user_data_proj'] = user_proj
 
@@ -1336,7 +1341,7 @@ class LayerStyleListAPIView(ListAPIView):
         return StyleExtension.objects.filter(style__in=styles)
 
 
-class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
+class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
     queryset = StyleExtension.objects.all()
     serializer_class = StyleExtensionSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -1345,13 +1350,21 @@ class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         data = json.loads(request.body)
         # check already style extension created or not
         try:
-            style_extension = StyleExtension.objects.get(pk=pk)
+            style_extension = self.queryset.get(pk=pk)
+            if style_extension.created_by != request.user:
+                layer_obj = resolve_object(request, 
+                                    Layer, 
+                                    dict(typename=style_extension.style.layer_styles.first().typename),
+                                    'layers.change_layer_style',
+                                    _PERMISSION_MSG_CHANGE_STYLE)
             style_extension.json_field = data.get("StyleString", None)
             style_extension.sld_body = data.get('SldStyle', None)
             style_extension.title = data.get('Title', style_extension.title)
             style_extension.style.sld_title = style_extension.title
-        except Exception as ex:
-            raise ex
+        except PermissionDenied as ex:
+            return HttpResponse(ex,status=403,content_type='application/javascript')
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
 
         style_extension.style.save()
         style_extension.save()
@@ -1370,23 +1383,42 @@ class StyleExtensionRetrieveUpdateAPIView(RetrieveUpdateAPIView):
                 ensure_ascii=False),
             status=200,
             content_type='application/javascript')
+    
+    def delete(self, request, pk, **kwargs):
+        try:
+            style_extension = self.queryset.get(pk=pk)
+            if not (style_extension.created_by == request.user or request.user.is_superuser):
+                raise PermissionDenied('You are not authorized to delete this style');
+            style_extension.style.delete()
+
+            full_path = '/gs/rest/styles/{0}.xml'.format(style_extension.style.name)
+            save_sld_geoserver(request_method='DELETE', full_path=full_path, sld_body=style_extension.sld_body)
+        except PermissionDenied as ex:
+            return HttpResponse(ex,status=403,content_type='application/javascript')
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
+        else:
+            return HttpResponse(True, status=200, content_type='application/javascript')
 
 
 class LayerStyleView(View):
     def get(self, request, layername):
-        layer_obj = _resolve_layer(request, layername)
-        layer_style = layer_obj.default_style
-        serializer = StyleExtensionSerializer(layer_style.styleextension)
-        return HttpResponse(
-            json.dumps(
-                serializer.data,
-                ensure_ascii=False),
-            status=200,
-            content_type='application/javascript')
+        try:
+            layer_obj = _resolve_layer(request, layername)
+            serializer = StyleExtensionSerializer(layer_obj.default_style.styleextension)
+        except ObjectDoesNotExist as ex:
+            return HttpResponse(ex,status=404,content_type='application/javascript')
+        else:    
+            return HttpResponse(
+                json.dumps(
+                    serializer.data,
+                    ensure_ascii=False),
+                status=200,
+                content_type='application/javascript')
 
     @custom_login_required
     def put(self, request, layername, **kwargs):
-        layer_obj = _resolve_layer(request, layername)
+        layer_obj = _resolve_layer(request, layername, 'layers.change_layer_style')
         data = json.loads(request.body)
         # check already style extension created or not
         try:
@@ -1416,7 +1448,10 @@ class LayerStyleView(View):
 
     @custom_login_required
     def post(self, request, layername, **kwargs):
-        layer_obj = _resolve_layer(request, layername)
+        layer_obj = _resolve_layer(request, 
+                    layername,
+                    'base.view_resourcebase',
+                    _PERMISSION_MSG_VIEW)
         data = json.loads(request.body)
         json_field = data.get("StyleString", None)
         sld_body = data.get('SldStyle', None)
@@ -1427,7 +1462,8 @@ class LayerStyleView(View):
             json_field=json_field, created_by=request.user, modified_by=request.user)
 
         title = data.get('Title', str(style_extension.uuid))
-        sld_body = sld_body.format(style_name=str(style_extension.uuid))
+        formatter = string.Formatter()
+        sld_body = formatter.vformat(sld_body, (), SafeDict(style_name=str(style_extension.uuid)))
 
         style = Style(name=str(style_extension.uuid),
                       sld_body=sld_body, sld_title=title)
@@ -1521,6 +1557,7 @@ class GeoLocationApiView(CreateAPIView):
         response = []
         success_count, failed_count = 0, 0
         for row in csv_reader:
+            # import pdb;pdb.set_trace()
             mapped_row = dict(zip(headers, row))
             values = [mapped_row[filtered_dict[k]] for k in keys]
             data = dict(zip(keys, values))
@@ -1535,7 +1572,8 @@ class GeoLocationApiView(CreateAPIView):
             except Exception as ex:
                 row += ['', '']
                 failed_count += 1
-            response.append(dict(zip(response_headers, row)))
+            else:
+                response.append(dict(zip(response_headers, row)))
 
         return Response(data=dict(data=response, success=success_count, error=failed_count), status=status.HTTP_200_OK)
 # end

@@ -479,8 +479,13 @@ a
     background: rgba(255, 255, 255, 0.95);
     right: 0;
     top: 12px;
+<<<<<<< HEAD
     width: auto;
     height: 34px;
+=======
+    /* width: 591px; */
+    height: 36px;
+>>>>>>> 0a4e82663f31fb4a91eaad33d17e2c906ffe9849
     position: absolute;
     right: 119px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.30);
@@ -1075,6 +1080,11 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     background-color: rgb(255, 255, 255);
     padding: 10px;
     border-radius: 4px;
+    top: 10%;
+    width: 30%;
+    height: 88%;
+    overflow: scroll;
+
 }
 
 .visulization-legend-container td {

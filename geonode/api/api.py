@@ -47,6 +47,7 @@ from django.utils import timezone
 
 from avatar.templatetags.avatar_tags import avatar_url
 from guardian.shortcuts import get_objects_for_user
+from notify.signals import notify
 
 # @jahangir091
 from slugify import slugify
@@ -92,6 +93,9 @@ from geonode.maps.models import WmsServer
 from geonode.security.views import _perms_info, _perms_info_json
 from .authorization import GeoNodeAuthorization
 from geonode.base.models import FavoriteResource, DockedResource
+from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
+from geonode.documents.models import DocumentSubmissionActivity, DocumentAuditActivity
+from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
 
 CONTEXT_LOG_FILE = None
 
@@ -946,39 +950,77 @@ class ViewNotificationTimeSaving(TypeFilteredResource):
 
 # end
 
+#
+# class AccessTokenApi(TypeFilteredResource):
+#     def dehydrate_expires(self, bundle):
+#         return oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS
+#
+#     class Meta:
+#         queryset = AccessToken.objects.all()
+#         resource_name = 'access-token'
+#         allowed_methods = ['get', 'post']
+#         fields = ['token', 'expires']
+#
+#     def get_object_list(self, request):
+#         username = request.META['HTTP_USER']
+#         password = request.META['HTTP_PASSWORD']
+#         user = authenticate(username=username, password=password)
+#         if user is not None and user.is_active:
+#             if not super(AccessTokenApi, self).get_object_list(request).filter(user=user):
+#                 createToken(user)
+#             else:
+#                 accesstoken = AccessToken.objects.filter(user=user).first()
+#                 if accesstoken.expires < datetime.datetime.now():
+#                     createToken(user)
+#             return super(AccessTokenApi, self).get_object_list(request).filter(user=user)
+#         else:
+#             user = get_anonymous_user()
+#             return super(AccessTokenApi, self).get_object_list(request).filter(user=user)
+
 
 class AccessTokenApi(TypeFilteredResource):
-    def dehydrate_expires(self, bundle):
-        return oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS
+    """
+    This api returns access token for an user.
+    This access token is needed for token based authentiction.
+    it takes body parameters:
+        'user'
+        'password'
+    """
 
     class Meta:
-        queryset = AccessToken.objects.all()
         resource_name = 'access-token'
-        allowed_methods = ['get', 'post']
-        fields = ['token', 'expires']
+        list_allowed_methods = ['post']
 
-    def get_object_list(self, request):
-        username = request.META['HTTP_USER']
-        password = request.META['HTTP_PASSWORD']
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
-            if not super(AccessTokenApi, self).get_object_list(request).filter(user=user):
-                createToken(user)
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+            username = str(json.loads(request.body).get('user'))
+            password = str(json.loads(request.body).get('password'))
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                user_access_tokens = AccessToken.objects.filter(user=user, expires__gte = datetime.datetime.now())
+                if user_access_tokens:
+                    token = user_access_tokens.latest('expires')
+                else:
+                    token = createToken(user)
+
+                out['success'] = True
+                out['token'] = token.token
+                out['expires'] = (token.expires - datetime.datetime.now()).total_seconds()
+                status_code = 200
+
             else:
-                accesstoken = AccessToken.objects.get(user=user)
-                if accesstoken.expires < datetime.datetime.now():
-                    createToken(user)
-            return super(AccessTokenApi, self).get_object_list(request).filter(user=user)
-        else:
-            user = get_anonymous_user()
-            return super(AccessTokenApi, self).get_object_list(request).filter(user=user)
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
 
 def getApplication(user):
-    app = Application.objects.filter(user=user)
+    user_apps = Application.objects.filter(user=user)
 
-    if app:
-        return Application.objects.get(user=user)
+    if user_apps.exists():
+        return user_apps.get(user=user)
     else:
 
         client_id = generate_client_id()
@@ -1000,15 +1042,185 @@ def getApplication(user):
 
 def createToken(user):
     # Lets create a new one
-    accesstoken = AccessToken.objects.filter(user=user)
-    if accesstoken:
-        accesstoken = AccessToken.objects.get(user=user)
-        accesstoken.delete()
-
+    # accesstoken = AccessToken.objects.filter(user=user)
+    # if accesstoken:
+    #     accessntoken = AccessToken.objects.get(user=user)
+    #     accesstoken.delete()
     token = generate_token()
     app = getApplication(user)
-    AccessToken.objects.create(user=user,
+    access_token = AccessToken.objects.create(user=user,
                                application=app,
                                expires=datetime.datetime.now() + datetime.timedelta(
                                    seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS),
                                token=token)
+    return access_token
+
+
+
+class SetBaseLayerAPI(TypeFilteredResource):
+    """
+    This api sets layers as base layer
+    it takes body parameters:
+        'layer_ids'
+    """
+
+    class Meta:
+        resource_name = 'set-layers-base-layer'
+        list_allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+
+            if request.user.is_authenticated() and request.user.is_superuser:
+
+                layer_ids = json.loads(request.body).get('layer_ids')
+
+                layers = Layer.objects.all()
+                for layer in layers:
+                    if layer.id in layer_ids:
+                        layer.is_base_layer = True
+                        layer.save()
+                    else:
+                        if layer.is_base_layer:
+                            layer.is_base_layer = False
+                            layer.save()
+
+                        out['success'] = 'True'
+                        status_code = 200
+
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+
+
+
+class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
+    """
+    This api sets layers as base layer
+    it takes body parameters:
+        'layer_ids'
+    """
+
+    class Meta:
+        resource_name = 'layer-map-documet-approve-deny'
+        list_allowed_methods = ['post']
+
+    def dispatch(self, request_type, request, **kwargs):
+        if request.method == 'POST':
+            out = {'success': False}
+
+            if request.user.is_authenticated():
+                resource_type = json.loads(request.body).get('resource_type')
+                resource_pk = json.loads(request.body).get('resource_pk')
+                action = json.loads(request.body).get('action')
+                resource = False
+                if resource_type == 'layer':
+                    try:
+                        resource = Layer.objects.get(id=resource_pk)
+                    except Layer.DoesNotExist:
+                        out['error'] = 'requested layer does not exists'
+                        out['success'] = False
+                        status_code = 400
+
+                elif resource_type == 'map':
+                    try:
+                        resource = Map.objects.get(id=resource_pk)
+                    except Layer.DoesNotExist:
+                        out['error'] = 'requested map does not exists'
+                        out['success'] = False
+                        status_code = 400
+
+                elif resource_type == 'document':
+                    try:
+                        resource = Document.objects.get(id=resource_pk)
+                    except Layer.DoesNotExist:
+                        out['error'] = 'requested document does not exists'
+                        out['success'] = False
+                        status_code = 400
+
+                if resource:
+                    group = resource.group
+                    if request.user not in group.get_managers():
+                        out['error'] = 'You are not allowed to approve this layer'
+                        out['success'] = False
+                        status_code = 400
+                    else:
+                        if resource_type == 'layer':
+                            resource_submission_activity = LayerSubmissionActivity.objects.get(
+                            layer=resource, group=group, iteration=resource.current_iteration)
+                            resource_audit_activity = LayerAuditActivity(
+                                layer_submission_activity=resource_submission_activity)
+                        elif resource_type == 'map':
+                            resource_submission_activity = MapSubmissionActivity.objects.get(
+                                layer=resource, group=group, iteration=resource.current_iteration)
+                            resource_audit_activity = MapAuditActivity(
+                                layer_submission_activity=resource_submission_activity)
+                        elif resource_type == 'document':
+                            resource_submission_activity = DocumentSubmissionActivity.objects.get(
+                                layer=resource, group=group, iteration=resource.current_iteration)
+                            resource_audit_activity = DocumentAuditActivity(
+                                layer_submission_activity=resource_submission_activity)
+
+
+                        comment_body = json.loads(request.body).get('comment')
+                        comment_subject = json.loads(request.body).get('comment_subject')
+                        if action.upper() == 'APPROVED':
+                            resource.status = 'APPROVED'
+                        elif action.upper() == 'DENIED':
+                            resource.status = 'APPROVED'
+                        resource.last_auditor = request.user
+                        resource.save()
+
+                        permissions = _perms_info_json(resource)
+                        perm_dict = json.loads(permissions)
+                        if json.loads(request.body).get('view_permission'):
+                            if not 'AnonymousUser' in perm_dict['users']:
+                                perm_dict['users']['AnonymousUser'] = []
+                                perm_dict['users']['AnonymousUser'].append(
+                                    'view_resourcebase')
+                            else:
+                                if not 'view_resourcebase' in perm_dict['users']['AnonymousUser']:
+                                    perm_dict['users']['AnonymousUser'].append(
+                                        'view_resourcebase')
+
+                        if json.loads(request.body).get('download_permission'):
+                            if not 'AnonymousUser' in perm_dict['users']:
+                                perm_dict['users']['AnonymousUser'] = []
+                                perm_dict['users']['AnonymousUser'].append(
+                                    'download_resourcebase')
+                            else:
+                                if not 'download_resourcebase' in perm_dict['users']['AnonymousUser']:
+                                    perm_dict['users']['AnonymousUser'].append(
+                                        'download_resourcebase')
+
+                        resource.set_permissions(perm_dict)
+
+                        # notify layer owner that someone have approved the layer
+                        if request.user != resource.owner:
+                            recipient = resource.owner
+                            notify.send(request.user, recipient=recipient, actor=request.user,
+                                        target=resource, verb=action + ' your ' + resource_type)
+
+                        resource_submission_activity.is_audited = True
+                        resource_submission_activity.save()
+
+                        resource_audit_activity.comment_subject = comment_subject
+                        resource_audit_activity.comment_body = comment_body
+                        resource_audit_activity.result = resource.status
+                        resource_audit_activity.auditor = request.user
+                        resource_audit_activity.save()
+
+                        out['success'] = 'True'
+                        out['message'] = 'Approved Layer Successfully'
+                        status_code = 200
+
+
+            else:
+                out['error'] = 'Access denied'
+                out['success'] = False
+                status_code = 400
+            return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
+

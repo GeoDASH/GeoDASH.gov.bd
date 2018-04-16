@@ -22,6 +22,8 @@
   {% endif %}
 
   {% include 'Templates/_base-headers.html' %}
+    {% include "layer_templates/_publish_layer.html" %}
+    {% include "layer_templates/_approve_layer.html" %}
 
 {{ block.super }}
 {% endblock %}
@@ -326,7 +328,7 @@
                                                 {% endif %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_publish_layer">{% trans "Push for Approval" %}</button>
-                                                        {% include "layer_templates/_publish_layer.html" %}
+
                                                     {% endif %}
                                                 </li>
                                                 {% if user_role == "manager" and status == 'PENDING' %}
@@ -336,7 +338,7 @@
                                                 </li>
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_layer">{% trans "Approve Layer" %}</button>
-                                                        {% include "layer_templates/_approve_layer.html" %}
+
                                                 </li>
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_layer">{% trans "Deny Layer" %}</button>

@@ -872,12 +872,6 @@
             </li>
             <li class="c-menu__item">
                 <a href="{% url "data-folder-backup" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Error Reporting" %}</span>
-                </a>
-            </li>
-            <li class="c-menu__item">
-                <a href="{% url "data-folder-backup" %}" class="c-menu__link">
                     <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
                     <span style="text-align:left;">{% trans "Geoserver Data Backup" %}</span>
                 </a>
@@ -942,7 +936,7 @@
     {% block extra_script %}{% endblock extra_script %}
 
     <script type="text/javascript">
-        var autocomplete = autocomplete = $('#search_input').yourlabsAutocomplete({
+        var autocomplete = $('#search_input').yourlabsAutocomplete({
             url: '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}',
             choiceSelector: 'span',
             hideAfter: 200,
@@ -1087,7 +1081,15 @@
         layer_info = '{{ resource.id }}';
         map_info = '{{ maps|length }}' == 'NULL' ? 0 : '{{ maps.0.id }}';
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117252228-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-117252228-1');
+</script>
   </body>
 </html>
 

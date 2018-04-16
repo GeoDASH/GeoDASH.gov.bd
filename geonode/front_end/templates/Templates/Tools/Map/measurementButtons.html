@@ -37,8 +37,8 @@
 </style>
 <!-- Single button -->
 
-<div class="btn-group">
-    <button type="button" title="Measure" class="control-button icon dropdown-toggle svg-ico-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<div class="btn-group" >
+    <button type="button" title="Measure" class="control-button icon dropdown-toggle svg-ico-button" ng-class="{'active' : buttons['lineMeasurementTool'].isActive || buttons['areaMeasurementTool'].isActive}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             
         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 32.006 32.006" style="enable-background:new 0 0 32.006 32.006;" xml:space="preserve" class="svg-icon">
@@ -79,10 +79,11 @@
             <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li ng-click="lineMeasurement()">
+        <li ng-click="toggleLineMeasurementTool()" ng-class="{'active' : buttons['lineMeasurementTool'].isActive}">
             <a> <i class="fa fa-minus" aria-hidden="true"></i> Line</a>
         </li>
-        <li ng-click="areaMeasurement()"><a><i class="fa fa-square-o" aria-hidden="true"></i> Area</a></li>
+        <li ng-click="toggleAreaMeasurementTool()" ng-class="{'active' : buttons['areaMeasurementTool'].isActive}">
+            <a><i class="fa fa-square-o" aria-hidden="true"></i> Area</a></li>
         <!-- <li role="separator" class="divider"></li> -->
     </ul>
 </div>

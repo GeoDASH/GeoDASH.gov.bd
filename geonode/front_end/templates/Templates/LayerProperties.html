@@ -13,6 +13,7 @@
             <option value="">-- Select Style --</option>
     </select>
     <input class="btn btn-gd-primary btn-sm icon-btn-color" type="button" value="New" ng-click="newStyle()">
+    <input class="btn btn-danger btn-sm icon-btn-color" type="button" ng-if="nodeData.selectedStyle && hasPermission" value="Delete" ng-click="deleteStyle()">
 
     </div>
 
@@ -81,7 +82,7 @@
                         Display style
                         <span ng-if="tabs[1].active" class="selected-down-arrow"></span>
                     </tab-heading>
-                    <layer-style-editor layer-style='nodeData.layer.style' feature-type="nodeData.layer.shapeType"></layer-style-editor>
+                    <layer-style-editor layer-style='nodeData.layer.style' feature-type="nodeData.layer.shapeType" is-weighted-point="false"></layer-style-editor>
                 </tab>
 
                 <!-- <tab active='tabs[2].active'>
@@ -147,7 +148,10 @@
             </tabset>
         </div>
         <div class="modal-footer">
-            <input draft-only class="btn btn-info" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
+                <div class="alert alert-warning col-md-8" ng-show="!hasPermission">
+                    <strong>Warning!</strong> You do not have permission to change this style properties.
+                  </div>
+            <input draft-only class="btn btn-info" ng-if="hasPermission" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
             />
             <button draft-only class="btn btn-inverse" ng-click="cancel()">
                 Cancel

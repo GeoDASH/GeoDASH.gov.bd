@@ -32,6 +32,7 @@ import json
 import string
 import random
 import subprocess
+import requests
 
 
 from osgeo import gdal, osr
@@ -863,3 +864,21 @@ def collect_epsg(tmp_dir, prj_file_name):
             epsg_code = result[0][2]
 
     return epsg_code
+
+class SafeDict(dict):
+    def __missing__(self, key):
+        return "{" + key + "}"
+        
+
+def get_epsg_code(file):
+    prj_file = open(file, 'r')
+    request_string = "http://prj2epsg.org/search.json?terms=" + prj_file.read()
+    prj_file.close()
+    r = requests.get(request_string)
+    if r.status_code != 200:
+        return ''
+
+    if len(r.json()['codes']) == 1:
+        return r.json()['codes'][0]['code']
+    else:
+        return ''

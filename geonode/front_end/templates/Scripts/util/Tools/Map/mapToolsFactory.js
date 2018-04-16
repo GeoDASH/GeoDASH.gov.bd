@@ -14,10 +14,12 @@ mapToolsFactory.$inject = [
     'ZoomToMaxExtentTool',
     'ZoomToExtentTool',
     'MeasurementTool',
-    'SetMarkerTool'
+    'SetMarkerTool',
+    'CircleDrawTool',
+    'BoxDrawTool'
 ];
 
-function mapToolsFactory(ol, GeoLocationTool, LocationSearchTool, ActiveLayerTool, ZoomToLayerTool, ZoomTrackerTool, BaseMapTool, AllSelectableLayerTool, NavigationHistoryTool, WmsMultiSelectFeatureTool, ZoomInOutTool, ZoomToMaxExtentTool, ZoomToExtentTool, MeasurementTool, SetMarkerTool) {
+function mapToolsFactory(ol, GeoLocationTool, LocationSearchTool, ActiveLayerTool, ZoomToLayerTool, ZoomTrackerTool, BaseMapTool, AllSelectableLayerTool, NavigationHistoryTool, WmsMultiSelectFeatureTool, ZoomInOutTool, ZoomToMaxExtentTool, ZoomToExtentTool, MeasurementTool, SetMarkerTool,CircleDrawTool,BoxDrawTool) {
     var _markerSource;
     var _olMap, _olView;
     var _gMap;
@@ -140,6 +142,14 @@ function mapToolsFactory(ol, GeoLocationTool, LocationSearchTool, ActiveLayerToo
     function createSetMarkerTool(){
         return new SetMarkerTool(_olMap, _olView);
     }
+
+    function createCircleDrawTool() {
+        return  new CircleDrawTool();
+    }
+    function createBoxDrawTool() {
+        return new BoxDrawTool();
+    }
+
     return {
         initialize: initialize,
         createGeoLocationTool: createGeoLocationTool,
@@ -155,6 +165,8 @@ function mapToolsFactory(ol, GeoLocationTool, LocationSearchTool, ActiveLayerToo
         createZoomToMaxExtentTool: createZoomToMaxExtentTool,
         createZoomToExtentTool: createZoomToExtentTool,
         createMeasurementTool: createMeasurementTool,
-        createSetMarkerTool: createSetMarkerTool
+        createSetMarkerTool: createSetMarkerTool,
+        createCircleDrawTool : createCircleDrawTool,
+        createBoxDrawTool : createBoxDrawTool
     };
 }

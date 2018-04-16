@@ -1,0 +1,85 @@
+<div>
+    <ul class="root-node" style="padding-bottom: 10px;">
+        <li>
+            <div class="scrollable-pane">
+                <ul ui-sortable="sortableOptions" ng-model="mapService.sortableLayers" style="list-style: none; padding-bottom: 10px !important; margin-left: 0 !important;padding-left:0">
+
+                    <li ng-repeat="layer in mapService.sortableLayers" ng-show="rootNode.isExpanded" class="tree-node" style="margin: 0">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="node-icons" style="width: 15px; white-space: nowrap">
+                                    <div class="shape-type-icon">
+                                        <style-preview-small feature-type="layer.getFeatureType()" custom-template="/static/Templates/legendStylePreviewSmall.html" style-hash="layer.getDefaultStyle()"></style-preview-small>
+                                    </div>
+                                    <i ng-if="!layer.isWritable()" draft-only class="fa fa-ban red-text" title="readonly layer"></i>
+                                    <i ng-if="!layer.isSourceFileExists()" class="fa fa-warning gold-text" title="data source not found"></i>
+                                </td>
+                                <td style="width: 100%" ng-attr-title="{{layer.getName()}}">
+                                    <div class="tree-node-title node-information">
+                                        <span class="tree-node-name">{{layer.getName() | truncate: layer.getViewableTextLength():layer.getViewableTextLength()}}</span>
+                                    </div>
+                                </td>
+                                <td style="white-space: nowrap">
+                                    <div ng-if="layer.inProgress">
+                                        <span title="Drawing shapes">
+                                            <i class="gis-data-writing"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <ul style="list-style: none; margin-left: 30px;" ng-init="initializeGroups(layer)">
+                            <i ng-repeat-start="group in layer.groups" style="cursor: pointer;"
+                               ng-class="{'fa-caret-right':!group.isExpanded, 'fa-caret-down':group.isExpanded}"
+                               class="fa">
+                            </i>
+                            <li ng-repeat-end style="display: inline; line-height: 30px;">
+                                {{group.name | identifyBlank}}
+                                <ul style="list-style: none; margin-left: 30px;" ng-if="group.isExpanded">
+                                    <li ng-repeat="class in group.classes">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label class="shape-type-icon">
+                                                        <style-preview-small feature-type="layer.getFeatureType()" custom-template="/static/Templates/legendStylePreviewSmall.html" style-hash="class.style"></style-preview-small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{class.alias | identifyBlank}}: {{class.count}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </li>
+                                </ul>
+                                <br ng-if="!group.isExpanded" />
+                            </li>
+                            <li ng-repeat="class in layer.ungrouped" style="margin-left: 7px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label class="shape-type-icon">
+                                                <style-preview-small feature-type="layer.getFeatureType()" custom-template="/static/Templates/legendStylePreviewSmall.html" style-hash="class.style"></style-preview-small>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{class.alias | identifyBlank}}: {{class.count}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="mapService.isEmpty()" class="empty-tree-message alert">
+                No layer available
+            </div>
+        </li>
+    </ul>
+</div>
+

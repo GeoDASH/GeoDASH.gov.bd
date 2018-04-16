@@ -67,7 +67,7 @@
                     }
                 }).success(function () {
                     dirtyManager.setDirty(false);
-                    surfToastr.success(appMessages.toastr.mapSaveAs(name));
+                    // surfToastr.success(appMessages.toastr.mapSaveAs(name));
                 });
             },
             update: function (obj) { //new
@@ -77,7 +77,7 @@
                     }
                 }).success(function () {
                     dirtyManager.setDirty(false);
-                    surfToastr.success(appMessages.toastr.mapSaveAs(name));
+                    // surfToastr.success(appMessages.toastr.mapSaveAs(name));
                 });
             },
             updateMapLayer : function (mapId, layerName, obj) { //new
@@ -87,7 +87,7 @@
                     }
                 }).success(function () {
                     dirtyManager.setDirty(false);
-                    surfToastr.success(appMessages.toastr.mapSaveAs(name));
+                    // surfToastr.success(appMessages.toastr.mapSaveAs(name));
                 });
             },
             getMapSummary: function (mapId) {

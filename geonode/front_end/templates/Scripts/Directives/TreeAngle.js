@@ -2,11 +2,18 @@
 
 treeModule.directive('treeAngle', [
     function () {
+        var defaultTemplate='/static/Templates/tree.html';
         return {
             transclude: false,
             replace: true,
             restrict: "AC",
-            templateUrl: '/static/Templates/tree.html',
+            templateUrl: function(tElement, tAttrs) {
+                            if(tAttrs.customTemplate){
+                                return tAttrs.customTemplate;
+                            }
+                            return defaultTemplate;
+                    },
+            scope: true,
             controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
                 $scope.rootNode = { isExpanded: true };
 

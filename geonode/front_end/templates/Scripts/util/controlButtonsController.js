@@ -1,5 +1,6 @@
-﻿appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q',
-    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q) {
+﻿appModule.controller("controlButtonsController",
+    ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q','BoxDrawTool','SurfMap',
+    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q,BoxDrawTool,SurfMap) {
         $scope.mapService = mapService;
         $scope.mapTools = mapTools;
 
@@ -13,6 +14,10 @@
 
         (function() {
             $scope.action = {};
+
+            $scope.action.isNewMap = function(){
+                return typeof mapService.getId() === "undefined" ||  mapService.getId() == 0;
+            };
 
             $rootScope.action = $rootScope.action || {};
             $rootScope.action.saveProject = function() {
@@ -62,6 +67,175 @@
             $scope.action.overpassApiQuery = function() {
                 showOverpassApiQueryDialog();
             };
+
+            $scope.disableAllDependentTools= function(dependentTools,mapTools,toggleButtonList) {
+                angular.forEach(dependentTools,function (tool,key) {
+                   if(toggleButtonList[key].isActive){
+                       if(key=='featureSelectionTool'){
+                           $scope.$parent.disableFeatureIdentifier();
+                           toggleButtonList[key].isActive=false;
+                       }else
+                           toggleButtonList[key].isActive=mapTools[tool.toolName][tool.disableFunction]();
+                   }
+                })
+            };
+
+            $scope.toggleButtonsList={
+                setMarkerTool : {
+                    isActive : false,
+                    toolsToDisable : {
+                        'lineMeasurementTool': {
+                            toolName : 'measurementTool',
+                            disableFunction : 'lineMeasurement'
+                        },
+                        'areaMeasurementTool' : {
+                            toolName : 'measurementTool',
+                            disableFunction : 'areaMeasurement'
+                        },
+                        'featureSelectionTool' : {
+                            toolName : 'activeLayer',
+                            disableFunction: 'disableActiveLayerSelectInteractions'
+                        },
+                        'radiusSearchTool' : {
+                            toolName : 'circleDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'bboxSearchTool' : {
+                            toolName : 'boxDrawTool',
+                            disableFunction: 'Remove'
+                        }
+                    }
+                },
+                lineMeasurementTool : {
+                    isActive : false,
+                    toolsToDisable : {
+                        'areaMeasurementTool' : {
+                            tooName : 'measurementTool',
+                            disableFunction : 'areaMeasurement'
+                        },
+                        'featureSelectionTool' : {
+                            toolName : 'activeLayer',
+                            disableFunction: 'disableActiveLayerSelectInteractions'
+                        },
+                        'radiusSearchTool' : {
+                            toolName : 'circleDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'bboxSearchTool' : {
+                            toolName : 'boxDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'setMarkerTool' : {
+                            toolName : 'setMarkerTool',
+                            disableFunction: 'setMarker'
+                        }
+                    }
+                },
+                areaMeasurementTool : {
+                    isActive : false,
+                    toolsToDisable : {
+                        'lineMeasurementTool': {
+                            toolName : 'measurementTool',
+                            disableFunction : 'lineMeasurement'
+                        },
+                        'featureSelectionTool' : {
+                            toolName : 'activeLayer',
+                            disableFunction: 'disableActiveLayerSelectInteractions'
+                        },
+                        'radiusSearchTool' : {
+                            toolName : 'circleDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'bboxSearchTool' : {
+                            toolName : 'boxDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'setMarkerTool' : {
+                            toolName : 'setMarkerTool',
+                            disableFunction: 'setMarker'
+                        }
+                    }
+                },
+                featureSelectionTool : {
+                    isActive : false,
+                    toolsToDisable : {
+                        'lineMeasurementTool': {
+                            toolName : 'measurementTool',
+                            disableFunction : 'lineMeasurement'
+                        },
+                        'areaMeasurementTool' : {
+                            toolName : 'measurementTool',
+                            disableFunction : 'areaMeasurement'
+                        },
+                        'radiusSearchTool' : {
+                            toolName : 'circleDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'bboxSearchTool' : {
+                            toolName : 'boxDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'setMarkerTool' : {
+                            toolName : 'setMarkerTool',
+                            disableFunction: 'setMarker'
+                        }
+                    }
+                },
+                zoomTool : {
+                    isActive : false
+                },
+                radiusSearchTool: {
+                    isActive : false,
+                    toolsToDisable : {
+                        'lineMeasurementTool': {
+                            toolName : 'measurementTool',
+                            disableFunction : 'lineMeasurement'
+                        },
+                        'areaMeasurementTool' : {
+                            toolName : 'measurementTool',
+                            disableFunction : 'areaMeasurement'
+                        },
+                        'featureSelectionTool' : {
+                            toolName : 'activeLayer',
+                            disableFunction: 'disableActiveLayerSelectInteractions'
+                        },
+                        'bboxSearchTool' : {
+                            toolName : 'boxDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'setMarkerTool' : {
+                            toolName : 'setMarkerTool',
+                            disableFunction: 'setMarker'
+                        }
+                    }
+                },
+                bboxSearchTool: {
+                    isActive : false,
+                    toolsToDisable : {
+                        'lineMeasurementTool': {
+                            toolName : 'measurementTool',
+                            disableFunction : 'lineMeasurement'
+                        },
+                        'areaMeasurementTool' : {
+                            toolName : 'measurementTool',
+                            disableFunction : 'areaMeasurement'
+                        },
+                        'featureSelectionTool' : {
+                            toolName : 'activeLayer',
+                            disableFunction: 'disableActiveLayerSelectInteractions'
+                        },
+                        'radiusSearchTool' : {
+                            toolName : 'circleDrawTool',
+                            disableFunction: 'Remove'
+                        },
+                        'setMarkerTool' : {
+                            toolName : 'setMarkerTool',
+                            disableFunction: 'setMarker'
+                        }
+                    }
+                }
+            };
+
             $scope.layers=[];
             $scope.searchItemLayer;
             $scope.baseLayer;
@@ -210,37 +384,96 @@
                     });
             }
 
-            var circle = new CircleDrawTool();
-            $scope.action.drawCircle = function() {
-                circle.Remove();
-                circle.Draw();
+            var circle = $scope.mapTools.circleDrawTool;
+
+            function enableCircleDrawTool() {
+                circle.Draw(true);
                 circle.OnModificationEnd(function(feature, values) {
                     var center = feature.values_.geometry.getCenter();
                     var centerLongLat = ol.proj.transform([center[0], center[1]], 'EPSG:3857', 'EPSG:4326');
-                    
+                    var meterPerDegree = 111325;
                     var params = {
                         version: '1.0.0',
                         request: 'GetFeature',
                         outputFormat: 'JSON',
                         srsName: 'EPSG:3857',
                         typeNames: '',
-                        cql_filter: 'DWithin(the_geom,POINT(' + centerLongLat[0] + ' ' + centerLongLat[1] + '),' + values.radius + ',meters)',
+                        cql_filter: 'DWithin(the_geom,POINT(' + centerLongLat[0] + ' ' + centerLongLat[1] + '),' + values.radius / meterPerDegree + ',meters)',
                     };
-                    showFeatures(params);                    
+                    showFeatures(params);
                 });
+            }
+
+            function disableCircleDrawTool() {
+                circle.Remove();
+            }
+
+            $scope.action.drawCircle = function() {
+                if(!$scope.toggleButtonsList['radiusSearchTool'].isActive) {
+                    $scope.disableAllDependentTools($scope.toggleButtonsList['radiusSearchTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
+                    enableCircleDrawTool();
+                    $scope.toggleButtonsList['radiusSearchTool'].isActive=true;
+                }
+                else {
+                    disableCircleDrawTool();
+                    $scope.toggleButtonsList['radiusSearchTool'].isActive=false;
+                }
             };
 
-            $scope.action.boundingBoxSearch = function() {
-                var bbox = mapService.getBbox('EPSG:4326');
+            function boundingBoxSearch(feature,boundingBox) {
+                var extent=feature.getGeometry().getExtent();
+                var bbox = mapService.getBbox('EPSG:4326',extent);
                 var params = {
                     version: '1.0.0',
                     request: 'GetFeature',
                     outputFormat: 'JSON',
                     srsName: 'EPSG:3857',
                     typeNames: '',
-                    bbox: bbox,
+                    bbox: bbox
                 };
                 showFeatures(params);
+            }
+
+            $scope.removeBoxZooming=function () {
+                $scope.toggleButtonsList['zoomTool'].isActive=$scope.mapTools.zoomToExtentTool.removeDrawBox();
+            };
+
+            $scope.toggleSelectFeatureTool=function () {
+                    if(!$scope.toggleButtonsList['featureSelectionTool'].isActive){
+                        $scope.disableAllDependentTools($scope.toggleButtonsList['featureSelectionTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.setActiveLayerSelectInteractions();
+
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=true;
+                        $scope.$parent.enableFeatureIdentifier();
+                    }else {
+                        // $scope.toggleButtonsList['featureSelectionTool'].isActive=mapTools.activeLayer.disableActiveLayerSelectInteractions();
+                        $scope.toggleButtonsList['featureSelectionTool'].isActive=false;
+                        $scope.$parent.disableFeatureIdentifier();
+
+                    }
+            };
+
+            var box=$scope.mapTools.boxDrawTool;
+
+            function enableBboxSearch() {
+                box.Draw();
+                box.OnBoxModificationEnd(boundingBoxSearch);
+                box.OnBoxDrawEnd(boundingBoxSearch);
+            }
+            function disableBboxSearch() {
+                box.Remove();
+            }
+
+            $scope.action.boundingBoxSearch = function() {
+                if(!$scope.toggleButtonsList['bboxSearchTool'].isActive) {
+                    $scope.disableAllDependentTools($scope.toggleButtonsList['bboxSearchTool'].toolsToDisable,$scope.mapTools,$scope.toggleButtonsList);
+                    enableBboxSearch();
+                    $scope.toggleButtonsList['bboxSearchTool'].isActive=true;
+                }
+                else {
+                    disableBboxSearch();
+                    $scope.toggleButtonsList['bboxSearchTool'].isActive=false;
+                }
             };
 
             $scope.action.shareMap = function() {
@@ -253,7 +486,7 @@
                     windowTopClass: 'Second',
                     openedClass: 'Third'
                 });
-            }
+            };
 
             $scope.action.printPreview = function() {
 

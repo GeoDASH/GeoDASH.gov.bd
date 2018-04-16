@@ -2,9 +2,11 @@
 function (mapTools, utilityService) {
     return {
         restrict: 'EA',
+
         templateUrl: '/static/Templates/visualizationLegend.html',
         controller: ['$scope', function ($scope) {
                 $scope.activeLayerTool = mapTools.activeLayer;
+                // console.log($scope.enable);
                 
                 $scope.getSelectedAttributeName = function () {
                     var visualizationSettings = $scope.activeLayerTool.getActiveLayer().style.visualizationSettings;

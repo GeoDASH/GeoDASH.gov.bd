@@ -160,12 +160,14 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             // if (result.propertiesChanged || labelChanged) {
                 updatedLayer.style.classifierDefinitions = result.classifierDefinitions;
                 layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false)
-                /*.success(function() {
+                .then(function() {
+                    surfToastr.success('Style Saved Successfully', 'Success');
                     // saveClassificationOnNeed();
-                    $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });
-                }).error(function() {
+                    // $rootScope.$broadcast('layerPropertiesChanged', { layer: layer });
+                },function(res) {
+                    surfToastr.error('Style Save Failed. Reason: ' + res, 'Error!');                    
                     // saveClassificationOnNeed();
-                });*/
+                });
             // } else {
             //     saveClassificationOnNeed();
             // }
@@ -288,6 +290,8 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
         mapTools.zoomToExtentTool = mapToolsFactory.createZoomToExtentTool();
         mapTools.measurementTool = mapToolsFactory.createMeasurementTool();
         mapTools.setMarkerTool = mapToolsFactory.createSetMarkerTool();
+        mapTools.circleDrawTool=mapToolsFactory.createCircleDrawTool();
+        mapTools.boxDrawTool=mapToolsFactory.createBoxDrawTool();
         onZoomHandler.activate(olMap);
 
         if (mapAccessLevel.isPrivate) {
