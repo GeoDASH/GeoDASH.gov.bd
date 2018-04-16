@@ -184,6 +184,8 @@ class LayerListAPIView(AnalyticsMixin, ListAPIView):
     """
     Will send summary of Layer activity
     """
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    
     def get_queryset(self):
         content_model = ContentType.objects.get_for_model(Layer)
         return LoadActivity.objects.filter(content_type=content_model).order_by('last_modified')
@@ -218,6 +220,8 @@ class DocumentListAPIView(AnalyticsMixin, ListAPIView):
     """
     Will send summary of Layer activity
     """
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    
     def get_queryset(self):
         content_model = ContentType.objects.get_for_model(Document)
         return LoadActivity.objects.filter(content_type=content_model).order_by('last_modified')
