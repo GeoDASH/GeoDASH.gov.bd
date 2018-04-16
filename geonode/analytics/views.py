@@ -4,13 +4,22 @@ from django.db.models import Avg
 
 from geonode.analytics.models import LayerLoad, MapLoad, Visitor, PinpointUserActivity
 import json
-
-# Create your views here.
+from django.http import HttpResponse
+from django.template import RequestContext, loader
+from django.utils.translation import ugettext as _
 
 
 class AnalyticsView(TemplateView):
 
     template_name = 'analytics/analytics.html'
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return HttpResponse(
+            loader.render_to_string(
+                '401.html', RequestContext(
+                    request, {
+                        'error_message': _("You don't have permission to view this page.")})), status=401)
+        return super(AnalyticsView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(AnalyticsView, self).get_context_data(**kwargs)
