@@ -21,22 +21,23 @@ class GeoserverWMSGetFeatureInfoListAPIView(ListAPIView, GeoServerMixin):
             access_token = request.session['access_token']
                 
         query = self.get_configuration(data)
-        query.update(dict(SERVICE='WMS', REQUEST='GetFeatureInfo', access_token=access_token))
-
-        result = self.get_response_from_geoserver('wms', query)
-        
-        permitted_attributes = {}
+        result = dict()
         for layer_name in layers.split(','):
             attributes = self.getAttributesPermission(layer_name=layer_name)
-            permitted_attributes.update({layer_name.split(':')[1]:attributes})
+            attributes.remove('the_geom')
+            query.update(dict(SERVICE='WMS', 
+                            REQUEST='GetFeatureInfo',
+                            QUERY_LAYERS= layer_name,
+                            LAYERS=layer_name,
+                            access_token=access_token, 
+                            propertyName=','.join(attributes)))
+            result[layer_name] = self.get_response_from_geoserver('wms', query)
+        
+        response = dict()
+        for k,v in result.items():
+            if not response:
+                response = v
+            else:
+                response['features'] += v['features']
 
-        for feature in result.get('features'):
-            layer_name = feature['id'].split('.')[0]
-            if 'geometry' in feature:
-                del feature['geometry']
-                
-            for k,v in feature.get('properties').items():
-                if k not in permitted_attributes[layer_name] and k in feature.get('properties'):
-                    del feature['properties'][k]
-
-        return Response(result, status=status.HTTP_200_OK)
+        return Response(response, status=status.HTTP_200_OK)
