@@ -29,7 +29,7 @@
         function getFeatureDetails(url, layerName, propertyName) {
             LayerService.getFeatureDetails(url, layerName, propertyName).then(function(res) {
                 self.attributeDetails = [];
-                if (typeof res.featureTypes !== 'undefined') {
+                if (typeof res.features !== 'undefined') {
                     self.propertyNames.push('fid');
                     res.features.forEach(function(e) {
                         var obj = e.properties;
@@ -43,10 +43,11 @@
                 self.propertyNames.forEach(function(e) {
                     self.gridOptions.columnDefs.push({
                         field: e,
-                        displayName: e
+                        displayName: e,
+                        minWidth : 120,
+                        width : '*'
                     });
                 });
-                $('#attribute_view_left').hide();
             }, errorFn);
         }
 
