@@ -10,15 +10,6 @@ body {
 	border-bottom: 1px solid #ccc;
 	margin-bottom: 0;
 }
-#navbar {
-	margin-top: 8px;
-}
-.navbar-brand {
-	background-image: url(geodash-logo.png);
-	height: 53px;
-	width: 145px;
-	text-indent: -99999px;
-}
 .nav-left {
 	padding-left: 20px;
 }
@@ -226,11 +217,7 @@ footer {
 	color: #3896e2 !important;
 	margin-left: 15px;
 }
-.btn-language {
-	padding: 2px 5px !important;
-	border-radius: 4px;
-	margin: 5px -15px 0 10px;
-}
+
 .count {
 	padding: 40px 15px;
 	border-right: 1px solid #e0e0e0;

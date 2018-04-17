@@ -2638,12 +2638,7 @@ body.layer-detail-page #gd-wrapper .container-fluid.padding-zero{
 }
 .map-details-information,
 .layer-information{
-    height: calc(100vh - 98px) !important;
-    overflow-y: scroll;
-}
-.layer-details-information,
-.layer-information{
-    height: calc(100vh - 142px) !important;
+    height: calc(100vh - 84px) !important;
     overflow-y: scroll;
 }
 .gd-link-style.inaccordion{
@@ -3593,7 +3588,7 @@ width: 80%;
 {
     position: fixed;
     width: 100%;
-    top: 107px;
+    top: 84px;
     z-index: 50;
     background-color: #f3f3f3;
 }
@@ -3733,10 +3728,6 @@ background-color: #fff;
 .gallery-container .panel-body
 {
    padding: 0;
-}
-.layer-panel
-{
-    top: 176px !important;
 }
 .round {
     line-height: 48px;
@@ -3887,7 +3878,7 @@ font-weight: bold;
 .header-expand-button
 {
     position: absolute;
-    top:110px;
+    top:83px;
     left:50%;
     z-index:999999;
     display: none;
@@ -3907,6 +3898,12 @@ font-weight: bold;
     top: 18px;
     height: 17px;
 }
+.navbar-brand {
+	background-image: url(geodash-logo.png);
+	height: 53px;
+	width: 145px;
+	text-indent: -99999px;
+}
 
 
 
@@ -3915,12 +3912,6 @@ font-weight: bold;
 	background-color: rgba(255, 255, 255, 0.97);
 	padding: 15px;
     border-bottom: 1px solid #ccc;
-}
-.navbar-brand {
-	background-image: url(geodash-logo.png);
-	height: 76px;
-	width: 172px;
-	text-indent: -99999px;
 }
 .navbar-nav > li > a {
 	font-size: 16px;
@@ -3940,7 +3931,7 @@ font-weight: bold;
 	border-radius: 0;
 }
 #navbar {
-    margin-top: 18px;
+    margin-top: 8px;
 }
 .nav-left {
     padding-left: 20px;
@@ -3981,8 +3972,8 @@ font-weight: bold;
 }
 .btn-language {
 	padding: 2px 5px !important;
-	margin-top: 5px;
 	border-radius: 4px;
+	margin: 5px -15px 0 10px;
 }
 footer {
 	background-color: #1c2025;
@@ -4050,7 +4041,7 @@ footer {
     }
     .dashboard-btn button
     {
-      padding: 5px;
+      padding: 5px !important;
       line-height: 14px;
 
     }
