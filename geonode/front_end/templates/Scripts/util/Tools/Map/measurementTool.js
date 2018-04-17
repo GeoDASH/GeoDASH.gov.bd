@@ -10,6 +10,7 @@ function MeasurementTool(mapService) {
         var isAreaMeasurementEnabled=false;
         var lineMeasurementEvent=undefined;
         var areaMeasurementEvent=undefined;
+        var measurementOverlays=[];
 
         var vector = new ol.layer.Vector({
             source: source,
@@ -250,6 +251,7 @@ function MeasurementTool(mapService) {
                 positioning: 'bottom-center'
             });
             map.addOverlay(measureTooltip);
+            measurementOverlays.push(measureTooltip);
         }
 
         function enableLineMeasurementEvent() {
@@ -292,6 +294,14 @@ function MeasurementTool(mapService) {
             else disableAreaMeasurementEvent();
             return isAreaMeasurementEnabled;
         };
+        this.clearDrawings=function () {
+            if(source){
+                source.clear();
+                angular.forEach(measurementOverlays,function (overlay) {
+                    overlay.setPosition(undefined);
+                })
+            }
+        }
 
     };
 }

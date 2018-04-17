@@ -21,6 +21,9 @@ function setMarker(mapTools) {
                     $scope.buttons['setMarkerTool'].isActive=$scope.setMarker();
                     if($scope.buttons['setMarkerTool'].isActive) $scope.content='Click to set marker';
                     else $scope.content='';
+                };
+                $scope.clearAllMarker=function () {
+                  $scope.clearAllMarkers();
                 }
             }
         ]
