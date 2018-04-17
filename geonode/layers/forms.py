@@ -241,11 +241,12 @@ class LayerUploadForm(forms.Form):
             os.system(ogr2ogr_string)
 
             files = os.listdir(tempdir)
+            # import pdb; pdb.set_trace()
             for item in files:
                 if item.endswith('.shp'):
                     shape_file = shapefile.Reader(os.path.join(tempdir, item))
                     shapes = shape_file.shapes()
-                    names = [name for name in dir(shapes[1]) if not name.startswith('__')]
+                    names = [name for name in dir(shapes[0]) if not name.startswith('__')]
                     if not 'bbox' in names and the_geom:
                         raise forms.ValidationError('The "geom" field of your .csv file does not contains valid multistring points '
                                                     'or your uploaded file does not contains valid layer')

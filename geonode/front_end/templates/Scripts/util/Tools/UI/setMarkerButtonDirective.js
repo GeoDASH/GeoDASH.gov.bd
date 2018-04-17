@@ -7,7 +7,8 @@ function setMarker(mapTools) {
         restrict: 'EA',
         scope: {
              disableFunction : '=',
-             buttons : '='
+             buttons : '=',
+             content: '='
         },
         templateUrl: '/static/Templates/Tools/Map/setMarkerButton.html',
         controller: [
@@ -18,6 +19,8 @@ function setMarker(mapTools) {
                 $scope.toggleSetMarkerTool=function () {
                     if($scope.disableFunction) $scope.disableFunction($scope.buttons["setMarkerTool"].toolsToDisable,mapTools,$scope.buttons);
                     $scope.buttons['setMarkerTool'].isActive=$scope.setMarker();
+                    if($scope.buttons['setMarkerTool'].isActive) $scope.content='Click to set marker';
+                    else $scope.content='';
                 }
             }
         ]

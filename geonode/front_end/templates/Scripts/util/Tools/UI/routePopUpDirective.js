@@ -15,19 +15,24 @@ mapModule.directive('routePopUpDirective', [
                     var routeFeature = {};
                     $scope.coordinate = [];
                     $scope.layers = [];
-                    var container, content, close, popup;
-                    container = document.getElementById('route-popup');
-                    content = document.getElementById('route-popup-content');
-                    closer = document.getElementById('route-popup-closer');
-                    container.style.visibility = 'none';
+                    var container, content, closer, popup, overlay;
 
-                    var overlay = new ol.Overlay({
-                        element: container,
-                        autoPan: true,
-                        autoPanAnimation: {
-                            duration: 250
-                        }
-                    });
+
+                    function initializeOverlay() {
+                        container = document.getElementById('route-popup');
+                        content = document.getElementById('route-popup-content');
+                        closer = document.getElementById('route-popup-closer');
+                        container.style.visibility = 'none';
+
+                        overlay = new ol.Overlay({
+                            element: container,
+                            autoPan: true,
+                            autoPanAnimation: {
+                                duration: 250
+                            }
+                        });
+                    }
+
                     var
                         vectorSource = new ol.source.Vector(),
                         vectorLayer = new ol.layer.Vector({
@@ -128,7 +133,7 @@ mapModule.directive('routePopUpDirective', [
                                 continue;
                             layer_names.push(k);
 
-                            let p = LayerService.getWFS('api/geoserver/', Object.assign({}, params, {
+                            var p = LayerService.getWFS('api/geoserver/', Object.assign({}, params, {
                                 typeNames: layer.getName()
                             }), false);
                             promises.push(p);
@@ -195,12 +200,13 @@ mapModule.directive('routePopUpDirective', [
                         map.addLayer(vectorLayer);
                     }
 
-                    function inIt() {
+                    var inIt=function () {
+                        initializeOverlay();
                         addBlankOverlay();
                         addBlankVectorLayer();
-                    }
+                    };
 
-                    inIt();
+                    $timeout(inIt, 0);
 
                     function addRoutePlyLine(origin, destination) {
                         var directionsService = new google.maps.DirectionsService();
@@ -277,7 +283,7 @@ mapModule.directive('routePopUpDirective', [
                             $scope.showInput();
                             return;
                         }
-                        var radius = $scope.bufferArea * 1000;
+                        var radius = ($scope.bufferArea * 1000)/111325;
 
                         var requestObj = {
                             version: '1.0.0',

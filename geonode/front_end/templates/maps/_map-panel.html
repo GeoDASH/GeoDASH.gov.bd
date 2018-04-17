@@ -1,7 +1,7 @@
 <div class="navbar" style="margin: 0; padding: 0;min-height:0;" ng-cloak ng-controller="controlButtonsController">
     <div class="navbar-inner map-toolbar">
 
-
+        <cursor-tooltip content="tooTipContent"></cursor-tooltip>
         <location-search></location-search>
         <ul class="nav">
 
@@ -39,10 +39,10 @@
                                 </button>
             </li>
             <li>
-                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList"></measurement-buttons>
+                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></measurement-buttons>
             </li>
             <li>
-                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList"></set-marker>
+                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></set-marker>
             </li>
             <li>
                 <div class="btn-group">
@@ -258,8 +258,8 @@
                                 </button>
             </li> -->
             <li draft-only>
-                <button class="control-button icon" 
-                ng-style="{'background-color':isHeatMapVisible ? 'red' : 'white'}"
+                <button class="control-button icon"
+                 ng-class="{'active' : isHeatMapVisible}"
                 ng-click="addHeatMap()" title="Toggle Analytics">
                     <i class="fa fa-bar-chart"></i>                                 
                                 </button>
@@ -273,6 +273,13 @@
             <li>
                 <button class="control-button icon" ng-click="action.shareMap()" ng-hide="action.isNewMap()" title="Share map">
                         <i class="fa fa-share" aria-hidden="true"></i>       
+                            </button>
+            </li>
+            <li>
+                <button class="control-button icon"
+                        ng-class="{'active' : enableVisualizationTool}"
+                        ng-click="toggleVisualizationTool()"  title="Toggle Legend">
+                        <i class="fa fa-sun-o" aria-hidden="true"></i>
                             </button>
             </li>
         </ul>
@@ -290,7 +297,7 @@
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
 </div>
 
-<visualization-legend></visualization-legend>
+<visualization-legend ng-if="enableVisualizationTool"></visualization-legend>
 
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>

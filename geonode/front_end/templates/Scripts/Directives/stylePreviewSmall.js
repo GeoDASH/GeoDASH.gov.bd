@@ -1,9 +1,15 @@
 ﻿appHelperModule.directive('stylePreviewSmall', [
     'featureTypes',
     function (featureTypes) {
+        var defaultTemplate='/static/Templates/stylePreviewSmall.html';
         return {
             restrict: 'AE',
-            templateUrl: '/static/Templates/stylePreviewSmall.html',
+            templateUrl: function(tElement, tAttrs) {
+                                if(tAttrs.customTemplate){
+                                    return tAttrs.customTemplate;
+                                }
+                            return defaultTemplate;
+                    },
             scope: {
                 featureType: '=',
                 styleHash: '='

@@ -73,14 +73,14 @@
             return {
                 "Name": "",
                 "default": {
-                    "fillPattern": null,
+                    "fillPattern": "",
                     "textFillColor": "#0000ff",
                     "text": null,
                     "pixelDensity": null,
                     "strokeDashstyle": "solid",
                     "strokeWidth": 1.0,
                     "strokeColor": "#000000",
-                    "strokeOpacity": null,
+                    "strokeOpacity": 0.75,
                     "fillOpacity": 0.75,
                     "fillColor": "#ffffff",
                     "pointRadius": 14.0,

@@ -237,11 +237,15 @@
 
 
         $scope.setSelectedAttribute = function () {
-
-            if ($scope.option.selected && $scope.numericAttributes.length > 0)
-
+            if ($scope.option.selected && $scope.numericAttributes.length > 0){
                 $scope.option.selected.attributeId = $scope.option.selected.attributeId ? $scope.option.selected.attributeId : $scope.numericAttributes[0].Id;
+            }
 
+            if($scope.option.selected.name == $scope.visualizationTypes.weightedPoint){
+                if($scope.option.selected.default === undefined){
+                    $scope.option.selected.default = visualizationService.getDefaultStyleForPoint();
+                }
+            }
         };
 
 

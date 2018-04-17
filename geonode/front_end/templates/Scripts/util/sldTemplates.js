@@ -20,6 +20,35 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
             '<CssParameter name="stroke-dasharray">{3}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>' +
+            '</Stroke> ' +
+            '<Fill> ' +
+            '<CssParameter name="fill">{4}</CssParameter> ' +
+            '<CssParameter name="fill-opacity">{5}</CssParameter> ' +
+            '</Fill> ' +
+            '</Mark> ' +
+            '<Size>{6}</Size> ' +
+            '</Graphic> ' +
+            '</PointSymbolizer>',
+        pointTemplateForWeightedPoint: '{9}' +
+            // '<NamedLayer>' +
+            // '<Name>' +
+            // '{7}' +
+            // '</Name>' +
+            // '</NamedLayer>' +
+            // '<UserStyle>' +
+            // '<Name>' +
+            // '{8}' +
+            // '</Name>' +
+            // '</UserStyle>' +
+            '<PointSymbolizer> ' +
+            '<Graphic> ' +
+            '<Mark> ' +
+            '<WellKnownName>{0}</WellKnownName> ' +
+            '<Stroke> ' +
+            '<CssParameter name="stroke">{1}</CssParameter>' +
+            '<CssParameter name="stroke-width">{2}</CssParameter> ' +
+            //'<CssParameter name="stroke-dasharray">{3}</CssParameter>' +
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{4}</CssParameter> ' +
@@ -37,6 +66,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke> ' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
+            '<CssParameter name="stroke-opacity">{9}</CssParameter>'+
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{3}</CssParameter> ' +
@@ -77,6 +107,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke> ' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">{2}</CssParameter> ' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>'+
             '</Stroke> ' +
             '<Fill> ' +
             '<CssParameter name="fill">{3}</CssParameter> ' +
@@ -118,6 +149,7 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke-width">{1}</CssParameter> ' +
             '<CssParameter name="stroke-linecap">round</CssParameter>' +
             '<CssParameter name="stroke-dasharray">{2}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{4}</CssParameter>'+
             '</Stroke> ' +
             '</LineSymbolizer>',
 
@@ -164,6 +196,7 @@ appModule.factory('sldTemplateService', [function() {
             '<CssParameter name="stroke">{2}</CssParameter> ' +
             '<CssParameter name="stroke-width">{3}</CssParameter> ' +
             '<CssParameter name="stroke-dasharray">{4}</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{10}</CssParameter>' +
             '</Stroke>' +
             '</PolygonSymbolizer>',
         fillPatternTemplate: '<GraphicFill>' +
@@ -173,6 +206,7 @@ appModule.factory('sldTemplateService', [function() {
             '<Stroke>' +
             '<CssParameter name="stroke">{1}</CssParameter>' +
             '<CssParameter name="stroke-width">2</CssParameter>' +
+            '<CssParameter name="stroke-opacity">{3}</CssParameter>'+
             '</Stroke>' +
             '</Mark>' +
             '<Size>{2}</Size>' +
@@ -205,7 +239,7 @@ appModule.factory('sldTemplateService', [function() {
         '<!--classification starts-->{classifierSld}' +
         '<!--classification ends-->' +
         '</FeatureTypeStyle>' +
-        '<!--chartSld-->' +
+        '<!--vizSld-->' +
         '</UserStyle>' +
         '</StyledLayerDescriptor>',
 
@@ -408,13 +442,16 @@ appModule.factory('sldTemplateService', [function() {
             '</Rule>' +
             '</FeatureTypeStyle></UserStyle></StyledLayerDescriptor>',
 
-        weightedPointTemplate: '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd">' +
-            '<UserStyle>' +
-            '<FeatureTypeStyle>' +
-            '{0}' +
-            '</FeatureTypeStyle>' +
-            '</UserStyle>' +
-            '</StyledLayerDescriptor>',
+        // weightedPointTemplate: '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd">' +
+        //     '<UserStyle>' +
+        //     '<FeatureTypeStyle>' +
+        //     '{0}' +
+        //     '</FeatureTypeStyle>' +
+        //     '</UserStyle>' +
+        //     '</StyledLayerDescriptor>',
+        weightedPointTemplate: '<FeatureTypeStyle>' +
+        '{0}' +
+        '</FeatureTypeStyle>',
 
         rasterColorTemplate: '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd">' +
             '<UserStyle>' +

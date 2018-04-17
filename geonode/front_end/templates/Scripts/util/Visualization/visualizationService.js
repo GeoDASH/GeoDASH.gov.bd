@@ -1,14 +1,27 @@
 appModule.factory('visualizationService', ['urlResolver', 'layerRepository', 'sldGenerator', 'sldTemplateService', 'layerStyleGenerator', 'layerRenderingModeFactory', 'dirtyManager', 'interactionHandler', 'mapModes', 'utilityService', '$q',
 function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerStyleGenerator, layerRenderingModeFactory, dirtyManager, interactionHandler, mapModes, utilityService, $q) {
     var visualizationFolder = "Content/visualization/";
-    var visualizationTypes = { heatmap: 'Heatmap', chart:'Chart'
-    // weightedPoint: 'Weighted Point', 
+    var visualizationTypes = { heatmap: 'Heatmap', chart:'Chart',
+     weightedPoint: 'Bubble Map', 
     // choropleth: 'Choropleth', 
     // rasterBand: 'Raster Band', 
     };
+
+
     
-    function getWeightedPointSld(config, layer) {
-        var style = angular.copy(layer.getDefaultStyle());
+    // style.graphicName, style.strokeColor, style.strokeWidth,
+    // strokeDashstyles.getDashedArray(style),
+    // style.fillColor, fillOpacity, style.pointRadius, style.name, style.userStyle,
+    function getWeightedPointSld(config, layer, dataValues) {
+        var style = factory.getDefaultStyleForPoint();
+        var styleSettings = config.default;
+        style.fillColor = styleSettings.fillColor;
+        style.fillOpacity = styleSettings.fillOpacity;
+        style.strokeColor = styleSettings.strokeColor;
+        style.strokeOpacity = styleSettings.strokeOpacity;
+        style.strokeWidth = styleSettings.strokeWidth;
+        style.transparency = styleSettings.transparency;
+        //var style = angular.copy(layer.getDefaultStyle());
 
         for (var i = 0; i < config.kindOfPoints; i++) {
             config.classes[i].isFirstClass = i == 0;
@@ -42,6 +55,19 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
     }
 
     var factory = {
+        getDefaultStyleForPoint: function(){
+            return {
+                graphicName: 'circle', 
+                pointRadius: 10, 
+                strokeDashstyle: 'solid', 
+                strokeColor: '#000000', 
+                strokeOpacity: 1,
+                fillColor: '#ffffff', 
+                strokeWidth: 1, 
+                transparency: 0.7, 
+                fillOpacity: 0.7
+             };
+        },
         getDefaultVisualizationSettings: function (layer) {
             if (layer.ShapeType == 'point') {
                 return [
@@ -53,13 +79,13 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
                         opacity: 0.5,
                         style: null
                     },
-                    /*{
+                    {
                         name: visualizationTypes.weightedPoint,
                         attributeId: null,
                         kindOfPoints: 5,
                         differentiationPixel: 5
                     },
-                    {
+                    /*{
                         name: visualizationTypes.choropleth,
                         attributeId: null,
                         divisions: 5,
@@ -76,6 +102,12 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
                     //     style: null,
                     //     algorithm: factory.choroplethAlgorithms[0].value,
                     // },
+                    {
+                        name: visualizationTypes.weightedPoint,
+                        attributeId: null,
+                        kindOfPoints: 5,
+                        differentiationPixel: 5
+                    },
                     {
                         name: visualizationTypes.chart,
                         chartId: factory.chartTypes[0].value,
@@ -195,9 +227,35 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
                     var sld = sldGenerator.getHeatmapSld(config);
                     q.resolve(sld);
                     break;
-                /*case visualizationTypes.weightedPoint:
-                    return saveWeightedPoint(config, layer);
-                case visualizationTypes.choropleth:
+                case visualizationTypes.weightedPoint:
+                    layerRepository.getColumnMinMaxValues(layer.getId(), [config.attributeId])
+                    .success(function(data){
+                        var ranges = factory.getRanges(data[config.attributeId][0], data[config.attributeId][1], config.kindOfPoints);
+                        config.classes = ranges;
+                        var sld = getWeightedPointSld(config, layer, data.data);
+                        q.resolve(sld);
+                    });
+                    // layerRepository.getColumnValues(layer.getId(), config.attributeId)
+                    // .success(function(data) {
+                    //     var selectedAttributes = utilityService.getChartSelectedAttributes(config);
+                    //     var selectedAttributeIds = _.map(selectedAttributes, function(item){ return item.numericAttribute.Id;});
+                    //     if (selectedAttributes.length == 0) {
+                    //         q.resolve("");
+                    //     }
+                    //     else{
+                    //         var attributeValues = data.values;
+                    //         layerRepository.getColumnMinMaxValues(layer.getId(), selectedAttributeIds)
+                    //         .then(function(data){
+                    //             var sld = getWeightedPointSld(config, data.data);
+                    //             q.resolve(sld);
+                    //         });
+                    //     }
+                    // });
+                    break;
+                    // var sld = sldGenerator.getWeightedPointSld(config);
+                    // q.resolve(sld);
+                    //return saveWeightedPoint(config, layer);
+                /*case visualizationTypes.choropleth:
                     return saveChoropleth(config, layer);
                 case visualizationTypes.rasterBand:
                     return saveRasterBandColor(config, layer);*/
