@@ -700,7 +700,7 @@ table.gd-list-table tr td .media-body {
     position:absolute;
     color:#fff;
     left:25px;
-    top:0px;
+    top:-10px;
 }
 #gd-header .badge-notify{
     background:#67bd0a;
