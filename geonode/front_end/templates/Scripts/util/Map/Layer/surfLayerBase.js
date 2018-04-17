@@ -44,7 +44,7 @@
             };
 
             this.setSortOrder = function (sortOrder) {
-                layerInfo.SortOrder = sortOrder;
+                _thisLayer.SortOrder = sortOrder;
             };
 
             this.getStyleName = function () {
