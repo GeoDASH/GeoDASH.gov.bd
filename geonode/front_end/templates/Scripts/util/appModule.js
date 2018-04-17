@@ -337,6 +337,7 @@ $scope.$on('LayerAdded', function(e, layer) {
     //     })
     // });
     // console.log(olLayer);
+    layer.SortOrder = mapService.sortableLayers.length + 1;
     $scope.mapService.addDataLayer(layer, false);
 });
 var sidePaneStyles = {

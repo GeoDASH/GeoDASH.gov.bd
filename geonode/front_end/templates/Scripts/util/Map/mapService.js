@@ -25,6 +25,7 @@
                 "source": layer.source,
                 "name": layer.Name,
                 "title": layer.Name,
+                "order": layer.SortOrder,
                 "visibility": layer.IsVisible,
                 "opacity": 1,
                 "group": "background",
@@ -39,7 +40,7 @@
 
         function _map(name, abstract, organizationId, categoryId) {
             var sources = [];
-            var layers = map.layers;
+            var layers = map.sortableLayers;
             var mapped_layers = [];
             var mapped_sources = {};
             i = 0;

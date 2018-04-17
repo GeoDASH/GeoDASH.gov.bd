@@ -9,12 +9,13 @@
             stop: function() {
                 var sortOrderMappings = [];
 
-                angular.forEach(mapService.sortableLayers, function(surfLayer, order) {
+                for(let order = 0; order < mapService.sortableLayers.length; order++) {
+                    let surfLayer = mapService.sortableLayers[order];
                     surfLayer.setSortOrder(parseInt(order) + 1);
                     sortOrderMappings.push({ LayerId: surfLayer.getId(), SortOrder: surfLayer.getSortOrder() });
-                });
+                };
                 mapService.updateLayerViewOrders();
-                mapRepository.updateSortOrder(sortOrderMappings);
+                // mapRepository.updateSortOrder(sortOrderMappings);
             },
             axis: 'y',
             containment: ".root-node"

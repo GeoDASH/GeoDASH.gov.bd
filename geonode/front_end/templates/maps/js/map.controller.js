@@ -218,11 +218,11 @@
 
 
         function setLayers() {
-            self.MapConfig.map.layers.forEach(function(layer) {
+            self.MapConfig.map.layers.forEach(function(layer, ind) {
                 var url = self.MapConfig.sources[layer.source].url;
                 if (url) {
                     layer.geoserverUrl = re.test($window.location.pathname) ? getCqlFilterUrl(url) : url;
-                    mapService.addDataLayer(oldLayerService.map(layer), false);
+                    mapService.addDataLayer(oldLayerService.map(layer, ind), false);
                     ol.extent.extend(extent, layer.bbox);
                 }
             });

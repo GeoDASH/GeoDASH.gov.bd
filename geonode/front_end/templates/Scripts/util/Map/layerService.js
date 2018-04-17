@@ -23,7 +23,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
         return {
             "LayerId": layer.Name || layer.name,
             "Name": layer.Name || layer.name,
-            "SortOrder": order || 0,
+            "SortOrder": layer.order || order || 0,
             // "LastUpdateOn": "2017-10-10T11:10:26.083Z",
             "ClassifierDefinitions": {},
             "CanWrite": true,
