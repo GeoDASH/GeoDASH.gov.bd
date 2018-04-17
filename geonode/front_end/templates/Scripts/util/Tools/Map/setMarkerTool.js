@@ -9,6 +9,12 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
         this.elevationLayerName = "";
         var isMarkerToolEnabled = false;
         this.markerToolEvent = undefined;
+        var vectorSource = new ol.source.Vector({
+        });
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+        });
+        map.addLayer(vectorLayer);
 
         function createPopup() {
             container = document.getElementById('popup');
@@ -63,16 +69,17 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
             });
 
             iconFeature.setStyle(iconStyle);
-
-            var vectorSource = new ol.source.Vector({
-                features: [iconFeature]
-            });
-
-            var vectorLayer = new ol.layer.Vector({
-                source: vectorSource
-            });
-
-            map.addLayer(vectorLayer);
+            //
+            // var vectorSource = new ol.source.Vector({
+            //     features: [iconFeature]
+            // });
+            //
+            // var vectorLayer = new ol.layer.Vector({
+            //     source: vectorSource
+            // });
+            //
+            // map.addLayer(vectorLayer);
+            vectorSource.addFeature(iconFeature);
             return iconFeature;
         }
 
@@ -149,6 +156,12 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
             if (!isMarkerToolEnabled) enableSetMarkerTool();
             else disableSetMarkerTool();
             return isMarkerToolEnabled;
+        };
+        this.clearAllMarkers=function () {
+            if(vectorSource){
+                vectorSource.clear();
+                if(popup) popup.setPosition(undefined);
+            }
         };
 
         function getSettings() {
