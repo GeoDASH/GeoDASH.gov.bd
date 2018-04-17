@@ -43,7 +43,7 @@
                     });
                     var featureId = features.join(",");
                     if (surfLayer) {
-                        var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.DataId);
+                        var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
                         LayerService.getWFSWithGeom('api/geoserver/', requestObj, false).then(function(response) {
                             attributeGridService.highlightFeature(response);
                             selectedFeatures=$scope.selectedFeatures;
@@ -100,7 +100,7 @@
                         });
                         var featureId = features.join(",");
                         if (surfLayer) {
-                            var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.DataId);
+                            var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
                             LayerService.getWFSWithGeom('api/geoserver/', requestObj, false).then(function(response) {
                                 attributeGridService.highlightFeature(response);
                                 selectedFeatures=$scope.selectedFeatures;
@@ -205,7 +205,7 @@
             var startIndex = currentPageSize * currentPage - currentPageSize;
             var requestObj = {
                 request: 'GetFeature',
-                typeName: surfLayer.DataId,
+                typeName: surfLayer.LayerId,
                 startIndex: startIndex,
                 count: currentPageSize,
                 maxFeatures: currentPageSize,
