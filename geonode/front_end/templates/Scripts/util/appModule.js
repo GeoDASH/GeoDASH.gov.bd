@@ -1,10 +1,11 @@
 ﻿﻿var appModule = angular.module("appModule", ['repositoryModule', 'mapModule', 'ui.bootstrap', 'tree', 'colorpicker.module', 'app.helpers', 'surfToastr', 'handsOnTableModule',
-'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination'
+'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination', 'sarsha.spinner'
 ])
 .config(function($httpProvider, $interpolateProvider) {
 // $httpProvider.defaults.withCredentials = true;
 $interpolateProvider.startSymbol('[{');
 $interpolateProvider.endSymbol('}]');
+$httpProvider.interceptors.push('spinnerHttpInterceptor');
 })
 .run(['$rootScope', '$window', '$timeout', '$http', 'mapRepository', 'mapService', 'dirtyManager', 'surfToastr', 'urlResolver', 'userProfileService', 'mapAccessLevel', '$modal', 'layerService', 'interactionHandler', 'GeoLocationTool', 'LocationSearchTool', 'ActiveLayerTool', 'AllSelectableLayerTool', 'google', 'SurfMap', 'layerRenderingModeFactory', 'ZoomTrackerTool', 'ZoomToLayerTool', 'BaseMapTool', 'reprojection', 'mapTools', 'mapToolsFactory', 'onZoomHandler', '$cookies', 'LayerService','jantrik.Event',
 function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyManager, surfToastr, urlResolver, userProfileService, mapAccessLevel, $modal, layerService, interactionHandler, GeoLocationTool, LocationSearchTool, ActiveLayerTool, AllSelectableLayerTool, google, SurfMap, layerRenderingModeFactory, ZoomTrackerTool, ZoomToLayerTool, BaseMapTool, reprojection, mapTools, mapToolsFactory, onZoomHandler, $cookies, LayerService,Event) {
