@@ -278,6 +278,10 @@
                         showFeaturePreviewDialog(data, requestObj);
                     });
                 };
+                $scope.routeConfig={
+                    layerId : undefined,
+                    radius :undefined
+                };
                 $scope.getLayers = function () {
                     var layers = mapService.getLayers();
                     var customArray = [];
