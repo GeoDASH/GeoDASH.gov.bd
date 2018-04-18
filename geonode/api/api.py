@@ -1145,7 +1145,7 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                 if resource:
                     group = resource.group
                     if request.user not in group.get_managers():
-                        out['error'] = 'You are not allowed to approve this layer'
+                        out['error'] = 'You are not allowed to approve this resource'
                         out['success'] = False
                         status_code = 400
                     else:
@@ -1169,9 +1169,9 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                         comment_body = json.loads(request.body).get('comment')
                         comment_subject = json.loads(request.body).get('comment_subject')
                         if action.upper() == 'APPROVED':
-                            resource.status = 'APPROVED'
+                            resource.status = 'ACTIVE'
                         elif action.upper() == 'DENIED':
-                            resource.status = 'APPROVED'
+                            resource.status = 'DENIED'
                         resource.last_auditor = request.user
                         resource.save()
 
@@ -1215,7 +1215,7 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                         resource_audit_activity.save()
 
                         out['success'] = 'True'
-                        out['message'] = 'Approved Layer Successfully'
+                        out['message'] = 'Approved Resource Successfully'
                         status_code = 200
 
 
