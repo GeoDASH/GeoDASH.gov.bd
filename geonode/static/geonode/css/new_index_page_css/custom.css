@@ -1,6 +1,6 @@
 body {
 	font-family: 'Roboto', sans-serif;
-	padding-top: 107px;
+	padding-top: 83px;
 	padding-bottom: 248px;
 	overflow-x: hidden;
 }
@@ -8,29 +8,13 @@ body {
 	background-color: rgba(255, 255, 255, 0.97);
 	padding: 15px;
 	border-bottom: 1px solid #ccc;
-}
-.container {
-	width: 100%;
-}
-#navbar {
-	margin-top: 18px;
-}
-.navbar-brand {
-	background-image: url(geodash-logo.png);
-	height: 76px;
-	width: 172px;
-	text-indent: -99999px;
+	margin-bottom: 0;
 }
 .nav-left {
 	padding-left: 20px;
 }
 .nav-right {
 	float: right;
-}
-.navbar-nav > li > a {
-	font-size: 16px;
-	padding-top: 8px;
-	padding-bottom: 8px;
 }
 .header-nav li a {
 	color: #4b4b4b;
@@ -224,12 +208,6 @@ footer {
 	transform: translate(0px, 0px) scale(1) rotate(0deg) skew(0deg, 0deg);
 	transition: all 1s ease 0s;
 }
-.search-sub-menu {
-	position: absolute;
-	right: 66px;
-	z-index: 99;
-	top: 18px;
-}
 .btn {
 	border-radius: 0;
 	padding: 8px 12px;
@@ -237,12 +215,9 @@ footer {
 .btn-signin {
 	border: 1px solid #3896e2;
 	color: #3896e2 !important;
+	margin-left: 15px;
 }
-.btn-language {
-	padding: 2px 5px !important;
-	margin-top: 5px;
-	border-radius: 4px;
-}
+
 .count {
 	padding: 40px 15px;
 	border-right: 1px solid #e0e0e0;
@@ -411,10 +386,6 @@ ul.offer-list li {
 	-ms-flex-align: center;
 	-webkit-align-items: center;
 	align-items: center;
-}
-.profile_picture img
-{
-    border-radius: 50%;
 }
 
 /* Small devices (tablets, 768px and up) */
