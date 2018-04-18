@@ -3,7 +3,9 @@ mapModule.directive('routePopUpDirective', [
     function (mapService, LayerService, $timeout, mapToolsFactory, $http, SurfMap, $cookies, urlResolver, $modal, $q) {
         return {
             restrict: 'EA',
-            scope: {},
+            scope: {
+                routeConfig : '='
+            },
             templateUrl: "/static/Templates/Tools/Map/routeDirectionOverlay.html",
             controller: [
                 '$scope', '$rootScope', 'mapService', '$timeout', '$compile', 'surfToastr',
@@ -93,17 +95,7 @@ mapModule.directive('routePopUpDirective', [
                         var html = '<ul class="list-group">\n' +
                             '                <button class="list-group-item" ng-click="call(true)" style="cursor: pointer" ng-hide="sourceCoordinates.length>0">Direction from here </button>\n' +
                             '                <button class="list-group-item" ng-click="call(false)" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Direction to there </button>\n' +
-                            '                <button class="list-group-item" ng-show="sourceCoordinates.length>0"> \n' +
-                            '                    <div class="dropdown">\n' +
-                            '                        <span class="dropbtn" style="cursor: pointer"\n' + '>Direction from layers</span>\n' +
-                            '                        <div class="dropdown-content">\n' +
-                            '                            <a style="cursor: pointer"ng-repeat="(key, value) in layers track by $index" \n' +
-                            ' ng-click="routeFromLayer(value.Name)">[{value.Name}]</a>\n' +
-                            '                        </div>\n' +
-                            '                    </div>\n' +
-                            '                </button>\n' +
-                            '<button class="list-group-item" ng-click="showInput()" ng-show="sourceCoordinates.length>0" style="cursor: pointer">Set Layer Search Radius</button>\n' +
-                            '<button class="list-group-item" style="cursor: default" ng-show="show && sourceCoordinates.length>0"> <div class="col-md-9"><div class="input-group"> <input type="number" ng-model="bufferArea" min="0" class="form-control" aria-describedby="basic-addon2"><span class="input-group-addon" id="basic-addon2">K.M.</span> </div></div><div class="col-md-3"><input type="button" ng-click="showInput()" class="btn btn-primary btn-sm" value="Save"></div></button>\n' +
+                            '                <button class="list-group-item" ng-click="routeFromLayer()" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Direction From layer </button>\n' +
                             '<button class="list-group-item" ng-show="sourceCoordinates.length>0" ng-click="resetAll()">Reset All</button>' +
                             '<button class="list-group-item" style="cursor: pointer"ng-click="searchForBuffer()">Buffer Search</button>' +
                             '            </ul>';
@@ -275,11 +267,13 @@ mapModule.directive('routePopUpDirective', [
                         closer.onclick();
                     };
                     var service = new google.maps.DistanceMatrixService();
-                    $scope.routeFromLayer = function (layer) {
+                    $scope.routeFromLayer = function () {
+                        var layer=$scope.routeConfig.layerId;
+                        $scope.bufferArea=$scope.routeConfig.radius;
                         var center = $scope.sourceCoordinates;
                         var centerLongLat = ol.proj.transform([center[0], center[1]], 'EPSG:3857', 'EPSG:4326');
-                        if(!$scope.bufferArea){
-                            surfToastr.error("Set buffer area in kilometers","Error");
+                        if(!$scope.bufferArea || !layer){
+                            surfToastr.error("Set nearest route configuration","Error");
                             $scope.showInput();
                             return;
                         }
@@ -341,11 +335,16 @@ mapModule.directive('routePopUpDirective', [
                                      }
                                 }
                             }else {
-                                surfToastr.warning('Maximum 25 points are allowed but got '+mapFeatures.length+' points from radius search.', 'Warning');
+                                var message= mapFeatures.length == 0 ? 'Please Increase radius. Have gotten '+ mapFeatures.length+' points this radius.' :
+                                                'Please reduce radius. Maximum 25 points are allowed but got '+ mapFeatures.length+' points from this radius.';
+
+                                surfToastr.warning(message, 'Warning');
                             }
                         });
                     };
                     $scope.resetAll = function () {
+                        $scope.routeConfig.layerId=undefined;
+                        $scope.routeConfig.radius=undefined;
                         if (!angular.equals(sourceFeature, {}))
                             removeFeature(sourceFeature);
                         if (!angular.equals(destinationFeature, {}))

@@ -29,6 +29,9 @@ return {
                 if($scope.buttons["areaMeasurementTool"].isActive) $scope.content='Click to draw area';
                 else $scope.content='';
             };
+            $scope.clearAllMeasurementOverLay=function () {
+                   $scope.clearDrawings();
+            };
         }
     ]
 };
