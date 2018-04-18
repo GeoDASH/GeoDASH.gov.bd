@@ -18,7 +18,7 @@ class GeoserverWFSListAPIView(ListAPIView, GeoServerMixin):
         data = dict(request.query_params, access_token=access_token)
         query = self.get_configuration(data)
         query.update(dict(SERVICE='WFS'))
-        params = self.getAttributesPermission(data.get('typeNames', data.get('typeName', [None])[0]))
+        params = self.getAttributesPermission(data.get('typeNames', data.get('typeName', [None]))[0])
         if not kwargs.get('include_geometry', False):
              params.remove('the_geom')
 
