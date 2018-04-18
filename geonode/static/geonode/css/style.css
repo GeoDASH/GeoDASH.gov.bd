@@ -3847,6 +3847,13 @@ font-weight: bold;
 #show-notification-msg
 {
     width: 465px;
+    position: absolute;
+    right: 0;
+}
+.notifications
+{
+    right: 84px !important;
+    top: 60px !important;
 }
 .vNav.nav-tabs > li
 {
