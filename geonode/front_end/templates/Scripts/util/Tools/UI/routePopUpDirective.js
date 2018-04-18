@@ -335,7 +335,10 @@ mapModule.directive('routePopUpDirective', [
                                      }
                                 }
                             }else {
-                                surfToastr.warning('Maximum 25 points are allowed but got '+mapFeatures.length+' points from radius search.', 'Warning');
+                                var message= mapFeatures.length == 0 ? 'Please Increase radius. Have gotten '+ mapFeatures.length+' points this radius.' :
+                                                'Please reduce radius. Maximum 25 points are allowed but got '+ mapFeatures.length+' points from this radius.';
+
+                                surfToastr.warning(message, 'Warning');
                             }
                         });
                     };
