@@ -6,6 +6,25 @@ class AnalyticsMixin(object):
     """
     Analytics model mixin: format data, group data
     """
+    def filter_response(self, model, key, results):
+        model_dict = dict()
+        for r in results:
+            if 'object_id' in r:
+                r[key+'_id'] = r.pop('object_id')
+            try:
+                if r[key+'_id'] in model_dict:
+                    obj = model_dict[r[key+'_id']]
+                else:
+                    obj = model.objects.get(id=r[key+'_id'])
+                    model_dict[r[key+'_id']] = obj
+            except Exception:
+                results.remove(r)
+            else:
+                r.update({'name': obj.title, 
+                        key + '_organization': obj.owner.organization,
+                        key + '_category':obj.category.identifier if obj.category else None, 
+                        key + '_organization': obj.group.title})
+        return results
 
     def get_analytics(self, data, keys):
         grouper = itemgetter(*tuple(keys))

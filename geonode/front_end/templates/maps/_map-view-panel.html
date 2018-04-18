@@ -1,7 +1,7 @@
 <div class="navbar" style="margin: 0; padding: 0;min-height:0;" ng-cloak ng-controller="controlButtonsController">
     <div class="navbar-inner map-toolbar" style="padding-right: 0;">
 
-
+        <cursor-tooltip content="tooTipContent"></cursor-tooltip>
         <location-search></location-search>
         <ul class="nav">
 
@@ -33,10 +33,10 @@
                                 </button>
             </li>
             <li>
-                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList"></measurement-buttons>
+                <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></measurement-buttons>
             </li>
             <li>
-                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList"></set-marker>
+                <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></set-marker>
             </li>
             <li>
                 <div class="btn-group">

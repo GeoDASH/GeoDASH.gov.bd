@@ -1108,3 +1108,37 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     overflow-y: auto;
     border: 1px solid #ccc;
 }
+
+/*ui grid css*/
+/*.grid2 .ui-grid-cell-contents {*/
+  /*padding: 1px 1px;*/
+/*}*/
+
+/*.grid2 .ui-grid-render-container-body .ui-grid-header-cell,*/
+/*.grid2 .ui-grid-render-container-left .ui-grid-header-cell,*/
+/*.grid2 .ui-grid-row,*/
+/*.grid2 .ui-grid-cell,*/
+/*.grid2 .ui-grid-cell .ui-grid-vertical-bar {*/
+
+  /*font-size: x-small;*/
+  /*line-height: 20px;*/
+  /*height: 15px !important;*/
+/*}*/
+/*.grid2 .ui-grid-render-container-body .ui-grid-header-cell,*/
+/*.grid2 .ui-grid-render-container-left .ui-grid-header-cell,*/
+/*.grid2 .ui-grid-header-cell {*/
+  /*height: 20px !important;*/
+/*}*/
+/*.grid2 .ui-grid-filter-container {*/
+  /*padding: 1px 3px;*/
+/*}*/
+
+.tooltip {
+  position: relative;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0.7;
+  white-space: nowrap;
+  font: 10pt sans-serif;
+}
