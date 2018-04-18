@@ -3917,6 +3917,11 @@ font-weight: bold;
     right: 0; 
     background-color: #ae4b4b;  
 }
+.top-site-search
+{
+    width: 233px;
+}
+
 
 
 /* Home page Style start */
@@ -4016,6 +4021,10 @@ footer {
         .search-sub-menu
         {
             right: 52px;
+        }
+        .top-site-search
+        {
+            width: 190px;
         }
       
     
