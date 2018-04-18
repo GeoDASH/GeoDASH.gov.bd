@@ -3904,6 +3904,23 @@ font-weight: bold;
 	width: 145px;
 	text-indent: -99999px;
 }
+.badge-notifymsg {
+    position: absolute;
+    top: -9px;
+    right: 0;
+    background-color: #1ab394;
+}
+.badge-notify
+{
+    position: absolute;
+    top: -9px;
+    right: 0; 
+    background-color: #ae4b4b;  
+}
+.top-site-search
+{
+    width: 233px;
+}
 
 
 
@@ -4004,6 +4021,10 @@ footer {
         .search-sub-menu
         {
             right: 52px;
+        }
+        .top-site-search
+        {
+            width: 190px;
         }
       
     
