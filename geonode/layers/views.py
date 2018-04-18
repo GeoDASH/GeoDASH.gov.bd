@@ -97,6 +97,9 @@ from geonode.utils import build_social_links
 from geonode.geoserver.helpers import cascading_delete, gs_catalog
 from geonode.geoserver.helpers import ogc_server_settings
 from geonode import GeoNodeException
+from geonode.geoserver.helpers import OGC_Servers_Handler
+from geoserver.catalog import Catalog
+
 
 from geonode.groups.models import GroupProfile
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity, StyleExtension, Style
@@ -355,6 +358,12 @@ def layer_upload(request, template='upload/layer_upload.html'):
                 permissions = form.cleaned_data["permissions"]
                 if permissions is not None and len(permissions.keys()) > 0:
                     saved_layer.set_permissions(permissions)
+
+                #save geometry type for the uploaded layer(point, line, polygone)
+                geometry_type = save_geometry_type(saved_layer)
+                saved_layer.geometry_type = geometry_type
+                saved_layer.save()
+
             finally:
                 # Delete temporary files
 
@@ -1577,3 +1586,29 @@ class GeoLocationApiView(CreateAPIView):
 
         return Response(data=dict(data=response, success=success_count, error=failed_count), status=status.HTTP_200_OK)
 # end
+
+
+def save_geometry_type(layer):
+
+    ogc_server_settings = OGC_Servers_Handler(settings.OGC_SERVER)['default']
+    _user, _password = ogc_server_settings.credentials
+    cat = Catalog(ogc_server_settings.internal_rest, _user, _password)
+    layer = cat.get_layer(layer.name)
+
+    name = ''
+    if layer.resource.resource_type == 'featureType':
+        res = layer.resource
+        res.fetch()
+        ft = res.store.get_resources(res.name)
+        ft.fetch()
+
+        for attr in ft.dom.find("attributes").getchildren():
+            attr_binding = attr.find("binding")
+            if "jts.geom" in attr_binding.text:
+                if "Polygon" in attr_binding.text:
+                    name = "polygon"
+                elif "Line" in attr_binding.text:
+                    name = "line"
+                else:
+                    name = "point"
+    return name
