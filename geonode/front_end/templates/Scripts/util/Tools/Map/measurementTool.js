@@ -255,8 +255,8 @@ function MeasurementTool(mapService) {
         }
 
         function enableLineMeasurementEvent() {
-            mapService.removeEvents();
-            mapService.removeUserInteractions();
+            // mapService.removeEvents();
+            // mapService.removeUserInteractions();
             lineMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('LineString');
             isLineMeasurementEnabled=true;
@@ -270,8 +270,8 @@ function MeasurementTool(mapService) {
         }
 
         function enableAreaMeasurementEvent() {
-            mapService.removeEvents();
-            mapService.removeUserInteractions();
+            // mapService.removeEvents();
+            // mapService.removeUserInteractions();
             areaMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('Polygon');
             isAreaMeasurementEnabled=true;
