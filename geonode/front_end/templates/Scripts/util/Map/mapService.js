@@ -325,6 +325,7 @@
                 if (typeof layer.Name === 'undefined') {
                     return;
                 }
+                let deferred = $q.defer();
                 var p1_deferred = $q.defer();
                 var p1 = p1_deferred.promise;
                 mapId = this.getId();
@@ -366,7 +367,11 @@
                 $q.all([p1, p2, p3])
                     .then(function() {
                         map.addLayer(layer, false);
+                        deferred.resolve(layer);
+                    }, function(res){
+                        deferred.reject(res);
                     });
+                    return deferred.promise;
             },
             removeLayer: function(layerId) {
                 map.removeLayer(layerId);
