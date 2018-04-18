@@ -318,7 +318,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     abstract=form.cleaned_data["abstract"],
                     title=form.cleaned_data["layer_title"],
                     metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"],
-                    user_data_epsg=epsg_code
+                    user_data_epsg=epsg_code or 4326
                 )
                 if admin_upload:
                     saved_layer.status = 'ACTIVE'
