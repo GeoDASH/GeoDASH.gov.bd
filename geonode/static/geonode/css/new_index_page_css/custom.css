@@ -387,6 +387,17 @@ ul.offer-list li {
 	-webkit-align-items: center;
 	align-items: center;
 }
+#show-notification-msg
+{
+    width: 465px;
+    position: absolute;
+    right: 0;
+}
+.notifications
+{
+    right: 84px !important;
+    top: 60px !important;
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
