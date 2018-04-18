@@ -66,42 +66,43 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="height: 200px;width: 350px">
-                            <form class="form-inline" style="padding: 10px">
-                                <div class="form-group" style="margin: 5px">
-                                  <label for="email" style="width: 125px;">Search</label>
-                                  <select class="form-control" style="width: 189px;"
-                                    ng-options="item.Id as item.Name for item in layers"
-                                    ng-model="searchItemLayer"
-                                    >
+                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: 200px;width: 350px">
+                        <form class="form-inline" style="padding: 10px">
+                            <div class="form-group" style="margin: 5px">
+                                <label for="email" style="width: 125px;">Search</label>
+                                <select class="form-control" style="width: 189px;"
+                                        ng-options="item.Id as item.Name for item in layers"
+                                        ng-model="searchItemLayer"
+                                >
                                     <option style="display: none;" value="">Select a layer</option>
                                 </select>
 
-                                </div>
-                                <div class="form-group" style="margin: 5px">
-                                  <label for="pwd" style="width: 125px;">from selected item of</label>
-                                  <select class="form-control" style="width: 189px;"
-                                    ng-options="item.Id as item.Name for item in layers"
-                                    ng-model="baseLayer"
-                                    >
-                                 <option style="display: none;" value="">Select a layer</option>
-                                 </select>
-                                 
-                                </div>
-                                <div class="form-group" style="margin: 5px">
-                                        <label style="width: 125px;">within </label>
-                                        <input type="number" style="width: 131px;" class="form-control" ng-model="distance">
-                                        <label>km buffer</label>
-                                </div>
+                            </div>
+                            <div class="form-group" style="margin: 5px">
+                                <label for="pwd" style="width: 125px;">from selected item of</label>
+                                <select class="form-control" style="width: 189px;"
+                                        ng-options="item.Id as item.Name for item in layers"
+                                        ng-model="baseLayer"
+                                >
+                                    <option style="display: none;" value="">Select a layer</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group" style="margin: 5px">
+                                <label style="width: 125px;">within </label>
+                                <input type="number" style="width: 131px;" class="form-control" ng-model="distance">
+                                <label>km buffer</label>
+                            </div>
 
 
-                                 <div class="form-group" style="margin: 5px">
-                                        <label style="width: 125px;"></label>
-                                          <button class="btn btn-primary" ng-click="getCrossLayerData()">Search Cross Layer</button>
+                            <div class="form-group" style="margin: 5px">
+                                <label style="width: 125px;"></label>
+                                <button class="btn btn-primary" ng-click="getCrossLayerData()">Search Cross Layer
+                                </button>
 
-                                </div>
+                            </div>
 
-                              </form>
+                        </form>
                         <!-- <p>
                                 Search 
                                 <select
@@ -125,10 +126,16 @@
                                 <input type="number" ng-model="distance"> km buffer
                         </p>
                          -->
-                        
+
                     </ul>
                   </div>
             </li>
+            <li>
+                <span>
+                    <nearest-configuration route-config="routeConfig"></nearest-configuration>
+                </span>
+            </li>
+
             <li class="divider-vertical" draft-only></li>
             <!-- <li draft-only>
                 <button class="control-button icon" id="close-project" ng-click="action.showCloseProjectOptions()" ng-disabled="(mapService.isEmpty() && !mapService.getMapName()) || isAttributeGridOn" title="Close Map">
@@ -288,6 +295,7 @@
 
     </div>
     <!-- /navbar-inner -->
+    <route-pop-up-directive route-config="routeConfig"></route-pop-up-directive>
 </div>
 
 
@@ -302,7 +310,6 @@
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>
 <base-map-switcher></base-map-switcher>
-<route-pop-up-directive></route-pop-up-directive>
 <div id="map_canvas">
     <div id="gmap" class="map">
     </div>
@@ -386,27 +393,27 @@
 
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $("#panel-bottom").resizable({
             handles: 'n'
-        }).bind( "resize", function(){
+        }).bind("resize", function () {
             var height = $("#panel-bottom").height();
             $('#query-grid').css('height', height);
             $('#attribute-grid').css('height', height);
 
         });
 
-        var total_width = $( "#panel-bottom" ).width();
+        var total_width = $("#panel-bottom").width();
 
         $("#query-grid").resizable({
             grid: [1, 10000]
-        }).bind( "resize", resize_other);
+        }).bind("resize", resize_other);
 
 
         function resize_other(event, ui) {
             var width = $("#query-grid").width();
 
-            if(width > total_width) {
+            if (width > total_width) {
                 width = total_width;
 
                 $('#query-grid').css('width', width);
@@ -414,8 +421,9 @@
 
             $('#attribute-grid').css('width', (total_width - width));
         }
-        $( "#dropdownMenu1" ).click(function() {
-            $( this ).parent().toggleClass( "open" );
+
+        $('.stop-propagation').on('click', function (e) {
+            e.stopPropagation();
         });
     });
     var navAnCount = 0; 
