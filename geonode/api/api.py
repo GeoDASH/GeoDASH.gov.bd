@@ -96,6 +96,7 @@ from geonode.base.models import FavoriteResource, DockedResource
 from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.documents.models import DocumentSubmissionActivity, DocumentAuditActivity
 from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
+from geonode.layers.views import save_geometry_type
 
 CONTEXT_LOG_FILE = None
 
@@ -598,6 +599,13 @@ class LayerUpload(TypeFilteredResource):
                     upload_session = saved_layer.upload_session
                     upload_session.processed = True
                     upload_session.save()
+
+                    # save geometry type for the uploaded layer(point, line, polygone)
+                    geometry_type = save_geometry_type(saved_layer)
+                    saved_layer.geometry_type = geometry_type
+                    saved_layer.save()
+
+
                     # permissions = form.cleaned_data["permissions"]
                     # permissions = str(permissions)
                     # if permissions is not None and len(permissions.keys()) > 0:
