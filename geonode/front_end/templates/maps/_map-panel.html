@@ -13,38 +13,41 @@
                         <geo-location-toggle-button></geo-location-toggle-button>
                     </li>
                     <li class="divider-vertical" draft-only></li> -->
-            <li>
+            <!-- <li ng-repeat="tools in mapToolsSettings">
+                <div inject-template="[{tools.template}]"></div>
+            </li>   -->
+            <li ng-if="toolsIsVisible('navigation-history-buttons')" ng-disabled="isDisable('navigation-history-buttons')">
                 <navigation-history-buttons></navigation-history-buttons>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('zoom-in-out-buttons')">
                 <zoom-in-out-buttons> </zoom-in-out-buttons>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('zoom-to-max-extent-button')">
                 <zoom-to-max-extent-button></zoom-to-max-extent-button>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('zoom-to-extent-button')">
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
             <li class="divider-vertical" draft-only></li>
-            <li draft-only >
+            <li draft-only id="drag" ng-if="toolsIsVisible('drag')">
                 <button class="control-button icon" ng-class="{'active' : !toggleButtonsList['zoomTool'].isActive}"
                 ng-click="removeBoxZooming()" title="Drag">
                     <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
                                 </button>
             </li>
-            <li draft-only>
+            <li draft-only id="toggle-feature-selection" ng-if="toolsIsVisible('toggle-feature-selection')">
                 <button class="control-button icon" ng-class="{'active' : toggleButtonsList['featureSelectionTool'].isActive}"
                 ng-click="toggleSelectFeatureTool()" title="Toggle Feature Selection">
                     <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
                                 </button>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('measurement-button')">
                 <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></measurement-buttons>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('set-marker')">
                 <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></set-marker>
             </li>
-            <li>
+            <li id="measurement-tools" ng-if="toolsIsVisible('measurement-tools')">
                 <div class="btn-group">
                     <button type="button" title="Search Options" class="control-button icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-search" aria-hidden="true"></i>
@@ -52,7 +55,7 @@
                         </button>
                     <ul class="dropdown-menu" style="width: 165px;"> 
                         <li style="float:none" ng-class="{'active' : toggleButtonsList['radiusSearchTool'].isActive}">
-                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i> Radius Search</a>
+                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i>Radius Search</a>
                         </li>
                         <li style="float:none" ng-class="{'active' : toggleButtonsList['bboxSearchTool'].isActive}">
                             <a class="control-button icon" ng-click="action.boundingBoxSearch()" title="BBOX search"><i class="fa fa-square-o" aria-hidden="true"></i>  Bounding Box Search</a>
@@ -60,7 +63,7 @@
                     </ul>
                 </div>
             </li>
-            <li>
+            <li id="search" ng-if="toolsIsVisible('search')">
                 <div class="btn-group">
                     <button class="control-button icon dropdown-toggle" ng-click="getLayers()"  type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -130,7 +133,7 @@
                     </ul>
                   </div>
             </li>
-            <li>
+            <li ng-if="toolsIsVisible('nearest-configuration')">
                 <span>
                     <nearest-configuration route-config="routeConfig"></nearest-configuration>
                 </span>
@@ -149,7 +152,7 @@
             </li> -->
 
 
-            <li draft-only ng-init="action.showOverPassDialog=false">
+            <li ng-if="toolsIsVisible('over-pass-dialog')" id="over-pass-dialog" draft-only ng-init="action.showOverPassDialog=false">
                 <button class="control-button icon svg-ico-button" id="overpass-query" ng-disabled="isAttributeGridOn" ng-click="action.showOverPassDialog=true" remove-focus title="Overpass Query">
                             
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -233,12 +236,12 @@
                     <div></div>
                 </div>
             </li>
-            <li draft-only>
+            <li draft-only id="save" ng-if="toolsIsVisible('save')">
                 <button class="control-button icon" id="save" data-ng-click="action.saveProject()" ng-disabled="!enable.saveProject()" title="Save Map">
                             <i class="fa fa-floppy-o" aria-hidden="true"></i>                                    
                             </button>
             </li>
-            <li draft-only>
+            <li draft-only id="print" ng-if="toolsIsVisible('print')">
                 <!-- @* <button class="control-button icon icon32 icon-print" data-ng-click="action.printPreview()" title="Print">
                                 <span>Print
                                     <br />
@@ -264,30 +267,27 @@
                             <i class="fa fa-binoculars"></i>                                  
                                 </button>
             </li> -->
-            <li draft-only>
+            <li draft-only id="heat-map" ng-if="toolsIsVisible('heat-map')">
                 <button class="control-button icon"
                  ng-class="{'active' : isHeatMapVisible}"
                 ng-click="addHeatMap()" title="Toggle Analytics">
                     <i class="fa fa-bar-chart"></i>                                 
                                 </button>
             </li>
-
-            <li>
-                <!-- <button class="control-button icon icon32 icon-help" ng-click="action.openHelp('Url.Action(" Help ", "Document ")')" title="Open Help">
-                                <span>Help</span>
-                            </button> -->
-            </li>
-            <li>
+            <li id="share-map" ng-if="toolsIsVisible('share-map')">
                 <button class="control-button icon" ng-click="action.shareMap()" ng-hide="action.isNewMap()" title="Share map">
                         <i class="fa fa-share" aria-hidden="true"></i>       
                             </button>
             </li>
-            <li>
+            <li id="legend" ng-if="toolsIsVisible('legend')">
                 <button class="control-button icon"
                         ng-class="{'active' : enableVisualizationTool}"
                         ng-click="toggleVisualizationTool()"  title="Toggle Legend">
                         <i class="fa fa-sun-o" aria-hidden="true"></i>
                             </button>
+            </li>
+            <li id="icon-visualization" ng-if="toolsIsVisible('icon-visualization')"> 
+                <button class="icon icon-visualization" ng-click="showProperties(0)"></button>
             </li>
         </ul>
 
@@ -299,11 +299,11 @@
 </div>
 
 
-<div class="feature-edit-button-container donot-print" ng-init="showLegend=true" ng-show="isEditing()">
+<!-- <div class="feature-edit-button-container donot-print" ng-init="showLegend=true" ng-show="isEditing()">
     <feature-edit-buttons></feature-edit-buttons>
     <location-capture-buttons></location-capture-buttons>
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
-</div>
+</div> -->
 
 <visualization-legend ng-if="enableVisualizationTool"></visualization-legend>
 
@@ -329,7 +329,13 @@
                         <h3 class="panel-title">Query</h3>
                     </div>
                     <div class="panel-body">
-                        
+                            <div class="row">
+                                    <sarsha-spinner name="spinner3">
+                                                <div class="donot-print ng-scope"> 
+                                                    <i class="fa fa-spinner fa-spin"></i> 
+                                                </div>
+                                    </sarsha-spinner>
+                                </div>
                                 <input type="checkbox" checked 
                                 ng-model="isBoundaryBoxEnabled"
                                 
