@@ -61,7 +61,9 @@
                 self.data[d].gridOptions.columnDefs = Object.keys(data[d][0]).map(function(e) {
                     return {
                         field: e,
-                        displayName: e
+                        displayName: e,
+                        minWidth : 120,
+                        width : '*'
                     };
                 });
                 self.data[d].gridOptions.data = data[d];
