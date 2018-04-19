@@ -293,15 +293,16 @@
 
 
 .icon-visualization {
-    background: url("../images/icon_image_sprite_small.png") no-repeat scroll -234px -26px rgba(0, 0, 0, 0);
+    background: url("../images/icon_image_sprite_small.png") no-repeat scroll -271px -25px rgba(0, 0, 0, 0);
+    height: 34px;
 }
 
     .icon-visualization:hover {
-        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -260px -26px rgba(0, 0, 0, 0);
+        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -237px -25px rgba(0, 0, 0, 0);
     }
 
     .icon-visualization[disabled="disabled"], .icon-visualization[disabled="disabled"]:hover {
-        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -286px -26px rgba(0, 0, 0, 0);
+        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -271px -25px rgba(0, 0, 0, 0);
     }
 
 

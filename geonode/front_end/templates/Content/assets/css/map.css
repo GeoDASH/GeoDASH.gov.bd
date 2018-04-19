@@ -87,9 +87,13 @@
     padding: 5px 0 0 0;
     position: absolute;
     right: 8px !important;
-    top: 60px !important;
+    top: 57px !important;
     width: 455px;
     z-index: 2;
+}
+#gd-wrapper .layer-map .surfgis .base-map-switcher
+{
+    top: 107px !important;
 }
 
     .surfgis .base-map-switcher .layers-list {

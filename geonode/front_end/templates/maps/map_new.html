@@ -1,26 +1,33 @@
- {% extends "site_base.html" %} {% load i18n %} {% load base_tags %} {% block title %} {% trans "New Map" %} - {{ block.super }} {% endblock %} {% block head %} {% include 'Templates/_base-headers.html' %} {% endblock %} {% block middle %}
-<style>
-    .layout-content {
-        top: 107px;
-        bottom: 20px;
-    }
-    .sarsha-spinner-container {
-        /* background: transparent; */
+ {% extends "site_base.html" %} {% load i18n %} {% load base_tags %} {% block title %} {% trans "New Map" %} - {{ block.super }} {% endblock %} 
+ {% block head %}
+ {% include 'Templates/_base-headers.html' %}
+ {% endblock %}
+  {% block middle %}
+  <style>
+  .layout-content {
+    top: 107px;
+    bottom: 20px;
+}
+.sarsha-spinner-container {
+        background: transparent;
             color: black;
             top: unset;
             bottom: unset;
     }
-</style>
-<div class="surfgis" ng-controller="appController" ng-app="appModule" ng-click="bodyClicked()">
-        
+
+  </style>
+  
+
+
+
+<div class="surfgis" ng-controller="appController"  ng-app="appModule" ng-click="bodyClicked()">
     <div class="application-font all-children-application-font" ng-controller="MapController" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
             <div class="row">
-                    <sarsha-spinner name="spinner1">
+                    <sarsha-spinner name="spinner2">
                                 <div class="donot-print ng-scope"> 
                                     <i class="fa fa-spinner fa-spin"></i> 
                                 </div>
-                    </sarsha-spinner>
-                </div>
+
         <div class="layout-content">
             <div class="layout-left donot-print" ng-style="layout.leftStyle">
                 {% include 'maps/_layer-properties.html'%}

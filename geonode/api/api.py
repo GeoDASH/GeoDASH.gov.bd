@@ -567,7 +567,7 @@ class LayerUpload(TypeFilteredResource):
                         keywords=keywords,
                         status='ACTIVE',
                         overwrite=False,
-                        charset=form.cleaned_data["charset"],
+                        # charset=form.cleaned_data["charset"],
                         abstract=form.cleaned_data["abstract"],
                         title=form.cleaned_data["layer_title"],
                         metadata_uploaded_preserve=form.cleaned_data["metadata_uploaded_preserve"]
@@ -598,9 +598,10 @@ class LayerUpload(TypeFilteredResource):
                     upload_session = saved_layer.upload_session
                     upload_session.processed = True
                     upload_session.save()
-                    permissions = form.cleaned_data["permissions"]
-                    if permissions is not None and len(permissions.keys()) > 0:
-                        saved_layer.set_permissions(permissions)
+                    # permissions = form.cleaned_data["permissions"]
+                    # permissions = str(permissions)
+                    # if permissions is not None and len(permissions.keys()) > 0:
+                    #     saved_layer.set_permissions(permissions)
                 finally:
                     if tempdir is not None:
                         shutil.rmtree(tempdir)
@@ -1144,7 +1145,7 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                 if resource:
                     group = resource.group
                     if request.user not in group.get_managers():
-                        out['error'] = 'You are not allowed to approve this layer'
+                        out['error'] = 'You are not allowed to approve this resource'
                         out['success'] = False
                         status_code = 400
                     else:
@@ -1155,22 +1156,22 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                                 layer_submission_activity=resource_submission_activity)
                         elif resource_type == 'map':
                             resource_submission_activity = MapSubmissionActivity.objects.get(
-                                layer=resource, group=group, iteration=resource.current_iteration)
+                                map=resource, group=group, iteration=resource.current_iteration)
                             resource_audit_activity = MapAuditActivity(
-                                layer_submission_activity=resource_submission_activity)
+                                map_submission_activity=resource_submission_activity)
                         elif resource_type == 'document':
                             resource_submission_activity = DocumentSubmissionActivity.objects.get(
-                                layer=resource, group=group, iteration=resource.current_iteration)
+                                document=resource, group=group, iteration=resource.current_iteration)
                             resource_audit_activity = DocumentAuditActivity(
-                                layer_submission_activity=resource_submission_activity)
+                                document_submission_activity=resource_submission_activity)
 
 
                         comment_body = json.loads(request.body).get('comment')
                         comment_subject = json.loads(request.body).get('comment_subject')
                         if action.upper() == 'APPROVED':
-                            resource.status = 'APPROVED'
+                            resource.status = 'ACTIVE'
                         elif action.upper() == 'DENIED':
-                            resource.status = 'APPROVED'
+                            resource.status = 'DENIED'
                         resource.last_auditor = request.user
                         resource.save()
 
@@ -1214,7 +1215,7 @@ class LayerMapDocumentApproveDenyAPI(TypeFilteredResource):
                         resource_audit_activity.save()
 
                         out['success'] = 'True'
-                        out['message'] = 'Approved Layer Successfully'
+                        out['message'] = 'Approved Resource Successfully'
                         status_code = 200
 
 
