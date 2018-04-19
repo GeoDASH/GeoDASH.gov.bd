@@ -375,8 +375,8 @@ def map_embed(
 
 # MAPS VIEWER #
 
-# detail_map_view
-def map_view(request, mapid, snapshot=None, template='maps/detail_map_view.html'):
+# map_edit
+def map_view(request, mapid, snapshot=None, template='maps/map_edit.html'):
     """
     The view that returns the map composer opened to
     the map with the given map ID.
@@ -514,7 +514,7 @@ def clean_config(conf):
         return conf
 
 
-def new_map(request, template='maps/map_new.html'):
+def new_map(request, template='maps/map_edit.html'):
     config = new_map_config(request)
     context_dict = {
         'config': config,
