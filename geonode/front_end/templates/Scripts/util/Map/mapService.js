@@ -321,7 +321,7 @@
             //         });
             //     }
             // },
-            addDataLayer: function(layer) {
+            addDataLayer: function(layer,preventZoom) {
                 if (typeof layer.Name === 'undefined') {
                     return;
                 }
@@ -366,7 +366,7 @@
 
                 $q.all([p1, p2, p3])
                     .then(function() {
-                        map.addLayer(layer, false);
+                        map.addLayer(layer, preventZoom);
                         deferred.resolve(layer);
                     }, function(res){
                         deferred.reject(res);

@@ -321,26 +321,22 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 }
             };
 
-            $scope.layers = [];
-            $scope.searchItemLayer;
-            $scope.baseLayer;
-            $scope.distance = 0;
-            var source = $window.GeoServerHttp2Root;
-
-            $scope.getCrossLayerData = function() {
+            $scope.getCrossLayerData = function () {
+                var meterPerDegree = 111325;
+                var radius = ($scope.distance * 1000) / meterPerDegree;
                 var requestObj = {
                     //service: 'WFS',
                     request: 'GetFeature',
                     typeName: $scope.searchItemLayer,
-                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + $scope.distance * 1000 + ", meters)",
+                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
                     version: '1.0.0',
                     maxFeatures: 100,
                     outputFormat: 'json',
                     exceptions: 'application/json'
                 };
-                LayerService.getWFS('api/geoserver/', requestObj, false).then(function(response) {
+                LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
                     var data = {};
-                    data[$scope.searchItemLayer] = response.features.map(function(e) {
+                    data[$scope.searchItemLayer] = response.features.map(function (e) {
                         e.properties["Feature_Id"] = e.id;
                         return e.properties;
                     });
@@ -351,6 +347,12 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 layerId: undefined,
                 radius: undefined
             };
+            $scope.layers = [];
+            $scope.searchItemLayer;
+            $scope.baseLayer;
+            $scope.distance = 0;
+            var source = $window.GeoServerHttp2Root;
+
             $scope.getLayers = function() {
                 var layers = mapService.getLayers();
                 var customArray = [];
