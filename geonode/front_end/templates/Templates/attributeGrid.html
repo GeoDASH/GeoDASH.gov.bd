@@ -1,54 +1,39 @@
-﻿
-        <!-- <div class="modal-header"> 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeAttributeGrid()">
-                    <span aria-hidden="true">×</span>
-                </button> 
-                <h4 class="modal-title">Attribute Grid</h4> 
-            </div> -->
-
-
-    <div class="modal-body" style="overflow: visible;padding:0">
-            
-        <!-- <form ng-submit="searchByAttribute()" class="attributeGridFilter form-inline">
-                <div class="form-group">
-            <select class="form-control" ng-model="search.attribute" ng-options="attribute.Name for attribute in gridData.attributeDefinitions">
-                <option value="">Select an Attribute</option>
-            </select>
-            <input class="form-control" type="text" ng-model="search.value" placeholder="search by attribute" ng-disabled="!search.attribute"/>
-            <input type="submit" class="btn btn-primary" value="Search"/>
-        </div>
-        </form> -->
-        <div class="attribute-grid-container">
-            <div ng-if="loading"><i class="fa fa-spinner fa-spin"></i></div>
-            <!-- <div id="attribute-grid" hands-on-table="gridData.attributeRows" config="config" class="hot handsontable"></div> -->
-            <div id="   " ui-grid="gridOptions" 
-            ui-grid-edit 
-            ui-grid-resize-columns 
-            ui-grid-selection 
-            ui-grid-cellnav
-            class="grid"></div>
-        </div>
-    </div>
-    <div class="modal-footer" style="padding: 5px;">
-
-        <div style="float: left;">
+﻿<div ng-if="loading"><i class="fa fa-spinner fa-spin"></i></div>
+<!-- <div id="attribute-grid" hands-on-table="gridData.attributeRows" config="config" class="hot handsontable"></div> -->
+<div id="grid-bottom" ui-grid="gridOptions"
+     ui-grid-edit
+     ui-grid-resize-columns
+     ui-grid-auto-resize
+     ui-grid-selection
+     ui-grid-cellnav
+     ui-grid-move-columns
+     ui-grid-exporter
+     style="height: 220px">
+</div>
+<div class="modal-footer" style="padding: 5px;height: 50px">
+    <div class="row">
+        <div class="col-md-6 pull-left text-left">
             Showing
-            <select ng-model="pagination.itemsPerPage" ng-change="itemPerPageChanged()" ng-options="pageSize as pageSize for pageSize in pagination.pageSizes" style="width: 50px; height: 25px; padding: 1px; margin-bottom: 0;"></select>
+            <select ng-model="pagination.itemsPerPage" ng-change="itemPerPageChanged()"
+                    ng-options="pageSize as pageSize for pageSize in pagination.pageSizes"
+                    ></select>
             of <b>[{pagination.totalItems}]</b> items
         </div>
-
-        <pagination first-text="<<" last-text=">>" previous-text="<" next-text=">" total-items="pagination.totalItems" page="pagination.currentPage" max-size="2" class="pagination-sm" boundary-links="true" rotate="false" items-per-page="pagination.itemsPerPage" on-select-page="onPageSelect(page)"></pagination>
-        <div draft-only ng-if="!data.isReadonly">
-            <input type="button" ng-click="saveChanges()" class="btn btn-primary" value="Save"/>
-            <button class="btn btn-default" ng-click="closeAttributeGrid()">
-                Cancel
-            </button>
+        <div class="col-md-6 pull-right">
+            <pagination first-text="<<" last-text=">>" previous-text="<" next-text=">"
+                        total-items="pagination.totalItems"
+                        page="pagination.currentPage" max-size="2" class="pagination-sm" boundary-links="true"
+                        rotate="false"
+                        items-per-page="pagination.itemsPerPage" on-select-page="onPageSelect(page)"></pagination>
+            <div draft-only ng-if="!data.isReadonly">
+                <input type="button" ng-click="saveChanges()" class="btn btn-primary" value="Save"/>
+                <button class="btn btn-default" ng-click="closeAttributeGrid()">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
-
-
-
-
+</div>
 
 <style>
     .attribute-grid-container {
@@ -58,21 +43,21 @@
         border: 1px solid #ccc;
     }
 
-        .attribute-grid-container .htCore th {
-            cursor: pointer;
-        }
+    .attribute-grid-container .htCore th {
+        cursor: pointer;
+    }
 
     .tbl-attribute-grid .input-small, .pagination {
         margin: 0;
     }
 
-        .pagination li {
-            cursor: pointer;
-        }
+    .pagination li {
+        cursor: pointer;
+    }
 
-            .pagination li.disabled {
-                cursor: default;
-            }
+    .pagination li.disabled {
+        cursor: default;
+    }
 
     .no-item-found {
         font-style: italic;
