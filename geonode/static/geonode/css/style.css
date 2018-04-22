@@ -14,7 +14,7 @@ html {
   }
 
 body{
-    padding-top: 107px;
+    padding-top: 71px;
     padding-bottom: 248px;
 }
 *:focus {
@@ -408,17 +408,6 @@ table.gd-list-table tr td .media-body {
 
 .header123{
     height:100%;
-}
-#gd-header {
-    background: #fff;
-    z-index:100;
-}
-#gd-header .gd-title-geodash{
-    color:#5ea9dd;
-    font-weight:bold;
-    padding:15px 10px;
-    float:right;
-    font-size:20px;
 }
 
 #gd-header.sticky{
@@ -3133,7 +3122,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     left: 75px;*/
     /*background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.9);*/
-    overflow-x: hidden;
+   /* overflow-x: hidden;
     transition: 0.5s;
 } */
 @media (max-width: 767px) {
@@ -3375,10 +3364,6 @@ width: 80%;
     padding-right: 15px;
 
 }
-.navbar-right
-{
-    margin-right: 0;
-}
 .dropBox {
     background-color: #fff;
     height: auto;
@@ -3588,7 +3573,7 @@ width: 80%;
 {
     position: fixed;
     width: 100%;
-    top: 84px;
+    top: 72px;
     z-index: 50;
     background-color: #f3f3f3;
 }
@@ -3878,10 +3863,7 @@ font-weight: bold;
 {
     top: 0;
 }
-.navbar-fixed-top
-{
-    height: 84px;
-}
+
 .header-expand-button
 {
     position: absolute;
@@ -3930,13 +3912,6 @@ font-weight: bold;
 }
 
 
-
-/* Home page Style start */
-.navbar {
-	background-color: rgba(255, 255, 255, 0.97);
-	padding: 15px;
-    border-bottom: 1px solid #ccc;
-}
 .navbar-nav > li > a {
 	font-size: 16px;
 	padding-top: 8px;
@@ -3945,25 +3920,21 @@ font-weight: bold;
 .header-nav li a {
 	color: #4b4b4b;
 }
-#navbar {
-	margin-top: 18px;
-}
+
 .header-nav li a span.caret {
 	color: #3896e2;
 }
 .navbar-nav > li > .dropdown-menu {
 	border-radius: 0;
 }
-#navbar {
-    margin-top: 8px;
-}
-.nav-left {
-    padding-left: 20px;
-}
 .nav > li > a:focus, .nav > li > a:hover {
 	background: none;
 	color: #209cd0;
 }
+
+
+/* Home page Style start */
+
 .btn {
 	border-radius: 0;
 	padding: 8px 12px;
@@ -3997,7 +3968,7 @@ font-weight: bold;
 .btn-language {
 	padding: 2px 5px !important;
 	border-radius: 4px;
-	margin: 5px -15px 0 10px;
+	margin: 5px 0 0 10px;
 }
 footer {
 	background-color: #1c2025;
