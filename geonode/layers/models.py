@@ -119,6 +119,7 @@ class Layer(ResourceBase):
     charset = models.CharField(max_length=255, default='UTF-8')
 
     upload_session = models.ForeignKey('UploadSession', blank=True, null=True)
+    geometry_type = models.CharField(max_length=200, null=True, blank=True)
 
     @property
     def is_remote(self):

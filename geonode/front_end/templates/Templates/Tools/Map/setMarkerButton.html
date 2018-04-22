@@ -48,9 +48,29 @@
         content: "✖";
     }
 </style>
-<button class="control-button icon" data-ng-click="toggleSetMarkerTool()" title="Click To Add Marker" ng-class="{'active' : buttons['setMarkerTool'].isActive}">
-        <i class="fa fa-map-marker" aria-hidden="true"></i>        
-</button>
+
+<li>
+    <div class="btn-group">
+        <button type="button" title="Marker Options" class="control-button icon dropdown-toggle" data-toggle="dropdown"
+                ng-class="{'active' : buttons['setMarkerTool'].isActive}"
+                aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" style="width: 165px;">
+            <li style="float:none" ng-class="{'active' : buttons['setMarkerTool'].isActive}">
+                <a class="control-button icon" ng-click="toggleSetMarkerTool()" title="Set Marker">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i> Set Marker</a>
+            </li>
+            <li style="float:none">
+                <a class="control-button icon" ng-click="clearAllMarker()" title="Clear all markers">
+                    <i class="fa fa-trash" aria-hidden="true"></i> Clear Marker</a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+
 
 <div id="popup" class="ol-popup" style="min-width:150px">
     <a href="javascript:void(0)" id="popup-closer" class="ol-popup-closer"></a>

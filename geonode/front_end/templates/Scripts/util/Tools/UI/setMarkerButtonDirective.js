@@ -12,8 +12,8 @@ function setMarker(mapTools) {
         },
         templateUrl: '/static/Templates/Tools/Map/setMarkerButton.html',
         controller: [
-            '$scope',
-            function($scope) {
+            '$scope','$timeout',
+            function($scope,$timeout) {
                 angular.extend($scope, mapTools.setMarkerTool);
                 $scope.setMarkerToolStatus=$scope.$parent.toggleButtonsList['setMarkerTool'];
                 $scope.toggleSetMarkerTool=function () {
@@ -21,7 +21,14 @@ function setMarker(mapTools) {
                     $scope.buttons['setMarkerTool'].isActive=$scope.setMarker();
                     if($scope.buttons['setMarkerTool'].isActive) $scope.content='Click to set marker';
                     else $scope.content='';
-                }
+                };
+                $scope.clearAllMarker=function () {
+                  $scope.clearAllMarkers();
+                };
+                var inIt=function () {
+                   $scope.enableInitially() ;
+                };
+                $timeout(inIt,0);
             }
         ]
     };

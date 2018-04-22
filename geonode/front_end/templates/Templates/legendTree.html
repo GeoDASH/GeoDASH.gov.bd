@@ -1,12 +1,17 @@
 <div>
-    <ul class="root-node" style="padding-bottom: 10px;">
+    <ul style="padding-bottom: 10px;">
         <li>
             <div class="scrollable-pane">
-                <ul ui-sortable="sortableOptions" ng-model="mapService.sortableLayers" style="list-style: none; padding-bottom: 10px !important; margin-left: 0 !important;padding-left:0">
+                <ul style="list-style: none; padding-bottom: 10px !important; margin-left: 0 !important;padding-left:0">
 
-                    <li ng-repeat="layer in mapService.sortableLayers" ng-show="rootNode.isExpanded" class="tree-node" style="margin: 0">
+                    <li ng-repeat="layer in mapService.getLayers()" ng-show="rootNode.isExpanded" class="tree-node" style="margin: 0">
                         <table style="width: 100%">
                             <tr>
+                                <td style="min-width: 10px; white-space: nowrap">
+                                    <i ng-dblclick="stopPropagation($event)" ng-if="layer.getClassifierDefinitions().selected && layer.getClassifierDefinitions().selected.length > 0 && layer.isSourceFileExists()"
+                                       ng-click="stopPropagation($event); layer.isExpandedLegend = !layer.isExpandedLegend;" style="cursor: pointer"
+                                       ng-class="{'fa-caret-right':!layer.isExpandedLegend, 'fa-caret-down':layer.isExpandedLegend}" class="fa"></i>
+                                </td>
                                 <td class="node-icons" style="width: 15px; white-space: nowrap">
                                     <div class="shape-type-icon">
                                         <style-preview-small feature-type="layer.getFeatureType()" custom-template="/static/Templates/legendStylePreviewSmall.html" style-hash="layer.getDefaultStyle()"></style-preview-small>
@@ -29,7 +34,7 @@
                             </tr>
                         </table>
 
-                        <ul style="list-style: none; margin-left: 30px;" ng-init="initializeGroups(layer)">
+                        <ul style="list-style: none; margin-left: 30px;" ng-if="layer.isExpandedLegend && layer.isSourceFileExists()" ng-init="initializeGroups(layer)">
                             <i ng-repeat-start="group in layer.groups" style="cursor: pointer;"
                                ng-class="{'fa-caret-right':!group.isExpanded, 'fa-caret-down':group.isExpanded}"
                                class="fa">

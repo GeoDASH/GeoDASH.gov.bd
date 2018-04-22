@@ -10,6 +10,7 @@ function MeasurementTool(mapService) {
         var isAreaMeasurementEnabled=false;
         var lineMeasurementEvent=undefined;
         var areaMeasurementEvent=undefined;
+        var measurementOverlays=[];
 
         var vector = new ol.layer.Vector({
             source: source,
@@ -250,11 +251,12 @@ function MeasurementTool(mapService) {
                 positioning: 'bottom-center'
             });
             map.addOverlay(measureTooltip);
+            measurementOverlays.push(measureTooltip);
         }
 
         function enableLineMeasurementEvent() {
-            mapService.removeEvents();
-            mapService.removeUserInteractions();
+            // mapService.removeEvents();
+            // mapService.removeUserInteractions();
             lineMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('LineString');
             isLineMeasurementEnabled=true;
@@ -268,8 +270,8 @@ function MeasurementTool(mapService) {
         }
 
         function enableAreaMeasurementEvent() {
-            mapService.removeEvents();
-            mapService.removeUserInteractions();
+            // mapService.removeEvents();
+            // mapService.removeUserInteractions();
             areaMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('Polygon');
             isAreaMeasurementEnabled=true;
@@ -292,6 +294,14 @@ function MeasurementTool(mapService) {
             else disableAreaMeasurementEvent();
             return isAreaMeasurementEnabled;
         };
+        this.clearDrawings=function () {
+            if(source){
+                source.clear();
+                angular.forEach(measurementOverlays,function (overlay) {
+                    overlay.setPosition(undefined);
+                })
+            }
+        }
 
     };
 }

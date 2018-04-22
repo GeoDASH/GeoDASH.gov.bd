@@ -1,10 +1,11 @@
-﻿var appModule = angular.module("appModule", ['repositoryModule', 'mapModule', 'ui.bootstrap', 'tree', 'colorpicker.module', 'app.helpers', 'surfToastr', 'handsOnTableModule',
-'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination'
+﻿﻿var appModule = angular.module("appModule", ['repositoryModule', 'mapModule', 'ui.bootstrap', 'tree', 'colorpicker.module', 'app.helpers', 'surfToastr', 'handsOnTableModule',
+'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination', 'sarsha.spinner'
 ])
 .config(function($httpProvider, $interpolateProvider) {
 // $httpProvider.defaults.withCredentials = true;
 $interpolateProvider.startSymbol('[{');
 $interpolateProvider.endSymbol('}]');
+$httpProvider.interceptors.push('spinnerHttpInterceptor');
 })
 .run(['$rootScope', '$window', '$timeout', '$http', 'mapRepository', 'mapService', 'dirtyManager', 'surfToastr', 'urlResolver', 'userProfileService', 'mapAccessLevel', '$modal', 'layerService', 'interactionHandler', 'GeoLocationTool', 'LocationSearchTool', 'ActiveLayerTool', 'AllSelectableLayerTool', 'google', 'SurfMap', 'layerRenderingModeFactory', 'ZoomTrackerTool', 'ZoomToLayerTool', 'BaseMapTool', 'reprojection', 'mapTools', 'mapToolsFactory', 'onZoomHandler', '$cookies', 'LayerService','jantrik.Event',
 function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyManager, surfToastr, urlResolver, userProfileService, mapAccessLevel, $modal, layerService, interactionHandler, GeoLocationTool, LocationSearchTool, ActiveLayerTool, AllSelectableLayerTool, google, SurfMap, layerRenderingModeFactory, ZoomTrackerTool, ZoomToLayerTool, BaseMapTool, reprojection, mapTools, mapToolsFactory, onZoomHandler, $cookies, LayerService,Event) {
@@ -353,22 +354,7 @@ mapService.setId(undefined);
 
 $scope.mapService = mapService;
 $scope.mapAccessLevel = mapAccessLevel;
-$scope.$on('LayerAdded', function(e, layer) {
-    // console.log(layer);
-    // console.log($scope.mapService);
 
-    // var olLayer = new ol.layer.Tile({
-    //     extent: [layer.BoundingBox[1]._minx, layer.BoundingBox[1]._miny, layer.BoundingBox[1]._maxx, layer.BoundingBox[1]._maxy],
-    //     source: new ol.source.TileWMS({
-    //         url: '/proxy/?url=http://172.16.0.247:8080/geoserver/wms',
-    //         params: { 'LAYERS': layer.Name, 'TILED': true },
-    //         serverType: 'geoserver'
-    //     })
-    // });
-    // console.log(olLayer);
-    layer.SortOrder = mapService.sortableLayers.length + 1;
-    $scope.mapService.addDataLayer(layer, false);
-});
 var sidePaneStyles = {
     false: {
         width: '28px;'

@@ -13,7 +13,10 @@
                     <span ng-if="tab.active" class="selected-down-arrow"></span>
                 </tab-heading>
 
-                <div ui-grid="ctrl.data[tab.name].gridOptions" ui-grid-pagination ui-grid-selection style="height: 300px;margin-top: 15px;"  class="grid"></div>
+                <div ui-grid="ctrl.data[tab.name].gridOptions" ui-grid-pagination ui-grid-selection
+                     ui-grid-auto-resize ui-grid-resize-columns
+                        ui-grid-move-columns ui-grid-exporter
+                     style="height: 300px;margin-top: 15px;"  class="grid"></div>
             </tab>
         </tabset>
         <div style="clear:both"></div>
