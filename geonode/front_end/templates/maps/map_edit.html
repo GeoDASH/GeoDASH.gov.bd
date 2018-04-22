@@ -2,7 +2,11 @@
 {% include 'Templates/_base-headers.html' %}
 {% endblock %}
 {% block middle %}
-<div class="surfgis" ng-controller="appController" ng-app="appModule" >
+
+
+
+<div class="surfgis" ng-controller="appController" ng-app="appModule">
+
    <div class="application-font all-children-application-font"  ng-controller="MapController" ng-click="bodyClicked()" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
       
 
@@ -70,5 +74,38 @@
         </div>
 
 </div>
+<style>
+        .header-expand-button
+    {
+        display: block;
+    }
+    .layout-content {
+    top: 0;
+}
+.navbar-fixed-top
+{
+    top: 0;
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-delay: 0.2s;
+    transform: translate3d(0, -100%, 0);
+}
+.headerSlideOutDown
+{
+    top: 0;
+    transition-property: transform;
+	transition-duration: 0.2s;
+	transition-delay: 0.2s;
+    transform: translate3d(0, 0, 0);
+}
+.headerSlideInUp
+{
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-delay: 0.2s;
+    transform: translate3d(0, -100%, 0);
+    top: 0;
+}
+
+    </style>
    {% endblock %} {% block footer %}{% endblock %}
-   

@@ -48,22 +48,28 @@
     }
     .map-toolbar
     {
-        top: 62px;
+        top: 40px;
+        width: auto;
+        height: 34px;
     }
+
     .panel-left
     {
-        top: 149px !important;
+        top: 127px !important;
     }
     .surfgis .on-map-button
     {
-        top: 64px !important;
+        top: 42px !important;
     }
-    
+.layer-information{
+    height: calc(100vh - 127px) !important;
+    overflow-y: scroll;
+}
    
 </style>
 
     <div class="gd-content">
-      <div class="gd-content-body layer-test" >
+      <div class="gd-content-body layer-map" >
         <div class="row">
         <div class="panel-container content-p-top">
 
@@ -817,7 +823,7 @@
                             <div class="gd-content-body map-details-info" ng-controller="MapController">
                                 <!-- <div id="embedded_map"> -->
                                     <!-- <div id="the_map"></div> -->
-                                    {% include 'maps/_map-view-panel.html'%}
+                                    {% include 'maps/_map-panel.html'%}
         
                                 <!-- </div> -->
                             </div>

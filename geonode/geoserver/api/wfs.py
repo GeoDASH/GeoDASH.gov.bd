@@ -18,13 +18,13 @@ class GeoserverWFSListAPIView(ListAPIView, GeoServerMixin):
         data = dict(request.query_params, access_token=access_token)
         query = self.get_configuration(data)
         query.update(dict(SERVICE='WFS'))
-
-        result = self.get_response_from_geoserver('wfs', query)
-
+        params = self.getAttributesPermission(data.get('typeNames', data.get('typeName', [None]))[0])
         if not kwargs.get('include_geometry', False):
-            for feature in result.get('features'):
-                if 'geometry' in feature:
-                    del feature['geometry']
+             params.remove('the_geom')
+
+        query.update(dict(propertyName=','.join(params)))
+        
+        result = self.get_response_from_geoserver('wfs', query)
 
         return Response(result, status=status.HTTP_200_OK)
 

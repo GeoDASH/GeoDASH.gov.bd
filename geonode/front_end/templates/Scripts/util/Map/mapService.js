@@ -25,6 +25,7 @@
                 "source": layer.source,
                 "name": layer.Name,
                 "title": layer.Name,
+                "order": layer.SortOrder,
                 "visibility": layer.IsVisible,
                 "opacity": 1,
                 "group": "background",
@@ -39,7 +40,7 @@
 
         function _map(name, abstract, organizationId, categoryId) {
             var sources = [];
-            var layers = map.layers;
+            var layers = map.sortableLayers;
             var mapped_layers = [];
             var mapped_sources = {};
             i = 0;
@@ -324,6 +325,7 @@
                 if (typeof layer.Name === 'undefined') {
                     return;
                 }
+                let deferred = $q.defer();
                 var p1_deferred = $q.defer();
                 var p1 = p1_deferred.promise;
                 mapId = this.getId();
@@ -365,7 +367,11 @@
                 $q.all([p1, p2, p3])
                     .then(function() {
                         map.addLayer(layer, preventZoom);
+                        deferred.resolve(layer);
+                    }, function(res){
+                        deferred.reject(res);
                     });
+                    return deferred.promise;
             },
             removeLayer: function(layerId) {
                 map.removeLayer(layerId);
