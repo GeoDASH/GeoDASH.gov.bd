@@ -409,17 +409,6 @@ table.gd-list-table tr td .media-body {
 .header123{
     height:100%;
 }
-#gd-header {
-    background: #fff;
-    z-index:100;
-}
-#gd-header .gd-title-geodash{
-    color:#5ea9dd;
-    font-weight:bold;
-    padding:15px 10px;
-    float:right;
-    font-size:20px;
-}
 
 #gd-header.sticky{
     min-height: 50px;
@@ -3133,7 +3122,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     left: 75px;*/
     /*background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.9);*/
-    overflow-x: hidden;
+    /*overflow-x: hidden;
     transition: 0.5s;
 } */
 @media (max-width: 767px) {
@@ -3374,10 +3363,6 @@ width: 80%;
     padding-left: 15px;
     padding-right: 15px;
 
-}
-.navbar-right
-{
-    margin-right: 0;
 }
 .dropBox {
     background-color: #fff;
@@ -3878,10 +3863,7 @@ font-weight: bold;
 {
     top: 0;
 }
-.navbar-fixed-top
-{
-    height: 72px;
-}
+
 .header-expand-button
 {
     position: absolute;
@@ -3905,37 +3887,8 @@ font-weight: bold;
     top: 18px;
     height: 17px;
 }
-.navbar-brand {
-	background-image: url(geodash-logo.png);
-	height: 62px;
-	width: 175px;
-    text-indent: -99999px;
-    margin-left: -5px !important;
-    margin-top: 4px;
-}
-.badge-notifymsg {
-    position: absolute;
-    top: -9px;
-    right: 0;
-    background-color: #1ab394;
-}
-.badge-notify
-{
-    position: absolute;
-    top: -9px;
-    right: 0; 
-    background-color: #ae4b4b;  
-}
-.top-site-search
-{
-    width: 233px;
-}
 
-.navbar {
-	background-color: rgba(255, 255, 255, 0.97);
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 0;
-}
+
 .navbar-nav > li > a {
 	font-size: 16px;
 	padding-top: 8px;
@@ -3944,20 +3897,12 @@ font-weight: bold;
 .header-nav li a {
 	color: #4b4b4b;
 }
-#navbar {
-	margin-top: 18px;
-}
+
 .header-nav li a span.caret {
 	color: #3896e2;
 }
 .navbar-nav > li > .dropdown-menu {
 	border-radius: 0;
-}
-#navbar {
-    margin-top: 16px;
-}
-.nav-left {
-    padding-left: 20px;
 }
 .nav > li > a:focus, .nav > li > a:hover {
 	background: none;
