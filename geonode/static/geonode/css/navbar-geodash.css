@@ -1,0 +1,27 @@
+.navbar {
+	background-color: rgba(255, 255, 255, 0.97);
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 0;
+}
+.navbar-fixed-top
+{
+    height: 72px;
+}
+.navbar-brand {
+	background-image: url(geodash-logo.png);
+	height: 62px;
+	width: 175px;
+    text-indent: -99999px;
+    margin-left: -5px !important;
+    margin-top: 4px;
+}
+#navbar {
+    margin-top: 16px;
+}
+.nav-left {
+	padding-left: 20px;
+}
+.navbar-right
+{
+    margin-right: 0;
+}

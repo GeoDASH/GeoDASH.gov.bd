@@ -409,17 +409,6 @@ table.gd-list-table tr td .media-body {
 .header123{
     height:100%;
 }
-#gd-header {
-    background: #fff;
-    z-index:100;
-}
-#gd-header .gd-title-geodash{
-    color:#5ea9dd;
-    font-weight:bold;
-    padding:15px 10px;
-    float:right;
-    font-size:20px;
-}
 
 #gd-header.sticky{
     min-height: 50px;
@@ -3375,10 +3364,6 @@ width: 80%;
     padding-right: 15px;
 
 }
-.navbar-right
-{
-    margin-right: 0;
-}
 .dropBox {
     background-color: #fff;
     height: auto;
@@ -3871,10 +3856,7 @@ font-weight: bold;
 {
     top: 0;
 }
-.navbar-fixed-top
-{
-    height: 72px;
-}
+
 .header-expand-button
 {
     position: absolute;
@@ -3898,20 +3880,8 @@ font-weight: bold;
     top: 18px;
     height: 17px;
 }
-.navbar-brand {
-	background-image: url(geodash-logo.png);
-	height: 62px;
-	width: 175px;
-    text-indent: -99999px;
-    margin-left: -5px !important;
-    margin-top: 4px;
-}
 
-.navbar {
-	background-color: rgba(255, 255, 255, 0.97);
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 0;
-}
+
 .navbar-nav > li > a {
 	font-size: 16px;
 	padding-top: 8px;
@@ -3920,20 +3890,12 @@ font-weight: bold;
 .header-nav li a {
 	color: #4b4b4b;
 }
-#navbar {
-	margin-top: 18px;
-}
+
 .header-nav li a span.caret {
 	color: #3896e2;
 }
 .navbar-nav > li > .dropdown-menu {
 	border-radius: 0;
-}
-#navbar {
-    margin-top: 16px;
-}
-.nav-left {
-    padding-left: 20px;
 }
 .nav > li > a:focus, .nav > li > a:hover {
 	background: none;
