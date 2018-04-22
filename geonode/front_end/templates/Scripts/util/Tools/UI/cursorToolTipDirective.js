@@ -9,7 +9,6 @@ mapModule.directive('cursorTooltip', [
             controller: [
                 '$scope', '$rootScope', 'mapService', '$timeout', '$compile', 'surfToastr',
                 function ($scope, $rootScope, mapService, $timeout, $compile, surfToastr) {
-                    console.log($scope.content);
                     var map = mapService.getMap();
                     var tooTipOverLay;
 

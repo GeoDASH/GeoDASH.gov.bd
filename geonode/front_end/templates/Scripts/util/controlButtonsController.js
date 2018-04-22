@@ -259,11 +259,13 @@
                 var source = $window.GeoServerHttp2Root;
 
                 $scope.getCrossLayerData = function () {
+                    var meterPerDegree = 111325
+                    var radius=($scope.distance * 1000)/meterPerDegree;
                     var requestObj = {
                         //service: 'WFS',
                         request: 'GetFeature',
                         typeName: $scope.searchItemLayer,
-                        CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + $scope.distance * 1000 + ", meters)",
+                        CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
                         version: '1.0.0',
                         maxFeatures: 100,
                         outputFormat: 'json',

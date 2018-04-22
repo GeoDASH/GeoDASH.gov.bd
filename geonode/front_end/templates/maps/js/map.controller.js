@@ -214,19 +214,28 @@
         mapService.setMapName(self.MapConfig.about.title);
         mapService.setId(self.MapConfig.id);
         mapService.setMeta(self.MapConfig.about);
-        var extent = [6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905]; // ol.extent.createEmpty();
-
-
+        var extent = ol.extent.createEmpty();//[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905]; // ;
         function setLayers() {
             self.MapConfig.map.layers.forEach(function(layer, ind) {
                 var url = self.MapConfig.sources[layer.source].url;
                 if (url) {
                     layer.geoserverUrl = re.test($window.location.pathname) ? getCqlFilterUrl(url) : url;
-                    mapService.addDataLayer(oldLayerService.map(layer, ind), false);
-                    ol.extent.extend(extent, layer.bbox);
+                    mapService.addDataLayer(oldLayerService.map(layer, ind), true);
+                   extent= ol.extent.extend(extent, layer.bbox);
                 }
             });
-            map.getView().fit(extent, map.getSize()); 
+            if(ol.extent.isEmpty(extent)) extent=[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905];
+            var center=ol.extent.getCenter(extent);
+            $timeout(function () {
+                var pan = ol.animation.pan({
+                    duration: 10000,
+                    source: (map.getView().getCenter()),
+                    start: +new Date()
+                });
+                var zoom = ol.animation.zoom({duration: 10000, resolution: map.getView().getResolution()});
+                map.beforeRender(pan, zoom);
+                map.getView().fit(extent,map.getSize());
+            },3000);
         }
 
         function errorFn() {
@@ -304,7 +313,8 @@
             LayerService.getGeoServerSettings()
                 .then(function(res) {
                     self.geoServerUrl = res.url;
-                    setLayers();
+                    $timeout(setLayers,0);
+                    // setLayers();
                 }, errorFn);
         }
 
