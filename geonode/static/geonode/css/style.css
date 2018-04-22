@@ -14,7 +14,7 @@ html {
   }
 
 body{
-    padding-top: 107px;
+    padding-top: 71px;
     padding-bottom: 248px;
 }
 *:focus {
@@ -3588,7 +3588,7 @@ width: 80%;
 {
     position: fixed;
     width: 100%;
-    top: 84px;
+    top: 72px;
     z-index: 50;
     background-color: #f3f3f3;
 }
@@ -3880,7 +3880,7 @@ font-weight: bold;
 }
 .navbar-fixed-top
 {
-    height: 84px;
+    height: 72px;
 }
 .header-expand-button
 {
@@ -3907,9 +3907,11 @@ font-weight: bold;
 }
 .navbar-brand {
 	background-image: url(geodash-logo.png);
-	height: 53px;
-	width: 145px;
-	text-indent: -99999px;
+	height: 62px;
+	width: 175px;
+    text-indent: -99999px;
+    margin-left: -5px !important;
+    margin-top: 4px;
 }
 .badge-notifymsg {
     position: absolute;
@@ -3929,13 +3931,10 @@ font-weight: bold;
     width: 233px;
 }
 
-
-
-/* Home page Style start */
 .navbar {
 	background-color: rgba(255, 255, 255, 0.97);
-	padding: 15px;
-    border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 0;
 }
 .navbar-nav > li > a {
 	font-size: 16px;
@@ -3955,7 +3954,7 @@ font-weight: bold;
 	border-radius: 0;
 }
 #navbar {
-    margin-top: 8px;
+    margin-top: 16px;
 }
 .nav-left {
     padding-left: 20px;
@@ -3964,6 +3963,10 @@ font-weight: bold;
 	background: none;
 	color: #209cd0;
 }
+
+
+/* Home page Style start */
+
 .btn {
 	border-radius: 0;
 	padding: 8px 12px;
@@ -3997,7 +4000,7 @@ font-weight: bold;
 .btn-language {
 	padding: 2px 5px !important;
 	border-radius: 4px;
-	margin: 5px -15px 0 10px;
+	margin: 5px 0 0 10px;
 }
 footer {
 	background-color: #1c2025;
