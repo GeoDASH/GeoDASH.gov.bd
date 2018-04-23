@@ -305,7 +305,7 @@
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
 </div> -->
 
-<visualization-legend ng-if="enableVisualizationTool"></visualization-legend>
+<visualization-legend ng-show="enableVisualizationTool" class="col-md-3 visulization-legend-container col-md-offset-9"></visualization-legend>
 
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>
@@ -429,10 +429,17 @@
 </script>
 <style>
     .ui-resizable-e {
-        cursor: e-resize;
-        top: 0;
-        bottom: 0;
-        background-color: #00AA88;
+        flex: 0 0 auto;
+        width: 10px;
+        background: url("{{ STATIC_URL }}geonode/images/vsizegrip.png") center center no-repeat #d8d8d8;
+        border-left: 1px solid #c4c4c4;
+        border-right: 1px solid #c4c4c4;
+        float: right;
+        cursor: col-resize;
+    }
+
+    .ui-resizable-e:hover {
+        background: url("{{ STATIC_URL }}geonode/images/vsizegrip.png") center center no-repeat #c9c9c9;
     }
 
     .ui-resizable-se {
