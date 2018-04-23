@@ -108,6 +108,22 @@
 	background: none;
 	color: #209cd0;
 }
+.header-expand-button
+{
+    position: absolute;
+    top:71px;
+    left:50%;
+    z-index:999999;
+    display: none;
+}
+.header-expand-button button
+{
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 0 15px;
+    font-size: 24px;
+    border-top: 0;
+}
 
 /*Start Header navbar media query*/
 @media (max-width: 1300px) {
