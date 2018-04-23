@@ -1082,21 +1082,20 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 .visulization-legend-container
 {
     position: absolute;
-    bottom: 60px;
-    right: 0px;
+    /*right: 0px;*/
     z-index: 1005;
     background-color: rgb(255, 255, 255);
-    padding: 10px;
+    padding: 2px;
     border-radius: 4px;
     top: 10%;
-    width: 30%;
-    height: 88%;
-    overflow: scroll;
-
+    /*width: 30%;*/
+    overflow: auto;
+    font-size: x-small;
+    height: auto;
 }
 
 .visulization-legend-container td {
-    padding: 5px;
+    padding: 0px;
 }
 
 .modal.fade.image-previewer-dialog {
