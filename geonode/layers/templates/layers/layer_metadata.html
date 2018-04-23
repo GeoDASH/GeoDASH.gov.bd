@@ -7,6 +7,7 @@
 {% block body_class %}data{% endblock %}
 
 {% block body_outer %}
+ <script src="{{ STATIC_URL }}Content/assets/js/jquery.js"></script>
 <div class="gd-content">
     <div class="gd-content-heading">
         <div class="row">
@@ -29,7 +30,10 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="lead">
-                    <span style="color:red;"> * Marked fields are mandatory </span>
+                    <span style="color:red;"> * Marked fields are mandatory</span>
+                </div>
+                <div class="lead">
+                    <span style="color:red;"> (*) Marked fields are mandatory for layer to push for approval</span>
                 </div>
                 <div class="lead">
                     {% blocktrans with layer.typename as layer_title %}
@@ -167,6 +171,30 @@
           </div>
         </div>
     </div>
+    <script>
+        var mandatoryForPushForApproval=['title', 'date', 'edition', 'abstract', 'restriction_code_type', 'spatial_representation_type', 'resource_type', 'data_quality_statement', 'category'] ;
+        $(function () {
+            $( "label" ).each(function () {
+                var element=this;
+                var forAttribute=element.getAttribute('for');
+                if(forAttribute){
+                    var modelName=forAttribute.split('-')[1];
+                    if(modelName){
+                        if(mandatoryForPushForApproval.includes(modelName)){
+                            var appendElement=$('<span />', {
+                                "class": 'test',
+                                "text": "( * )",
+                                "css": {
+                                    "color": "red"
+                                }
+                            });
+                            appendElement.appendTo(element);
+                        }
+                    }
+                }
+            })
+        })
+    </script>
 </div>
 {% endblock %}
 {% block extra_script %}
