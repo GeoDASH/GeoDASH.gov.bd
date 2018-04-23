@@ -13,8 +13,8 @@ function nearestConfiguration(mapTools) {
         },
         templateUrl: '/static/Templates/Tools/Map/nearestSearchConfiguration.html',
         controller: [
-            '$scope', 'mapService',
-            function ($scope, mapService) {
+            '$scope', 'mapService','$timeout',
+            function ($scope, mapService,$timeout) {
                 $scope.getLayers = function () {
                     var layers = mapService.getLayers();
                     var customArray = [];
@@ -24,6 +24,11 @@ function nearestConfiguration(mapTools) {
                             }
                     });
                     $scope.layers = customArray;
+                    $timeout(function () {
+                        $('.stop-propagation2').on('click', function (e) {
+                            e.stopPropagation();
+                        });
+                    },0)
                 }
             }
         ]
