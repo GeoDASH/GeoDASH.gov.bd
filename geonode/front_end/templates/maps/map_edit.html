@@ -1,5 +1,13 @@
 {% extends "site_base.html" %} {% load i18n %} {% load base_tags %} {% block title %} {% trans "New Map" %} - {{ block.super }} {% endblock %}  {% block head %}
 {% include 'Templates/_base-headers.html' %}
+<style>
+    .sarsha-spinner-container {
+        background: transparent;
+            color: black;
+            top: unset;
+            bottom: unset;
+    }
+</style>
 {% endblock %}
 {% block middle %}
 
@@ -8,7 +16,13 @@
 <div class="surfgis" ng-controller="appController" ng-app="appModule">
 
    <div class="application-font all-children-application-font"  ng-controller="MapController" ng-click="bodyClicked()" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
-      
+    <div class="row">
+        <sarsha-spinner name="spinner1">
+                    <div class="donot-print ng-scope"> 
+                        <i class="fa fa-spinner fa-spin"></i> 
+                    </div>
+        </sarsha-spinner>
+    </div>
 
        <div class="layout-content">
            <div class="layout-left donot-print" ng-style="layout.leftStyle">

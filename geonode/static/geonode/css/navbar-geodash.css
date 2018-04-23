@@ -1,0 +1,167 @@
+.navbar {
+	background-color: rgba(255, 255, 255, 0.97);
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 0;
+}
+.navbar-fixed-top
+{
+    height: 72px;
+}
+.navbar-brand {
+	background-image: url(geodash-logo.png);
+	height: 62px;
+	width: 175px;
+    text-indent: -99999px;
+    margin-left: -5px !important;
+    margin-top: 4px;
+}
+#navbar {
+    margin-top: 16px;
+}
+.nav-left {
+	padding-left: 20px;
+}
+.navbar-right
+{
+    margin-right: 0;
+}
+.layers .navbar-fixed-top
+{
+    top: 0;
+}
+.navbar-nav > li > a {
+	font-size: 16px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.header-nav li a {
+	color: #4b4b4b;
+}
+.header-nav li a span.caret {
+	color: #3896e2;
+}
+.top-site-search
+{
+    width: 233px;
+}
+.profile_picture img
+{
+	border-radius: 50%;
+	width: 38px;
+}
+.profile_picture a
+{
+	padding: 0 !important;
+}
+#gd-header .profile_pic img
+{
+    border-radius: 50%;
+}
+.btn-language {
+	padding: 2px 5px !important;
+	border-radius: 4px;
+	margin: 5px 0 0 10px;
+}
+.btn {
+	border-radius: 0;
+	padding: 8px 12px;
+}
+.btn-primary {
+	background-color: #3896e2;
+	border-color: #3896e2;
+	color: #fff;
+}
+.btn-success {
+	background-color: #159759;
+	border-color: #159759;
+	color: #fff;
+}
+.btn-success:hover {
+	background-color: #1aa060 !important;
+	border-color: #159759 !important;
+	color: #fff !important;
+}
+.btn-signin {
+	border: 1px solid #3896e2;
+	color: #3896e2 !important;
+	margin-left: 10px;
+}
+.dropdown-menu > li > a {
+	padding: 9px 20px;
+}
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover {
+	background-color: #3896e2;
+	color: #fff;
+}
+.dropdown-menu > li > a {
+	padding: 9px 20px;
+}
+.notifications
+{
+    right: 84px !important;
+    top: 55px !important;
+}
+.navbar-nav > li > .dropdown-menu {
+	border-radius: 0;
+}
+.nav > li > a:focus, .nav > li > a:hover {
+	background: none;
+	color: #209cd0;
+}
+
+/*Start Header navbar media query*/
+@media (max-width: 1300px) {
+    
+        .navbar-nav > li > a {
+           padding: 8px;
+           font-size: 14px;
+        }
+        #search_input
+        {
+        width: 155px;
+        font-size: 12px;
+        }
+        .search-sub-menu
+        {
+            right: 52px;
+        }
+        .top-site-search
+        {
+            width: 190px;
+        }
+      
+    
+    }
+	/*End Header navbar media query*/
+	
+	/*Start style for header navbar*/
+    .btn-message   
+    {
+        margin: 0 5px 0 10px; 
+        border-radius: 50% !important;
+        padding: 8px 11px !important;
+    }
+    .btn-notification
+    {
+        margin: 0 5px 0 0; 
+        border-radius: 50% !important;
+        padding: 8px 11px !important;
+    }
+    .dashboard-btn
+    {
+      padding: 0 !important;
+      margin: 3px 0 0;
+
+    }
+    .dashboard-btn button
+    {
+      padding: 5px !important;
+      line-height: 14px;
+
+    }
+    .navbar-right .dropdown-menu
+    {
+        right: -14px;
+        border-radius: 0;
+    }
+     /*End style for header navbar*/
