@@ -220,23 +220,23 @@
                 var url = self.MapConfig.sources[layer.source].url;
                 if (url) {
                     layer.geoserverUrl = re.test($window.location.pathname) ? getCqlFilterUrl(url) : url;
-                    extent= ol.extent.extend(extent, layer.bbox);
+                    if(layer.bbox)
+                        extent= ol.extent.extend(extent, layer.bbox);
                     mapService.addDataLayer(oldLayerService.map(layer, ind), true);
                 }
             });
             if(ol.extent.isEmpty(extent))
                 extent=[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905];
-            var center=ol.extent.getCenter(extent);
             $timeout(function () {
                 var pan = ol.animation.pan({
-                    duration: 10000,
+                    duration: 5000,
                     source: (map.getView().getCenter()),
                     start: +new Date()
                 });
-                var zoom = ol.animation.zoom({duration: 10000, resolution: map.getView().getResolution()});
+                var zoom = ol.animation.zoom({duration: 5000, resolution: map.getView().getResolution()});
                 map.beforeRender(pan, zoom);
                 map.getView().fit(extent,map.getSize());
-            },3000);
+            },1000);
         }
 
         function errorFn() {
