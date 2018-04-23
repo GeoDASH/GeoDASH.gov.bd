@@ -2623,7 +2623,7 @@ body.layer-detail-page #gd-wrapper .container-fluid.padding-zero{
 }
 .map-details-information,
 .layer-information{
-    height: calc(100vh - 84px) !important;
+    height: calc(100vh - 71px) !important;
     overflow-y: scroll;
 }
 .gd-link-style.inaccordion{
@@ -3846,23 +3846,6 @@ font-weight: bold;
 .control-button
 {
     border-right: 1px solid #ccc;
-}
-
-.header-expand-button
-{
-    position: absolute;
-    top:83px;
-    left:50%;
-    z-index:999999;
-    display: none;
-}
-.header-expand-button button
-{
-    border: 1px solid #ccc;
-    background-color: #fff;
-    padding: 0 15px;
-    font-size: 24px;
-    border-top: 0;
 }
 .search-sub-menu {
 	position: absolute;
