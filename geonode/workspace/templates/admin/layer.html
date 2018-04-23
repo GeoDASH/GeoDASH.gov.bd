@@ -22,7 +22,7 @@
         }
         .sidebar {
         position: fixed;
-        top: 84px;
+        top: 105px;
         bottom: 0;
         left: 0;
         z-index: 1000;
@@ -30,18 +30,8 @@
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto;
-        background-color: #384450;
+        background-color: #f5f5f5;
         border-right: 1px solid #eee;
-    }
-    .sidebar ul li a {
-        color: #fff;
-        border-bottom: 1px solid #495a67;
-    }
-    .sidebar ul li a:hover {
-        background-color: #283139;
-    }
-    .sidebar ul li a i{
-        margin-right: 10px;
     }
     .nav-sidebar {
         margin-right: -21px;
@@ -73,11 +63,11 @@
              
              
                      <ul class="nav nav-sidebar">
-                             <li role="presentation" class="active"><a href="{% url "admin-workspace-layer" %}"><i class="fa fa-clone" aria-hidden="true"></i>{% trans "Layers" %}</a></li>
-                             <li role="presentation"><a href="{% url "admin-workspace-map" %}"><i class="fa fa-map" aria-hidden="true"></i>{% trans "Maps" %}</a></li>
-                             <li role="presentation"><a href="{% url "admin-workspace-document" %}"><i class="fa fa-file" aria-hidden="true"></i>{% trans "Documents" %}</a></li>
-                             <li role="presentation"><a href="{% url "admin-workspace-user-list" %}" ><i class="fa fa-users" aria-hidden="true"></i>{% trans "User List" %}</a></li>
-                             <li role="presentation"><a href="{% url "create-user" %}" ><i class="fa fa-plus-circle" aria-hidden="true"></i>{% trans "Create User" %}</a></li>
+                             <li role="presentation" class="active"><a href="{% url "admin-workspace-layer" %}">{% trans "Layers" %}</a></li>
+                             <li role="presentation"><a href="{% url "admin-workspace-map" %}"> {% trans "Maps" %}</a></li>
+                             <li role="presentation"><a href="{% url "admin-workspace-document" %}">{% trans "Documents" %}</a></li>
+                             <li role="presentation"><a href="{% url "admin-workspace-user-list" %}" >{% trans "User List" %}</a></li>
+                             <li role="presentation"><a href="{% url "create-user" %}" >{% trans "Create User" %}</a></li>
                            </ul>
              
              
