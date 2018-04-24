@@ -112,7 +112,8 @@
 {
     position: absolute;
     top:71px;
-    left:50%;
+    width: 100%;
+    text-align: center;
     z-index:999999;
     display: none;
 }
