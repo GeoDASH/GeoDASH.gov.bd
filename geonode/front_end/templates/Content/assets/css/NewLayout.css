@@ -477,14 +477,14 @@ a
 } */
 .map-toolbar {
     background: rgba(255, 255, 255, 0.95);
-    right: 0;
     top: 12px;
     width: auto;
     height: 34px;
     position: absolute;
-    right: 119px;
+    right: 150px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.30);
     border-radius: 0;
+    padding-right: 0;
 }
 .map-toolbar ul li
 {
@@ -494,7 +494,20 @@ a
 .map-toolbar ul li button
 {
  width: 35px;
+ height: 34px;
 }
+.map-settings-btn
+{
+    top: 0;
+    right: -35px;
+    padding: 0; 
+}
+.map-settings-btn ul li button
+{
+background-color: #237c62;
+color: #fff;
+}
+
 .layout-center
 {
     top: 5px;
@@ -1131,13 +1144,3 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 /*.grid2 .ui-grid-filter-container {*/
   /*padding: 1px 3px;*/
 /*}*/
-
-.tooltip {
-  position: relative;
-  padding: 3px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  opacity: 0.7;
-  white-space: nowrap;
-  font: 10pt sans-serif;
-}
