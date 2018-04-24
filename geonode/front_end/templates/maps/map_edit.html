@@ -7,6 +7,15 @@
             top: unset;
             bottom: unset;
     }
+    .sarsha-spinner {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    top: calc(100vh - 600px);
+    
+    color: #fff;
+}
 </style>
 {% endblock %}
 {% block middle %}
@@ -19,7 +28,8 @@
     <div class="row">
         <sarsha-spinner name="spinner1">
                     <div class="donot-print ng-scope"> 
-                        <i class="fa fa-spinner fa-spin"></i> 
+                        <!-- Loading <i class="fa fa-spinner fa-spin"></i>  -->
+                        <img src="{{ STATIC_URL }}geonode/images/loader.gif" width="100"/>
                     </div>
         </sarsha-spinner>
     </div>
