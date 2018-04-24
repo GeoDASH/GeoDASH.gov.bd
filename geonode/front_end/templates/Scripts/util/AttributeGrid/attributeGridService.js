@@ -105,6 +105,13 @@
                 vectorSource.clear();
                 var mapFeatures = (new ol.format.GeoJSON()).readFeatures(featureJson, { featureProjection: 'EPSG:3857' });
                 vectorSource.addFeatures(mapFeatures);
+                var pan = ol.animation.pan({
+                    duration: 3000,
+                    source: (map.getView().getCenter()),
+                    start: +new Date()
+                });
+                var zoom = ol.animation.zoom({duration: 3000, resolution: map.getView().getResolution()});
+                map.beforeRender(pan, zoom);
                 var extent = mapFeatures[0].getGeometry().getExtent();
                 map.getView().fit(extent,map.getSize());
             },
@@ -218,7 +225,11 @@
                 for (var i = 0; i < attributeDefinitions.length; i++) {
                     if (mapAccessLevel.isPublic && !attributeDefinitions[i].IsPublished) continue;
 
-                    var column = { field: "Attributes." + attributeDefinitions[i].Id, name: attributeDefinitions[i].Id };
+                    var column = { field: "Attributes." + attributeDefinitions[i].Id,
+                        name: attributeDefinitions[i].Id,
+                        minWidth : 80,
+                        width : '*'
+                    };
                     if (attributeTypes.isDateType(attributeDefinitions[i].Type)) {
                         angular.extend(column, { type: "date", dateFormat: "D MMM, YYYY", validator: factory.dateValidator, allowInvalid: false });
                     }

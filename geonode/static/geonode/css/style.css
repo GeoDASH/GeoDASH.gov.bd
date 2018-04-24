@@ -14,7 +14,7 @@ html {
   }
 
 body{
-    padding-top: 71px;
+    padding-top: 107px;
     padding-bottom: 248px;
 }
 *:focus {
@@ -409,6 +409,17 @@ table.gd-list-table tr td .media-body {
 .header123{
     height:100%;
 }
+#gd-header {
+    background: #fff;
+    z-index:100;
+}
+#gd-header .gd-title-geodash{
+    color:#5ea9dd;
+    font-weight:bold;
+    padding:15px 10px;
+    float:right;
+    font-size:20px;
+}
 
 #gd-header.sticky{
     min-height: 50px;
@@ -671,6 +682,10 @@ table.gd-list-table tr td .media-body {
     background-color: #fff;
     text-decoration: none;
     border-bottom: 2px solid #53a4e6;
+}
+#gd-header .logo img{
+    border:none;
+    height:50px;
 }
 #gd-header.sticky .logo img{
     border:none;
@@ -3118,7 +3133,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     left: 75px;*/
     /*background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.9);*/
-   /* overflow-x: hidden;
+    /* overflow-x: hidden;
     transition: 0.5s;
 } */
 @media (max-width: 767px) {
@@ -3360,6 +3375,10 @@ width: 80%;
     padding-right: 15px;
 
 }
+.navbar-right
+{
+    margin-right: 0;
+}
 .dropBox {
     background-color: #fff;
     height: auto;
@@ -3468,7 +3487,7 @@ width: 80%;
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
       color: #555;
       font-size: 14px;
-      height: 38px;
+      height: 34px;
       line-height: 1.42857;
       padding: 6px 12px;
       transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -3569,7 +3588,7 @@ width: 80%;
 {
     position: fixed;
     width: 100%;
-    top: 72px;
+    top: 84px;
     z-index: 50;
     background-color: #f3f3f3;
 }
@@ -3817,6 +3836,10 @@ font-weight: bold;
     font-size: 15px;
     margin-right: 30px;
 }
+#gd-header .profile_pic img
+{
+    border-radius: 50%;
+}
 .close-btn
 {
      color: #d2d2d2;
@@ -3824,10 +3847,7 @@ font-weight: bold;
 #show-notification-msg
 {
     width: 465px;
-    position: absolute;
-    right: 0;
 }
-
 .vNav.nav-tabs > li
 {
     float: none;
@@ -3854,6 +3874,12 @@ font-weight: bold;
     top: 18px;
     height: 17px;
 }
+.navbar-brand {
+	background-image: url(geodash-logo.png);
+	height: 53px;
+	width: 145px;
+	text-indent: -99999px;
+}
 .badge-notifymsg {
     position: absolute;
     top: -9px;
@@ -3867,8 +3893,81 @@ font-weight: bold;
     right: 0; 
     background-color: #ae4b4b;  
 }
+.top-site-search
+{
+    width: 233px;
+}
 
 
+
+/* Home page Style start */
+.navbar {
+	background-color: rgba(255, 255, 255, 0.97);
+	padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+.navbar-nav > li > a {
+	font-size: 16px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.header-nav li a {
+	color: #4b4b4b;
+}
+#navbar {
+	margin-top: 18px;
+}
+.header-nav li a span.caret {
+	color: #3896e2;
+}
+.navbar-nav > li > .dropdown-menu {
+	border-radius: 0;
+}
+#navbar {
+    margin-top: 8px;
+}
+.nav-left {
+    padding-left: 20px;
+}
+.nav > li > a:focus, .nav > li > a:hover {
+	background: none;
+	color: #209cd0;
+}
+.btn {
+	border-radius: 0;
+	padding: 8px 12px;
+}
+.btn-primary {
+	background-color: #3896e2;
+	border-color: #3896e2;
+	color: #fff;
+}
+.btn-success {
+	background-color: #159759;
+	border-color: #159759;
+	color: #fff;
+}
+.btn-success:hover {
+	background-color: #1aa060 !important;
+	border-color: #159759 !important;
+	color: #fff !important;
+}
+.btn-signin {
+	border: 1px solid #3896e2;
+	color: #3896e2 !important;
+}
+.dropdown-menu > li > a {
+	padding: 9px 20px;
+}
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover {
+	background-color: #3896e2;
+	color: #fff;
+}
+.btn-language {
+	padding: 2px 5px !important;
+	border-radius: 4px;
+	margin: 5px -15px 0 10px;
+}
 footer {
 	background-color: #1c2025;
 	color: #a8aeb7;
@@ -3877,3 +3976,75 @@ footer {
 	bottom: 0;
 	width: 100%;
 }
+.dropdown-menu > li > a {
+	padding: 9px 20px;
+}
+/* Home page Style End*/
+
+
+/*Start Header navbar media query*/
+@media (max-width: 1300px) {
+    
+        .navbar-nav > li > a {
+           padding: 7px;
+           font-size: 14px;
+        }
+        #search_input
+        {
+        width: 155px;
+        font-size: 12px;
+        }
+        .search-sub-menu
+        {
+            right: 52px;
+        }
+        .top-site-search
+        {
+            width: 190px;
+        }
+      
+    
+    }
+    /*End Header navbar media query*/
+
+
+    /*Start style for header navbar*/
+    .btn-message   
+    {
+        margin: 0 5px 0 10px; 
+        border-radius: 50% !important;
+        padding: 8px 11px !important;
+    }
+    .btn-notification
+    {
+        margin: 0 5px 0 0; 
+        border-radius: 50% !important;
+        padding: 8px 11px !important;
+    }
+    .profile_picture img
+    {
+        border-radius: 50%;
+        width: 38px;
+    }
+    .profile_picture a
+    {
+        padding: 0 !important;
+    }
+    .dashboard-btn
+    {
+      padding: 0 !important;  
+      margin: 3px 0 0;
+
+    }
+    .dashboard-btn button
+    {
+      padding: 5px !important;
+      line-height: 14px;
+
+    }
+    .navbar-right .dropdown-menu
+    {
+        right: -14px;
+        border-radius: 0;
+    }
+     /*End style for header navbar*/

@@ -33,6 +33,8 @@
             enableSelectAll: true,
             multiSelect: false,
             enableRowHeaderSelection : true,
+            enableGridMenu: true,
+            exporterCsvFilename: ""+ '.csv',
             onRegisterApi: function(gridApi) {
                 $scope.gridApi = gridApi;
                 gridApi.selection.on.rowSelectionChanged($scope, function(rows) {
@@ -89,6 +91,8 @@
                 enableSelectAll: true,
                 multiSelect: false,
                 enableRowHeaderSelection : true,
+                enableGridMenu: true,
+                exporterCsvFilename: surfLayer.Name + '.csv',
                 columnDefs: attributeGridService.getColumns($scope.gridData.attributeDefinitions, attributeTypes),
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
