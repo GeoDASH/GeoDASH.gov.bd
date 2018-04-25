@@ -351,6 +351,12 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 layerId: undefined,
                 radius: undefined
             };
+            $scope.layers = [];
+            $scope.searchItemLayer;
+            $scope.baseLayer;
+            $scope.distance = 0;
+            var source = $window.GeoServerHttp2Root;
+
             $scope.getLayers = function() {
                 var layers = mapService.getLayers();
                 var customArray = [];
