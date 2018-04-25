@@ -253,7 +253,7 @@ function(featureTypes) {
                         if ($scope.isUnique()) {
                             thisClass.alias = thisClass.value;
                         } else {
-                            thisClass.alias = thisClass.rangeMin + ", " + thisClass.rangeMax;
+                            thisClass.alias = thisClass.rangeMin + " - " + thisClass.rangeMax;
                         }
                     }
                 };

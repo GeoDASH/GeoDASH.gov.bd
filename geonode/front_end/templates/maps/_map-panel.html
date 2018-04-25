@@ -100,7 +100,7 @@
 
                             <div class="form-group" style="margin: 5px">
                                 <label style="width: 125px;"></label>
-                                <button class="btn btn-primary" ng-click="getCrossLayerData()">Search Cross Layer
+                                <button class="btn btn-primary" ng-click="getCrossLayerData()" style="width: auto">Search Cross Layer
                                 </button>
 
                             </div>
@@ -388,7 +388,7 @@
     $(document).ready(function () {
         $("#panel-bottom").resizable({
             handles: 'n',
-            autoHide: false,
+            autoHide: false
 
         }).bind("resize", function () {
             var height = $("#panel-bottom").height();

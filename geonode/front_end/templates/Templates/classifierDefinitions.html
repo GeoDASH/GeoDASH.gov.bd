@@ -1,58 +1,57 @@
 ﻿<div style="max-height: 650px;margin-top:15px;">
-    
-        <div ng-if="!isEnvironmentProd" class="row">
-            <div class="col-md-2">
-                <label>
-                    <input draft-only type="radio" ng-model="flags.isRange" value="false" ng-change="radioSelectionChanged()" style="margin-top: 0" />
-                    By Unique
-                </label>
-            </div>
-            <div class="col-md-2">
-                <label>
-                    <input draft-only type="radio" ng-model="flags.isRange" value="true" ng-change="radioSelectionChanged()" style="margin-top: 0" />
-                    By Range
-                </label>
+
+    <div ng-if="!isEnvironmentProd" class="row">
+        <div class="col-md-2">
+            <label class="control-label" style="margin-top: 20px">
+                <input draft-only type="radio" ng-model="flags.isRange" value="false"
+                       ng-change="radioSelectionChanged()" style="margin-top: 0"/>
+                By Unique
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label" style="margin-top: 20px">
+                <input draft-only type="radio" ng-model="flags.isRange" value="true" ng-change="radioSelectionChanged()"
+                       style="margin-top: 0"/>
+                By Range
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Select Attribute</label>
+
+            <select ng-disabled="isEnvironmentProd" draft-only ng-model="flags.field" class="form-control input-sm"
+                    ng-change="dropdownSelectionChanged()" ng-options="i.id as i.name for i in NeededAttributes">
+                <option value="">-- No Item Selected --</option>
+            </select>
+        </div>
+        <div class="col-md-4" draft-only>
+            <label class="control-label">Color Ramp</label>
+            <sti-plt-pkr ng-model="flags.chosenPalette" sti-pkr-options="paletteItems"></sti-plt-pkr>
+        </div>
+        <div class="col-md-2 text-center" ng-if="isUnique()">
+            <div style="margin-top: 25px;">
+                <button type="button" class="btn btn-danger" ng-disabled="chosenValuesForGrid.length == 0"
+                        style="padding: 2px 6px;" ng-click="removeAll()">
+                    <i class="fa fa-minus-circle"></i>&nbsp;Remove All
+                </button>
             </div>
         </div>
+        <div ng-show="isRange()" class="col-md-2">
+            <div class="col-md-8">
+                <label class="control-label">Divisions :</label>
+                <input type="number" class="form-control input-sm" style="width: 100px;" min="1" max="100"
+                       ng-model="flags.division" ng-change="divisionChanged()"/>
+            </div>
+            <div class="col-md-4">
+                <i class="fa fa-spinner fa-spin" style="text-align: center; width: 100%; margin-top: 35px;"
+                   ng-show="isLoading()"></i>
+            </div>
+        </div>
+    </div>
     
         <hr style="margin: 10px 0 5px;" />
-    
+
         <div id="second-section" style="position:relative">
-    
-            <div class="row" style="margin-bottom: 10px;">
-    
-                <div class="col-md-2">
-                    <label class="control-label">Select Attribute</label>
-    
-                    <select ng-disabled="isEnvironmentProd" draft-only ng-model="flags.field" class="form-control input-sm" ng-change="dropdownSelectionChanged()" ng-options="i.id as i.name for i in NeededAttributes">
-                        <option value="">-- No Item Selected --</option>
-                    </select>
-                </div>
-    
-                <div class="col-md-6" draft-only>
-                    <label class="control-label">Color Ramp</label>
-                    <sti-plt-pkr ng-model="flags.chosenPalette" sti-pkr-options="paletteItems"></sti-plt-pkr>
-                </div>
-                <div class="col-md-4 text-right">
-                    <div ng-if="isUnique()" style="margin-top: 25px;">
-                        <button type="button" class="btn btn-danger" ng-disabled="chosenValuesForGrid.length == 0"
-                                style="padding: 2px 6px;" ng-click="removeAll()">
-                            <i class="fa fa-minus-circle"></i>&nbsp;Remove All
-                        </button>
-                    </div>
-                </div>
-            </div>
-    
-            <div ng-show="isRange()">
-                <div class="col-md-3" style="position: absolute;left:572px;top:0;">
-                    <label class="control-label">Divisions :</label>
-                    <input type="number" class="form-control input-sm" style="width: 100px;" min="1" max="100" ng-model="flags.division" ng-change="divisionChanged()" />
-                </div>
-                <div class="col-md-3">
-                    <i class="fa fa-spinner fa-spin" style="text-align: center; width: 100%; margin-top: 35px;" ng-show="isLoading()"></i>
-                </div>
-            </div>
-    
+
             <div style="overflow: hidden; width: 1045px;white-space:nowrap;">
                 <div style="position: relative">
     
