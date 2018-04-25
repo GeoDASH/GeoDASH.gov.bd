@@ -34,7 +34,7 @@
                             </label>
 
                             <div class="col-sm-6">
-                                <input class="form-control input-sm" draft-only type='text' ng-model='nodeData.layer.style.Title' maxlength="100" validatefilename focus-me="true"
+                                <input class="form-control input-sm" draft-only type='text' ng-model='nodeData.layer.style.Title' maxlength="100" validatefilename focus-me="true" ng-change="onTitleChange()"
                                 />
                             </div>
 
@@ -151,7 +151,9 @@
                 <div class="alert alert-warning col-md-8" ng-show="!hasPermission">
                     <strong>Warning!</strong> You do not have permission to change this style properties.
                   </div>
-            <input draft-only class="btn btn-info" ng-if="hasPermission" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
+            <input draft-only class="btn btn-info" ng-if="nodeData.layer.style.id" type="button" value="Duplicate" ng-click="duplicate()"/>
+            
+            <input draft-only class="btn btn-success" ng-if="hasPermission" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
             />
             <button draft-only class="btn btn-inverse" ng-click="cancel()">
                 Cancel
