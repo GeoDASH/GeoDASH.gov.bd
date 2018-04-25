@@ -1,17 +1,8 @@
 body {
 	font-family: 'Roboto', sans-serif;
-	padding-top: 83px;
+	padding-top: 71px;
 	padding-bottom: 248px;
 	overflow-x: hidden;
-}
-.navbar {
-	background-color: rgba(255, 255, 255, 0.97);
-	padding: 15px;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 0;
-}
-.nav-left {
-	padding-left: 20px;
 }
 .nav-right {
 	float: right;
@@ -386,6 +377,17 @@ ul.offer-list li {
 	-ms-flex-align: center;
 	-webkit-align-items: center;
 	align-items: center;
+}
+#show-notification-msg
+{
+    width: 465px;
+    position: absolute;
+    right: 0;
+}
+.notifications
+{
+    right: 84px !important;
+    top: 60px !important;
 }
 
 /* Small devices (tablets, 768px and up) */
