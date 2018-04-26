@@ -109,7 +109,10 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                 style.select, HTMLOptGroupElement, null);
 
             var labelingSld = layerStyleGenerator.getLabelingSld(style.labelConfig, surfLayer.getFeatureType());
-
+            if(style.classifierDefinitions.selected.length>0){
+                var removeDefaultRegex=/<!--default style starts-->[\s\S]*?<!--default style ends-->/g;
+                defaultStyleSld=defaultStyleSld.replace(removeDefaultRegex,"");
+            }
             var classificationSlds = getClassificationSld(surfLayer.getFeatureType(), style.classifierDefinitions, excludeSld);
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");

@@ -22,6 +22,7 @@
 appHelperModule.directive('styleEditor', [
     'strokeDashstyles', 'pointGraphics', 'featureTypes', 'pointGraphicNames', 'polygonFillPatterns', 'pointTextGraphics',
     function (strokeDashstyles, pointGraphics, featureTypes, pointGraphicNames, polygonFillPatterns, pointTextGraphics) {
+        var defaultTemplate= 'static/Templates/styleEditor.html';
         return {
             restrict: 'E',
             scope: {
@@ -29,7 +30,12 @@ appHelperModule.directive('styleEditor', [
                 featureType: '=',
                 isWeightedPoint: '='
             },
-            templateUrl: 'static/Templates/styleEditor.html',
+            templateUrl: function(tElement, tAttrs) {
+                            if(tAttrs.customTemplate){
+                                return tAttrs.customTemplate;
+                            }
+                            return defaultTemplate;
+                    },
             controller: [
                 '$scope',
                 function ($scope) {
