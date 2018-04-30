@@ -46,30 +46,18 @@ class LayerFeatureUploadView(Resource):
                     factory = ClassFactory(extra_field)
                     model_instance = factory.get_model(name=str(layer.title_en), table_name=str(layer.name),
                                                        db=str(layer.store))
-                    # max_pk = model_instance.objects.latest('fid').fid
 
                     try:
-                        with transaction.atomic():
+                        with transaction.atomic(using=str(layer.store)):
                             features = json.loads(request.body).get('features')
                             for feature in features:
-                                # max_pk += 1
-                                obj = model_instance()
-
-
-                                fields = [str(key) for key in feature.keys()]
-                                if 'the_geom' not in fields:
-                                    transaction.set_rollback(True)
-                                    raise DatabaseError()
-                                else:
-                                    for key, value in feature.iteritems():
-                                        setattr(obj, key, value)
-                                    # obj.fid = max_pk
-                                    obj.save()
+                                obj = model_instance(**feature)
+                                obj.save()
 
                     except Exception as ex:
                         out['success'] = False
-                        out['error'] = ex
-                        status_code = 301
+                        out['error'] = ex.message
+                        status_code = 400
                     else:
                         out['success'] = True
                         status_code = 200
@@ -77,7 +65,7 @@ class LayerFeatureUploadView(Resource):
             else:
                 out['error'] = 'Access denied'
                 out['success'] = False
-                status_code = 400
+                status_code = 401
 
             return HttpResponse(json.dumps(out), content_type='application/json', status=status_code)
 
