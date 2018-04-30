@@ -94,5 +94,5 @@ api.register(LayerResourceForBaseLayers())
 api.register(LayerMapDocumentApproveDenyAPI())
 
 
-api.register(LayerFeatureUploadView())
+# api.register(LayerFeatureUploadView())
 api.register(CreateFeaturedLayer())
