@@ -92,11 +92,11 @@ mapModule.factory("mapModes", [function () {
     }
 ]).factory('pointGraphicNames', [
     function () {
-        var graphicNames = ['circle', 'square', /*'star', */'x', 'cross', 'triangle'];
+        var graphicNames = ['circle', 'square', 'star', 'x', 'cross', 'triangle'];
         var graphicIconClass = {
             'circle': 'fa fa-circle fa-fw',
             'square': 'fa fa-square fa-fw',
-            //'star': 'fa fa-star fa-fw',
+            'star': 'fa fa-star fa-fw',
             'x': 'fa fa-times fa-fw',
             'cross': 'fa fa-plus fa-fw',
             'triangle': 'fa fa-play fa-rotate-270 fa-fw'
@@ -112,14 +112,15 @@ mapModule.factory("mapModes", [function () {
     }
 ]).factory('pointTextGraphics', ['urlResolver', function (urlResolver) {
 
-    var textGraphicNames = ['circledText', 'squaredText', 'triangledText', 'circledGraphic', 'squaredGraphic', 'triangledGraphic' ];
+    var textGraphicNames = ['circledText', 'squaredText', 'triangledText', 'circledGraphic', 'squaredGraphic', 'triangledGraphic', 'starGraphic' ];
     var textGraphicIconClasses = {
         'circledText': 'circledText.png',
         'squaredText': 'squaredText.png',
         'triangledText': 'triangledText.png',
         'circledGraphic': 'circledText.png',
         'squaredGraphic': 'squaredText.png',
-        'triangledGraphic': 'triangledText.png'
+        'triangledGraphic': 'triangledText.png',
+        'starGraphic': 'triangledText.png'
     };
 
     _.each(textGraphicIconClasses, function (value, key) {
@@ -153,7 +154,13 @@ mapModule.factory("mapModes", [function () {
             isFontAwesome: true,
             name: 'triangle',
             displacementY: -10
+        },
+        'starGraphic': {
+            isFontAwesome: true,
+            name: 'star',
+            displacementY: -10
         }
+        
     };
 
     return {
