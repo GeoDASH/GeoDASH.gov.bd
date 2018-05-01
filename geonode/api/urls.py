@@ -31,7 +31,6 @@ from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     DocumentResourceWithFavorite, GroupsResourceWithFavorite, GroupActivity, WorkSpaceLayerApi, WorkSpaceDocumentApi, \
     WorkSpaceMapApi, LayerResourceForBaseLayers
 
-from .feature_upload import LayerFeatureUploadView, CreateFeaturedLayer
 
 api = Api(api_name='api')
 
@@ -94,5 +93,3 @@ api.register(LayerResourceForBaseLayers())
 api.register(LayerMapDocumentApproveDenyAPI())
 
 
-# api.register(LayerFeatureUploadView())
-api.register(CreateFeaturedLayer())

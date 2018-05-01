@@ -18,7 +18,7 @@ from geonode.layers.utils import file_upload
 from geonode.groups.models import GroupProfile
 
 
-class LayerFeatureUploadView(Resource):
+class LayerFeatureUploadView(Resource): #depreciated, look at 'geonode/layers/api/views'
     '''
     This API class receives a layer feature as json input
     and processes that feature to upload to postgis database
@@ -71,7 +71,7 @@ class LayerFeatureUploadView(Resource):
 
 
 
-class CreateFeaturedLayer(Resource):
+class CreateFeaturedLayer(Resource): #depreciated, look at 'geonode/layers/api/views'
     '''
     This API class receives a json string with a layer
     credentials and attributes for a feature and
