@@ -234,6 +234,7 @@ appModule.factory('sldTemplateService', [function() {
         '<!--label starts-->{labelSld}' +
         '<!--label ends-->' +
         '</Rule> ' +
+        '<!--advanceSld-->'+
         '</FeatureTypeStyle>' +
         '<FeatureTypeStyle>' +
         '<!--classification starts-->{classifierSld}' +
@@ -347,6 +348,42 @@ appModule.factory('sldTemplateService', [function() {
             '<ogc:Literal>{2}</ogc:Literal>' +
             '</ogc:PropertyIsLessThanOrEqualTo>' +
             '</And>',
+        getPropertyIsEqualTo :'<ogc:PropertyIsEqualTo>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsEqualTo>',
+        getPropertyIsNotEqualTo :'<ogc:PropertyIsNotEqualTo>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsNotEqualTo>',
+        getPropertyIsLessThan :'<ogc:PropertyIsLessThan>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsLessThan>',
+        getPropertyIsLessThanOrEqualTo :'<ogc:PropertyIsLessThanOrEqualTo>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsLessThanOrEqualTo>',
+        getPropertyIsGreaterThan :'<ogc:PropertyIsGreaterThan>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsGreaterThan>',
+        getPropertyIsGreaterThanOrEqualTo :'<ogc:PropertyIsGreaterThanOrEqualTo>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsGreaterThanOrEqualTo>',
+        getPropertyIsBetween :'<ogc:PropertyIsBetween>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:LowerBoundary>{1}</ogc:LowerBoundary>' +
+             '<ogc:UpperBoundary>{2}</ogc:UpperBoundary>' +
+            '</ogc:PropertyIsBetween>',
+        getPropertyIsLike : '<ogc:PropertyIsLike wildCard="*" singleChar="." escape="!">' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '<ogc:Literal>{1}</ogc:Literal>' +
+            '</ogc:PropertyIsLike>',
+        getPropertyIsNull : '<ogc:PropertyIsNull>' +
+            '<ogc:PropertyName>{0}</ogc:PropertyName>' +
+            '</ogc:PropertyIsNull>',
 
         getRangeFilterTemplate: function() {
             return '<And>' +

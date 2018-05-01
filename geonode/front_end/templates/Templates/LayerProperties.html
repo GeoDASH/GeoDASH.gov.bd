@@ -145,6 +145,87 @@
                     <visualization-editor attribute-defs="nodeData.layer.attributeDefinitions" option="visualizationSettings" feature-type="nodeData.layer.shapeType">
                     </visualization-editor>
                 </tab>
+                <tab active="tabs[6].active">
+                    <tab-heading>
+                        Advanced
+                        <span ng-if="tabs[6].active" class="selected-down-arrow"></span>
+                    </tab-heading>
+                    <div class="col-md-12">
+
+                        <div class="row" ng-if="advancedStylingRules.length>0" style="margin-top: 10px" ng-show="selectedAdvancedRule==undefined">
+                            <div class="col-md-12" style="margin-bottom: 13px">
+                                <div class="col-md-4">
+                                    <input type="text" ng-model="ruleName" class="form-control input-sm">
+                                </div>
+                                <button class="btn btn-sm btn-primary"
+                                        ng-click="addAdvancedRule(ruleName,nodeData.layer.style['default'])"
+                                        type="button">Add Rule
+                                </button>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td style="padding: 8px;font-size: 13px">
+                                            Rule Name
+                                        </td>
+                                        <td style="padding: 8px;font-size: 13px">
+                                            Actions
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="rule in advancedStylingRules">
+                                        <td style="padding: 8px">[{rule.ruleName}]</td>
+                                        <td style="padding: 8px">
+                                            <button class="btn btn-sm btn-primary" type="button" ng-click="editAdvancedRule(rule)">Edit</button>
+                                            <button class="btn btn-sm btn-danger" type="button" ng-click="deleteAdvanceRule(rule,$index)">Delete</button>
+                                            <button class="btn btn-sm btn-warning" type="button" ng-click="cloneAdvanceRule(rule)">Clone</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-sm-12" ng-if="selectedAdvancedRule">
+                        <div class="row">
+                            <div class="col-md-4 pull-right">
+                                <button class="btn btn-sm btn-primary pull-right" type="button" ng-click="deleteAdvanceSelectedRule()">
+                                    Back to Rules
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2"> <!-- required for floating -->
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tabs-left sideways">
+                                <li class="active"><a href="#home-v" data-toggle="tab">Style</a></li>
+                                <li><a href="#profile-v" data-toggle="tab">Label</a></li>
+                                <li><a href="#messages-v" data-toggle="tab">Filter</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-10">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="home-v">
+                                    <layer-style-editor layer-style="selectedAdvancedRule.style" feature-type="nodeData.layer.shapeType" is-weighted-point="false"></layer-style-editor>
+                                </div>
+                                <div class="tab-pane" id="profile-v">
+                                    <labeling-editor attribute-defs="nodeData.layer.attributeDefinitions"
+                                                     label-config="selectedAdvancedRule.labelConfig"
+                                                     feature-type="nodeData.layer.shapeType">
+                                    </labeling-editor>
+                                </div>
+                                <div class="tab-pane" id="messages-v">
+                                    <query-builder layer-id="layerId" group="group" options="options" string-operators="stringCompareOperators"></query-builder>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </tab>
             </tabset>
         </div>
         <div class="modal-footer">
@@ -173,5 +254,55 @@
         width: auto;
         height: 220px;
         text-align: left;
+    }
+    .tabs-left, .tabs-right {
+        border-bottom: none;
+        padding-top: 2px;
+    }
+
+    .tabs-left {
+        border-right: 1px solid #ddd;
+    }
+
+    .tabs-right {
+        border-left: 1px solid #ddd;
+    }
+
+    .tabs-left > li, .tabs-right > li {
+        float: none;
+        margin-bottom: 2px;
+    }
+
+    .tabs-left > li {
+        margin-right: -1px;
+    }
+
+    .tabs-right > li {
+        margin-left: -1px;
+    }
+
+    .tabs-left > li.active > a,
+    .tabs-left > li.active > a:hover,
+    .tabs-left > li.active > a:focus {
+        border-bottom-color: #ddd;
+        border-right-color: transparent;
+    }
+
+    .tabs-right > li.active > a,
+    .tabs-right > li.active > a:hover,
+    .tabs-right > li.active > a:focus {
+        border-bottom: 1px solid #ddd;
+        border-left-color: transparent;
+    }
+
+    .tabs-left > li > a {
+        border-radius: 4px 0 0 4px;
+        margin-right: 0;
+        display: block;
+    }
+
+    .tabs-right > li > a {
+        border-radius: 0 4px 4px 0;
+        margin-right: 0;
     }
 </style>

@@ -86,6 +86,49 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
     }
     layerDataType.Point = _getPointData;
     layerDataType.Geom = _getGeomData;
+    function formatString(template, args) {
+        for (var i in args) {
+            var re = new RegExp("\\{" + i + "\\}", "g");
+            template = template.replace(re, args[i]);
+        }
+        return template;
+    }
+
+    var sldConditionTemplates = {
+        '=': sldTemplateService.getPropertyIsEqualTo,
+        '<>': sldTemplateService.getPropertyIsNotEqualTo,
+        '<': sldTemplateService.getPropertyIsLessThan,
+        '<=': sldTemplateService.getPropertyIsLessThanOrEqualTo,
+        '>': sldTemplateService.getPropertyIsGreaterThan,
+        '>=': sldTemplateService.getPropertyIsGreaterThanOrEqualTo,
+        'BETWEEN': sldTemplateService.getPropertyIsBetween,
+        'like' : sldTemplateService.getPropertyIsLike,
+        'null' : sldTemplateService.getPropertyIsNull
+    };
+
+    function getGroupSldString(rules,condition) {
+        var startCaseCondition=condition.charAt(0).toUpperCase() + condition.substring(1).toLowerCase();
+        condition=condition.toLowerCase();
+        var ruleString="";
+        if(rules.length>0){
+            ruleString="<"+startCaseCondition+">"+ "{0}" + "</"+startCaseCondition+">";
+            var sldFilters="";
+            angular.forEach(rules, function (condition) {
+                if (!condition.group) {
+                    var formatArray = [condition.field.name, condition.data];
+                    if (condition.condition == 'BETWEEN') formatArray.push(condition.dataAnother);
+                    var sldFilter = formatString(sldConditionTemplates[condition.condition], formatArray);
+                    sldFilters=sldFilters+sldFilter;
+                } else {
+                    var filerGroup=getGroupSldString(condition.group.rules,condition.group.operator);
+                    sldFilters=sldFilters+filerGroup;
+                }
+            });
+            ruleString=formatString(ruleString,[sldFilters])
+        }
+        return ruleString;
+    }
+
 
     var factory = {
 
@@ -117,9 +160,23 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");
             var vizSldRegex = new RegExp("<!--vizSld-->", "g");
-
+            var sldRules="";
+            angular.forEach(style.advancedRules,function (rule) {
+                var sldRule="";
+                var ruleCondition=getGroupSldString(rule.filters.rules,rule.filters.operator);
+                if(ruleCondition){
+                    sldRule = "<Rule>" + "<ogc:Filter> <!--filterCondition--> </ogc:Filter>" + "<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
+                    var labelSld = layerStyleGenerator.getLabelingSld(rule.labelConfig, surfLayer.getFeatureType());
+                    var styleSld = layerStyleGenerator.getSldStyle(surfLayer.getFeatureType(), rule.style.default, false, null);
+                    sldRule=sldRule.replace(/<!--styleSymboliser-->/g,styleSld);
+                    sldRule=sldRule.replace(/<!--filterCondition-->/g,ruleCondition);
+                    sldRule=sldRule.replace(/<!--textSymboliser-->/g,labelSld);
+                }
+                sldRules=sldRules+sldRule;
+            });
             defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
             defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
+            defaultStyleSld=defaultStyleSld.replace(/<!--advanceSld-->/g,sldRules);
 
             surfLayer.Style = style;
             layerRenderingModeFactory.setLayerRenderingMode(surfLayer);
@@ -394,5 +451,9 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
         return { classificationStyle: sldStyle, defaultStyleCondition: conditionalSld };
     }
+    function getRuleOperatorSld(condition) {
+
+    }
+
     return factory;
 }

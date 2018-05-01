@@ -118,7 +118,10 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
         restrict: 'E',
         scope:{
             layerId: '=',
-            group : '='
+            group : '=',
+            fields :'=',
+            options : '=',
+            stringOperators:'='
         },
         templateUrl: 'static/Scripts/Directives/QueryBuilder/query_builder_view.html',
         compile: function (element, attrs) {
@@ -131,6 +134,16 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
 
                  var numberControlsTypes=['xsd:number','xsd:integer','xsd:int','xsd:byte','xsd:short','xsd:long','xsd:decimal','xsd:float','xsd:double'];
                  var stringControlTypes=['xsd:string','xsd:text'];
+                if (!scope.fields) {
+                    scope.fields = [];
+                }
+                if(!scope.options){
+                    scope.options = {
+                        addGroup: false,
+                        removeGroup: false,
+                        customFields: []
+                    };
+                }
                  scope.conditionDictionary ={
                     undefined:[
                         { name: '<>',value:'<>' },
@@ -152,17 +165,17 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
                          {name:'Does not contain', value:'8'}
                      ]
                 };
-                scope.options  = {
-                    addGroup:false,
-                    removeGroup:false,
-                    customFields:[]
-                };
+                if(scope.stringOperators){
+                    scope.conditionDictionary.text=scope.stringOperators;
+                }
                 function generateOptions(featureTypesArray){
                    angular.forEach(featureTypesArray.properties,function(featureType){
                         if( _.contains(numberControlsTypes,featureType.type)){
                             scope.options.customFields.push({name:featureType.name});
+                            scope.fields.push({name:featureType.name});
                         }else if( _.contains(stringControlTypes,featureType.type)) {
                             scope.options.customFields.push({name:featureType.name,controlType:"text"});
+                            scope.fields.push({name:featureType.name,controlType:"text"});
                         }
                    });
                 }
@@ -176,6 +189,7 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
                                 if(response.featureTypes){
                                     if(response.featureTypes[0]){
                                         scope.options.customFields.splice(0,scope.options.customFields.length);
+                                        scope.fields.splice(0,scope.fields.length);
                                         generateOptions(response.featureTypes[0]);
                                     }
                                 }
@@ -191,15 +205,8 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
 
                 scope.operators = scope.options.customOperators ===undefined ? scope.operators:scope.options.customOperators;
 
-                scope.fields = [
-                    { name: 'Firstname' },
-                    { name: 'Lastname' },
-                    { name: 'Birthdate' },
-                    { name: 'City' },
-                    { name: 'Country' }
-                ];
 
-                scope.fields = scope.options.customFields ===undefined ? scope.fields:scope.options.customFields;
+                // scope.fields = scope.options.customFields ===undefined ? scope.fields:scope.options.customFields;
 
                 scope.conditions = [
                     { name: '=' },
@@ -250,7 +257,7 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
                    return controlVisibleFactory.isDropdownControlVisible(rule.field.controlType);
                 };
                 scope.textControlVisible = function (rule) {
-                   return controlVisibleFactory.isTextControlVisible(rule.field.controlType);
+                   return controlVisibleFactory.isTextControlVisible(rule.field.controlType) && rule.condition !== 'null';
                 };
 
                 scope.attributeChange = function(rule){

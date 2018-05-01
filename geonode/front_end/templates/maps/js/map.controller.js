@@ -293,7 +293,7 @@
             }
         };
         $scope.isBoundaryBoxEnabled=true;
-        $scope.group = { "a": "AND", "rules": [] };
+        $scope.group = { "operator": "AND", "rules": [] };
         $scope.getQueryResult = function() {
             var query = queryOutputFactory.getOutput($scope.group);
             $rootScope.$broadcast('filterDataWithCqlFilter', {query: query,bbox:$scope.isBoundaryBoxEnabled});
