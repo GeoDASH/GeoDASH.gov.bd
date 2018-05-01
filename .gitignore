@@ -87,7 +87,7 @@ jquery.raty.js
 angular.js
 angular-leaflet-directive.min.js
 bootstrap.min.js
-jquery.min.js
+# jquery.min.js
 bootstrap.min.css
 uploaded
 development.db
