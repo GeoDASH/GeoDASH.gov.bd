@@ -152,7 +152,7 @@
                     </tab-heading>
                     <div class="col-md-12">
 
-                        <div class="row" ng-if="advancedStylingRules.length>0" style="margin-top: 10px" ng-show="selectedAdvancedRule==undefined">
+                        <div class="row"  style="margin-top: 10px" ng-show="selectedAdvancedRule==undefined">
                             <div class="col-md-12" style="margin-bottom: 13px">
                                 <div class="col-md-4">
                                     <input type="text" ng-model="ruleName" class="form-control input-sm">
@@ -162,7 +162,7 @@
                                         type="button">Add Rule
                                 </button>
                             </div>
-                            <table class="table table-condensed">
+                            <table class="table table-condensed" ng-if="advancedStylingRules.length>0">
                                 <thead>
                                     <tr>
                                         <td style="padding: 8px;font-size: 13px">
