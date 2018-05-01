@@ -450,9 +450,9 @@ class ProfileResource(TypeFilteredResource):
     # @jahangir091
     def get_object_list(self, request):
         if request.user.is_superuser:
-            return super(ProfileResource, self).get_object_list(request).exclude(is_staff=True).annotate(max_weight=Count('resourcebase')).order_by('-max_weight')
+            return super(ProfileResource, self).get_object_list(request).exclude(is_staff=True).annotate(max_weight=Count('resourcebase__layer')).order_by('-max_weight')
         else:
-            return super(ProfileResource, self).get_object_list(request).filter(is_active=True).exclude(is_staff=True).annotate(max_weight=Count('resourcebase')).order_by('-max_weight')
+            return super(ProfileResource, self).get_object_list(request).filter(is_active=True).exclude(is_staff=True).annotate(max_weight=Count('resourcebase__layer')).order_by('-max_weight')
             # end
 
     class Meta:
