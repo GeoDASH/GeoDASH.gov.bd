@@ -97,7 +97,7 @@ from geonode.layers.models import LayerSubmissionActivity, LayerAuditActivity
 from geonode.documents.models import DocumentSubmissionActivity, DocumentAuditActivity
 from geonode.maps.models import MapSubmissionActivity, MapAuditActivity
 from geonode.layers.views import save_geometry_type
-
+from django.db.models import Count
 CONTEXT_LOG_FILE = None
 
 if 'geonode.geoserver' in settings.INSTALLED_APPS:
@@ -450,9 +450,9 @@ class ProfileResource(TypeFilteredResource):
     # @jahangir091
     def get_object_list(self, request):
         if request.user.is_superuser:
-            return super(ProfileResource, self).get_object_list(request).exclude(is_staff=True)
+            return super(ProfileResource, self).get_object_list(request).exclude(is_staff=True).annotate(max_weight=Count('resourcebase')).order_by('-max_weight')
         else:
-            return super(ProfileResource, self).get_object_list(request).filter(is_active=True).exclude(is_staff=True)
+            return super(ProfileResource, self).get_object_list(request).filter(is_active=True).exclude(is_staff=True).annotate(max_weight=Count('resourcebase')).order_by('-max_weight')
             # end
 
     class Meta:
