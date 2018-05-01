@@ -152,6 +152,7 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
 
             // if (result.propertiesChanged || labelChanged) {
                 updatedLayer.style.classifierDefinitions = result.classifierDefinitions;
+                updatedLayer.style.advancedRules=result.advancedRules;
                 layerService.saveProperties(originalLayer, updatedLayer.name, updatedLayer.zoomlevel, updatedLayer.style, false)
                 .then(function() {
                     surfToastr.success('Style Saved Successfully', 'Success');
