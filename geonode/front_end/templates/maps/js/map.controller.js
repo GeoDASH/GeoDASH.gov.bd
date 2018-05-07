@@ -220,13 +220,13 @@
                 var url = self.MapConfig.sources[layer.source].url;
                 if (url) {
                     layer.geoserverUrl = re.test($window.location.pathname) ? getCqlFilterUrl(url) : url;
+                    mapService.addDataLayer(oldLayerService.map(layer, ind), true);
                     if(layer.bbox)
                         extent= ol.extent.extend(extent, layer.bbox);
-                    mapService.addDataLayer(oldLayerService.map(layer, ind), true);
                 }
             });
-            if(ol.extent.isEmpty(extent))
-                extent=[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905];
+            if(ol.extent.isEmpty(extent)) extent=[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905];
+            var center=ol.extent.getCenter(extent);
             $timeout(function () {
                 var pan = ol.animation.pan({
                     duration: 5000,

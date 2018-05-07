@@ -4,6 +4,7 @@ from django.contrib.gis.db import models
 
 class ClassFactory(object):
     DJANGO_MODEL = {
+        'primary_key': models.AutoField,
         'bigint': models.BigIntegerField,
         'character varying': models.CharField,
         'integer': models.IntegerField,
@@ -52,14 +53,17 @@ class ClassFactory(object):
      
     def get_model_field(self, data_type,column_name=None, blank=True, is_null=True, character_maximum_length=None, *args, **kwargs):
         if character_maximum_length is None:
-            if column_name == 'fid':
-                return self.DJANGO_MODEL[data_type](null=is_null, primary_key=True)
+            if column_name == self.primary_key:
+                return self.DJANGO_MODEL['primary_key'](primary_key=True)
             else:
                 return self.DJANGO_MODEL[data_type](null=is_null)
         else:
             return self.DJANGO_MODEL[data_type](null=is_null, max_length=character_maximum_length)
 
     def get_model(self, name, table_name, app_label='dynamic', db=None):
-        schema_infos = Database(db_name=db).get_table_schema_info(table_name=table_name)
+        database_instance = Database(db_name=db)
+        schema_infos = database_instance.get_table_schema_info(table_name=table_name)
+        self.primary_key = database_instance.get_table_primary_key(table_name=table_name)
+        print self.primary_key
         fields = {f.column_name: self.get_model_field(**f) for f in schema_infos if f.data_type in self.DJANGO_MODEL}
         return self.create_model(name, app_label=app_label, fields=fields, options=dict(db_table=table_name), db=db)                

@@ -57,40 +57,83 @@
 </div>
 <!-- /.carousel -->
 
-<div class="sectionDark" style="padding: 0;">
-  <div class="container" style="max-width:1300px"> 
-    <!-- Example row of columns -->
-    <div class="row">
-      <div class="col-md-3 count" style="border-left: 0">
-        <div class="pull-left" style="margin-right: 15px;"><img src="{{ STATIC_URL }}geonode/images/new_index_page_images/organization-ico.png" width="79" height="79" alt=""/></div>
-        <div class="pull-left">
+<div class="sectionDark sectionCount" style="padding: 0;">
+
+    <section class="container" style="max-width:1300px">
+        
+        <div class="row">
+        
+        <!-- HTML Chart -->
+        <figure class="col-md-3 count chart" data-percent="100" style="border-left:0">
+          
+          <div class="pull-left count-icon">
+          <img class="html" src="{{ STATIC_URL }}geonode/images/new_index_page_images/organization-ico.png" width="79" height="79" alt=""/>
+          <svg width="80" height="80">
+          <circle class="outer" cx="152" cy="39" r="35" transform="rotate(-90, 95, 95)"/>
+          </svg>
+          </div>
+
+          <div class="pull-left text-left">
           <h2>{{ group_counter }}</h2>
           <p> {% trans "Organizations" %}</p>
-        </div>
-      </div>
-      <div class="col-md-3 count">
-        <div class="pull-left" style="margin-right: 15px;"><img src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.png" width="79" height="79" alt=""/></div>
-        <div class="pull-left">
-          <h2>{{ layer_counter }}</h2>
-          <p> {% trans "Layers" %}</p>
-        </div>
-      </div>
-      <div class="col-md-3 count">
-        <div class="pull-left" style="margin-right: 15px;"><img src="{{ STATIC_URL }}geonode/images/new_index_page_images/maps-ico.png" width="79" height="79" alt=""/></div>
-        <div class="pull-left">
-          <h2>{{ map_counter }}</h2>
-          <p>{% trans "Maps" %}</p>
-        </div>
-      </div>
-      <div class="col-md-3 count" style="border-right: 0">
-        <div class="pull-left" style="margin-right: 15px;"><img src="{{ STATIC_URL }}geonode/images/new_index_page_images/users-ico.png" width="79" height="79" alt=""/></div>
-        <div class="pull-left">
-          <h2>{{ user_counter }}</h2>
-          <p>{% trans "Users" %}</p>
-        </div>
-      </div>
-    </div>
+          </div>
+
+        </figure>
+        
+        <!-- CSS Chart -->
+        <figure class="col-md-3 count chart" data-percent="100">
+          
+          
+            <div class="pull-left count-icon">
+          <img class="css" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.png" width="79" height="79" alt=""/>
+          <svg width="80" height="80">
+              <circle class="outer" cx="152" cy="39" r="35" transform="rotate(-90, 95, 95)"/>
+          </svg>
+          </div>
+          <div class="pull-left text-left">
+              <h2>{{ layer_counter }}</h2>
+              <p> {% trans "Layers" %}</p>
+            </div>
+
+        </figure>
+        
+        
+        <!-- Javascript Chart -->
+        <figure class="col-md-3 count chart" data-percent="100">
+          
+            <div class="pull-left count-icon">
+          <img class="javascript" src="{{ STATIC_URL }}geonode/images/new_index_page_images/maps-ico.png" width="79" height="79" alt=""/>
+          <svg width="80" height="80">
+              <circle class="outer" cx="152" cy="39" r="35" transform="rotate(-90, 95, 95)"/>
+          </svg>
+</div>
+<div class="pull-left text-left">
+    <h2>{{ map_counter }}</h2>
+    <p>{% trans "Maps" %}</p>
   </div>
+
+        </figure>
+        
+        <!-- Node.js Chart -->
+        <figure class="col-md-3 count chart" data-percent="100" style="border-right:0 ">
+          
+          
+        <div class="pull-left count-icon">
+        <img class="node" src="{{ STATIC_URL }}geonode/images/new_index_page_images/users-ico.png" width="20" height="20" alt=""/>
+
+        <svg width="80" height="80">
+            <circle class="outer" cx="152" cy="39" r="35" transform="rotate(-90, 95, 95)"/>
+          </svg>
+        </div>
+        <div class="pull-left text-left">
+            <h2>{{ user_counter }}</h2>
+            <p>{% trans "Users" %}</p>
+          </div>
+        </figure>
+       
+      </div>
+      </section>
+
 </div>
 
 <!-- Marketing messaging and featurettes
@@ -502,6 +545,19 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-117252228-1');
+
+  $('.count h2').each(function () {
+    $(this).prop('Counter',0).animate({
+        Counter: $(this).text()
+    }, {
+        duration: 1000,
+        easing: 'swing',
+        step: function (now) {
+            $(this).text(Math.ceil(now));
+        }
+    });
+});
+
 </script>
 <style>
 	.mCSB_scrollTools .mCSB_draggerRail

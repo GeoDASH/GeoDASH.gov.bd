@@ -32,8 +32,8 @@ treeModule.directive('treeAngle', [
                 }
 
                 function updateGroups(layer) {
-                    layer.groups.length = 0;
-                    layer.ungrouped.length = 0;
+                    layer.groups = [];
+                    layer.ungrouped = [];
 
                     var classes = layer.getClassifierDefinitions().selected;
 

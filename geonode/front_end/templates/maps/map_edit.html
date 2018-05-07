@@ -1,5 +1,21 @@
 {% extends "site_base.html" %} {% load i18n %} {% load base_tags %} {% block title %} {% trans "New Map" %} - {{ block.super }} {% endblock %}  {% block head %}
 {% include 'Templates/_base-headers.html' %}
+<style>
+    .sarsha-spinner-container {
+        background: transparent;
+        color: black;
+        top: unset;
+        bottom: unset;
+    }
+    .sarsha-spinner {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        top: calc(100vh - 600px);    
+        color: #fff;
+    }
+</style>
 {% endblock %}
 {% block middle %}
 
@@ -8,7 +24,14 @@
 <div class="surfgis" ng-controller="appController" ng-app="appModule">
 
    <div class="application-font all-children-application-font"  ng-controller="MapController" ng-click="bodyClicked()" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
-      
+    <div class="row">
+        <sarsha-spinner name="spinner1">
+                    <div class="donot-print ng-scope"> 
+                        <!-- Loading <i class="fa fa-spinner fa-spin"></i>  -->
+                        <img src="{{ STATIC_URL }}geonode/images/loader.gif" width="100"/>
+                    </div>
+        </sarsha-spinner>
+    </div>
 
        <div class="layout-content">
            <div class="layout-left donot-print" ng-style="layout.leftStyle">
@@ -108,4 +131,25 @@
 }
 
     </style>
+
+<script>
+  
+    var navAnCount = 0; 
+    function naVAnimating(){
+        if(navAnCount === 0){
+            // $("#panel-bottom").slideDown();
+            // $('#panel-bottom').css("top", "");
+            document.getElementById('gd-navbar').className = 'navbar navbar-fixed-top headerSlideOutDown'; 
+            navAnCount++;
+        }else{
+            document.getElementById('gd-navbar').className = ' navbar navbar-fixed-top headerSlideInUp ';
+            // $("#panel-bottom").slideUp();
+            // $('#panel-bottom').css("top", "");
+            navAnCount--;
+            }
+    }
+
+</script>
+
+
    {% endblock %} {% block footer %}{% endblock %}

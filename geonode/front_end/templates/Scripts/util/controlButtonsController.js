@@ -321,28 +321,32 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 }
             };
 
-            $scope.getCrossLayerData = function () {
-                var meterPerDegree = 111325;
-                var radius = ($scope.distance * 1000) / meterPerDegree;
-                var requestObj = {
-                    //service: 'WFS',
-                    request: 'GetFeature',
-                    typeName: $scope.searchItemLayer,
-                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
-                    version: '1.0.0',
-                    maxFeatures: 100,
-                    outputFormat: 'json',
-                    exceptions: 'application/json'
-                };
-                LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
-                    var data = {};
-                    data[$scope.searchItemLayer] = response.features.map(function (e) {
-                        e.properties["Feature_Id"] = e.id;
-                        return e.properties;
+                $scope.getCrossLayerData = function () {
+                    var meterPerDegree = 111325
+                    var radius=($scope.distance * 1000)/meterPerDegree;
+                    var requestObj = {
+                        //service: 'WFS',
+                        request: 'GetFeature',
+                        typeName: $scope.searchItemLayer,
+                        CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
+                        version: '1.0.0',
+                        maxFeatures: 100,
+                        outputFormat: 'json',
+                        exceptions: 'application/json'
+                    };
+                    LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
+                        var data = {};
+                        data[$scope.searchItemLayer] = response.features.map(function (e) {
+                            e.properties["Feature_Id"] = e.id;
+                            return e.properties;
+                        });
+                        showFeaturePreviewDialog(data, requestObj);
                     });
-                    showFeaturePreviewDialog(data, requestObj);
-                });
-            };
+                };
+                $scope.routeConfig={
+                    layerId : undefined,
+                    radius :undefined
+                };
             $scope.routeConfig = {
                 layerId: undefined,
                 radius: undefined

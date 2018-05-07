@@ -185,6 +185,36 @@
                 });
         };
 
+        $scope.onTitleChange = function(){
+            if ( !$scope.nodeData.selectedStyle )
+                return;
+            $scope.nodeData.selectedStyle.title = $scope.nodeData.layer.style.Title;
+        };
+
+        function getUiqueNumber(title){
+            let t = title.split('_');
+            let n = t.length > 1 ? t.pop(): undefined;
+            if(isNaN(n))
+                return title+'_1';
+            else {
+                t.push(parseInt(n) + 1);
+                return t.join('_');
+            }
+        }
+
+        $scope.duplicate = function(){
+            removeUnsavedStyle();
+            $scope.hasPermission = true;
+            $scope.nodeData.layer.style = Object.assign({}, $scope.nodeData.layer.style, {id:null});
+            $scope.nodeData.selectedStyle = $scope.nodeData.layer.style;
+            $scope.nodeData.layer.style.Title = getUiqueNumber($scope.nodeData.layer.style.Title);
+            $scope.nodeData.selectedStyle.title = $scope.nodeData.layer.style.Title;            
+            $scope.settingsData = {};
+            $scope.classifierBinder = { classType: undefined, colorPaletteGenerator: undefined };
+            $scope.Styles.push($scope.nodeData.selectedStyle);
+            $scope.visualizationSettings = { selected: undefined };
+        };
+
         $scope.newStyle = function() {
             removeUnsavedStyle();
             $scope.hasPermission = true;

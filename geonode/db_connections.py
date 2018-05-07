@@ -31,6 +31,12 @@ class Database(object):
     '''
     TABLE_SCHEMA_INFO_QUERY = "SELECT %s FROM information_schema.columns WHERE TABLE_NAME = '%s'"
 
+    TABLE_KEY_COLUMN_USAGE = "SELECT c.column_name \
+                                FROM information_schema.key_column_usage AS c \
+                                LEFT JOIN information_schema.table_constraints AS t \
+                                ON t.constraint_name = c.constraint_name \
+                                WHERE t.table_name = '%s' AND t.constraint_type = 'PRIMARY KEY'"
+
     def __init__(self, db_name=None):
         if db_name is None:
             k, v = settings.DATABASES.items()[0]
@@ -38,6 +44,12 @@ class Database(object):
         else:
             self.cursor = connections[db_name]
     
+    def get_table_primary_key(self, table_name):
+        with self.cursor.cursor() as cursor:
+            sql = self.TABLE_KEY_COLUMN_USAGE % table_name
+            cursor.execute(sql)
+            return cursor.fetchone()[0]
+
     def get_table_schema_info(self, table_name):
         columns_details = []
         schema_columns = InformationSchemaColumns._KEYS
@@ -46,5 +58,5 @@ class Database(object):
             cursor.execute(sql)
             for row in cursor.fetchall():
                 columns_details.append(InformationSchemaColumns(**dict(zip(schema_columns, row))))
-
+        
         return columns_details
