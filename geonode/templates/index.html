@@ -141,7 +141,7 @@
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
 <div class="marketing">
-  <div class="sectionLight">
+  <div class="sectionDark">
     <div class="container text-center" style="max-width:1300px">
       <div class="row feature">
         <div class="col-md-12 animatedParent">
@@ -150,7 +150,62 @@
             <h3 class="text-center"> Just a few quick steps from creating your map to publishing it </h3>
           </div>
         </div>
-        <div class="col-md-12 animatedParent"> <img src="{{ STATIC_URL }}geonode/images/new_index_page_images/how-it-work.jpg" alt="How does it work?" class="img-responsive animated bounceInDown"> </div>
+        <!-- <div class="col-md-12 animatedParent"> <img src="{{ STATIC_URL }}geonode/images/new_index_page_images/how-it-work.jpg" alt="How does it work?" class="img-responsive animated bounceInDown"> </div> -->
+      
+      
+      <!-- Vertical timeline start -->  
+      <section class="cd-timeline js-cd-timeline">
+        <div class="cd-timeline__container">
+          <div class="cd-timeline__block js-cd-block">
+            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img">
+             1
+            </div> <!-- cd-timeline__img -->
+    
+            <div class="cd-timeline__content js-cd-content register-timeline-circle">
+              <h2>
+                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>
+              </h2>
+
+              <span class="cd-timeline__date">Jan 14</span>
+            </div> <!-- cd-timeline__content -->
+          </div> <!-- cd-timeline__block -->
+    
+          <div class="cd-timeline__block js-cd-block">
+            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+              2
+            </div> <!-- cd-timeline__img -->
+    
+            <div class="cd-timeline__content js-cd-content layers-timeline-circle">
+              <h2>
+                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>
+              </h2>
+             
+          
+              <span class="cd-timeline__date">Jan 18</span>
+            </div> <!-- cd-timeline__content -->
+          </div> <!-- cd-timeline__block -->
+    
+          <div class="cd-timeline__block js-cd-block map-timeline-circle">
+            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img">
+              3
+            </div> <!-- cd-timeline__img -->
+    
+            <div class="cd-timeline__content js-cd-content">
+              <h2>
+                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>  
+              </h2>
+              
+             
+              <span class="cd-timeline__date">Jan 24</span>
+            </div> <!-- cd-timeline__content -->
+          </div> <!-- cd-timeline__block -->
+    
+        </div>
+      </section> <!-- cd-timeline -->
+          <!-- Vertical timeline End -->  
+      
+      
+      
       </div>
     </div>
   </div>
@@ -545,6 +600,11 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-117252228-1');
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 
   $('.count h2').each(function () {
     $(this).prop('Counter',0).animate({
@@ -558,6 +618,83 @@
     });
 });
 
+<<<<<<< Updated upstream
+=======
+
+(function(){
+	function VerticalTimeline( element ) {
+		this.element = element;
+		this.blocks = this.element.getElementsByClassName("js-cd-block");
+		this.images = this.element.getElementsByClassName("js-cd-img");
+		this.contents = this.element.getElementsByClassName("js-cd-content");
+		this.offset = 0.8;
+		this.hideBlocks();
+	};
+
+	VerticalTimeline.prototype.hideBlocks = function() {
+		//hide timeline blocks which are outside the viewport
+		if ( !"classList" in document.documentElement ) {
+			return;
+		}
+		var self = this;
+		for( var i = 0; i < this.blocks.length; i++) {
+			(function(i){
+				if( self.blocks[i].getBoundingClientRect().top > window.innerHeight*self.offset ) {
+					self.images[i].classList.add("cd-is-hidden"); 
+					self.contents[i].classList.add("cd-is-hidden"); 
+				}
+			})(i);
+		}
+	};
+
+	VerticalTimeline.prototype.showBlocks = function() {
+		if ( ! "classList" in document.documentElement ) {
+			return;
+		}
+		var self = this;
+		for( var i = 0; i < this.blocks.length; i++) {
+			(function(i){
+				if( self.contents[i].classList.contains("cd-is-hidden") && self.blocks[i].getBoundingClientRect().top <= window.innerHeight*self.offset ) {
+					// add bounce-in animation
+					self.images[i].classList.add("cd-timeline__img--bounce-in");
+					self.contents[i].classList.add("cd-timeline__content--bounce-in");
+					self.images[i].classList.remove("cd-is-hidden");
+					self.contents[i].classList.remove("cd-is-hidden");
+				}
+			})(i);
+		}
+	};
+
+	var verticalTimelines = document.getElementsByClassName("js-cd-timeline"),
+		verticalTimelinesArray = [],
+		scrolling = false;
+	if( verticalTimelines.length > 0 ) {
+		for( var i = 0; i < verticalTimelines.length; i++) {
+			(function(i){
+				verticalTimelinesArray.push(new VerticalTimeline(verticalTimelines[i]));
+			})(i);
+		}
+
+		//show timeline blocks on scrolling
+		window.addEventListener("scroll", function(event) {
+			if( !scrolling ) {
+				scrolling = true;
+				(!window.requestAnimationFrame) ? setTimeout(checkTimelineScroll, 250) : window.requestAnimationFrame(checkTimelineScroll);
+			}
+		});
+	}
+
+	function checkTimelineScroll() {
+		verticalTimelinesArray.forEach(function(timeline){
+			timeline.showBlocks();
+		});
+		scrolling = false;
+	};
+})();
+
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 </script>
 <style>
 	.mCSB_scrollTools .mCSB_draggerRail
