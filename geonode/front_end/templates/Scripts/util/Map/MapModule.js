@@ -78,15 +78,11 @@ mapModule.factory("mapModes", [function () {
     }
 ]).factory('pointGraphics', ['urlResolver',
     function (urlResolver) {
-        var pointGraphics = [];
+        var pointGraphics =[];
 
-        // [
-        //     'ol-marker-blue.png',
-        //     'ol-marker-gold.png',
-        //     'ol-marker-green.png',
-        //     'ol-marker-red.png'].forEach(function (graphics) {
-        //         pointGraphics.push(urlResolver.resolveRoot('Content/symbology/' + graphics));
-        //     });
+        ['fa fa-external-link'].forEach(function (graphics) {
+                pointGraphics.push(graphics);
+            });
             
         return pointGraphics;
     }
