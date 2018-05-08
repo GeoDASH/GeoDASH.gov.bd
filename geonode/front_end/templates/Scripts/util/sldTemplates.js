@@ -132,8 +132,8 @@ appModule.factory('sldTemplateService', [function() {
             '<PointSymbolizer>' +
             '<Graphic> ' +
             '<ExternalGraphic> ' +
-            '<OnlineResource xlink:type="simple" xlink:href="{0}{1}"/> ' +
-            '<Format>image/png</Format>' +
+            '<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="{0}"/> ' +
+            '<Format>image/{1}</Format>' +
             '</ExternalGraphic> ' +
             '<Opacity>' +
             '<ogc:Literal>{2}</ogc:Literal>' +

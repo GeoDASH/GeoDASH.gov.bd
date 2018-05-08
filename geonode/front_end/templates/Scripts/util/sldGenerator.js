@@ -19,6 +19,14 @@
             return sld;
         }
 
+        function getFileExtension(filename) {
+            var ext = /^.+\.([^.]+)$/.exec(filename);
+            var extension=ext == null ? "" : ext[1].toLowerCase();
+            extension= /svg/i.test(extension) ? "svg+xml" : extension;
+            extension= /jpg/i.test(extension) ? "jpeg" : extension;
+            return extension;
+        }
+
         function getPointTemplate(style, includeHeader, classification, labelConfig) {
 
             var fillOpacity = style.fillOpacity === 0 ? 0.005 : style.fillOpacity; //fix for transparent feature selection problem
@@ -50,7 +58,7 @@
             } else {
                 sld = formatString(getSldTemplate(sldTemplateService.pointWithExternalGraphicTemplate, includeHeader),
                 [
-                    window.location.origin, style.externalGraphic, fillOpacity, style.pointRadius,
+                    style.externalGraphicUrl, getFileExtension(style.externalGraphicUrl), fillOpacity, style.pointRadius,
                     sldTemplateService.wrapWithFilterTag(getClassificationSldFilter(classification))
                 ]);
             }

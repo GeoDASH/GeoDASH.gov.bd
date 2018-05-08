@@ -87,6 +87,7 @@
                     "graphicName": "circle",
                     "textGraphicName": null,
                     "externalGraphic": null,
+                    "externalGraphicUrl" : ""
                 },
                 "select": {
                     "fillPattern": "",

@@ -2,22 +2,29 @@
     <div class="style-group" style="background-color: #efefef; padding: 8px;" ng-if="isPoint && !isWeightedPoint">
         <div class="style-editor dropdown">
             <button class="btn btn-default dropdown-toggle">
-                <img ng-if="styleHash.externalGraphic" ng-src="{{styleHash.externalGraphic}}" ng-attr-alt="{{styleHash.externalGraphic}}" />
+                <span ng-if="styleHash.externalGraphic">
+                    <i ng-if="!styleHash.externalGraphicUrl" ng-class="styleHash.externalGraphic"></i>
+                    <img ng-if="styleHash.externalGraphicUrl"   ng-src="{{styleHash.externalGraphicUrl}}" ng-attr-alt="{{styleHash.externalGraphicUrl}}" height="10px" width="10px"/>
+                </span>
+
                 <i ng-if="styleHash.graphicName" ng-class="graphicIconClass[styleHash.graphicName]"></i>
                 <img ng-if="styleHash.textGraphicName" ng-src="{{textGraphicIconClasses[styleHash.textGraphicName]}}" ng-attr-alt="{{textGraphicIconClasses[styleHash.textGraphicName]}}"/>
                 <i class="fa fa-caret-down"></i>
             </button>
             <ul class="dropdown-menu dropdown-grid">
-                <li ng-model="model.pointType" btn-radio="url" ng-repeat="url in pointGraphics">
-                    <a><img ng-src="{{url}}" alt="{{url}}" /></a>
-                </li>
                 <li ng-model="model.pointType" btn-radio="graphicName" ng-repeat="graphicName in pointGraphicNames">
                     <a><i ng-class="graphicIconClass[graphicName]"></i></a>
+                </li>
+                <li ng-model="model.pointType" btn-radio="url" ng-repeat="url in pointGraphics">
+                    <a><i ng-class="url"></i></a>
                 </li>
                 <li ng-model="model.pointType" btn-radio="textGraphicName" ng-repeat="textGraphicName in pointTextGraphicNames">
                     <a><img ng-src="{{textGraphicIconClasses[textGraphicName]}}" alt="{{textGraphicIconClasses[textGraphicName]}}" /></a>
                 </li>
             </ul>
+        </div>
+        <div class="style-editor" style="float: right" ng-if="styleHash.externalGraphic">
+            <input type="text" class="form-control" ng-model="styleHash.externalGraphicUrl">
         </div>
 
         <div class="style-editor range">
