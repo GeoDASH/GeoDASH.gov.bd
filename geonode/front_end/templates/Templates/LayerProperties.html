@@ -203,6 +203,7 @@
                                 <li class="active"><a href="#home-v" data-toggle="tab">Style</a></li>
                                 <li><a href="#profile-v" data-toggle="tab">Label</a></li>
                                 <li><a href="#messages-v" data-toggle="tab">Filter</a></li>
+                                <li ng-click="refreshSlider()"><a href="#scale-v" data-toggle="tab">Scale</a></li>
                             </ul>
                         </div>
 
@@ -220,6 +221,34 @@
                                 </div>
                                 <div class="tab-pane" id="messages-v">
                                     <query-builder layer-id="layerId" group="group" options="options" string-operators="stringCompareOperators"></query-builder>
+                                </div>
+                                <div class="tab-pane" id="scale-v">
+                                    <div class="col-md-12" style="margin-top: 10px">
+                                        <div class="form form-inline">
+                                            <div class="form-group col-md-3">
+                                                <div class="checkbox">
+                                                    <label class="control-label"><input type="checkbox" ng-model="sliderScale.applyScale">Apply Scaling</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="control-label col-md-5">Max Scale</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control input-sm" type="text" ng-model="sliderScale.minValue" min="1066" limit-to-min>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-md-offset-1">
+                                                <label class="control-label col-md-5">Min Scale</label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control input-sm" type="text" ng-model="sliderScale.maxValue" max="559082566" limit-to-max>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <rzslider rz-slider-model="sliderScale.minValue"
+                                              rz-slider-high="sliderScale.maxValue"
+                                              rz-slider-options="slider.options"></rzslider>
+                                    </div>
                                 </div>
                             </div>
                         </div>

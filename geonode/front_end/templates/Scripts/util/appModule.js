@@ -1,5 +1,5 @@
 ﻿﻿var appModule = angular.module("appModule", ['repositoryModule', 'mapModule', 'ui.bootstrap', 'tree', 'colorpicker.module', 'app.helpers', 'surfToastr', 'handsOnTableModule',
-'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination', 'sarsha.spinner'
+'app.filters', 'truncateModule', 'checkboxAll', 'colorPalette', 'table.heightAdjuster', 'angularFileUpload', 'userProfileModule', 'csvImport', 'ngDragDrop', 'Jantrik.Event', 'ngCookies', 'LayerApp', 'SystemSettingsApp','app.helpers','ui.grid', 'ui.grid.selection', 'ui.grid.cellNav','ui.grid.autoResize','ui.grid.pagination', 'sarsha.spinner','rzModule'
 ])
 .config(function($httpProvider, $interpolateProvider) {
 // $httpProvider.defaults.withCredentials = true;
@@ -467,3 +467,37 @@ appModule.value('fidColumnName', 'gid')
 .value('imageFileExtension', '.jpeg')
 .value('defaultDateFormat', 'dd MMM, yyyy')
 .value('defaultDateTimeFormat', 'dd MMM, yyyy h:m:s.sss a');
+
+appModule.directive("limitToMax", function () {
+    return {
+        link: function (scope, element, attributes) {
+            element.on("keydown keyup", function (e) {
+                if (Number(element.val()) > Number(attributes.max) &&
+                    e.keyCode != 46 // delete
+                    &&
+                    e.keyCode != 8 // backspace
+                ) {
+                    e.preventDefault();
+                    element.val(attributes.max);
+                }
+            });
+        }
+    };
+});
+
+appModule.directive("limitToMin", function () {
+    return {
+        link: function (scope, element, attributes) {
+            element.on("keydown keyup", function (e) {
+                if (Number(element.val()) < Number(attributes.min) &&
+                    e.keyCode != 46 // delete
+                    &&
+                    e.keyCode != 8 // backspace
+                ) {
+                    e.preventDefault();
+                    element.val(attributes.min);
+                }
+            });
+        }
+    };
+});

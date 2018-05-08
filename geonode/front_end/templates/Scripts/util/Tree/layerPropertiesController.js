@@ -11,6 +11,27 @@
         $scope.tabs = [{}, {}, {}, {}, {}];
         $scope.showSelectStyle = false;
 
+
+        $scope.sliderScale = {
+            minValue: 1066,
+            maxValue: 559082566
+        };
+        $scope.slider = {
+            options: {
+                floor: 1066,
+                ceil: 559082566,
+                step: 1,
+                minRange: 1066,
+                maxRange: 559082566
+            }
+        };
+
+        $scope.refreshSlider=function () {
+            $timeout(function () {
+                $scope.$broadcast('rzSliderForceRender');
+            });
+        };
+
         $scope.visualizationSettings = { selected: layer.Style.VisualizationSettings };
         $scope.group = { "operator": "AND", "rules": [] };
         $scope.options = {
@@ -32,7 +53,12 @@
                     ruleName : rulename,
                     style : {default:angular.copy($scope.nodeData.layer.style.default)},
                     labelConfig : angular.copy($scope.nodeData.layer.style.labelConfig),
-                    filters : { "operator": "AND", "rules": [] }
+                    filters : { "operator": "AND", "rules": [] },
+                    scaleDenominator : {
+                        minValue : 1066,
+                        maxValue: 559082566,
+                        applyScale : false
+                    }
                 }
             );
             $scope.ruleName="untitled rule";
@@ -44,6 +70,13 @@
         $scope.editAdvancedRule=function (rule) {
           $scope.selectedAdvancedRule=rule;
           $scope.group=rule.filters;
+          if(!rule.scaleDenominator)
+              rule.scaleDenominator = {
+                  minValue: 1066,
+                  maxValue: 559082566,
+                  applyScale : false
+              };
+          $scope.sliderScale=rule.scaleDenominator;
         };
         $scope.cloneAdvanceRule=function (rule) {
             var cloneRule=angular.copy(rule);
