@@ -2909,7 +2909,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     white-space: pre-line;
 }
 #gd-model .modal-body span.fbsign{
-    color: #FFFFFF;
+    color: #000;
 }
 
 @media (max-width: 767px) {

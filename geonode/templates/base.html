@@ -26,11 +26,16 @@
       <link href="{{ STATIC_URL }}geonode/css/select2.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/menu.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
+
+      {% if FRONT_END_SETTINGS.templates_base.geodash_navbar_css %}
       <link href="{{ STATIC_URL }}geonode/css/navbar-geodash.css?v={{ VERSION }}" rel="stylesheet" />
+      {% endif %}
+
+
       <link href="{{ STATIC_URL }}geonode/css/fixed-style.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/jquery.mCustomScrollbar.css?v={{ VERSION }}" rel="stylesheet" />
 
-      <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700" rel="stylesheet"> 
+      <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700" rel="stylesheet">
 
 
       <style type="text/css">[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}</style>
@@ -62,7 +67,7 @@
             GEODASH_USER_ID = {{ user.id }};
         {% endif %}
       </script>
-	  <script type="text/javascript"> //<![CDATA[ 
+	  <script type="text/javascript"> //<![CDATA[
 		var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
 		document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
 		//]]>
@@ -71,16 +76,13 @@
 
   <body class="{% block body_class %}{% endblock %}">
     {% block header %}
-
-    
-
     <section id="gd-header" class="navsticky" >
         <!-- <nav class="navbar navbar-default"> -->
         <nav id="gd-navbar" class="navbar navbar-fixed-top">
 
                 <div class="header-expand-button">
                     <button ng-disabled="!gdNavbar()" onclick="naVAnimating()" title="click">
-                            <i class="fa fa-angle-double-down" aria-hidden="true"></i>                            
+                            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
                     </button>
                 </div>
 
@@ -94,13 +96,12 @@
                             </button>
                             <a class="navbar-brand" href="{% url "home" %}">
                                 <div class="logo">
-                                    <img src="{{ STATIC_URL }}geonode/images/logo.png" />
-                                    <div class="gd-title-geodash">GeoDASH</div>
+
+                                    <div class="gd-title-geodash">{{FRONT_END_SETTINGS.templates_base.search_engine_title}}</div>
                                 </div>
                             </a>
                         </div>
                 <div class="collapse navbar-collapse" id="gd-navbar-collapse">
-                   
                         <div id="navbar">
                                 <ul class="nav navbar-nav header-nav nav-left">
                                     {% block tabs %}
@@ -179,6 +180,25 @@
                                             {% endif %}
                                         </ul>
                                     </li>
+				{% if request.user.is_manager_of_any_group and FRONT_END_SETTINGS.templates_base.administration_header_menu %}
+			        <li class="dropdown">
+			            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+			               aria-haspopup="true" aria-expanded="false">{% trans "Administration" %}<span class="caret"></span></a>
+			            <!--<a href="#">explore<span class="sr-only">(current)</span></a> -->
+			            <ul class="dropdown-menu">
+			                <li id="nav_maps">
+			                  <a href="{% url "member-workspace-layer" %}">{% trans "Layers" %}</a>
+			                </li>
+			                <li id="nav_layers">
+			                  <a href="{% url "admin-workspace-user-list" %}">{% trans "Users" %}</a>
+			                </li>
+			                <li id="nav_layers">
+			                    <a href="{{ user.get_absolute_url }}">{% trans "Setup" %}</a>
+			                  </li>
+			            </ul>
+			        </li>
+			        {% endif %}
+
                                     <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                                     {% if user.is_authenticated %}
                                     <li class="notification">
@@ -276,7 +296,7 @@
                                     </li>
                                     {% endif %}
                                     {% if user.is_authenticated %}
-            
+
                                     <li class="notification">
                                         <a href="{% url "message-inbox-extend" %}" style="padding: 0">
                                             <button class="btn btn-message">
@@ -305,7 +325,7 @@
                                                 Show All Notifications
                                         </a>
                                         </div>
-                                       
+
                                     </div>
                                     <!--<li class="notification">-->
                                         <!--<a class="usi" href="{% url "_dashboard" %}" >-->
@@ -333,7 +353,7 @@
                                             </a>
                                         </div> -->
                                        <span>
-            
+
                                            <a id="lang-selection" href="javascript:;" title="{% trans "LANGUAGE" %}" class="btn btn-primary btn-language">
                                                {% trans "language" %}
                                            </a>
@@ -341,7 +361,7 @@
                                     </li>
                                 </ul>
                                 </div>
-                   
+
                 </div>
             </div>
         </nav>
@@ -387,7 +407,7 @@
         <div class="container text-center" style="max-width:1300px">
         <div class="row" style="margin-bottom: 30px;">
             <div class="col-md-12" style="margin-bottom: 30px;">
-            
+
                 <ul class="nav navbar-nav" style="display: inline-block;float: none;vertical-align: top">
                     <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
                     <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
@@ -410,14 +430,14 @@
                     </li>
                     <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
                     <li>
-                            
+
                                     <div class="gd-footer-language" >
                                         <label class="hidden">{% trans "Language" %}</label>
-                                        {% if csrf_token != "NOTPROVIDED" %}
-                                        {% get_current_language as LANGUAGE %}
-                                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                                        {% csrf_token %}
-                                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
+                        {% if csrf_token != "NOTPROVIDED" %}
+                        {% get_current_language as LANGUAGE %}
+                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
+                        {% csrf_token %}
+                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
                                             {% for lang in LANGUAGES %}
                                             <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
                                               {% trans lang.1 %}
@@ -437,26 +457,26 @@
                                             </select>
                                         </li>
                                     </ul> -->
-                               
+
                     </li>
                 </ul>
                 <!--</div>-->
             </div>
-            
-                
+
+            <div>
                             Admin APP
                         <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
                             <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="margin-right: 15px;"/>
                         </a>
-            
-        
-            
-                
-                    
+
+
+
+
+
                         <a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
-                
-                        
-            
+
+            </div>
+
         </div>
     </div>
   </div>
@@ -522,6 +542,9 @@
                                     </div>
                                 </div>
                                 <div class="block-separator"></div>
+
+                              {% if FRONT_END_SETTINGS.templates_base.social_login %}
+
                                 <div class="row">
                                     <div class="col-md-5"></div>
                                     <div class="col-md-2"><span style=""> or </span> </div>
@@ -557,6 +580,9 @@
                                         </a>
                                     </div>
                                 </div>
+
+                              {% endif %}
+
                                 <div class="block-separator"></div>
                                 <div class="row">
                                     <div class="col-md-12 text-center">
@@ -722,14 +748,46 @@
                 </a>
             </li>
             {% endif %}
-            {% if request.user.is_superuser %}
+            {% if request.user.is_superuser and FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
             <li class="c-menu__item">
                 <a href="{% url "section-list-table" %}" class="c-menu__link">
                     <i class="fa fa-columns"></i>
-                    <span style="text-align:left;">{% trans "Manage Section" %}</span>
+                    <span style="text-align:left;">{% trans "Manage Index Page Sections" %}</span>
                 </a>
             </li>
             {% endif %}
+            {% if request.user.is_superuser and request.user.is_authenticated %}
+              <li class="c-menu__item">
+                  <a href="{% url "sector_list" %}" class="c-menu__link">
+                      <i class="fa fa-tasks"></i>
+                      <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Sector" %}</span>
+                  </a>
+              </li>
+            <li class="c-menu__item">
+                  <a href="{% url "department_list" %}" class="c-menu__link">
+                      <i class="fa fa-tasks"></i>
+                      <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Department" %}</span>
+                  </a>
+              </li>
+              {% endif %}
+              {% if request.user.is_superuser %}
+                <li class="c-menu__item">
+                    <a href="{% url "group_create" %}" class="c-menu__link">
+                        <i class="fa fa-tags"></i>
+                        <span style="text-align:left;">{% trans "Create Organization" %}</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if request.user.is_manager_of_any_group %}
+                 <li class="c-menu__item">
+                 <a href="{% url "section_list" %}" class="c-menu__link">
+                     <i class="fa fa-tasks"></i>
+                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
+                 </a>
+                 </li>
+             {% endif%}
+
+
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "topiccategory-list" %}" class="c-menu__link">
@@ -780,6 +838,15 @@
                     <span style="text-align:left;">{% trans "Create User" %}</span>
                   </a>
               </li>
+                {% if FRONT_END_SETTINGS.templates_base.backup_organization_layers %}
+                <li class="c-menu__item">
+                  <a href="{% url "organization-layers-backup-view" %}" class="c-menu__link">
+                    <i class="fa fa-user-plus"></i>
+                    <span style="text-align:left;">{% trans "Backup Organization Layers" %}</span>
+                  </a>
+                </li>
+                {% endif %}
+
             {% endif %}
             <li class="c-menu__item">
                 <a href="{% url "recent-activity" %}" class="c-menu__link">
@@ -809,7 +876,8 @@
                 </a>
             </li>
             {% endif %}
-            {% if user.is_manager_of_any_group %}
+            {% comment %}
+            {% if user.is_manager_of_any_group and FRONT_END_SETTINGS.templates_base.invite_user %}
             <li class="c-menu__item">
                 <a href="{% url "invite_user" %}" class="c-menu__link">
                     <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/invite-user.png" alt="Invite User"></i>
@@ -817,6 +885,7 @@
                 </a>
             </li>
             {% endif %}
+            {% endcomment %}
             {% if user.is_staff %}
             <li class="c-menu__item">
                 <a href="{% url "admin:index" %}" class="c-menu__link">
@@ -930,6 +999,9 @@
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/menu.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}geonode/js/geo-dash/basic.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}notify/notifyX.js?v={{ VERSION }}"></script>
+    <script src="{{ STATIC_URL }}.components/angular/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.css">
+    <script src="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.js"></script>
     {% include 'autocomplete_light/static.html' %}
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
     <script src="{{ STATIC_URL }}geonode/js/base/analytics.js" type="text/javascript"></script>
@@ -1082,15 +1154,6 @@
         layer_info = '{{ resource.id }}';
         map_info = '{{ maps|length }}' == 'NULL' ? 0 : '{{ maps.0.id }}';
     </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117252228-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-117252228-1');
-</script>
   </body>
 </html>
-
