@@ -1,6 +1,8 @@
 {% block head %}
 <base href="/">
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/toastr.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/bootstrap-2.3.2.min.css"> -->
+<link href="{{ STATIC_URL }}lib/css/bootstrap.min.css?v={{ VERSION }}" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/theme.css">
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/icon.css">
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/jquery-ui.min.css">
@@ -20,6 +22,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/ol3-layerswitcher.css"> -->
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}Content/assets/css/map.css">
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}geonode/css/style.css">
+<link href="{{ STATIC_URL }}geonode/css/navbar-geodash.css?v={{ VERSION }}" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}geonode/css/menu.css?v={{ VERSION }}" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.css">
 
@@ -39,7 +42,7 @@
 </script>
 
 
-
+<script src="{{ STATIC_URL }}Scripts/lib/jquery.min.js"></script>
 <script src="{{ STATIC_URL }}Scripts/lib/jquery-ui.min.js"></script>
 
 <script src="{{ STATIC_URL }}Scripts/util/jquery.extension.js"></script>
@@ -63,7 +66,6 @@
 <script src="{{ STATIC_URL }}Scripts/util/appMessages.js"></script>
 <script src="{{ STATIC_URL }}Scripts/lib/toastr.min.js"></script>
 <script src="{{ STATIC_URL }}Scripts/util/surfToastr.js"></script>
-
 
 {% endblock %} {% block extra_script %}
 
