@@ -85,6 +85,9 @@ treeModule.directive('treeAngle', ['utilityService',
                         });
                         layer.selectedAttributes = utilityService.getChartSelectedAttributes(layer.visualizationSetting);
                         layer.heatMapClasses=getHeatMapClasses(layer.visualizationSetting.style);
+                    }else {
+                        layer.selectedAttributes=[];
+                        layer.heatMapClasses=[];
                     }
                 }
 
