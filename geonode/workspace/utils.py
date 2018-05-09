@@ -1,4 +1,6 @@
 
+from django.utils.translation import ugettext as _
+
 
 def prepare_messages(layers):
     metadata_field_list = ['owner', 'title', 'date', 'date_type', 'edition', 'abstract', 'purpose',
@@ -20,7 +22,7 @@ def prepare_messages(layers):
 
         for field in metadata_mandatory_fields:
             if not getattr(layer, layer._meta.get_field(field).name):
-                messages['mandatory_fields_msg'] = "Please update mandatory fields, missing some information!"
+                messages['mandatory_fields_msg'] = _("Please complete metadata information.")
                 list_messages[layer.id] = messages
                 break
             else:
@@ -30,12 +32,12 @@ def prepare_messages(layers):
         for field in metadata_field_list:
 
             if not getattr(layer, layer._meta.get_field(field).name):
-                messages['layer_msg'] = "Please update layer metadata, missing some information"
+                messages['layer_msg'] = _("Please complete metadata information.")
                 # list_messages[layer.id] = "Please update layer metadata, missing some information"
                 list_messages[layer.id] = messages
                 break
             else:
-                messages['layer_msg'] = "Completed"
+                messages['layer_msg'] = _("Completed")
                 list_messages[layer.id] = messages
 
     return list_messages
