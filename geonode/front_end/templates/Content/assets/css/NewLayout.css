@@ -527,11 +527,6 @@ color: #fff;
     width: 100%;
 }
 
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-{
-    background: none;
-}
-
 .loading-message
 {
     position: absolute;

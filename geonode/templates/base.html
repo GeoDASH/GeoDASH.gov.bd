@@ -10,30 +10,36 @@
     {% block head %}
       {% if DEBUG_STATIC %}
       <link href="{{ STATIC_URL }}lib/css/jquery.dataTables.css?v={{ VERSION }}" rel="stylesheet" />
-      <link href="{{ STATIC_URL }}lib/css/select2.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.css?v={{ VERSION }}" rel="stylesheet"/>
+      <!--<link href="{{ STATIC_URL }}lib/css/select2.css?v={{ VERSION }}" rel="stylesheet"/>-->
       <link href="{{ STATIC_URL }}lib/css/jquery-ui.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       {% else %}
       <link href="{{ STATIC_URL }}lib/css/main.4df7c95f.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap.css?v={{ VERSION }}" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/font-awesome.min.css" rel="stylesheet"/>
-      <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       <!--<link href="{{ STATIC_URL }}lib/css/bootstrap-select.min.css?v={{ VERSION }}" rel="stylesheet"/>-->
       {% endif %}
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/bootstrap.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="{{ STATIC_URL }}lib/css/bootstrap-datetimepicker.css?v={{ VERSION }}" rel="stylesheet"/>
       <link href="{{ STATIC_URL }}geonode/css/ext-compatibility.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/gd-asset.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/select2.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/menu.css?v={{ VERSION }}" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/style.css?v={{ VERSION }}" rel="stylesheet" />
 
-      {% if FRONT_END_SETTINGS.templates_base.geodash_navbar_css %}
-      <link href="{{ STATIC_URL }}geonode/css/navbar-geodash.css?v={{ VERSION }}" rel="stylesheet" />
-      {% endif %}
+      <!--"navbar_css" is coming from front_end_settings.py -->
+      <link href="{{ FRONT_END_SETTINGS.templates_base.navbar_css }}" v="{{ VERSION }}" rel="stylesheet" />
 
 
       <link href="{{ STATIC_URL }}geonode/css/fixed-style.css?v={{ VERSION }}" rel="stylesheet" />
-      <link href="{{ STATIC_URL }}geonode/css/jquery.mCustomScrollbar.css?v={{ VERSION }}" rel="stylesheet" />
+      <!-- <link href="{{ STATIC_URL }}geonode/css/jquery.mCustomScrollbar.css?v={{ VERSION }}" rel="stylesheet" /> -->
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/geodash-home.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/animations.css?v={{ VERSION }}" rel="stylesheet" />
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/carousel.css" rel="stylesheet">
+      <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+      <script src="{{ STATIC_URL }}geonode/js/new_index_page_js/bootstrap.min.js"></script>
+      <script src="{{ STATIC_URL }}geonode/js/new_index_page_js/jquery-1.6.1.min.js"></script>
+      <script src="{{ STATIC_URL }}geonode/js/new_index_page_js/jquery.mCustomScrollbar.min.js"></script>
 
       <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700" rel="stylesheet">
 
@@ -402,6 +408,10 @@
     {% endblock middle %}
     </section>
 
+        {% block index_content %}
+
+        {% endblock %}
+
     {% block footer %}
     <footer>
         <div class="container text-center" style="max-width:1300px">
@@ -749,44 +759,44 @@
             </li>
             {% endif %}
             {% if request.user.is_superuser and FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
-            <li class="c-menu__item">
-                <a href="{% url "section-list-table" %}" class="c-menu__link">
-                    <i class="fa fa-columns"></i>
-                    <span style="text-align:left;">{% trans "Manage Index Page Sections" %}</span>
-                </a>
-            </li>
-            {% endif %}
-            {% if request.user.is_superuser and request.user.is_authenticated %}
-              <li class="c-menu__item">
-                  <a href="{% url "sector_list" %}" class="c-menu__link">
-                      <i class="fa fa-tasks"></i>
-                      <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Sector" %}</span>
-                  </a>
-              </li>
-            <li class="c-menu__item">
-                  <a href="{% url "department_list" %}" class="c-menu__link">
-                      <i class="fa fa-tasks"></i>
-                      <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Department" %}</span>
-                  </a>
-              </li>
-              {% endif %}
-              {% if request.user.is_superuser %}
                 <li class="c-menu__item">
-                    <a href="{% url "group_create" %}" class="c-menu__link">
-                        <i class="fa fa-tags"></i>
-                        <span style="text-align:left;">{% trans "Create Organization" %}</span>
+                    <a href="{% url "section-list-table" %}" class="c-menu__link">
+                        <i class="fa fa-columns"></i>
+                        <span style="text-align:left;">{% trans "Manage Index Page Sections" %}</span>
                     </a>
                 </li>
-            {% endif %}
-            {% if request.user.is_manager_of_any_group %}
-                 <li class="c-menu__item">
-                 <a href="{% url "section_list" %}" class="c-menu__link">
-                     <i class="fa fa-tasks"></i>
-                     <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
-                 </a>
-                 </li>
-             {% endif%}
 
+                {% if request.user.is_superuser and request.user.is_authenticated %}
+                  <li class="c-menu__item">
+                      <a href="{% url "sector_list" %}" class="c-menu__link">
+                          <i class="fa fa-tasks"></i>
+                          <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Sector" %}</span>
+                      </a>
+                  </li>
+                <li class="c-menu__item">
+                      <a href="{% url "department_list" %}" class="c-menu__link">
+                          <i class="fa fa-tasks"></i>
+                          <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Department" %}</span>
+                      </a>
+                  </li>
+                  {% endif %}
+                  {% if request.user.is_superuser %}
+                    <li class="c-menu__item">
+                        <a href="{% url "group_create" %}" class="c-menu__link">
+                            <i class="fa fa-tags"></i>
+                            <span style="text-align:left;">{% trans "Create Organization" %}</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if request.user.is_manager_of_any_group %}
+                     <li class="c-menu__item">
+                     <a href="{% url "section_list" %}" class="c-menu__link">
+                         <i class="fa fa-tasks"></i>
+                         <span style="text-align:left;color:#fff;margin-left:-8px;">{% trans "Manage Section" %}</span>
+                     </a>
+                     </li>
+                 {% endif%}
+            {% endif %}
 
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
@@ -983,7 +993,7 @@
     <script src="{{ STATIC_URL }}lib/js/jquery.ajaxQueue.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/jquery-ui.custom.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/jquery.raty.js?v={{ VERSION }}"></script>
-    <script src="{{ STATIC_URL }}lib/js/bootstrap.min.js?v={{ VERSION }}"></script>
+    <!--<script src="{{ STATIC_URL }}lib/js/bootstrap.min.js?v={{ VERSION }}"></script>-->
     <script src="{{ STATIC_URL }}lib/js/moment-with-locales.min.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/bootstrap-datetimepicker.min.js?v={{ VERSION }}"></script>
     <script src="{{ STATIC_URL }}lib/js/json2.js?v={{ VERSION }}"></script>
@@ -1155,5 +1165,8 @@
         map_info = '{{ maps|length }}' == 'NULL' ? 0 : '{{ maps.0.id }}';
     </script>
 
+
+{% block bottom_static_files %}
+{% endblock %}
   </body>
 </html>
