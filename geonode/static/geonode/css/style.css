@@ -3205,7 +3205,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 .modal-dialog{
-width: 80%;
+width: 800px;
 }
 #SigninModal .modal-dialog
 {
