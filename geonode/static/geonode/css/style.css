@@ -3864,3 +3864,27 @@ footer {
 	bottom: 0;
 	width: 100%;
 }
+
+.workspace-sidebar {
+    position: fixed;
+    top: 72px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #edf0f1;
+    border-right: 1px solid #eee;
+}
+.workspace-sidebar ul li a {
+    color: #454c58;
+    border-bottom: 1px solid #dbe0e2;
+}
+.workspace-sidebar ul li a:hover {
+    background-color: #f9f9f9;
+}
+.workspace-sidebar ul li a i{
+    margin-right: 10px;
+}
