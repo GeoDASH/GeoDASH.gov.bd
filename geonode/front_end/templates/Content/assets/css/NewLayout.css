@@ -494,7 +494,7 @@ a
 .map-toolbar ul li button
 {
  width: 35px;
- height: 34px;
+ height: 35px;
 }
 .map-settings-btn
 {
@@ -577,16 +577,7 @@ color: #fff;
     padding: 7px 12px;
 }
 
-    .navbar .nav > li button:hover
-    {
-        background-color: #d9e1e7;
-        outline: 1px solid #c2c7d3;
-    }
-    .navbar .nav > li button.active
-    {
-        background-color: #d9e1e7;
-        outline: 1px solid #c2c7d3;
-    }
+
 
     .navbar .nav > li button:disabled
     {

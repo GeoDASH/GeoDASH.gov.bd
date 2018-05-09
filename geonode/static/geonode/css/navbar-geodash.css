@@ -156,13 +156,11 @@
     .btn-message   
     {
         margin: 0 5px 0 10px; 
-        border-radius: 50% !important;
         padding: 8px 11px !important;
     }
     .btn-notification
     {
         margin: 0 5px 0 0; 
-        border-radius: 50% !important;
         padding: 8px 11px !important;
     }
     .dashboard-btn
