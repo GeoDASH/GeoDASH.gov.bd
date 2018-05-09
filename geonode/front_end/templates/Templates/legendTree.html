@@ -77,6 +77,23 @@
                                     </tr>
                                 </table>
                             </li>
+                            <span class="control-label">{{layer.visualizationSetting.name}} : {{layer.visualizationSetting.attributeId}}</span>
+                            <li ng-repeat="class in layer.visualizationSetting.classes" style="margin-left: 0px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label class="shape-type-icon">
+                                                <style-preview feature-type="layer.getFeatureType()" style-hash="class.style" preview-size="class.stylePreview"></style-preview>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{class.rangeMin}} - {{class.rangeMax}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li>
                         </ul>
                     </li>
                 </ul>

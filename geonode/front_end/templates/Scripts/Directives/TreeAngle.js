@@ -29,6 +29,21 @@ treeModule.directive('treeAngle', [
                     layer.groups = [];
                     layer.ungrouped = [];
                     updateGroups(layer);
+                    updateVisualizationLegend(layer);
+                };
+                $scope.previewSize={width : 'auto',height : 'auto'};
+                function updateVisualizationLegend(layer) {
+                    layer.visualizationSetting=angular.copy(layer.Style.visualizationSettings);
+                    var max=_.max(layer.visualizationSetting.classes, function (visClass) {
+                        return visClass.style.pointRadius;
+                    }).style.pointRadius/5;
+                    angular.forEach(layer.visualizationSetting.classes,function (visClass) {
+                        visClass.style.pointRadius=visClass.style.pointRadius/5;
+                        visClass.stylePreview={
+                            height : visClass.style.pointRadius*2 + 5,
+                            width : max*2 + 5
+                        };
+                    });
                 }
 
                 function updateGroups(layer) {
@@ -48,6 +63,7 @@ treeModule.directive('treeAngle', [
 
                 $rootScope.$on('classificationChanged', function (event, args) {
                     updateGroups(args.layer);
+                    updateVisualizationLegend(args.layer);
                 });
 
                 function getGroupedClasses(classes) {
