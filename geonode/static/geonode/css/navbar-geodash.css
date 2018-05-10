@@ -112,7 +112,7 @@
 {
     position: absolute;
     top:71px;
-    width: 50px;
+    width: 33px;
     left: 50%;
     text-align: center;
     z-index:999999;
@@ -122,9 +122,11 @@
 {
     border: 1px solid #ccc;
     background-color: #fff;
-    padding: 0 15px;
-    font-size: 24px;
+    padding: 0 8px;
+    font-size: 21px;
     border-top: 0;
+    height: 25px;
+    line-height: 22px;
 }
 
 /*Start Header navbar media query*/
@@ -156,13 +158,11 @@
     .btn-message   
     {
         margin: 0 5px 0 10px; 
-        border-radius: 50% !important;
         padding: 8px 11px !important;
     }
     .btn-notification
     {
         margin: 0 5px 0 0; 
-        border-radius: 50% !important;
         padding: 8px 11px !important;
     }
     .dashboard-btn
