@@ -258,6 +258,7 @@ $(function () {
             else{
                 var url = targeturl;
             }
+            var edit_layer= "{{ FRONT_END_SETTINGS.member_workspace_layer_page.edit_layer }}";
             //var url = "{% url 'api_dispatch_list' api_name='api' resource_name='group_activity' %}?limit="+ Plimit +"&group={{ object.slug }}";
                 $.ajax({
                     cache: true,
@@ -299,6 +300,9 @@ $(function () {
                     }
                     else{
                         output+='<td><button class="btn btn-gd-primary" id="mandatory-check"> {% trans "Continue for Approval" %}</button></td>';
+                    }
+                    if(edit_layer=='True'){
+                        output+='<td><button class="btn btn-gd-primary" id="mandatory-check"> {% trans "Edit Layer" %}</button></td>';
                     }
 
                     output+='<td>';
