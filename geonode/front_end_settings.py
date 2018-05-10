@@ -14,8 +14,8 @@ NSDI_FRONT_END_SETTINGS = {
         'navbar_css': settings.STATIC_URL + 'geonode/css/navbar-nsdi.css?'
 
     },
-    'page_name2': {
-        'button_name1': False,
+    'layer_detail_page': {
+        'attributes': False,
         'button_name2': True
     }
 }
@@ -33,7 +33,7 @@ GEODASH_FRONT_END_SETTINGS = {
 
     },
     'layer_detail_page': {
-        'attributes': False,
+        'attributes': True,
         'button_name2': True
     }
 }
