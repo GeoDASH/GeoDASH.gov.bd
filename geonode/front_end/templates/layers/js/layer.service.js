@@ -159,14 +159,14 @@
                 return get(uri);
 
             },
-            getLayerFeatureByName: function(url, layerName) {
+            getLayerFeatureByName: function(url, layerName,userProxy) {
                 return this.getWFS(url, {
                     typeName: layerName,
                     request: "describeFeatureType",
                     version: "2.0.0",
                     outputFormat: "application/json"
 
-                });
+                },userProxy);
             },
             getFeatureDetails: function(url, layerName, propertyNames) {
                 return this.getWFS(url, {
