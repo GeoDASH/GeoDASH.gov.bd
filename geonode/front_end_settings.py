@@ -32,8 +32,8 @@ GEODASH_FRONT_END_SETTINGS = {
         'navbar_css': settings.STATIC_URL + 'geonode/css/navbar-geodash.css?'
 
     },
-    'page_name2': {
-        'button_name1': False,
+    'layer_detail_page': {
+        'attributes': False,
         'button_name2': True
     }
 }
