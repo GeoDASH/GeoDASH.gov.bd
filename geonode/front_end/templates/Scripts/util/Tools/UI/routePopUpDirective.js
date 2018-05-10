@@ -93,9 +93,9 @@ mapModule.directive('routePopUpDirective', [
                         });
                         var coordinate = map.getEventCoordinate(evt);
                         var html = '<ul class="list-group">\n' +
-                            '                <button class="list-group-item" ng-click="call(true)" style="cursor: pointer" ng-hide="sourceCoordinates.length>0">Direction from here </button>\n' +
-                            '                <button class="list-group-item" ng-click="call(false)" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Direction to there </button>\n' +
-                            '                <button class="list-group-item" ng-click="routeFromLayer()" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Direction From layer </button>\n' +
+                            '                <button class="list-group-item" ng-click="call(true)" style="cursor: pointer" ng-hide="sourceCoordinates.length>0">Source</button>\n' +
+                            '                <button class="list-group-item" ng-click="call(false)" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Destination</button>\n' +
+                            '                <button class="list-group-item" ng-click="routeFromLayer()" style="cursor: pointer" \n' + 'ng-show="sourceCoordinates.length>0">Nearest Destination From Source</button>\n' +
                             '<button class="list-group-item" ng-show="sourceCoordinates.length>0" ng-click="resetAll()">Clear Route</button>' +
                             '<button class="list-group-item" style="cursor: pointer"ng-click="searchForBuffer()">Buffer Search</button>' +
                             '            </ul>';

@@ -35,5 +35,9 @@ GEODASH_FRONT_END_SETTINGS = {
     'layer_detail_page': {
         'attributes': True,
         'button_name2': True
+    },
+    'member_workspace_layer_page': {
+        'edit_layer': False,
+        'button_name2': True
     }
 }
