@@ -11,7 +11,7 @@ NSDI_FRONT_END_SETTINGS = {
         'social_login':False,
         'administration_header_menu':True,
         'search_engine_title': 'NSDI',
-        'navbar_css': settings.STATIC_URL + 'geonode/css/navbar-nsdi.css?'
+        'navbar_css': settings.STATIC_URL + 'static/navbar-nsdi.css?'
 
     },
     'layer_detail_page': {
@@ -34,6 +34,10 @@ GEODASH_FRONT_END_SETTINGS = {
     },
     'layer_detail_page': {
         'attributes': True,
+        'button_name2': True
+    },
+    'member_workspace_layer_page': {
+        'edit_layer': False,
         'button_name2': True
     }
 }
