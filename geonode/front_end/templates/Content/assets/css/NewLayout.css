@@ -519,6 +519,11 @@ background-color: #e8f3ff;
 background-color: #237c62;
 color: #fff;
 }
+.map-toolbar .map-settings-btn ul li button:hover
+{
+background-color: #32997a;
+color: #fff;
+}
 
 .layout-center
 {
