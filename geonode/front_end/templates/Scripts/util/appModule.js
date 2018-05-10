@@ -327,7 +327,7 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             controls: controls,
             view: view,
             layers: [
-                _bottomLayers, _midLayers, _topLayers
+                _bottomLayers, _midLayers
             ]
         });
 
