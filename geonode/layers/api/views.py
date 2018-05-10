@@ -12,7 +12,7 @@ from geonode.rest_authentications import CsrfExemptSessionAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from geonode.groups.models import GroupProfile
-from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer
+from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer, changeDbFieldTypes, reloadFeatureTypes
 
 
 class LayerFeatureUploadView(CreateAPIView):
@@ -21,7 +21,7 @@ class LayerFeatureUploadView(CreateAPIView):
     and processes that feature to upload to postgis database
     directly to the specified layer.
     '''
-    _EXTRA_FIELD = {'USER-DEFINED': models.GeometryField}
+    _EXTRA_FIELD = {'USER-DEFINED': models.GeometryField, "date": models.DateTimeField}
     permission_classes = (IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication,)
 
@@ -41,7 +41,7 @@ class LayerFeatureUploadView(CreateAPIView):
 
                 #update bbox for the layer according to the
                 #updated feature
-                updateBoundingBox(layer, recalculate=True)
+                updateBoundingBox(layer)
 
         except Layer.DoesNotExist:
             out['success'] = False
@@ -79,6 +79,17 @@ class CreateFeaturedLayer(CreateAPIView):
 
         base_file, tempdir = getShapeFileFromAttribute(**request.data)
         saved_layer = uploadLayer(base_file=base_file, user=request.user, group=group, keywords=keywords, **request.data)
+
+        #primarily all the columns of the saved_layer is character variyng
+        #now we should change column types according to given types
+        #this method below does this task
+        changeDbFieldTypes(saved_layer, **request.data)
+
+        ## after changing column types in postgis it is
+        ## needed to reload this to geoserver
+        ## this method does this task
+        reloadFeatureTypes(saved_layer)
+
         out['layer_id'] = saved_layer.id
 
         if not saved_layer:
