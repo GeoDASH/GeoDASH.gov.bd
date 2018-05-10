@@ -11,7 +11,7 @@ NSDI_FRONT_END_SETTINGS = {
         'social_login':False,
         'administration_header_menu':True,
         'search_engine_title': 'NSDI',
-        'navbar_css': settings.STATIC_URL + 'geonode/css/navbar-nsdi.css?'
+        'navbar_css': settings.STATIC_URL + 'static/navbar-nsdi.css?'
 
     },
     'layer_detail_page': {
