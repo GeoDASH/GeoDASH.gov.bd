@@ -15,7 +15,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
         }
         if (!layer.bbox) {
-            layer.bbox = [8965757.669738032,2061965.2750209137,11499798.031448197,3514880.3086655443];
+            layer.bbox = [8965757.669738032, 2061965.2750209137, 11499798.031448197, 3514880.3086655443];
         }
         if (!layer.hasOwnProperty('visibility'))
             layer.visibility = true;
@@ -86,6 +86,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
     }
     layerDataType.Point = _getPointData;
     layerDataType.Geom = _getGeomData;
+
     function formatString(template, args) {
         for (var i in args) {
             var re = new RegExp("\\{" + i + "\\}", "g");
@@ -102,35 +103,35 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
         '>': sldTemplateService.getPropertyIsGreaterThan,
         '>=': sldTemplateService.getPropertyIsGreaterThanOrEqualTo,
         'BETWEEN': sldTemplateService.getPropertyIsBetween,
-        'like' : sldTemplateService.getPropertyIsLike,
-        'null' : sldTemplateService.getPropertyIsNull
+        'like': sldTemplateService.getPropertyIsLike,
+        'null': sldTemplateService.getPropertyIsNull
     };
 
-    function getGroupSldString(rules,condition) {
-        var startCaseCondition=condition.charAt(0).toUpperCase() + condition.substring(1).toLowerCase();
-        condition=condition.toLowerCase();
-        var ruleString="";
-        if(rules.length>0){
-            ruleString="<"+startCaseCondition+">"+ "{0}" + "</"+startCaseCondition+">";
-            var sldFilters="";
-            angular.forEach(rules, function (condition) {
+    function getGroupSldString(rules, condition) {
+        var startCaseCondition = condition.charAt(0).toUpperCase() + condition.substring(1).toLowerCase();
+        condition = condition.toLowerCase();
+        var ruleString = "";
+        if (rules.length > 0) {
+            ruleString = "<" + startCaseCondition + ">" + "{0}" + "</" + startCaseCondition + ">";
+            var sldFilters = "";
+            angular.forEach(rules, function(condition) {
                 if (!condition.group) {
                     var formatArray = [condition.field.name, condition.data];
                     if (condition.condition == 'BETWEEN') formatArray.push(condition.dataAnother);
                     var sldFilter = formatString(sldConditionTemplates[condition.condition], formatArray);
-                    sldFilters=sldFilters+sldFilter;
+                    sldFilters = sldFilters + sldFilter;
                 } else {
-                    var filerGroup=getGroupSldString(condition.group.rules,condition.group.operator);
-                    sldFilters=sldFilters+filerGroup;
+                    var filerGroup = getGroupSldString(condition.group.rules, condition.group.operator);
+                    sldFilters = sldFilters + filerGroup;
                 }
             });
-            ruleString=formatString(ruleString,[sldFilters])
+            ruleString = formatString(ruleString, [sldFilters])
         }
         return ruleString;
     }
 
     function getScaleDenominator(scale) {
-        return " <ogc:MinScaleDenominator>"+scale.minValue+"</ogc:MinScaleDenominator> <ogc:MaxScaleDenominator>"+scale.maxValue+"</ogc:MaxScaleDenominator>";
+        return " <ogc:MinScaleDenominator>" + scale.minValue + "</ogc:MinScaleDenominator> <ogc:MaxScaleDenominator>" + scale.maxValue + "</ogc:MaxScaleDenominator>";
     }
 
 
@@ -156,54 +157,53 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                 style.select, HTMLOptGroupElement, null);
 
             var labelingSld = layerStyleGenerator.getLabelingSld(style.labelConfig, surfLayer.getFeatureType());
-            if(style.classifierDefinitions.selected.length>0){
-                var removeDefaultRegex=/<!--default style starts-->[\s\S]*?<!--default style ends-->/g;
-                defaultStyleSld=defaultStyleSld.replace(removeDefaultRegex,"");
+            if (style.classifierDefinitions.selected.length > 0) {
+                var removeDefaultRegex = /<!--default style starts-->[\s\S]*?<!--default style ends-->/g;
+                defaultStyleSld = defaultStyleSld.replace(removeDefaultRegex, "");
             }
             var classificationSlds = getClassificationSld(surfLayer.getFeatureType(), style.classifierDefinitions, excludeSld);
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");
             var vizSldRegex = new RegExp("<!--vizSld-->", "g");
-            var sldRules="";
-            angular.forEach(style.advancedRules,function (rule) {
-                var sldRule="<Rule>" + " <!--filterCondition--> " + "<!--scaleDenominator-->" +"<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
-                var ruleCondition=getGroupSldString(rule.filters.rules,rule.filters.operator);
-                if(ruleCondition){
+            var sldRules = "";
+            angular.forEach(style.advancedRules, function(rule) {
+                var sldRule = "<Rule>" + " <!--filterCondition--> " + "<!--scaleDenominator-->" + "<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
+                var ruleCondition = getGroupSldString(rule.filters.rules, rule.filters.operator);
+                if (ruleCondition) {
                     // sldRule = "<Rule>" + "<ogc:Filter> <!--filterCondition--> </ogc:Filter>" + "<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
-                    ruleCondition="<ogc:Filter> "+ruleCondition+" </ogc:Filter>";
-                    sldRule=sldRule.replace(/<!--filterCondition-->/g,ruleCondition);
+                    ruleCondition = "<ogc:Filter> " + ruleCondition + " </ogc:Filter>";
+                    sldRule = sldRule.replace(/<!--filterCondition-->/g, ruleCondition);
 
                 }
                 var labelSld = layerStyleGenerator.getLabelingSld(rule.labelConfig, surfLayer.getFeatureType());
-                sldRule=sldRule.replace(/<!--textSymboliser-->/g,labelSld);
+                sldRule = sldRule.replace(/<!--textSymboliser-->/g, labelSld);
                 var styleSld = layerStyleGenerator.getSldStyle(surfLayer.getFeatureType(), rule.style.default, false, null);
-                sldRule=sldRule.replace(/<!--styleSymboliser-->/g,styleSld);
-                if(rule.scaleDenominator.applyScale)
-                        sldRule=sldRule.replace(/<!--scaleDenominator-->/g,getScaleDenominator(rule.scaleDenominator));
+                sldRule = sldRule.replace(/<!--styleSymboliser-->/g, styleSld);
+                if (rule.scaleDenominator.applyScale)
+                    sldRule = sldRule.replace(/<!--scaleDenominator-->/g, getScaleDenominator(rule.scaleDenominator));
 
-                sldRules=sldRules+sldRule;
+                sldRules = sldRules + sldRule;
             });
             defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
             defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
-            defaultStyleSld=defaultStyleSld.replace(/<!--advanceSld-->/g,sldRules);
+            defaultStyleSld = defaultStyleSld.replace(/<!--advanceSld-->/g, sldRules);
 
             surfLayer.Style = style;
             layerRenderingModeFactory.setLayerRenderingMode(surfLayer);
 
-			var q = $q.defer();
+            var q = $q.defer();
             if (surfLayer.Style.visualizationSettings) {
                 visualizationService.getVisualizationSld(surfLayer, surfLayer.Style.visualizationSettings)
                     .then(function(visSld) {
                         if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {
                             defaultStyleSld = visSld;
-                        }
-                        else {
+                        } else {
                             defaultStyleSld = defaultStyleSld.replace(vizSldRegex, visSld);
-                        } 
+                        }
 
                         return doAction();
                     });
-				return q.promise;
+                return q.promise;
             } else {
                 return doAction();
             }
@@ -329,10 +329,11 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
                     mappedLayer = res.map(function(e) {
                         return _map({
                             Name: e.detail_url.match(/\w+:\w+/)[0],
-                            bbox: ol.proj.transformExtent([parseFloat(e.bbox_x0), 
-                                parseFloat(e.bbox_y0), 
-                                parseFloat(e.bbox_x1), 
-                                parseFloat(e.bbox_y1)], 
+                            bbox: ol.proj.transformExtent([parseFloat(e.bbox_x0),
+                                    parseFloat(e.bbox_y0),
+                                    parseFloat(e.bbox_x1),
+                                    parseFloat(e.bbox_y1)
+                                ],
                                 'EPSG:4326', 'EPSG:3857'),
                             geoserverUrl: $window.GeoServerHttp2Root + 'wms?access_token=' + $window.mapConfig.access_token
                         });
@@ -393,10 +394,14 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             var param = layerDataType[featureType](data);
 
             return layerRepository.uploadCsvLayer(param, file, 'over-pass_the_geom.csv');
+        },
+        getCsvFromGeoJson: function(geoJsonFeatures) {
+            return geoJsonToCsv(geoJsonFeatures, false);
         }
     };
 
-    function geoJsonToCsv(geoJsonFeatures) {
+
+    function geoJsonToCsv(geoJsonFeatures, includeLatLon) {
         var json = [];
         var keys = {};
         var reducer = function(a, e) {
@@ -406,15 +411,21 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
         };
         geoJsonFeatures.forEach(function(e) {
             keys = Object.assign(keys, Object.keys(e.properties).reduce(reducer, {}));
-            json.push(Object.assign(e.properties, {
-                longitude: e.geometry.coordinates[0],
-                latitude: e.geometry.coordinates[1]
-            }));
+            if (includeLatLon != false) {
+                json.push(Object.assign(e.properties, {
+                    longitude: e.geometry.coordinates[0],
+                    latitude: e.geometry.coordinates[1]
+                }));
+            } else {
+                json.push(e.properties);
+            }
         });
-        keys = Object.assign(keys, {
-            'longitude': true,
-            'latitude': true
-        });
+        if (includeLatLon != false) {
+            keys = Object.assign(keys, {
+                'longitude': true,
+                'latitude': true
+            });
+        }
         return JsonToCsv(json, keys);
     }
 
@@ -460,6 +471,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
         return { classificationStyle: sldStyle, defaultStyleCondition: conditionalSld };
     }
+
     function getRuleOperatorSld(condition) {
 
     }

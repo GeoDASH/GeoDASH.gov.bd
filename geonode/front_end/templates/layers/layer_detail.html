@@ -64,8 +64,8 @@
 .layer-information{
     height: calc(100vh - 115px) !important;
     overflow-y: scroll;
-}
-   
+}   
+
 </style>
 
     <div class="gd-content">
@@ -359,7 +359,7 @@
                                             {% endif %}
 
                                             {% if resource.storeType != "remoteStore" %}
-                                                {% if links %}
+                                                {% if links and "download_resourcebase" in perms_list %}
                                                     <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block"
                                                                 data-toggle="modal" data-target="#download-layer">
