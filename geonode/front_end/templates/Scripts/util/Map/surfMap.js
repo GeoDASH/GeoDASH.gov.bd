@@ -50,7 +50,7 @@
                     var layerInfo = mapInfo.Layers[j];
                     factory.addLayer(layerInfo, true);
                 }
-                factory.addSelectionLayer();
+                // factory.addSelectionLayer();
 
                 if (mapInfo.IsDraft) {
                     factory.zoomToMap();
