@@ -41,7 +41,7 @@
                     <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
                                 </button>
             </li>
-            <li ng-if="toolsIsVisible('measurement-button')">
+            <li ng-if="toolsIsVisible('measurement-buttons')">
                 <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></measurement-buttons>
             </li>
             <li ng-if="toolsIsVisible('set-marker')">
@@ -53,9 +53,9 @@
                             <i class="fa fa-search" aria-hidden="true"></i>
                             <span class="caret"></span>
                         </button>
-                    <ul class="dropdown-menu" style="width: 165px;"> 
+                    <ul class="dropdown-menu" style="width: 170px;"> 
                         <li style="float:none" ng-class="{'active' : toggleButtonsList['radiusSearchTool'].isActive}">
-                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i>Radius Search</a>
+                            <a class="control-button icon" ng-click="action.drawCircle()"  title="Draw Circle"><i class="fa fa-circle-o" aria-hidden="true"></i> Radius Search</a>
                         </li>
                         <li style="float:none" ng-class="{'active' : toggleButtonsList['bboxSearchTool'].isActive}">
                             <a class="control-button icon" ng-click="action.boundingBoxSearch()" title="BBOX search"><i class="fa fa-square-o" aria-hidden="true"></i>  Bounding Box Search</a>
@@ -224,7 +224,7 @@
                     <div class="arrow-up"></div>
                     <form class="form-inline ng-pristine ng-valid" style="margin-bottom: 25px;" ng-submit="executeQuery(queryStr)">
                         <textarea ng-required="true" ng-model="queryStr" class="form-control" rows="3" style="width: 100%;margin-bottom:10px;"></textarea>
-                        <button type="submit" class="btn btn-primary pull-right icon-btn-color" target="_self">
+                        <button type="submit" class="btn btn-primary pull-right icon-btn-color" style="width: auto" target="_self">
                                                     Submit <i class="fa fa-arrow-right" aria-hidden="true"></i>    
                                                 </button>
                         <a href="" ng-click="action.showOverPassDialog=false; closeDialog()" class="btn btn-default pull-right" target="_self" style="margin-right: 5px;">
@@ -283,7 +283,7 @@
                 <button class="control-button icon"
                         ng-class="{'active' : enableVisualizationTool}"
                         ng-click="toggleVisualizationTool()"  title="Toggle Legend">
-                        <i class="fa fa-sun-o" aria-hidden="true"></i>
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>                        
                             </button>
             </li>
             <li id="icon-visualization" ng-if="toolsIsVisible('icon-visualization')"> 
@@ -292,7 +292,7 @@
            
         </ul>
 
-        <div class="navbar-inner map-toolbar map-settings-btn">
+        <div class="navbar-inner map-settings-btn">
             <ul>
                 <li> 
                     <button class="icon"><i class="fa fa-wrench" aria-hidden="true"></i></button>
@@ -316,7 +316,6 @@
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
 </div> -->
 
-<visualization-legend ng-show="enableVisualizationTool" class="col-md-3 visulization-legend-container col-md-offset-9" id="map-legend" style="resize: both;padding: 0px;position: absolute"></visualization-legend>
 
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>

@@ -404,7 +404,10 @@ function showTable(url,rows){
         apiQuery.execute(handleCoreReportingResults.bind({
             id: 'avg-session-duration',
             key: 'ga:avgSessionDuration', 
-            units: 's'
+            units: 'min',
+            calculate: function(v){
+                return v / 60; 
+            }
         }));
     }
     function makeApiCall() {
@@ -414,9 +417,8 @@ function showTable(url,rows){
 
 function handleCoreReportingResults(results) {
   if (!results.error) {
-    // Success. Do something cool!
     let value = parseFloat(results.totalsForAllResults[this.key]);
-    $('#' + this.id).html(value.toFixed(2) + ' ' + this.units); 
+    $('#' + this.id).html( (typeof this.calculate == 'function'? this.calculate(value): value).toFixed(2) + ' ' + this.units); 
   }
 }
     </script>
