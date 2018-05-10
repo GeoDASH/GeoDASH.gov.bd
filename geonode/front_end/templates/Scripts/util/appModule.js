@@ -182,7 +182,8 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
         isDirty: false,
         showProperties: $rootScope.showProperties
     };
-
+    var maxExtent= ol.proj.transformExtent([88.0105667114258, 21.1280899047852, 92.6736602783204, 26.6343994140626], ol.proj.get('EPSG:4326'), ol.proj.get('EPSG:3857'));
+    var centerExtent=ol.extent.getCenter(maxExtent);
     buildObjectGraph();
     if (!mapAccessLevel.isPrivate) {
         mapService.loadPublicMap(mapAccessLevel.publicId);
@@ -252,8 +253,8 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             scrollwheel: false,
             streetViewControl: false,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            zoom: 2,
-            center: new google.maps.LatLng(0, 0),
+            zoom: 6,
+            center:  ol.proj.transform(centerExtent,ol.proj.get('EPSG:3857'), ol.proj.get('EPSG:4326')).reverse(),
             tilt: 0
         });
 
@@ -311,11 +312,12 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             })
         ]);
         var view = new ol.View({
-            minZoom: 0,
+            minZoom: 6,
             maxZoom: 21,
             projection: 'EPSG:3857',
-            center: reprojection.coordinate.to3857([0, 0]),
-            zoom: 2
+            center: centerExtent,
+            extent:maxExtent,
+            zoom: 6
         });
 
         var _bottomLayers = new ol.layer.Group();

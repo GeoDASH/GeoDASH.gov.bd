@@ -225,18 +225,19 @@
                         extent= ol.extent.extend(extent, layer.bbox);
                 }
             });
-            if(ol.extent.isEmpty(extent)) extent=[6374578.927979095, 1571802.0022168788, 12753707.560546765, 4100950.3941167905];
+            if(ol.extent.isEmpty(extent)) extent=ol.proj.transformExtent([88.0105667114258, 21.1280899047852, 92.6736602783204, 26.6343994140626], ol.proj.get('EPSG:4326'), ol.proj.get('EPSG:3857'));
             var center=ol.extent.getCenter(extent);
-            $timeout(function () {
-                var pan = ol.animation.pan({
-                    duration: 5000,
-                    source: (map.getView().getCenter()),
-                    start: +new Date()
-                });
-                var zoom = ol.animation.zoom({duration: 5000, resolution: map.getView().getResolution()});
-                map.beforeRender(pan, zoom);
-                map.getView().fit(extent,map.getSize());
-            },1000);
+            map.getView().fit(extent,map.getSize());
+            // $timeout(function () {
+            //     var pan = ol.animation.pan({
+            //         duration: 5000,
+            //         source: (map.getView().getCenter()),
+            //         start: +new Date()
+            //     });
+            //     var zoom = ol.animation.zoom({duration: 5000, resolution: map.getView().getResolution()});
+            //     map.beforeRender(pan, zoom);
+            //     map.getView().fit(extent,map.getSize());
+            // },1000);
         }
 
         function errorFn() {

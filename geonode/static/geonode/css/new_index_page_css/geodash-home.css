@@ -7,15 +7,7 @@ body {
 .nav-right {
 	float: right;
 }
-.header-nav li a {
-	color: #4b4b4b;
-}
-.header-nav li a span.caret {
-	color: #3896e2;
-}
-.navbar-nav > li > .dropdown-menu {
-	border-radius: 0;
-}
+
 .btn-primary {
 	background-color: #3896e2;
 	border-color: #3896e2;
