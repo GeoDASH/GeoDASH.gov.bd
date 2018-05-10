@@ -496,6 +496,14 @@ a
  width: 35px;
  height: 35px;
 }
+.map-toolbar ul li button:hover
+{
+background-color: #f7f7f7;
+}
+.map-toolbar .dropdown-menu > li > a
+{
+font-size: 12px;
+}
 .map-settings-btn
 {
     top: 0;
@@ -1068,16 +1076,16 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 .visulization-legend-container
 {
     position: absolute;
-    /*right: 0px;*/
     z-index: 1005;
     background-color: rgb(255, 255, 255);
     padding: 2px;
     border-radius: 4px;
-    top: 10%;
-    /*width: 30%;*/
+    top: 48px;
     overflow: auto;
     font-size: x-small;
     height: auto;
+    right: 100px;
+    width: 354px;
 }
 
 .visulization-legend-container td {
