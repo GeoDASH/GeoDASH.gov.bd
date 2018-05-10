@@ -33,6 +33,7 @@ def resource_urls(request):
         REGISTRATION_OPEN=settings.REGISTRATION_OPEN,
         VERSION=get_version(),
         SITE_NAME=site.name,
+        FRONT_END_SETTINGS=settings.FRONT_END_SETTINGS,
         SITE_DOMAIN=site.domain,
         SITEURL=settings.SITEURL,
         RESOURCE_PUBLISHING=settings.RESOURCE_PUBLISHING,

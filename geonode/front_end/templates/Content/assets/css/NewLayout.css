@@ -494,7 +494,19 @@ a
 .map-toolbar ul li button
 {
  width: 35px;
- height: 34px;
+ height: 35px;
+}
+.map-toolbar ul li button:hover
+{
+background-color: #f7f7f7;
+}
+.map-toolbar .dropdown-menu > li > a
+{
+font-size: 12px;
+}
+.map-toolbar .active
+{
+background-color: #e8f3ff;
 }
 .map-settings-btn
 {
@@ -505,6 +517,11 @@ a
 .map-settings-btn ul li button
 {
 background-color: #237c62;
+color: #fff;
+}
+.map-toolbar .map-settings-btn ul li button:hover
+{
+background-color: #32997a;
 color: #fff;
 }
 
@@ -525,11 +542,6 @@ color: #fff;
 {
     position: fixed;
     width: 100%;
-}
-
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-{
-    background: none;
 }
 
 .loading-message
@@ -582,16 +594,7 @@ color: #fff;
     padding: 7px 12px;
 }
 
-    .navbar .nav > li button:hover
-    {
-        background-color: #d9e1e7;
-        outline: 1px solid #c2c7d3;
-    }
-    .navbar .nav > li button.active
-    {
-        background-color: #d9e1e7;
-        outline: 1px solid #c2c7d3;
-    }
+
 
     .navbar .nav > li button:disabled
     {
@@ -1082,16 +1085,16 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 .visulization-legend-container
 {
     position: absolute;
-    /*right: 0px;*/
     z-index: 1005;
     background-color: rgb(255, 255, 255);
     padding: 2px;
     border-radius: 4px;
-    top: 10%;
-    /*width: 30%;*/
+    top: 48px;
     overflow: auto;
     font-size: x-small;
     height: auto;
+    right: 100px;
+    width: 354px;
 }
 
 .visulization-legend-container td {
