@@ -1,7 +1,7 @@
 ﻿<div class="style-column">
     <div class="style-group" style="background-color: #efefef; padding: 8px;" ng-if="isPoint && !isWeightedPoint">
         <div class="style-editor dropdown">
-            <button class="btn btn-default dropdown-toggle">
+            <button class="btn btn-sm dropdown-toggle">
                 <span ng-if="styleHash.externalGraphic">
                     <i ng-if="!styleHash.externalGraphicUrl" ng-class="styleHash.externalGraphic"></i>
                     <img ng-if="styleHash.externalGraphicUrl"   ng-src="{{styleHash.externalGraphicUrl}}" ng-attr-alt="{{styleHash.externalGraphicUrl}}" height="10px" width="10px"/>
@@ -22,9 +22,7 @@
                     <a><img ng-src="{{textGraphicIconClasses[textGraphicName]}}" alt="{{textGraphicIconClasses[textGraphicName]}}" /></a>
                 </li>
             </ul>
-        </div>
-        <div class="style-editor" style="float: right" ng-if="styleHash.externalGraphic">
-            <input type="text" class="form-control" ng-model="styleHash.externalGraphicUrl">
+            <input type="text" class="input-control" ng-model="styleHash.externalGraphicUrl" ng-if="styleHash.externalGraphic" style="width: 200px">
         </div>
 
         <div class="style-editor range">
@@ -102,7 +100,7 @@
             <span>0</span><input ng-disabled="styleHash.externalGraphic" type='range' min="0" max="100" step="1" ng-model='styleHash.strokeWidth' /><span>100</span>
         </div>
         <div class="style-editor dropdown">
-            <button type="button" ng-disabled="styleHash.externalGraphic" class="btn btn-default dropdown-toggle" style="float: left;margin-right:5px;">
+            <button type="button" ng-disabled="styleHash.externalGraphic" class="btn btn-sm dropdown-toggle" style="float: left;margin-right:5px;">
                 {{strokeDashstyles.dashTypeText[styleHash.strokeDashstyle]}}<i class="fa fa-caret-down fa-fw"></i>
             </button>
             <ul class="dropdown-menu dropdown-up">
@@ -111,11 +109,11 @@
                 </li>
             </ul>
             <span>
-                <input ng-if="styleHash.strokeDashstyle == 'dash'" type="number" min="1" ng-model="styleHash.dashWidth" class="form-control"
+                <input ng-if="styleHash.strokeDashstyle == 'dash'" type="number" min="1" ng-model="styleHash.dashWidth" class="input-control"
                        style="width: 56px;" placeholder="length" title="length"
                        ng-init="styleHash.dashWidth = styleHash.dashWidth == undefined ? 12 : styleHash.dashWidth" />
                 <input ng-if="styleHash.strokeDashstyle == 'dash' || styleHash.strokeDashstyle == 'dot'"
-                       type="number" min="1" ng-model="styleHash.dashSpace" class="form-control"
+                       type="number" min="1" ng-model="styleHash.dashSpace" class="input-control"
                        style="width: 56px;" placeholder="space" title="space between"
                        ng-init="styleHash.dashSpace = styleHash.dashSpace == undefined ? 12 : styleHash.dashSpace" />
                 <sub ng-if="styleHash.strokeDashstyle == 'dash' || styleHash.strokeDashstyle == 'dot'" style="margin-left:10px;">px</sub>

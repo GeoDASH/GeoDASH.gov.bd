@@ -85,18 +85,21 @@ appHelperModule.directive('styleEditor', [
                         if (pointGraphicNames.isValidGraphic(_model.pointType)) {
                             $scope.styleHash.graphicName = _model.pointType;
                             $scope.styleHash.externalGraphic = null;
+                            $scope.styleHash.externalGraphicUrl = "";
                             $scope.styleHash.textGraphicName = null;
                         } else if (pointTextGraphics.isValidTextGraphic(_model.pointType)) {
                             mode = "text";
                             $scope.styleHash.textGraphicName = _model.pointType;
                             $scope.styleHash.graphicName = null;
                             $scope.styleHash.externalGraphic = null;
+                            $scope.styleHash.externalGraphicUrl = "";
                         } else if (pointTextGraphics.isValidFontAwesomeGraphic(_model.pointType)) {
                             mode = "graphic";
                             $scope.styleHash.textFontAwesome = true;
                             $scope.styleHash.textGraphicName = _model.pointType;
                             $scope.styleHash.graphicName = null;
                             $scope.styleHash.externalGraphic = null;
+                            $scope.styleHash.externalGraphicUrl = "";
                         }
                         else {
                             $scope.styleHash.externalGraphic = _model.pointType;

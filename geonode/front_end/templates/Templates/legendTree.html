@@ -8,7 +8,7 @@
                         <table style="width: 100%">
                             <tr>
                                 <td style="min-width: 10px; white-space: nowrap">
-                                    <i ng-dblclick="stopPropagation($event)" ng-if="layer.getClassifierDefinitions().selected && layer.getClassifierDefinitions().selected.length > 0 && layer.isSourceFileExists()"
+                                    <i ng-dblclick="stopPropagation($event)" ng-if="(layer.getClassifierDefinitions().selected && layer.getClassifierDefinitions().selected.length > 0 && layer.isSourceFileExists()) || layer.getVisualization()"
                                        ng-click="stopPropagation($event); layer.isExpandedLegend = !layer.isExpandedLegend;" style="cursor: pointer"
                                        ng-class="{'fa-caret-right':!layer.isExpandedLegend, 'fa-caret-down':layer.isExpandedLegend}" class="fa"></i>
                                 </td>
@@ -76,6 +76,42 @@
                                         </td>
                                     </tr>
                                 </table>
+                            </li>
+                            <span class="control-label" ng-if="layer.visualizationSetting">{{layer.visualizationSetting.name}} : {{layer.visualizationSetting.attributeId}}</span>
+                            <li ng-repeat="class in layer.visualizationSetting.classes" style="margin-left: 0px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label class="shape-type-icon">
+                                                <style-preview feature-type="'point'" style-hash="class.style" preview-size="class.stylePreview"></style-preview>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {{class.rangeMin}} - {{class.rangeMax}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li>
+                            <li style="margin-left: 0px" ng-if="layer.selectedAttributes.length>0">
+                                <table>
+                                    <tr ng-repeat="item in layer.selectedAttributes ">
+                                        <td><span
+                                                style="display: block; height: 12px; width: 40px; background-color: {{ item.attributeColor }}"></span>
+                                        </td>
+                                        <td style="padding-left: 10px">{{ item.numericAttribute.Name }}</td>
+                                    </tr>
+                                </table>
+                            </li>
+                            <li style="margin-left: 0px" ng-if="layer.heatMapClasses.length>0">
+                                <div>
+                                    <span style="height: 20px;padding-top: 2px;float: left">Low</span>
+                                    <div ng-repeat="heat in layer.heatMapClasses" ng-style="heat">
+
+                                    </div>
+                                    <span style="height: 20px;padding-top: 2px;float: left">High</span>
+                                </div>
                             </li>
                         </ul>
                     </li>

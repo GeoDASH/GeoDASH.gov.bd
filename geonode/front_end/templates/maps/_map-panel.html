@@ -316,7 +316,6 @@
     <feature-redo-undo-buttons></feature-redo-undo-buttons>
 </div> -->
 
-<visualization-legend ng-show="enableVisualizationTool" class="visulization-legend-container dropBox directions" style="right: 30px !important;top:47px !important"></visualization-legend>
 
 <map-loading-icon></map-loading-icon>
 <zoom-level-display></zoom-level-display>
@@ -420,6 +419,9 @@
 
         $('.stop-propagation').on('click', function (e) {
             e.stopPropagation();
+        });
+        $( "#map-legend" ).draggable({
+            handle: "#drag"
         });
     });
     var navAnCount = 0; 

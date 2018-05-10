@@ -166,18 +166,21 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
             var vizSldRegex = new RegExp("<!--vizSld-->", "g");
             var sldRules="";
             angular.forEach(style.advancedRules,function (rule) {
-                var sldRule="<Rule>" + "<ogc:Filter> <!--filterCondition--> </ogc:Filter>" + "<!--scaleDenominator-->" +"<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
+                var sldRule="<Rule>" + " <!--filterCondition--> " + "<!--scaleDenominator-->" +"<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
                 var ruleCondition=getGroupSldString(rule.filters.rules,rule.filters.operator);
                 if(ruleCondition){
                     // sldRule = "<Rule>" + "<ogc:Filter> <!--filterCondition--> </ogc:Filter>" + "<!--styleSymboliser-->" + "<!--textSymboliser-->" + "</Rule>";
-                    var labelSld = layerStyleGenerator.getLabelingSld(rule.labelConfig, surfLayer.getFeatureType());
-                    var styleSld = layerStyleGenerator.getSldStyle(surfLayer.getFeatureType(), rule.style.default, false, null);
-                    sldRule=sldRule.replace(/<!--styleSymboliser-->/g,styleSld);
+                    ruleCondition="<ogc:Filter> "+ruleCondition+" </ogc:Filter>";
                     sldRule=sldRule.replace(/<!--filterCondition-->/g,ruleCondition);
-                    sldRule=sldRule.replace(/<!--textSymboliser-->/g,labelSld);
-                    if(rule.scaleDenominator.applyScale)
-                        sldRule=sldRule.replace(/<!--scaleDenominator-->/g,getScaleDenominator(rule.scaleDenominator));
+
                 }
+                var labelSld = layerStyleGenerator.getLabelingSld(rule.labelConfig, surfLayer.getFeatureType());
+                sldRule=sldRule.replace(/<!--textSymboliser-->/g,labelSld);
+                var styleSld = layerStyleGenerator.getSldStyle(surfLayer.getFeatureType(), rule.style.default, false, null);
+                sldRule=sldRule.replace(/<!--styleSymboliser-->/g,styleSld);
+                if(rule.scaleDenominator.applyScale)
+                        sldRule=sldRule.replace(/<!--scaleDenominator-->/g,getScaleDenominator(rule.scaleDenominator));
+
                 sldRules=sldRules+sldRule;
             });
             defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);

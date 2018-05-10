@@ -1,7 +1,7 @@
 ﻿appHelperModule.directive('visualizationLegend', ['mapTools', 'utilityService',
 function (mapTools, utilityService) {
     return {
-        restrict: 'EA',
+        restrict: 'EAC',
 
         templateUrl: '/static/Templates/visualizationLegend.html',
         controller: ['$scope', function ($scope) {
