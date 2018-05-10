@@ -3,10 +3,11 @@
         .module('LayerApp')
         .controller('AttributeViewController', AttributeViewController);
 
-    AttributeViewController.$inject = ['$location', 'LayerService', 'uiGridConstants', 'FileUploader'];
+    AttributeViewController.$inject = ['$location', 'LayerService', 'uiGridConstants', 'FileUploader', 'layerService'];
 
-    function AttributeViewController($location, LayerService, uiGridConstants, FileUploader) {
+    function AttributeViewController($location, LayerService, uiGridConstants, FileUploader, oldLayerService) {
         var self = this;
+        self.csvDownloadUrl = '';
         self.geoServerUrl = 'api/geoserver/';
         self.propertyNames = [];
         // self.layerName = $location.search().name;
@@ -28,6 +29,17 @@
         function errorFn() {
 
         }
+
+        self.generateDownloadUrl = function(features){
+            let csv = oldLayerService.getCsvFromGeoJson(features);
+            var file = new Blob([csv], { type: 'application/octet-stream' });            
+            self.csvDownloadUrl = URL.createObjectURL(file);
+            let anchor = document.getElementById('download-csv-button');
+            if(anchor){   
+                anchor.href = self.csvDownloadUrl;
+                anchor.download = self.layerName;
+            }
+        };
 
         var requestObject = {
             version: '1.0.0',
@@ -61,6 +73,7 @@
                         width: '*'
                     });
                 });
+                self.generateDownloadUrl(res.features);
             }, errorFn);
         }
 
