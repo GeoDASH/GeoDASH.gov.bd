@@ -270,13 +270,13 @@ ul.user-actions li a .fa{
 }
 .grid-container .top-content .avater .avater-img{
     margin:10px auto;
-    height:150px;
+    height:160px;
     max-width:150px;
     overflow: hidden;
 }
 
 .grid-container .top-content .avater .avater-img-mid img{
-    margin:0 auto;
+    margin:5px auto;
     height:150px;
     width:150px;
     text-align: center;

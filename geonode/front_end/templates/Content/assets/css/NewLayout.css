@@ -504,6 +504,10 @@ background-color: #f7f7f7;
 {
 font-size: 12px;
 }
+.map-toolbar .active
+{
+background-color: #e8f3ff;
+}
 .map-settings-btn
 {
     top: 0;
