@@ -12,30 +12,58 @@
 {% endcomment %}
 
 {% block body_outer %}
-    <div class="gd-content">
-        <div class="d-title">
-           
-                {% trans "Member Workspace" %}   
-           
-        </div>
+
+<style>
+        body{
+            background-color: #fff;
+        }
+        .container
+        {
+            width: 100%;
+        }
+        
+    .nav-sidebar {
+        margin-right: -21px;
+        margin-bottom: 20px;
+        margin-left: -20px;
+    }
+    footer
+    {
+        z-index: 1008;
+    }
+    .main
+    {
+        background-color: #fff;
+    }
+    .nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+        color: #fff;
+        background-color: #428bca;
+    }
+    .d-title
+    {
+        padding-bottom: 30px;
+    }
+    </style>
+
+       
+
+        <div class="row">
 
 
-        <div class="panel panel-default">
-                <div class="panel-heading globalNavHeading">
-                        <ul class="nav nav-tabs layerNav globalNav">
-                                <li role="presentation" class="active"><a href="{% url "member-workspace-layer" %}">{% trans "Layers" %}</a></li>
-                                <li role="presentation"><a href="{% url "member-workspace-map" %}"> {% trans "Maps" %}</a></li>
-                                <li role="presentation"><a href="{% url "member-workspace-document" %}">{% trans "Documents" %}</a></li>
-                              </ul>
+                <div class="col-sm-3 col-md-2 workspace-sidebar">
+                        <ul class="nav nav-sidebar">
+                                <li role="presentation" class="active"><a href="{% url "member-workspace-layer" %}"><i class="fa fa-clone" aria-hidden="true"></i>{% trans "Layers" %}</a></li>
+                                <li role="presentation"><a href="{% url "member-workspace-map" %}"><i class="fa fa-map" aria-hidden="true"></i>{% trans "Maps" %}</a></li>
+                                <li role="presentation"><a href="{% url "member-workspace-document" %}"><i class="fa fa-file" aria-hidden="true"></i>{% trans "Documents" %}</a></li>
+                                </ul>
                 </div>
                
-                <div class="panel-body">
-                 
-                        
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                        <h1 class="d-title" style="margin: 0"> {% trans "Member Workspace" %}</h1>
+                        <div class="gd-content">
                                 <div class="row">
                                   <div class="col-md-12">
-                                      
-                                      <br>
+                             
                                   <div>
                                       <div class="alert alert-warning alert-dismissable">
                                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -190,6 +218,7 @@
                                     </div>
                                   </div>
                                 </div>
+                                </div>
                            
 
                 </div>
@@ -197,8 +226,6 @@
 
 
 
-        
-    </div>
 {% include "layer_templates/_delete_layer.html" %}
 {% endblock %}
 

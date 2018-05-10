@@ -6,7 +6,7 @@
             {% trans "Info" %}
         </a>
     </li>
-    {% if resource.polymorphic_ctype.name == 'layer' %}
+    {% if resource.polymorphic_ctype.name == 'layer' and FRONT_END_SETTINGS.layer_detail_page.attributes %}
         <li>
             <a href="#attributes" data-toggle="tab">
                 <i class="fa fa-bars"></i>

@@ -38,7 +38,7 @@
                             </tr>
                         </table>
 
-                        <ul style="list-style: none; margin-left: 30px;" ng-if="layer.isExpanded && layer.isSourceFileExists()" ng-init="initializeGroups(layer)">
+                        <ul style="list-style: none; margin-left: 0px;" ng-if="layer.isExpanded && layer.isSourceFileExists()" ng-init="initializeGroups(layer)">
                             <i ng-repeat-start="group in layer.groups" style="cursor: pointer;"
                                ng-class="{'fa-caret-right':!group.isExpanded, 'fa-caret-down':group.isExpanded}"
                                class="fa" ng-click="group.isExpanded = !group.isExpanded">
@@ -71,7 +71,7 @@
                                 </ul>
                                 <br ng-if="!group.isExpanded" />
                             </li>
-                            <li ng-repeat="class in layer.ungrouped" style="margin-left: 7px;">
+                            <li ng-repeat="class in layer.ungrouped" style="margin-left: 0px;">
                                 <table>
                                     <tr>
                                         <td ng-dblclick="stopPropagation($event)" ng-click="stopPropagation($event)">

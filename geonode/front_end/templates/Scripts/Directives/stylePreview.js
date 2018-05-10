@@ -23,10 +23,10 @@
                     _size.width = _size.width || 50;
                     _size.height = _size.height || 50;
 
-                    if (_size.width != _size.height) {
-                        _size.width = Math.min(_size.width, _size.height);
-                        _size.height = _size.width;
-                    }
+                    // if (_size.width != _size.height) {
+                    //     _size.width = Math.min(_size.width, _size.height);
+                    //     _size.height = _size.width;
+                    // }
 
                     $scope.getDashArray = function () {
                         return strokeDashstyles.getDashedArray(_styleHash);

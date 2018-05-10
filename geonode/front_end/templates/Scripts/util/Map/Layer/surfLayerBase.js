@@ -132,6 +132,9 @@
             this.getClassifierDefinitions = function () {
                 return this.getStyle().classifierDefinitions;
             };
+            this.getVisualization=function () {
+                return this.getStyle().visualizationSettings;
+            };
 
             this.hasClassifierDefinitions = function () {
                 return layerInfo.ClassifierDefinitions && layerInfo.ClassifierDefinitions.selectedField;
@@ -139,7 +142,7 @@
 
             this.hasLabeling = function () {
                 return _style.labelConfig && _style.labelConfig.attribute;
-            }
+            };
 
             this.setName = function (name) {
                 layerInfo.Name = name;

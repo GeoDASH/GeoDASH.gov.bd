@@ -106,7 +106,11 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
 
             layerService.fetchWMSFeatures(urlParams)
                 .then(function (res) {
-                    var properties = res.features.length > 0 ? res.features[0].properties : {};
+                    var elevationData=res.features.length > 0 ? res.features[0].properties : {};
+                    var properties={};
+                    for (var key in elevationData) {
+                        properties["Elevation"] = elevationData[key];
+                    }
                     properties.lat = feature.get('lat');
                     properties.lon = feature.get('lon');
                     feature.setProperties(properties);

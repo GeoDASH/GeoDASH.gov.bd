@@ -79,13 +79,13 @@
             <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li ng-click="toggleLineMeasurementTool()" ng-class="{'active' : buttons['lineMeasurementTool'].isActive}">
+        <li ng-click="toggleLineMeasurementTool()" ng-class="{'active' : buttons['lineMeasurementTool'].isActive}" style="float:none">
             <a> <i class="fa fa-minus" aria-hidden="true"></i> Line</a>
         </li>
-        <li ng-click="toggleAreaMeasurementTool()" ng-class="{'active' : buttons['areaMeasurementTool'].isActive}">
+        <li ng-click="toggleAreaMeasurementTool()" ng-class="{'active' : buttons['areaMeasurementTool'].isActive}" style="float:none">
             <a><i class="fa fa-square-o" aria-hidden="true"></i> Area</a></li>
         <!-- <li role="separator" class="divider"></li> -->
-        <li ng-click="clearAllMeasurementOverLay()">
+        <li ng-click="clearAllMeasurementOverLay()" style="float:none">
             <a><i class="fa fa-trash" aria-hidden="true"></i>  Clear</a></li>
     </ul>
 </div>
