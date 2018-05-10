@@ -85,6 +85,13 @@ function (urlResolver, layerRepository, sldGenerator, sldTemplateService, layerS
                         kindOfPoints: 5,
                         differentiationPixel: 5
                     },
+                    {
+                        name: visualizationTypes.chart,
+                        chartId: factory.chartTypes[0].value,
+                        chartAttributeList: [],
+                        chartSizeAttributeId : null,
+                        isCheckedAllAttribute: false
+                    }
                     /*{
                         name: visualizationTypes.choropleth,
                         attributeId: null,
