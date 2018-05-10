@@ -5,6 +5,7 @@ BoxDrawTool.$inject = ['mapService'];
 
 function BoxDrawTool(mapService) {
     return function(map) {
+        var lineMeasurementEvent;
         var isBoxDrawn = false;
         var topRightFeature = null;
         var bottomRightFeature = null;
@@ -89,6 +90,77 @@ function BoxDrawTool(mapService) {
                 [boxTopLeft, boxBottomLeft, boxBottomRight, boxTopRight, boxTopLeft]
             ]);
         }
+
+        var measureHeightTooltipElement, measureWidthTooltipElement;
+        var measureHeightTooltip, measureWidthTooltip;
+
+        function _toolTipToShowHeight() {
+            if (measureHeightTooltipElement) {
+                measureHeightTooltipElement.parentNode.removeChild(measureHeightTooltipElement);
+            }
+            measureHeightTooltipElement = document.createElement('div');
+            measureHeightTooltipElement.className = 'tooltip tooltip-measure';
+            measureHeightTooltip = new ol.Overlay({
+                element: measureHeightTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center'
+            });
+            map.addOverlay(measureHeightTooltip);
+        }
+
+        function _toolTipToShowWidth() {
+            if (measureWidthTooltipElement) {
+                measureWidthTooltipElement.parentNode.removeChild(measureWidthTooltipElement);
+            }
+            measureWidthTooltipElement = document.createElement('div');
+            measureWidthTooltipElement.className = 'tooltip tooltip-measure';
+            measureWidthTooltip = new ol.Overlay({
+                element: measureWidthTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center'
+            });
+            map.addOverlay(measureWidthTooltip);
+        }
+
+        function _createMeasureTooltip() {
+            _toolTipToShowHeight();
+            _toolTipToShowWidth();
+        }
+
+        var formatLength = function(length) {
+            var output;
+            if (length > 100) {
+                output = (Math.round(length / 1000 * 100) / 100).toFixed(2) +
+                    ' ' + 'km';
+            } else {
+                output = (Math.round(length * 100) / 100).toFixed(2) +
+                    ' ' + 'm';
+            }
+            return output;
+        };
+
+        function _getLineFeature(point1, point2) {
+            return new ol.Feature({
+                geometry: new ol.geom.LineString([point1, point2]),
+                name: 'Line'
+            });
+        }
+
+        function _showHeightToolTip() {
+            measureHeightTooltipElement.innerHTML = 'Height: ' + formatLength(_getLineFeature(boxTopRight, boxBottomRight).getGeometry().getLength());
+            measureHeightTooltip.setPosition([boxBottomRight[0], (boxBottomLeft[1] + boxTopRight[1]) / 2]);
+        }
+
+        function _showWidthToolTip() {
+            measureWidthTooltipElement.innerHTML = 'Width: ' + formatLength(_getLineFeature(boxBottomLeft, boxBottomRight).getGeometry().getLength());
+            measureWidthTooltip.setPosition([(boxBottomRight[0] + boxBottomLeft[0]) / 2, boxBottomLeft[1]]);
+        }
+
+        var pointerMoveHandler = function(evt) {
+            _showHeightToolTip();
+            _showWidthToolTip();
+        };
+
 
         function updateTopRight(feature, coordinate) {
             boxTopLeft = [boxTopLeft[0], coordinate[1]];
@@ -257,6 +329,11 @@ function BoxDrawTool(mapService) {
             }
         }
 
+        drawInteraction.on('drawstart', function(evt) {
+            lineMeasurementEvent = mapService.registerEvent('pointermove', pointerMoveHandler);
+
+        }, this);
+
         drawInteraction.on('drawend', function(event) {
             boundingBox = event.feature.getGeometry().getCoordinates()[0];
             mapService.removeInteraction(drawInteraction);
@@ -302,9 +379,10 @@ function BoxDrawTool(mapService) {
             vectorSource.addFeature(bottomLeftFeature);
             vectorSource.addFeature(bottomRightFeature);
         });
-        
+
         this.Draw = function(forceDraw) {
             mapService.addInteraction(dragInteraction);
+            _createMeasureTooltip();
             if (!isBoxDrawn || forceDraw) {
                 mapService.addInteraction(drawInteraction);
                 isBoxDrawn = true;
@@ -315,6 +393,9 @@ function BoxDrawTool(mapService) {
             mapService.removeInteraction(drawInteraction);
             mapService.removeInteraction(dragInteraction);
             mapService.removeVectorLayer(layer);
+            mapService.removeEvent(lineMeasurementEvent);
+            measureHeightTooltip.setPosition();
+            measureWidthTooltip.setPosition();
             return false;
         };
 
