@@ -257,7 +257,7 @@ function MeasurementTool(mapService) {
         function enableLineMeasurementEvent() {
             // mapService.removeEvents();
             // mapService.removeUserInteractions();
-            lineMeasurementEvent =mapService.registerEvent('pointermove', pointerMoveHandler);
+            lineMeasurementEvent = mapService.registerEvent('pointermove', pointerMoveHandler);
             addInteraction('LineString');
             isLineMeasurementEnabled=true;
         }

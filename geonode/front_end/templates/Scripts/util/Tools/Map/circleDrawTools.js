@@ -10,13 +10,13 @@ function CircleDrawTool(mapService) {
         var defaultCursor = 'default';
         var resizeCursor = 'e-resize';
         var prevCursor, dragCoordinate;
-        var draggableFeature;
-        var resizeFeaturePoint;
+        var draggableFeature, circleFeature;
+        var resizeFeaturePoint, circleRadiusFeature;
         var resizeFeature;
         var onCircleDrawEndCallBack;
         var map = map || mapService.getMap();
         var layer, vectorSource, features;
-        var dragInteraction, drawInteraction;
+        var dragInteraction, drawInteraction, lineMeasurementEvent;
 
         var STROKE_WIDTH = 3,
             CIRCLE_RADIUS = 5;
@@ -68,6 +68,23 @@ function CircleDrawTool(mapService) {
             });
             return feature;
         }
+        var measureTooltipElement;
+        var measureTooltip;
+
+        function _createMeasureTooltip() {
+            if (measureTooltipElement) {
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+            }
+            measureTooltipElement = document.createElement('div');
+            measureTooltipElement.className = 'tooltip tooltip-measure';
+            measureTooltip = new ol.Overlay({
+                element: measureTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center'
+            });
+            map.addOverlay(measureTooltip);
+            // measurementOverlays.push(measureTooltip);
+        }
 
         function euclideanDistance(point1, point2) {
             return Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
@@ -79,7 +96,17 @@ function CircleDrawTool(mapService) {
             resizeFeaturePoint.getGeometry().setCoordinates(coordinate);
         }
 
-
+        function resizeLine(event) {
+            let geometry = this.feature.getGeometry();
+            let [cx, cy] = geometry.getCenter();
+            let radius = geometry.getRadius();
+            console.log(radius);
+            circleRadiusFeature.getGeometry().setCoordinates([
+                [cx, cy],
+                [cx + radius, cy]
+            ]);
+            pointerMoveHandler.call({ feature: this.feature }, event);
+        }
 
         function _addDragInteraction() {
             dragInteraction = new ol.interaction.Pointer({
@@ -109,14 +136,18 @@ function CircleDrawTool(mapService) {
                         geometry = resizeFeature.getGeometry();
                         parentFeature = resizeFeature.get('parentFeature');
                         updateFn = resizeFeature.get('updateFn');
+                        circleRadiusUpdateFn = circleRadiusFeature.get('updateFn');
                     } else {
                         geometry = draggableFeature.getGeometry();
                     }
                     if (updateFn) {
                         updateFn(parentFeature, event.coordinate);
+                        circleRadiusUpdateFn.call({feature: parentFeature}, event);
                     } else {
                         draggableFeature.getGeometry().translate(deltaX, deltaY);
                         resizeFeaturePoint.getGeometry().translate(deltaX, deltaY);
+                        circleRadiusFeature.getGeometry().translate(deltaX, deltaY);
+                        pointerMoveHandler.call({ feature: circleFeature });
                     }
 
                     dragCoordinate = event.coordinate;
@@ -150,17 +181,61 @@ function CircleDrawTool(mapService) {
             });
         }
 
+        var formatLength = function(length) {
+            var output;
+            if (length > 100) {
+                output = (Math.round(length / 1000 * 100) / 100).toFixed(2) +
+                    ' ' + 'km';
+            } else {
+                output = (Math.round(length * 100) / 100).toFixed(2) +
+                    ' ' + 'm';
+            }
+            return output;
+        };
+
+        var pointerMoveHandler = function(evt) {
+            var geometry = this.feature.getGeometry();
+            let [cx, cy] = geometry.getCenter();
+            let radius = geometry.getRadius();
+
+            measureTooltipElement.innerHTML = formatLength(geometry.getRadius());
+            measureTooltip.setPosition([cx + radius / 2, cy]);
+
+        };
+
+        function drawRadius(center, radius) {
+            var lineString = new ol.geom.LineString([center, [center[0] + radius, center[1]]]);
+            // create the feature
+            circleRadiusFeature = new ol.Feature({
+                geometry: lineString,
+                name: 'Line',
+                updateFn: resizeLine
+            });
+            vectorSource.addFeature(circleRadiusFeature);
+        }
+
         function _addDrawInteraction() {
             drawInteraction = new ol.interaction.Draw({
                 source: vectorSource,
                 type: 'Circle'
             });
+            drawInteraction.on('drawstart', function(evt) {
+                var geometry = evt.feature.getGeometry();
+                var centerCoordinate = geometry.getCenter();
+                var radius = geometry.getRadius();
+                drawRadius(centerCoordinate, radius);
+
+                lineMeasurementEvent = mapService.registerEvent('pointermove', resizeLine.bind({ feature: evt.feature }));
+
+            }, this);
 
             drawInteraction.on('drawend', function(event) {
                 callBackListener(event.feature);
 
                 mapService.addInteraction(dragInteraction);
                 mapService.removeInteraction(drawInteraction);
+                mapService.removeEvent(lineMeasurementEvent);
+                circleFeature = event.feature;
                 var geometry = event.feature.getGeometry();
                 var centerCoordinate = geometry.getCenter();
                 var radius = geometry.getRadius();
@@ -197,11 +272,14 @@ function CircleDrawTool(mapService) {
         this.Draw = function() {
             _createLayer();
             _addInteraction();
+            _createMeasureTooltip();
         };
         this.Remove = function() {
             mapService.removeInteraction(drawInteraction);
             mapService.removeInteraction(dragInteraction);
             layer && mapService.removeVectorLayer(layer);
+            measureTooltip.setPosition();
+            
             return false;
         };
         this.Stop = function() {
