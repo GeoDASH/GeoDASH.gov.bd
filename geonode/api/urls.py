@@ -29,7 +29,7 @@ from .api import TagResource, TopicCategoryResource, ProfileResource, \
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
     ResourceBaseResource, FeaturedResourceBaseResource, LayerResourceWithFavorite, MapResourceWithFavorite, \
     DocumentResourceWithFavorite, GroupsResourceWithFavorite, GroupActivity, WorkSpaceLayerApi, WorkSpaceDocumentApi, \
-    WorkSpaceMapApi, LayerResourceForBaseLayers
+    WorkSpaceMapApi, LayerAttributeApi, AttributeApi, LayerAttributeApiPublic, LayerResourceForBaseLayers
 
 
 api = Api(api_name='api')
@@ -88,6 +88,11 @@ api.register(WorkSpaceDocumentApi())
 
 #get token api
 api.register(AccessTokenApi())
+api.register(LayerAttributeApi())
+
+api.register(AttributeApi())
+api.register(LayerAttributeApiPublic())
+
 api.register(SetBaseLayerAPI())
 api.register(LayerResourceForBaseLayers())
 api.register(LayerMapDocumentApproveDenyAPI())

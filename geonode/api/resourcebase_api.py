@@ -55,12 +55,14 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from tastypie.utils.mime import build_content_type
 
-from geonode.layers.models import Layer
+from geonode.layers.models import Layer, Attribute
 from geonode.maps.models import Map
 from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 from geonode.base.models import HierarchicalKeyword
 from .authorization import GeoNodeAuthorization
+
+import unicodedata
 
 #@jahangir091
 from geonode.api.api import MetaFavorite
@@ -1198,6 +1200,63 @@ class WorkSpaceMapApi(ModelResource):
         return bundle
 
 #end
+
+
+class AttributeApi(ModelResource):
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'layer-attributes'
+        allowed_method = 'get'
+        fields = ['attribute', 'attribute_type', 'id', 'is_permitted']
+
+
+class LayerAttributeApi(ModelResource):
+    attributes = fields.ToManyField('geonode.api.resourcebase_api.AttributeApi', 'attributes', full=True, null=True)
+
+    def dehydrate(self, bundle):
+        bundle.data['limited_access'] = True
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['is_wg_admin'] = False
+        bundle.data['layer_type'] = bundle.obj.display_type
+
+        if bundle.obj.group is not None:
+            bundle.data['department'] = bundle.obj.group.department.title if bundle.obj.group.department else None
+            bundle.data['sector'] = bundle.obj.group.department.sector.title if bundle.obj.group.department else None
+            bundle.data['organization'] = bundle.obj.group.title
+        else:
+            bundle.data['department'] = None
+            bundle.data['sector'] = None
+            bundle.data['organization'] = None
+
+        return bundle
+
+    class Meta:
+        queryset = Layer.objects.all()
+        resource_name = 'layer-attributes-permission'
+        allowed_method = 'get'
+        fields = ['title', 'section', 'date_created', 'thumbnail_url']
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')
+
+
+class LayerAttributeApiPublic(ModelResource):
+    """
+    in this public api user will send layer id
+    and it returns permitted attributes
+    no authentications needed for this api
+    """
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'layer-attributes-public'
+        allowed_method = 'get'
+        fields = ['attribute', 'attribute_type', 'id']
+
+    def get_object_list(self, request):
+        layer_id = request.GET.get('layer_id')
+        layer = Layer.objects.get(id=layer_id)
+        return Attribute.objects.filter(layer=layer, is_permitted=True)
+
 
 class LayerResourceForBaseLayers(ModelResource):
 
