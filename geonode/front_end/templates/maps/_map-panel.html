@@ -1,5 +1,5 @@
 <div class="navbar" style="margin: 0; padding: 0;min-height:0;" ng-cloak ng-controller="controlButtonsController">
-    <div class="navbar-inner map-toolbar">
+    <div class="navbar-inner map-toolbar" id="map-toobar">
 
         <cursor-tooltip content="tooTipContent"></cursor-tooltip>
         <location-search></location-search>
@@ -304,7 +304,7 @@
     <div class="navbar-inner map-settings-btn">
         <ul style="margin: 0;padding:0">
             <li> 
-                <button class="control-button icon"><i class="fa fa-wrench" aria-hidden="true"></i></button>
+                <button class="control-button icon" ng-click="animateToolbar()"><i class="fa fa-wrench" aria-hidden="true"></i></button>
             </li>
         </ul>
     </div>
