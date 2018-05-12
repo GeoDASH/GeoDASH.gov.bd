@@ -52,13 +52,13 @@
     border: none;
     color: #fff;
     display: block;
-    height: 33px;
+    height: 35px;
     margin: 0;
     padding: 0;
     position: absolute;
     right: 8px;
     text-align: center;
-    top: 14px;
+    top: 13px;
     width: 100px;
     z-index: 1;
     background-color: rgba(0,60,136,.6);
@@ -93,7 +93,7 @@
 }
 #gd-wrapper .layer-map .surfgis .base-map-switcher
 {
-    top: 72px !important;
+    top: 57px !important;
 }
 
     .surfgis .base-map-switcher .layers-list {
