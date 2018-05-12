@@ -3,11 +3,12 @@
         .module('LayerApp')
         .controller('AttributeViewController', AttributeViewController);
 
-    AttributeViewController.$inject = ['$location', 'LayerService', 'uiGridConstants', 'FileUploader'];
+    AttributeViewController.$inject = ['$location', 'LayerService', 'uiGridConstants', 'FileUploader', 'layerService'];
 
-    function AttributeViewController($location, LayerService, uiGridConstants, FileUploader) {
+    function AttributeViewController($location, LayerService, uiGridConstants, FileUploader, oldLayerService) {
         var self = this;
-        self.geoServerUrl = '';
+        self.csvDownloadUrl = '';
+        self.geoServerUrl = 'api/geoserver/';
         self.propertyNames = [];
         // self.layerName = $location.search().name;
         self.layerName = $location.path().split('/').pop();
@@ -29,12 +30,33 @@
 
         }
 
+        self.generateDownloadUrl = function(features){
+            let csv = oldLayerService.getCsvFromGeoJson(features);
+            var file = new Blob([csv], { type: 'application/octet-stream' });            
+            self.csvDownloadUrl = URL.createObjectURL(file);
+            let anchor = document.getElementById('download-csv-button');
+            if(anchor){   
+                anchor.href = self.csvDownloadUrl;
+                anchor.download = self.layerName;
+            }
+        };
+
+        var requestObject = {
+            version: '1.0.0',
+            request: 'GetFeature',
+            outputFormat: 'JSON',
+            srsName: 'EPSG:3857',
+            typeNames: ''
+        };
+
         function getFeatureDetails(url, layerName, propertyName) {
-            LayerService.getFeatureDetails(url, layerName, propertyName).then(function(res) {
+            LayerService.getWFS(url, Object.assign({}, requestObject, {
+                typeNames: layerName
+            }), false).then(function (res) {
                 self.attributeDetails = [];
                 if (typeof res.features !== 'undefined') {
                     self.propertyNames.push('fid');
-                    res.features.forEach(function(e) {
+                    res.features.forEach(function (e) {
                         var obj = e.properties;
                         obj.fid = parseInt(e.id.split('.')[1]);
                         self.attributeDetails.push(obj);
@@ -43,19 +65,20 @@
                 self.gridOptions.data = self.attributeDetails;
 
                 self.gridOptions.columnDefs = [];
-                self.propertyNames.forEach(function(e) {
+                self.propertyNames.forEach(function (e) {
                     self.gridOptions.columnDefs.push({
                         field: e,
                         displayName: e,
-                        minWidth : 120,
-                        width : '*'
+                        minWidth: 120,
+                        width: '*'
                     });
                 });
+                self.generateDownloadUrl(res.features);
             }, errorFn);
         }
 
         function getLayerFeature(url, layerName) {
-            LayerService.getLayerFeatureByName(url, layerName).then(function(res) {
+            LayerService.getLayerFeatureByName(url, layerName,false).then(function(res) {
                 if (typeof res.featureTypes === 'undefined') {
                     return getFeatureDetails(url, layerName, self.propertyNames);
                 }
@@ -79,12 +102,13 @@
 
         function getGeoServerSettings() {
             self.propertyNames = [];
-            LayerService.getGeoServerSettings()
-                .then(function(res) {
-                    self.geoServerUrl = res.url;
-                    getLayerByName();
-
-                }, errorFn);
+            getLayerByName();
+            // LayerService.getGeoServerSettings()
+            //     .then(function(res) {
+            //         self.geoServerUrl = res.url;
+            //         getLayerByName();
+            //
+            //     }, errorFn);
         }
 
         self.file = new FileUploader({

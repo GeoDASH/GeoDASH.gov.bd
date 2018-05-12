@@ -322,7 +322,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             };
 
                 $scope.getCrossLayerData = function () {
-                    var meterPerDegree = 111325
+                    var meterPerDegree = 111325;
                     var radius=($scope.distance * 1000)/meterPerDegree;
                     var requestObj = {
                         //service: 'WFS',

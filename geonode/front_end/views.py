@@ -1,4 +1,7 @@
+import sys
 import csv
+
+csv.field_size_limit(sys.maxsize)
 import logging
 try:
     import json
@@ -36,8 +39,8 @@ class LayerAttributeUploadView(UpdateAPIView):
     '''
     This class will process a csv file for a layer attribute
     '''
-    def put(self, request, layername):
-        try:        
+    def post(self, request, layername):
+        try:      
             layer_obj = _resolve_layer(request, layername, 'base.change_resourcebase', _PERMISSION_MSG_MODIFY)
             factory = ClassFactory()
             model_instance = factory.get_model(name=str(layer_obj.title_en), table_name=str(layer_obj.name), db=str(layer_obj.store))

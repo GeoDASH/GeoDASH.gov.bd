@@ -64,8 +64,8 @@
 .layer-information{
     height: calc(100vh - 115px) !important;
     overflow-y: scroll;
-}
-   
+}   
+
 </style>
 
     <div class="gd-content">
@@ -305,6 +305,37 @@
             <div id="gd-accordion-style" class="layer-information">
                         <div class="panel-group" id="accordion___" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse"
+                                           data-parent="#accordion3" href="#collapse3-map" aria-expanded="false"
+                                           aria-controls="collapseTwo">
+
+                                            <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            {% trans "Maps using this layer" %}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse3-map" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        {% if resource.maps %}
+                                            <p>{% trans "List of maps using this layer:" %}</p>
+                                        {% endif %}
+                                        <ul class="list-unstyled">
+                                            {% for maplayer in resource.maps %}
+                                                <li>
+                                                    <a href="{{ maplayer.map.get_absolute_url }}">{{ maplayer.map.title }}</a>
+                                                </li>
+                                            {% empty %}
+                                                <li>{% trans "This layer is not currently used in any maps." %}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion1"
@@ -359,7 +390,7 @@
                                             {% endif %}
 
                                             {% if resource.storeType != "remoteStore" %}
-                                                {% if links %}
+                                                {% if links and "download_resourcebase" in perms_list %}
                                                     <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block"
                                                                 data-toggle="modal" data-target="#download-layer">
@@ -377,6 +408,7 @@
                                                     {% endif %}
                                                 {% endif %}
                                             {% endif %}
+
                                             {% comment %}
                                             <li class="list-group-item">
                                                 <a href="/layers/attribute-view/?name={{resource.typename}}">
@@ -394,6 +426,10 @@
                                                         data-toggle="modal" data-target="#edit-layer">
                                                     {% trans "Edit Layer" %}
                                                 </button>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a class="btn btn-gd-primary btn-md btn-block"
+                                               href="{% url "layer_metadata" resource.service_typename %}">{% trans "Edit Layer Metadata" %}</a>
                                             </li>
                                             
                                             {% endif %}
@@ -490,37 +526,7 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse"
-                                           data-parent="#accordion3" href="#collapse3-map" aria-expanded="false"
-                                           aria-controls="collapseTwo">
-                                            
-                                            <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                            {% trans "Maps using this layer" %}
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapse3-map" class="panel-collapse collapse in" role="tabpanel"
-                                     aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                        {% if resource.maps %}
-                                            <p>{% trans "List of maps using this layer:" %}</p>
-                                        {% endif %}
-                                        <ul class="list-unstyled">
-                                            {% for maplayer in resource.maps %}
-                                                <li>
-                                                    <a href="{{ maplayer.map.get_absolute_url }}">{{ maplayer.map.title }}</a>
-                                                </li>
-                                            {% empty %}
-                                                <li>{% trans "This layer is not currently used in any maps." %}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingTwo">
                                     <h4 class="panel-title">
@@ -622,6 +628,7 @@
                                                     <li>{% trans "No styles associated with this layer" %}</li>
                                                 {% endfor %}
                                             </ul>
+                                        <button class="btn btn-primary btn-block" onclick="openStyleModal()">Create New Style</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1149,6 +1156,12 @@
             var scope = controller.scope();
             scope.changeStyle(layerId, styleId);
         }
+     function openStyleModal() {
+         var controller = angular.element("[ng-controller='MapController']");
+         var scope = controller.scope();
+         scope.showProperties(0);
+     }   
+        
     $(document).ready(function () {
         // wrapper
         resetWrapperHight();
