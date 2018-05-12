@@ -24,6 +24,13 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             return false;
         };
 
+        $scope.animateToolbar=function () {
+          $timeout(function () {
+                $('#map-toobar').toggle("slide", { direction: "right" }, 500);
+          });
+        };
+
+
         $scope.mapToolsSettings = {
             "/maps/(new|\\d+/view)": [
                 'navigation-history-buttons',

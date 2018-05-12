@@ -510,14 +510,22 @@ background-color: #e8f3ff;
 }
 .map-settings-btn
 {
-    top: 0;
-    right: -35px;
-    padding: 0; 
+    top: 12px;
+    right: 115px;
+    padding: 0;
+    height: 35px;
+    width: 35px;
+}
+.map-settings-btn ul li
+{
+  display: inline-block;
 }
 .map-settings-btn ul li button
 {
 background-color: #237c62;
 color: #fff;
+width: 35px;
+height: 35px;
 }
 .map-toolbar .map-settings-btn ul li button:hover
 {

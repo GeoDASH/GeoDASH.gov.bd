@@ -299,7 +299,7 @@ $(function () {
                         output+='<td><a href="'+ item.detail_url +'?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>';
                     }
                     else{
-                        output+='<td><button class="btn btn-gd-primary" id="mandatory-check"> {% trans "Continue for Approval" %}</button></td>';
+                        output+='<td><button class="btn btn-gd-primary" id="mandatory-check" disabled> {% trans "Continue for Approval" %}</button></td>';
                     }
                     if(edit_layer=='True'){
                         output+='<td><button class="btn btn-gd-primary" id="mandatory-check"> {% trans "Edit Layer" %}</button></td>';
