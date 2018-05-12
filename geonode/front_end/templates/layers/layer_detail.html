@@ -24,6 +24,17 @@
   {% include 'Templates/_base-headers.html' %}
     {% include "layer_templates/_publish_layer.html" %}
     {% include "layer_templates/_approve_layer.html" %}
+    {% if resource.storeType != "remoteStore" %}
+        {% if user_role == "member" %}
+            {% if status == 'DENIED' %}
+                {% include "layer_templates/_deny_comments.html" %}
+            {% endif %}
+        {% endif %}
+        {% if user_role == "manager" and status == 'PENDING' %}
+            {% include "layer_templates/_deny_comments.html" %}
+            {% include "layer_templates/_deny_layer.html" %}
+        {% endif %}
+    {% endif %}
 
 {{ block.super }}
 {% endblock %}
@@ -356,7 +367,7 @@
                                                  {% if status == 'DENIED' %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                                                        {% include "layer_templates/_deny_comments.html" %}
+                                                        
                                                 </li>
                                                 {% endif %}
                                                 <li class="list-group-item">
@@ -367,7 +378,7 @@
                                                 {% if user_role == "manager" and status == 'PENDING' %}
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deny_comments">{% trans "Comments" %}</button>
-                                                        {% include "layer_templates/_deny_comments.html" %}
+                                                        
                                                 </li>
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_approve_layer">{% trans "Approve Layer" %}</button>
@@ -375,7 +386,7 @@
                                                 </li>
                                                 <li class="list-group-item">
                                                         <button class="btn btn-gd-primary btn-md btn-block" data-toggle="modal" data-target="#_deney_layer">{% trans "Deny Layer" %}</button>
-                                                        {% include "layer_templates/_deny_layer.html" %}
+                                                        
                                                     {% endif %}
                                                 </li>
                                                 {% if user_role == "manager" and status == 'ACTIVE' %}
