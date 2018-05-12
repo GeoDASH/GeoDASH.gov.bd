@@ -26,7 +26,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
 
         $scope.animateToolbar=function () {
           $timeout(function () {
-                $('#map-toobar').toggle("slide", { direction: "right" }, 3000);
+                $('#map-toobar').toggle("slide", { direction: "right" }, 500);
           });
         };
 
