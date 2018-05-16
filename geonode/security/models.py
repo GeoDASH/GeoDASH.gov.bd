@@ -533,24 +533,29 @@ def remove_object_permissions(instance):
             r = requests.get(url + 'geofence/rest/rules.json?workspace=geonode&layer=' + resource.layer.name,
                              headers=headers,
                              auth=HTTPBasicAuth(user, passwd))
-            if (r.status_code >= 200):
-                gs_rules = r.json()
-                r_ids = []
-                if gs_rules and gs_rules['rules']:
-                    for r in gs_rules['rules']:
-                        if r['layer'] and r['layer'] == resource.layer.name:
-                            r_ids.append(r['id'])
 
-                # Delete GeoFence Rules associated to the Layer
-                # curl -X DELETE -u admin:geoserver http://<host>:<port>/geoserver/geofence/rest/rules/id/{r_id}
-                for i, r_id in enumerate(r_ids):
-                    r = requests.delete(url + 'geofence/rest/rules/id/' + str(r_id),
-                                        headers=headers,
-                                        auth=HTTPBasicAuth(user, passwd))
-                    if (r.status_code != 200):
-                        msg = "Could not DELETE GeoServer Rule for Layer "
-                        msg = msg + str(resource.layer.name)
-                        logger.warning(msg)
+            # **
+                # as we dont know more about geofence, just disabled the portion of
+                # code. will revert when geofence will be ok
+            # **
+            # if (r.status_code >= 200):
+            #     gs_rules = r.json()
+            #     r_ids = []
+            #     if gs_rules and gs_rules['rules']:
+            #         for r in gs_rules['rules']:
+            #             if r['layer'] and r['layer'] == resource.layer.name:
+            #                 r_ids.append(r['id'])
+            #
+            #     # Delete GeoFence Rules associated to the Layer
+            #     # curl -X DELETE -u admin:geoserver http://<host>:<port>/geoserver/geofence/rest/rules/id/{r_id}
+            #     for i, r_id in enumerate(r_ids):
+            #         r = requests.delete(url + 'geofence/rest/rules/id/' + str(r_id),
+            #                             headers=headers,
+            #                             auth=HTTPBasicAuth(user, passwd))
+            #         if (r.status_code != 200):
+            #             msg = "Could not DELETE GeoServer Rule for Layer "
+            #             msg = msg + str(resource.layer.name)
+            #             logger.warning(msg)
 
             UserObjectPermission.objects.filter(content_type=ContentType.objects.get_for_model(resource.layer),
                                                 object_pk=instance.id).delete()
