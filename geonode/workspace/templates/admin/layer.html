@@ -422,7 +422,12 @@
                     output+='<td>'+ item.current_iteration +'</td>';
                     output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
-                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                      {% if FRONT_END_SETTINGS.attribute_permission %}
+                          output+='<td><a href="'+ item.detail_url +'/preview" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                      {% else %}
+                          output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                      {% endif %}
+
                     output+='</tr>';
                   });
                   outputpag+='<div>';

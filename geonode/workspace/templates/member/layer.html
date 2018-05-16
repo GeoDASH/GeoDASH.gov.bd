@@ -296,7 +296,11 @@ $(function () {
                     }
 
                     if(draft_list_messages_json[item.id]['mandatory_fields_msg'] == ""){
-                        output+='<td><a href="'+ item.detail_url +'?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>';
+                        {% if FRONT_END_SETTINGS.attribute_permission %}
+                            output+='<td><a href="'+ item.detail_url +'/preview" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>';
+                        {% else %}
+                            output+='<td><a href="'+ item.detail_url +'?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>';
+                        {% endif %}
                     }
                     else{
                         output+='<td><button class="btn btn-gd-primary" id="mandatory-check" disabled> {% trans "Continue for Approval" %}</button></td>';

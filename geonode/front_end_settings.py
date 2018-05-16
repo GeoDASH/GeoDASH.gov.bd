@@ -17,7 +17,8 @@ NSDI_FRONT_END_SETTINGS = {
     'layer_detail_page': {
         'attributes': False,
         'button_name2': True
-    }
+    },
+    'attribute_permission' : True
 }
 
 
@@ -39,5 +40,6 @@ GEODASH_FRONT_END_SETTINGS = {
     'member_workspace_layer_page': {
         'edit_layer': False,
         'button_name2': True
-    }
+    },
+    'attribute_permission' : False
 }
