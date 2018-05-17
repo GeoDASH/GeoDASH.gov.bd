@@ -1127,6 +1127,7 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 }
 .fixed-table-container-inner
 {
+    max-height: 210px;
     height: 210px;
     overflow-y: auto;
     border: 1px solid #ccc;
