@@ -228,16 +228,19 @@
         <div class="carousel slide media-carousel" style="height: 270px;background: none;padding: 0" id="media">
           <div class="carousel-inner">
               {% for featured in featured_layer_list %}
-              {% if forloop.counter0|divisibleby:8 and forloop.counter0 == 0 %}
+              {% if forloop.counter0|divisibleby:4 and forloop.counter0 == 0 %}
                   <div class="item active {{ forloop.counter0 }}">
               {% endif %}
-              {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured.count %}
+              {% if forloop.counter0|divisibleby:4 and forloop.counter0 != 0 and forloop.counter != featured.count %}
                   </div>
                   <div class="item {{ forloop.counter0 }} ">
               {% endif %}
               <div class="col-md-3">
-                  <div id="box-1" class="box"> <img id="image-1" src="{{ featured.thumbnail_url }}"/> <span class="caption simple-caption">
-                    <h3>{{ featured.title }}<br/>
+                  <div id="box-1" class="box"> <img id="image-1"  src="{{ featured.thumbnail_url }}"/> <span class="caption simple-caption">
+                    <h3>
+                      <!-- {{ featured.title }} -->
+                      <a href="{{ featured.detail_url }}" title="{{ featured.title }}"> {{ featured.title|truncatechars:20 }}.... </a>
+                      <br/>
                       <span>{{ featured.group }}</span></h3>
                     <p>{{ featured.abstract }}</p>
                     </span> </div>
