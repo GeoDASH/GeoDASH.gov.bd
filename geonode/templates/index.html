@@ -141,11 +141,11 @@
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
 <div class="marketing">
-  <div class="sectionDark">
+  <div class="sectionLight">
     <div class="container text-center" style="max-width:1300px">
       <div class="row feature">
         <div class="col-md-12 animatedParent">
-          <div class="animated bounceInDown">
+          <div class="animated bounceIn">
             <h2>How does it work?</h2>
             <h3 class="text-center"> Just a few quick steps from creating your map to publishing it </h3>
           </div>
@@ -163,15 +163,18 @@
     
             <div class="cd-timeline__content js-cd-content register-timeline-circle">
               <h2>
-                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>
+                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/register.svg" width="50" height="50" alt=""/>
               </h2>
 
-              <span class="cd-timeline__date">Jan 14</span>
+              <span class="cd-timeline__date">
+               <h3 style="margin: 0;color:#fe702c">Register</h3>
+               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
+              </span>
             </div> <!-- cd-timeline__content -->
           </div> <!-- cd-timeline__block -->
     
           <div class="cd-timeline__block js-cd-block">
-            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img layers-timeline-count">
               2
             </div> <!-- cd-timeline__img -->
     
@@ -181,22 +184,28 @@
               </h2>
              
           
-              <span class="cd-timeline__date">Jan 18</span>
+              <span class="cd-timeline__date">
+                  <h3 style="margin: 0;color:#009071">Upload Layers</h3>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
+                 </span>
             </div> <!-- cd-timeline__content -->
           </div> <!-- cd-timeline__block -->
     
-          <div class="cd-timeline__block js-cd-block map-timeline-circle">
-            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img">
+          <div class="cd-timeline__block js-cd-block">
+            <div class="cd-timeline__img cd-timeline__img--picture js-cd-img map-timeline-count">
               3
             </div> <!-- cd-timeline__img -->
     
-            <div class="cd-timeline__content js-cd-content">
+            <div class="cd-timeline__content js-cd-content map-timeline-circle">
               <h2>
-                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>  
+                <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/map.svg" width="50" height="50" alt=""/>  
               </h2>
               
              
-              <span class="cd-timeline__date">Jan 24</span>
+              <span class="cd-timeline__date">
+                  <h3 style="margin: 0;color:#3896e2">Create a New Map</h3>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
+                 </span>
             </div> <!-- cd-timeline__content -->
           </div> <!-- cd-timeline__block -->
     
@@ -219,16 +228,19 @@
         <div class="carousel slide media-carousel" style="height: 270px;background: none;padding: 0" id="media">
           <div class="carousel-inner">
               {% for featured in featured_layer_list %}
-              {% if forloop.counter0|divisibleby:8 and forloop.counter0 == 0 %}
+              {% if forloop.counter0|divisibleby:4 and forloop.counter0 == 0 %}
                   <div class="item active {{ forloop.counter0 }}">
               {% endif %}
-              {% if forloop.counter0|divisibleby:8 and forloop.counter0 != 0 and forloop.counter != featured.count %}
+              {% if forloop.counter0|divisibleby:4 and forloop.counter0 != 0 and forloop.counter != featured.count %}
                   </div>
                   <div class="item {{ forloop.counter0 }} ">
               {% endif %}
               <div class="col-md-3">
-                  <div id="box-1" class="box"> <img id="image-1" src="{{ featured.thumbnail_url }}"/> <span class="caption simple-caption">
-                    <h3>{{ featured.title }}<br/>
+                  <div id="box-1" class="box"> <img id="image-1"  src="{{ featured.thumbnail_url }}"/> <span class="caption simple-caption">
+                    <h3>
+                      <!-- {{ featured.title }} -->
+                      <a href="{{ featured.detail_url }}" title="{{ featured.title }}"> {{ featured.title|truncatechars:20 }}.... </a>
+                      <br/>
                       <span>{{ featured.group }}</span></h3>
                     <p>{{ featured.abstract }}</p>
                     </span> </div>
@@ -600,11 +612,7 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-117252228-1');
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
+
 
   $('.count h2').each(function () {
     $(this).prop('Counter',0).animate({
@@ -618,8 +626,7 @@
     });
 });
 
-<<<<<<< Updated upstream
-=======
+
 
 (function(){
 	function VerticalTimeline( element ) {
