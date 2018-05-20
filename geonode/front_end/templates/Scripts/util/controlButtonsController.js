@@ -328,41 +328,46 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 }
             };
 
-                $scope.getCrossLayerData = function () {
-                    var meterPerDegree = 111325;
-                    var radius=($scope.distance * 1000)/meterPerDegree;
-                    var requestObj = {
-                        //service: 'WFS',
-                        request: 'GetFeature',
-                        typeName: $scope.searchItemLayer,
-                        CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + $scope.baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
-                        version: '1.0.0',
-                        maxFeatures: 100,
-                        outputFormat: 'json',
-                        exceptions: 'application/json'
-                    };
-                    LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
-                        var data = {};
-                        data[$scope.searchItemLayer] = response.features.map(function (e) {
-                            e.properties["Feature_Id"] = e.id;
-                            return e.properties;
-                        });
-                        showFeaturePreviewDialog(data, requestObj);
+            $scope.getCrossLayerData = function (searchItemLayer,baseLayer,distance) {
+                var meterPerDegree = 111325;
+                var radius = (distance * 1000) / meterPerDegree;
+                var requestObj = {
+                    //service: 'WFS',
+                    request: 'GetFeature',
+                    typeName: searchItemLayer,
+                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
+                    version: '1.0.0',
+                    maxFeatures: 500,
+                    outputFormat: 'json',
+                    exceptions: 'application/json'
+                };
+                LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
+                    var data = {};
+                    data[searchItemLayer] = response.features.map(function (e) {
+                        e.properties["Feature_Id"] = e.id;
+                        return e.properties;
                     });
-                };
-                $scope.routeConfig={
-                    layerId : undefined,
-                    radius :undefined
-                };
+                    showFeaturePreviewDialog(data, requestObj);
+                });
+            };
             $scope.routeConfig = {
                 layerId: undefined,
                 radius: undefined
             };
-            $scope.layers = [];
-            $scope.searchItemLayer;
-            $scope.baseLayer;
-            $scope.distance = 0;
+            $scope.routeConfig = {
+                layerId: undefined,
+                radius: undefined
+            };
+
             var source = $window.GeoServerHttp2Root;
+
+
+            $scope.initializeCrossLayer = function () {
+                $scope.layers = [];
+                $scope.searchItemLayer='';
+                $scope.baseLayer='';
+                $scope.distance = 0;
+            };
 
             $scope.getLayers = function() {
                 var layers = mapService.getLayers();
@@ -559,7 +564,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             var box = $scope.mapTools.boxDrawTool;
 
             function enableBboxSearch() {
-                box.Draw();
+                box.Draw(true);
                 box.OnBoxModificationEnd(boundingBoxSearch);
                 box.OnBoxDrawEnd(boundingBoxSearch);
             }
