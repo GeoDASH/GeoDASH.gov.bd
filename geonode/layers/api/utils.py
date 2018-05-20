@@ -105,7 +105,7 @@ def getShapeFileFromAttribute(attributes, name, layer_type, **kwargs):
 
     temp_vrt_file.close()
 
-    ogr2ogr_string = 'ogr2ogr -overwrite -f "ESRI Shapefile" "{0}" "{1}"'.format(temp_csv_dir, temp_vrt_path)
+    ogr2ogr_string = 'ogr2ogr -skipfailures -overwrite -f "ESRI Shapefile" "{0}" "{1}"'.format(temp_csv_dir, temp_vrt_path)
 
     os.system(ogr2ogr_string)
 
@@ -170,6 +170,9 @@ def changeDbFieldTypes(layer, attributes, **kwargs):
                                                                                                attr['type'])
             cur.execute(qstr)
             conn.commit()
+        qstr = 'ALTER TABLE {0} ALTER COLUMN "{1}" TYPE geometry(Geometry,4326)'.format(layer.name, 'the_geom')
+        cur.execute(qstr)
+        conn.commit()
     except Exception as e:
         logger.error(
             "Error deleting PostGIS table %s:%s",
