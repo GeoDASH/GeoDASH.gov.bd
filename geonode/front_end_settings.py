@@ -18,7 +18,8 @@ NSDI_FRONT_END_SETTINGS = {
         'attributes': False,
         'button_name2': True
     },
-    'attribute_permission' : True
+    'attribute_permission' : True,
+    'register' : False
 }
 
 
@@ -41,5 +42,6 @@ GEODASH_FRONT_END_SETTINGS = {
         'edit_layer': False,
         'button_name2': True
     },
-    'attribute_permission' : False
+    'attribute_permission' : False,
+    'register' : True
 }
