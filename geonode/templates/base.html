@@ -760,7 +760,7 @@
                 </a>
             </li>
             {% endif %}
-            {% if request.user.is_superuser and FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
+            {% if FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
                 <li class="c-menu__item">
                     <a href="{% url "section-list-table" %}" class="c-menu__link">
                         <i class="fa fa-columns"></i>

@@ -16,16 +16,16 @@
             <!-- <li ng-repeat="tools in mapToolsSettings">
                 <div inject-template="[{tools.template}]"></div>
             </li>   -->
-            <li ng-if="toolsIsVisible('navigation-history-buttons')" ng-disabled="isDisable('navigation-history-buttons')">
+            <li ng-show="toolsIsVisible('navigation-history-buttons')" ng-disabled="isDisable('navigation-history-buttons')">
                 <navigation-history-buttons></navigation-history-buttons>
             </li>
-            <li ng-if="toolsIsVisible('zoom-in-out-buttons')">
+            <li ng-show="toolsIsVisible('zoom-in-out-buttons')">
                 <zoom-in-out-buttons> </zoom-in-out-buttons>
             </li>
-            <li ng-if="toolsIsVisible('zoom-to-max-extent-button')">
+            <li ng-show="toolsIsVisible('zoom-to-max-extent-button')">
                 <zoom-to-max-extent-button></zoom-to-max-extent-button>
             </li>
-            <li ng-if="toolsIsVisible('zoom-to-extent-button')">
+            <li ng-show="toolsIsVisible('zoom-to-extent-button')">
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
             <li class="divider-vertical" draft-only></li>
@@ -41,10 +41,10 @@
                     <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
                                 </button>
             </li>
-            <li ng-if="toolsIsVisible('measurement-buttons')">
+            <li ng-show="toolsIsVisible('measurement-buttons')">
                 <measurement-buttons disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></measurement-buttons>
             </li>
-            <li ng-if="toolsIsVisible('set-marker')">
+            <li ng-show="toolsIsVisible('set-marker')">
                 <set-marker disable-function="disableAllDependentTools" buttons="toggleButtonsList" content="tooTipContent"></set-marker>
             </li>
             <li id="measurement-tools" ng-if="toolsIsVisible('measurement-tools')">
@@ -63,7 +63,7 @@
                     </ul>
                 </div>
             </li>
-            <li id="search" ng-if="toolsIsVisible('search')">
+            <li id="search" ng-if="toolsIsVisible('search')" ng-init="initializeCrossLayer()">
                 <div class="btn-group">
                     <button class="control-button icon dropdown-toggle" ng-click="getLayers()"  type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -100,7 +100,7 @@
 
                             <div class="form-group" style="margin: 5px">
                                 <label style="width: 125px;"></label>
-                                <button class="btn btn-primary" ng-click="getCrossLayerData()" style="width: auto">Search Cross Layer
+                                <button class="btn btn-primary" ng-click="getCrossLayerData(searchItemLayer,baseLayer,distance)" style="width: auto">Search Cross Layer
                                 </button>
 
                             </div>
@@ -133,7 +133,7 @@
                     </ul>
                   </div>
             </li>
-            <li ng-if="toolsIsVisible('nearest-configuration')">
+            <li ng-show="toolsIsVisible('nearest-configuration')">
                 <span>
                     <nearest-configuration route-config="routeConfig"></nearest-configuration>
                 </span>
@@ -152,7 +152,7 @@
             </li> -->
 
 
-            <li ng-if="toolsIsVisible('over-pass-dialog')" id="over-pass-dialog" draft-only ng-init="action.showOverPassDialog=false">
+            <li ng-show="toolsIsVisible('over-pass-dialog')" id="over-pass-dialog" draft-only ng-init="action.showOverPassDialog=false">
                 <button class="control-button icon svg-ico-button" id="overpass-query" ng-disabled="isAttributeGridOn" ng-click="action.showOverPassDialog=true" remove-focus title="Overpass Query">
                             
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
