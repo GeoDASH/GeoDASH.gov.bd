@@ -65,6 +65,30 @@
         padding-bottom: 30px;
     }
     </style>
+    {% if FRONT_END_SETTINGS.attribute_permission %}
+        <style>
+            .block {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .circle {
+                background: rgba(0, 72, 156, 0.97);
+                border-radius: 200px;
+                color: white;
+                height: 100px;
+                font-weight: bold;
+                width: 100px;
+                display: table;
+                margin: 20px auto;
+            }
+
+            .circle p {
+                vertical-align: middle;
+                display: table-cell;
+            }
+        </style>
+    {% endif %}
 
     <div class="row">
 
@@ -94,6 +118,27 @@
                                       
                                       
                                       <div id="viewuserlist"></div>
+                                      {% if FRONT_END_SETTINGS.attribute_permission %}
+                                          <div class="container">
+                                              <div class="row">
+                                                  <div class="col-md-5 block">
+                                                      <div class="circle pull-right">
+                                                          <p>{{ total_layer }} Layers</p>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-2 block">
+                                                      <div class="circle">
+                                                          <p>{% widthratio total_layer_size 1024 1 %} MB</p>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-5 block">
+                                                      <div class="circle pull-left">
+                                                          <p>1 Archived</p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      {% endif %}
                     
                                       <div id="viewuserlist_none">
                                             <ul class="nav nav-tabs">
@@ -118,21 +163,11 @@
                                                             <!--<th>Denied Layer</th>-->
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for user_approval in user_approval_request_list %}-->
+
                                                         <tbody id="showallAdminDraftlayers">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>-->
-                                                                <!--<td>{{ user_approval.group }}</td>-->
-                                                                <!--<td>{{ user_approval.current_iteration }}</td>-->
-                                                                <!--<td>{{ user_approval.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>-->
-                                                                <!--&lt;!&ndash;<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>&ndash;&gt;-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No pending requests yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag">
                     
@@ -155,21 +190,11 @@
                                                             <th>Unpublish Layer</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for approved in approved_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_pen">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ approved.title }}</td>-->
-                                                                <!--<td>{{ approved.group }}</td>-->
-                                                                <!--<td>{{ approved.owner }}</td>-->
-                                                                <!--<td>{{ approved.last_auditor }}</td>-->
-                                                                <!--<td>{{ approved.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No approved layers yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_panding">
                     
@@ -189,22 +214,11 @@
                                                             <th>Layer Delete</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for draft in user_draft_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_denied">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ draft.title }}</td>-->
-                                                                <!--<td>{{ draft.group }}</td>-->
-                                                                <!--<td>{{ draft.owner }}</td>-->
-                                                                <!--<td>{{ draft.date_created }}</td>-->
-                                                                <!--<td>-->
-                                                                    <!--<button type="button" class="btn btn-gd-primary" onclick="deleteLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>-->
-                                                                <!--</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No user drafts yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_denied">
                     
@@ -225,20 +239,11 @@
                                                             <th>Denied Date</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for deny in denied_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_active">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ deny.title}}</td>-->
-                                                                <!--<td>{{ deny.group}}</td>-->
-                                                                <!--<td>{{ deny.owner }}</td>-->
-                                                                <!--<td>{{ deny.last_auditor }}</td>-->
-                                                                <!--<td>{{ deny.date_updated }}</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No denied layers yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_active">
                     
