@@ -93,21 +93,11 @@
                                                             <th>Approve/Deny Document</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for user_approval in user_approval_request_list %}-->
+
                                                         <tbody id="showallAdminDraftdocs">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>-->
-                                                                <!--<td>{{ user_approval.group }}</td>-->
-                                                                <!--<td>{{ user_approval.current_iteration }}</td>-->
-                                                                <!--<td>{{ user_approval.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>-->
-                                                                <!--&lt;!&ndash;<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>&ndash;&gt;-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No pending requests yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftdocspag">
                     
@@ -128,21 +118,11 @@
                                                             <th>Document Edit</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for approved in approved_list %}-->
+
                                                         <tbody id="allAdminDraftDocs_pen">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ approved.title }}</td>-->
-                                                                <!--<td>{{ approved.group }}</td>-->
-                                                                <!--<td>{{ approved.owner }}</td>-->
-                                                                <!--<td>{{ approved.last_auditor }}</td>-->
-                                                                <!--<td>{{ approved.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No approved documents yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftDocspag_panding">
                     
@@ -162,22 +142,11 @@
                                                             <th>Document Delete</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for draft in user_draft_list %}-->
+
                                                         <tbody id="allAdminDraftdocs_denied">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ draft.title }}</td>-->
-                                                                <!--<td>{{ draft.group }}</td>-->
-                                                                <!--<td>{{ draft.owner.username }}</td>-->
-                                                                <!--<td>{{ draft.date_created }}</td>-->
-                                                                <!--<td>-->
-                                                                    <!--<button type="button" class="btn btn-gd-primary" onclick="deleteDocument({{ draft.id }})" style="color:#fff;">{% trans "Delete Document" %}</button> <br>-->
-                                                                <!--</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No user drafts yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftdocspag_denied">
                     
@@ -198,20 +167,11 @@
                                                             <th>Denied Date</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for deny in denied_list %}-->
+
                                                         <tbody id="allAdminDraftDocs_active">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ deny.title}}</td>-->
-                                                                <!--<td>{{ deny.group}}</td>-->
-                                                                <!--<td>{{ deny.owner }}</td>-->
-                                                                <!--<td>{{ deny.last_auditor }}</td>-->
-                                                                <!--<td>{{ deny.date_updated }}</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No denied documents yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftDocspag_active">
                     
@@ -398,6 +358,7 @@ $(function () {
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.current_iteration +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
+                    output+='<td>'+ item.owner +'</td>';
                     output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
                     output+='</tr>';
                   });
@@ -554,7 +515,7 @@ $(function () {
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_created +'</td>';
-                    output+='<td><button type="button" class="btn btn-gd-primary" onclick="deleteDocument('+ item.id +')" style="color:#fff;">{% trans "Delete Layer" %}</button></td>';
+                    output+='<td><button type="button" class="btn btn-gd-primary" onclick="deleteDocument('+ item.id +')" style="color:#fff;">{% trans "Delete Document" %}</button></td>';
                     output+='</tr>';
                   });
                   outputpag+='<div>';
