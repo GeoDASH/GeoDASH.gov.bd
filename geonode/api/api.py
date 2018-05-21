@@ -338,7 +338,7 @@ class GroupResource(ModelResource):
         return reverse('group_detail', args=[bundle.obj.slug])
 
     class Meta:
-        queryset = GroupProfile.objects.all()
+        queryset = GroupProfile.objects.all().exclude(slug='working-group')
         resource_name = 'groups'
         allowed_methods = ['get']
         filtering = {
@@ -348,6 +348,15 @@ class GroupResource(ModelResource):
             'title': ALL
         }
         ordering = ['title', 'last_modified']
+
+    def get_object_list(self, request):
+
+        user_groups = request.GET.get('user-groups')
+        if user_groups:
+            return super(GroupResource, self).get_object_list(request).filter(groupmember__user=request.user)
+        else:
+            return super(GroupResource, self).get_object_list(request).all()
+
 
 
 class ProfileResource(TypeFilteredResource):
