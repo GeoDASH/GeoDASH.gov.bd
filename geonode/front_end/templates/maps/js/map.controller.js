@@ -43,7 +43,6 @@
                 request: 'GetFeatureInfo',
                 layers: layersParamValue,
                 query_layers: layersParamValue,
-                styles: styleIds.join(','),
                 srs: 'EPSG:3857',
                 bbox: bbox.join(','),
                 width: size[0],
