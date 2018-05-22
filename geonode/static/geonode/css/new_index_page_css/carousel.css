@@ -13,17 +13,47 @@ body {
 /* Carousel base class */
 .carousel {
 	background-color:#e3f0f6;
-	padding:50px;
-	height: 746px;
+	padding:0;
+	height: 600px;
 	
+}
+.home-carousel
+{
+	max-width: 1300px;margin:0 auto;
+}
+.gd-slider-title
+{
+	font-size: 42px;
+	font-weight: 700;
+	color: #ffffff;
+}
+.gd-slider-msg
+{
+	font-size: 24px;
+	font-weight:normal;
+	color: #fff;	
+}
+.gd-slider-btn
+{
+	 margin: 25px 0 0;
+}
+.carousel-control.right-panel {
+    left: auto;
+    right: 0;
+}
+.carousel-control {
+    z-index: 12;
+    width: 4%;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
 	z-index: 10;
-	top:200px;
-	left:0;
-	width:500px;
-	text-align:left;
+left: 0;
+top: 28%;
+padding: 0 !important;
+
+	width: 500px;
+	text-align: left;
 }
 .carousel-caption h1 {
 	font-size:50px;
@@ -35,7 +65,7 @@ body {
 }
 /* Declare heights because of positioning of img element */
 .carousel .item {
-	height: 674px;
+	height: 600px;
 }
 .carousel-inner > .item > img {
 	position: absolute;

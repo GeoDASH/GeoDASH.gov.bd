@@ -740,6 +740,7 @@
             </article>
         </div>
         <ul class="c-menu__items">
+            
             <li class="c-menu__item">
                 <a href="{% url "layer_upload"  %}" class="c-menu__link">
                     <i class="fa fa-cloud-upload"></i>
@@ -760,14 +761,18 @@
                 </a>
             </li>
             {% endif %}
-            {% if FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
-                <li class="c-menu__item">
-                    <a href="{% url "section-list-table" %}" class="c-menu__link">
-                        <i class="fa fa-columns"></i>
-                        <span style="text-align:left;">{% trans "Manage Index Page Sections" %}</span>
-                    </a>
-                </li>
 
+            {% if request.user.is_superuser %}
+                <li class="c-menu__item">
+                        <a href="{% url "section-list-table" %}" class="c-menu__link">
+                            <i class="fa fa-columns"></i>
+                            <span style="text-align:left;">{% trans "Manage Index Page Sections" %}</span>
+                        </a>
+                </li>
+            {% endif %}
+
+            {% if FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
+            
                 {% if request.user.is_superuser and request.user.is_authenticated %}
                   <li class="c-menu__item">
                       <a href="{% url "sector_list" %}" class="c-menu__link">
@@ -800,14 +805,16 @@
                  {% endif%}
             {% endif %}
 
+            
             {% if request.user.is_superuser %}
-            <li class="c-menu__item">
-                <a href="{% url "topiccategory-list" %}" class="c-menu__link">
-                    <i class="fa fa-tags"></i>
-                    <span style="text-align:left;">{% trans "Manage Category" %}</span>
-                </a>
-            </li>
+                <li class="c-menu__item">
+                    <a href="{% url "topiccategory-list" %}" class="c-menu__link">
+                        <i class="fa fa-tags"></i>
+                        <span style="text-align:left;">{% trans "Manage Category" %}</span>
+                    </a>
+                </li>
             {% endif %}
+
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "wms-server-list" %}" class="c-menu__link">
