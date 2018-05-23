@@ -84,17 +84,84 @@
                 })
             })
         };
+        var crossLayerStyle = {
+            'Point': new ol.style.Style({
+                image: new ol.style.Circle({
+                  radius: 6,
+                  stroke: new ol.style.Stroke({
+                    color: 'white',
+                    width: 2
+                  })
+                })
+              }),
+            'LineString': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: red,
+                    width: 3
+                })
+            }),
+            'MultiLineString': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: red,
+                    width: 3
+                })
+            }),
+            'MultiPoint': new ol.style.Style({
+                image: image
+            }),
+            'MultiPolygon': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: green,
+                    width: 3
+                })
+            }),
+            'Polygon': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: green,
+                    lineDash: [4],
+                    width: 3
+                })
+            }),
+            'GeometryCollection': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: red,
+                    width: 3
+                }),
+                image: new ol.style.Circle({
+                    radius: 10,
+                    fill: null,
+                    stroke: new ol.style.Stroke({
+                        color: red
+                    })
+                })
+            }),
+            'Circle': new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: red,
+                    width: 3
+                })
+            })
+        };
         var styleFunction = function(feature) {
             return [styles[feature.getGeometry().getType()]];
         };
+        var styleFunctionCrossLayer = function(feature) {
+            return [crossLayerStyle[feature.getGeometry().getType()]];
+        };
         var vectorSource = new ol.source.Vector();
+        var vectorSourceCrossLayer = new ol.source.Vector();
+
         var vectorLayer = new ol.layer.Vector({
             source: vectorSource,
             style: styleFunction
         });
-        
+        var vectorCrossLayer=new ol.layer.Vector({
+            source: vectorSourceCrossLayer,
+            style: styleFunctionCrossLayer
+        });
         var map = mapService.getMap();
         map.addLayer(vectorLayer);
+        map.addLayer(vectorCrossLayer);
 
         var factory = {
             resetAll: function () {
@@ -114,6 +181,10 @@
                 map.beforeRender(pan, zoom);
                 var extent = mapFeatures[0].getGeometry().getExtent();
                 map.getView().fit(extent,map.getSize());
+            },
+            highlightCrossLayerFeature : function (mapFeatures,needToClear) {
+                if(needToClear) vectorSourceCrossLayer.clear();
+                vectorSourceCrossLayer.addFeatures(mapFeatures);
             },
             getNumberOfFeatures: function (layerId) {
                 return layerRepository.getNumberOfFeatures(layerId);

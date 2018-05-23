@@ -69,7 +69,7 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: 215px;width: 350px">
+                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: 220px;width: 350px">
                         <form class="form-inline" style="padding: 10px">
                             <div class="form-group" style="margin: 5px">
                                 <label for="email" style="width: 125px;">Search</label>
@@ -85,7 +85,7 @@
                                 <label for="pwd" style="width: 125px;">from selected item of</label>
                                 <select class="form-control" style="width: 189px;"
                                         ng-options="item.Id as item.Name for item in layers"
-                                        ng-change="clearBufferLayer()"
+                                        ng-change="clearBufferLayer(true)"
                                         ng-model="baseLayer"
                                 >
                                     <option style="display: none;" value="">Select a layer</option>
@@ -104,29 +104,28 @@
                                 <label>km buffer</label>
                             </div>
 
-                            <div class="checkbox from-group">
-                                <label class="control-label">
-                                    <input type="checkbox"
-                                           ng-model="isAllSelectChecked"
-                                           ng-disabled="isFromSelectedChecked"
-                                    >Select All</label>
-                            </div>
-                            <div class="checkbox form-group">
-                                <label class="control-label">
-                                    <input type="checkbox"
-                                           ng-model="isFromSelectedChecked"
-                                           ng-disabled="isAllSelectChecked"
-                                           ng-change="toogleFeatureSelectionFromSelectedLayer()"
-                                    >From Selected  <span ng-show="isFromSelectedChecked" style="margin-left: 10px"> [{vectorSource.getFeatures().length}] Selected</span>
-                                </label>
-                            </div>
+
+                            <label class="radio-inline"><input type="radio" ng-model="isAllSelectChecked" ng-value="true" ng-change="setCrossLayerSetting()">
+                                <span class="label label-primary">Select All</span>
+                            </label>
+                            <label class="radio-inline"><input type="radio" ng-model="isAllSelectChecked" ng-value="false" ng-change="setCrossLayerSetting()">
+                                <span class="label label-success">From Selected</span>
+                            </label>
+                            <label style="margin-left: 15px" ng-show="!isAllSelectChecked">
+                                <span class="label label-success">
+                                    [{selectedFeatureList.length}]
+                                </span>
+                                <span class="label" style="color: #000;">
+                                     Selected
+                                </span>
+                            </label>
                         </form>
                         <div class="col-md-12">
-                            <button class="btn btn-primary pull-left"
+                            <button class="btn btn-primary btn-sm pull-left"
                                     ng-click="getCrossLayerData(searchItemLayer,baseLayer,distance)"
                                     style="width: auto">Search Cross Layer
                             </button>
-                            <button class="btn btn-warning pull-right" ng-click="resetCrossLayer()" style="width: auto">
+                            <button class="btn btn-success btn-sm pull-right" ng-click="resetCrossLayer()" style="width: auto">
                                 Reset
                             </button>
 
