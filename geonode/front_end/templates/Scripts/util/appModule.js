@@ -474,13 +474,13 @@ appModule.directive("limitToMax", function () {
     return {
         link: function (scope, element, attributes) {
             element.on("keydown keyup", function (e) {
-                if (Number(element.val()) > Number(attributes.max) &&
+                if (Number(element.val()) > Number(attributes.ngMax) &&
                     e.keyCode != 46 // delete
                     &&
                     e.keyCode != 8 // backspace
                 ) {
                     e.preventDefault();
-                    element.val(attributes.max);
+                    element.val(attributes.ngMax);
                 }
             });
         }
@@ -491,13 +491,13 @@ appModule.directive("limitToMin", function () {
     return {
         link: function (scope, element, attributes) {
             element.on("keydown keyup", function (e) {
-                if (Number(element.val()) < Number(attributes.min) &&
+                if (Number(element.val()) < Number(attributes.ngMin) &&
                     e.keyCode != 46 // delete
                     &&
                     e.keyCode != 8 // backspace
                 ) {
                     e.preventDefault();
-                    element.val(attributes.min);
+                    element.val(attributes.ngMin);
                 }
             });
         }

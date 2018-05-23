@@ -7,16 +7,19 @@
         }
     }
 });
-appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q', 'BoxDrawTool', 'SurfMap', '$compile','surfToastr','layerRepository',
-    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q, BoxDrawTool, SurfMap, $compile,surfToastr,layerRepository) {
+appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager',
+    'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q', 'BoxDrawTool', 'SurfMap', '$compile','surfToastr',
+    'layerRepository','attributeGridService',
+    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler,
+             mapTools, CircleDrawTool, LayerService, urlResolver, $q, BoxDrawTool, SurfMap, $compile,surfToastr,layerRepository,attributeGridService) {
         $scope.mapService = mapService;
         $scope.mapTools = mapTools;
         var map = $scope.mapService.getMap();
         $scope.tooTipContent = '';
 
         $scope.toolsIsVisible = function(id) {
-            for (let e in $scope.mapToolsSettings) {
-                let re = new RegExp(e);
+            for (var e in $scope.mapToolsSettings) {
+                var re = new RegExp(e);
                 if (re.test($window.location.pathname) && $scope.mapToolsSettings[e].find(i => i === id)) {
                     return true;
                 }
@@ -352,28 +355,20 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             $scope.baseLayer = undefined;
             $scope.distance = 0;
             $scope.isAllSelectChecked = true;
-            $scope.isFromSelectedChecked = false;
             var parserJsts = new jsts.io.OL3Parser();
-            var originalFeatureList=[];
-
-            $scope.vectorSource = new ol.source.Vector();
-            var vectorLayer = new ol.layer.Vector({
-                source: $scope.vectorSource
-            });
+            $scope.selectedFeatureList=[];
 
             $scope.resetCrossLayer=function () {
                 $scope.searchItemLayer = undefined;
                 $scope.baseLayer = undefined;
                 $scope.distance = 0;
                 $scope.isAllSelectChecked = true;
-                $scope.isFromSelectedChecked = false;
                 $scope.clearBufferLayer(true);
             };
 
-            map.addLayer(vectorLayer);
             $scope.clearBufferLayer=function (clearOriginal) {
-              $scope.vectorSource.clear();
-              if(clearOriginal) originalFeatureList=[];
+              attributeGridService.highlightCrossLayerFeature([],true);
+              if(clearOriginal) $scope.selectedFeatureList=[];
             };
 
             function parseId(olFeature) {
@@ -382,7 +377,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             }
 
             function getFeatureIdFromSelectedFeature() {
-                var features=$scope.vectorSource.getFeatures().map(function (feature) {
+                var features=$scope.selectedFeatureList.map(function (feature) {
                     return parseId(feature);
                 });
                 return features;
@@ -390,13 +385,13 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
 
             $scope.changeBufferOfAllFeatures=function () {
                 $scope.clearBufferLayer();
-                var featureList=angular.copy(originalFeatureList)
+                var featureList=angular.copy($scope.selectedFeatureList);
                 angular.forEach(featureList, function (feature) {
                     var jstsGeom = parserJsts.read(feature.getGeometry());
                     var buffered = jstsGeom.buffer($scope.distance * 1000);
                     feature.setGeometry(parserJsts.write(buffered));
                 });
-                $scope.vectorSource.addFeatures(featureList);
+                attributeGridService.highlightCrossLayerFeature(featureList,true);
             };
 
 
@@ -436,16 +431,20 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                             }
 
                         });
-                        var parser = new ol.format.GeoJSON();
-                        var olFeatures = parser.readFeatures(geoJson);
-                        var featureList = olFeatures.map(function (of) {
-                            originalFeatureList.push(of);
+                        var mapFeatures = (new ol.format.GeoJSON()).readFeatures(geoJson, { featureProjection: 'EPSG:3857' });
+                        var bufferedFeatures = mapFeatures.map(function (of) {
+                            console.log();
+                            if (!_.any($scope.selectedFeatureList,function (feature) {
+                                    return _.isEqual(parseId(of),parseId(feature));
+                                })) {
+                                $scope.selectedFeatureList.push(of);
+                            }
                             var jstsGeom = parserJsts.read(of.getGeometry());
                             var buffered = jstsGeom.buffer($scope.distance*1000);
                             of.setGeometry(parserJsts.write(buffered));
                             return of;
                         });
-                        $scope.vectorSource.addFeatures(featureList);
+                        attributeGridService.highlightCrossLayerFeature(bufferedFeatures);
 
                     }).catch(function (error) {
                             surfToastr.error('Internal Server error', 'Error');
@@ -453,14 +452,14 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 }
             }
 
-
-            $scope.toogleFeatureSelectionFromSelectedLayer=function () {
-                if ($scope.isFromSelectedChecked) {
+            $scope.setCrossLayerSetting=function () {
+                if (!$scope.isAllSelectChecked) {
                     map.on('singleclick', getFeatureFromSelectedLayer);
                 } else {
                     map.un('singleclick', getFeatureFromSelectedLayer);
                 }
             };
+
 
             $scope.getCrossLayerData = function (searchItemLayer,baseLayer,distance) {
                 if (!searchItemLayer || !baseLayer) {
@@ -468,7 +467,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                     return;
                 }
                 var filter='INCLUDE';
-                if($scope.isFromSelectedChecked){
+                if(!$scope.isAllSelectChecked){
                     if(getFeatureIdFromSelectedFeature().length==0){
                         surfToastr.warning('Select at least one feature','Error');
                         return;
