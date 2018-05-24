@@ -61,12 +61,14 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-max-extent-button',
                 'zoom-to-extent-button',
                 'drag',
+                'toggle-feature-selection',
                 'measurement-buttons',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
                 'print',
                 'legend',
+                'search',
                 'icon-visualization'
             ],
             "/layers/\\w+:\\w+": [
@@ -76,6 +78,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-extent-button',
                 'drag',
                 'measurement-buttons',
+                'toggle-feature-selection',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
