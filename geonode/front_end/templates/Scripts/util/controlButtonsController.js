@@ -61,12 +61,14 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-max-extent-button',
                 'zoom-to-extent-button',
                 'drag',
+                'toggle-feature-selection',
                 'measurement-buttons',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
                 'print',
                 'legend',
+                'search',
                 'icon-visualization'
             ],
             "/layers/\\w+:\\w+": [
@@ -76,6 +78,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-extent-button',
                 'drag',
                 'measurement-buttons',
+                'toggle-feature-selection',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
@@ -384,7 +387,6 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             }
 
             $scope.changeBufferOfAllFeatures=function () {
-                $scope.clearBufferLayer();
                 var featureList=angular.copy($scope.selectedFeatureList);
                 angular.forEach(featureList, function (feature) {
                     var jstsGeom = parserJsts.read(feature.getGeometry());
@@ -433,11 +435,10 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                         });
                         var mapFeatures = (new ol.format.GeoJSON()).readFeatures(geoJson, { featureProjection: 'EPSG:3857' });
                         var bufferedFeatures = mapFeatures.map(function (of) {
-                            console.log();
                             if (!_.any($scope.selectedFeatureList,function (feature) {
                                     return _.isEqual(parseId(of),parseId(feature));
                                 })) {
-                                $scope.selectedFeatureList.push(of);
+                                $scope.selectedFeatureList.push(angular.copy(of));
                             }
                             var jstsGeom = parserJsts.read(of.getGeometry());
                             var buffered = jstsGeom.buffer($scope.distance*1000);
