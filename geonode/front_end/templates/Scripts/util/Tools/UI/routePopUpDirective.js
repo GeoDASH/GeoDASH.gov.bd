@@ -47,7 +47,7 @@ mapModule.directive('routePopUpDirective', [
                             anchorXUnits: 'fraction',
                             anchorYUnits: 'pixels',
                             opacity: 0.75,
-                            src: '/static/geonode/img/marker.png'
+                            src: '/static/geonode/img/marker-source.png'
                         }),
                         text: new ol.style.Text({
                             font: '12px Calibri,sans-serif',
@@ -65,7 +65,7 @@ mapModule.directive('routePopUpDirective', [
                             anchorXUnits: 'fraction',
                             anchorYUnits: 'pixels',
                             opacity: 0.75,
-                            src: '/static/geonode/img/marker.png'
+                            src: '/static/geonode/img/marker-destination.png'
                         }),
                         text: new ol.style.Text({
                             font: '12px Calibri,sans-serif',
