@@ -42,7 +42,7 @@
     {% if is_slider or request.user.is_authenticated %}
       {% if slider_section.background_color %}
       <section class="gd-slider" style="background:{{ slider_section.background_color }}">
-        <div id="carousel-home" class="carousel slide" data-ride="carousel">
+        <div id="carousel-home" class="carousel slide carousel-fade" data-ride="carousel">
             <!-- Indicators -->
             <!-- <ol class="carousel-indicators">
                 <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
@@ -52,6 +52,12 @@
                 <li data-target="#carousel-home" data-slide-to="4"></li>
             </ol> -->
             <!-- Wrapper for slides -->
+<script>
+
+$('#carousel-home').carousel();
+</script>
+
+
             <div class="carousel-inner home-carousel" role="listbox">
                 {% for slider in sliders %}
                       {% if forloop.counter0|divisibleby:1 and forloop.counter0 == 0 %}
