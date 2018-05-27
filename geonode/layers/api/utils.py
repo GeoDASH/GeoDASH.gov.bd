@@ -170,9 +170,9 @@ def changeDbFieldTypes(layer, attributes, **kwargs):
                                                                                                attr['type'])
             cur.execute(qstr)
             conn.commit()
-        qstr = 'ALTER TABLE {0} ALTER COLUMN "{1}" TYPE geometry(Geometry,4326)'.format(layer.name, 'the_geom')
-        cur.execute(qstr)
-        conn.commit()
+        # qstr = 'ALTER TABLE {0} ALTER COLUMN "{1}" TYPE geometry(Geometry,4326)'.format(layer.name, 'the_geom')
+        # cur.execute(qstr)
+        # conn.commit()
     except Exception as e:
         logger.error(
             "Error deleting PostGIS table %s:%s",
