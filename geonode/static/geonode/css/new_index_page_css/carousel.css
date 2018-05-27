@@ -193,3 +193,9 @@ padding: 0 !important;
  margin-top: 120px;
 }
 }
+@media (max-width: 1366px) {
+    .carousel-caption{
+     left:7%;
+    }
+  
+   }
