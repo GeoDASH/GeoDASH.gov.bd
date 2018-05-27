@@ -3896,3 +3896,11 @@ footer {
     right: 84px !important;
     top: 55px !important;
 }
+.slide-img
+{
+    width: 700px;
+    height: 600px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

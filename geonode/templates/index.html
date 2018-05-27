@@ -37,11 +37,441 @@
 
 {% block index_content %}
 
+{{ block.super }}
+{% block slider %}
+    {% if is_slider or request.user.is_authenticated %}
+      {% if slider_section.background_color %}
+      <section class="gd-slider" style="background:{{ slider_section.background_color }}">
+        <div id="carousel-home" class="carousel slide carousel-fade" data-ride="carousel">
+            <!-- Indicators -->
+            <!-- <ol class="carousel-indicators">
+                <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-home" data-slide-to="1"></li>
+                <li data-target="#carousel-home" data-slide-to="2"></li>
+                <li data-target="#carousel-home" data-slide-to="3"></li>
+                <li data-target="#carousel-home" data-slide-to="4"></li>
+            </ol> -->
+            <!-- Wrapper for slides -->
+<script>
+
+$('#carousel-home').carousel();
+</script>
+
+
+            <div class="carousel-inner home-carousel" role="listbox">
+                {% for slider in sliders %}
+                      {% if forloop.counter0|divisibleby:1 and forloop.counter0 == 0 %}
+                          <div class="item active {{ forloop.counter0 }}">
+                      {% endif %}
+                      {% if forloop.counter0|divisibleby:1 and forloop.counter0 != 0 and forloop.counter != slider.count %}
+                          </div>
+                          <div class="item {{ forloop.counter0 }} ">
+                      {% endif %}
+                          <div id="{{ forloop.counter }}" >
+                            <div class="slide-img"><img src="/uploaded/{{ slider.image }}" alt="" class="img-responsive" /></div>
+                            <div class="container-fluid">
+                                <div class="carousel-caption">
+                                    <div class="gd-slider-title">{{ slider.title }}</div>
+                                    <div class="gd-slider-msg">
+                                        {% trans slider.descripton|slice:"0:34" %}<br>
+                                        {% trans slider.descripton|slice:"34:64" %}<br>
+                                        {% trans slider.descripton|slice:"64:105" %}
+                                    </div>
+                                    <div class="gd-slider-btn">
+                                        <a role="button" href="#{{slider.connect_section.slug}}" class="btn btn-success">Learn more</a>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                      {% if forloop.counter == sliders.count %}
+                          </div>
+                      {% endif %}
+                {% endfor %}
+                <!--<div class="item active">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>-->
+                                <!--{% trans "DATA MANAGEMENT AND" %}<br>-->
+                                <!--{% trans "VISUALIZATION PLATFORM" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "LAYERS ARE THE CONTENTS OF A" %}<br>-->
+                                <!--{% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>-->
+                                <!--{% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "AN OGC STANDARD INTEROPERABLE" %}<br>-->
+                                <!--{% trans "PLATFORM FOR MANAGING,SHARING" %}<br>-->
+                                <!--{% trans "& ANALYZING GEOSPATIAL CONTENT" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "A MAPPING PLATFORM" %}<br>-->
+                                <!--{% trans "TO CREATE CUSTOM AND" %}<br>-->
+                                <!--{% trans "STYLISH MAPS" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>-->
+                                <!--{% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>-->
+                                <!--{% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <!-- Controls -->
+            <a class="left-panel carousel-control" href="#carousel-home" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </a>
+            <a class="right-panel carousel-control" href="#carousel-home" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+        </div>
+      </section>
+      {% else %}
+      <section class="gd-slider">
+        <div id="carousel-home" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <!-- <ol class="carousel-indicators">
+                <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-home" data-slide-to="1"></li>
+                <li data-target="#carousel-home" data-slide-to="2"></li>
+                <li data-target="#carousel-home" data-slide-to="3"></li>
+                <li data-target="#carousel-home" data-slide-to="4"></li>
+            </ol> -->
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                {% for slider in sliders %}
+                      {% if forloop.counter0|divisibleby:1 and forloop.counter0 == 0 %}
+                          <div class="item active {{ forloop.counter0 }}">
+                      {% endif %}
+                      {% if forloop.counter0|divisibleby:1 and forloop.counter0 != 0 and forloop.counter != slider.count %}
+                          </div>
+                          <div class="item {{ forloop.counter0 }} ">
+                      {% endif %}
+                          <div id="{{ forloop.counter }}" >
+                            <img src="/uploaded/{{ slider.image }}" alt="" class="img-responsive" />
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <div class="gd-slider-title">{{ slider.title }}</div>
+                                    <div class="gd-slider-msg">
+                                        {% trans slider.descripton|slice:"0:34" %}<br>
+                                        {% trans slider.descripton|slice:"34:64" %}<br>
+                                        {% trans slider.descripton|slice:"64:105" %}
+                                    </div>
+                                    <div class="gd-slider-btn">
+                                        <a role="button" href="#{{slider.connect_section.slug}}" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                      {% if forloop.counter == sliders.count %}
+                          </div>
+                      {% endif %}
+                {% endfor %}
+                <!--<div class="item active">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Bangladesh-Slide.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "AN OPEN SOURCE GEOSPATIAL" %}<br>-->
+                                <!--{% trans "DATA MANAGEMENT AND" %}<br>-->
+                                <!--{% trans "VISUALIZATION PLATFORM" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-featurd-maps" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Slider-bg.jpg" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "LAYERS ARE THE CONTENTS OF A" %}<br>-->
+                                <!--{% trans "MAP. CREATE A MAP USING SINGLE OR" %}<br>-->
+                                <!--{% trans "MULTIPLE LAYERS AT YOUR FINGER TIP" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-featurehighlight" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Puzzle.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "AN OGC STANDARD INTEROPERABLE" %}<br>-->
+                                <!--{% trans "PLATFORM FOR MANAGING,SHARING" %}<br>-->
+                                <!--{% trans "& ANALYZING GEOSPATIAL CONTENT" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-interprobability" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Make-map-1.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "A MAPPING PLATFORM" %}<br>-->
+                                <!--{% trans "TO CREATE CUSTOM AND" %}<br>-->
+                                <!--{% trans "STYLISH MAPS" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-makepretty" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                    <!--<img src="{{ STATIC_URL }}geonode/images/slider/Slider-bg/Share.png" alt="" />-->
+                    <!--<div class="container">-->
+                        <!--<div class="carousel-caption">-->
+                            <!--<div class="gd-slider-title">GEODASH.GOV.BD</div>-->
+                            <!--<div class="gd-slider-msg">-->
+                                <!--{% trans "SHARE YOUR MAPS WITH FRIENDS" %}<br>-->
+                                <!--{% trans "ON FACEBOOK, TWITTER, GOOGLE+" %}<br>-->
+                                <!--{% trans "& EMAIL TO MAXIMIZE DATA SHARING" %}-->
+                            <!--</div>-->
+                            <!--<div class="gd-slider-btn">-->
+                                <!--<a role="button" href="#gd-sharemap" class="btn btn-lg btn-gd-yellow br15px">Learn more</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <!-- Controls -->
+            <a class="left-panel carousel-control" href="#carousel-home" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </a>
+            <a class="right-panel carousel-control" href="#carousel-home" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+        </div>
+      </section>
+      {% endif %}
+      <!-- Summary List -->
+      <div class="index-max-width">
+          {% if counter_section.background_color %}
+          <div id="gd-stastic" style="background:{{ counter_section.background_color }}">
+              <div class="container">
+                  <!--{% if not request.user.is_authenticated %}-->
+                      <!--<div class="row" id="toolbar_hide">-->
+                          <!--<div class="col-md-3 pull-right">-->
+                              <!--<div style="position: fixed;background: #eaeaed;">-->
+                                  <!--<div class="toolbar_right">-->
+                                      <!--<div class="row">-->
+                                          <!--<div class="col-md-10">-->
+                                              <!--<div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>-->
+                                              <!--<span>An open source Geospatial data management and visualization platform.</span>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-2">-->
+                                              <!--<i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>-->
+                                          <!--</div>-->
+                                      <!--</div>-->
+                                      <!--<div class="block-separator"></div>-->
+                                      <!--<div class="row">-->
+                                          <!--<div class="col-md-6">-->
+                                              <!--<a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                  <!--{% trans "Learn More" %}-->
+                                              <!--</a>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-5">-->
+                                              <!--<a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                  <!--{% trans "Public Layers" %}-->
+                                              <!--</a>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-1">-->
+
+                                          <!--</div>-->
+                                      <!--</div>-->
+                                  <!--</div>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--{% endif %}-->
+                  <!-- <div class="gd-stastic-control" >
+                      <ul class="text-center">
+                          <li>
+                              <a href="{% url "layer_browse" %}">
+                                  <div class="title animation_conuter">{{ layer_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Layers" %}
+                                  </div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "maps_browse" %}">
+                                  <div class="title animation_conuter">{{ map_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Maps" %}
+                                  </div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "group_list" %}">
+                                  <div class="title animation_conuter">{{ group_counter }}</div>
+                                  <div class="description">{% trans "Organizations" %}</div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "profile_browse" %}">
+                                  <div class="title animation_conuter">{{ user_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Users" %}
+                                  </div>
+                              </a>
+                          </li>
+                      </ul>
+                  </div> -->
+              </div>
+          </div>
+          {% else %}
+          <div id="gd-stastic">
+              <div class="container">
+                  <!--{% if not request.user.is_authenticated %}-->
+                      <!--<div class="row" id="toolbar_hide">-->
+                          <!--<div class="col-md-3 pull-right">-->
+                              <!--<div style="position: fixed;background: #eaeaed;">-->
+                                  <!--<div class="toolbar_right">-->
+                                      <!--<div class="row">-->
+                                          <!--<div class="col-md-10">-->
+                                              <!--<div class="border-solid" style="font-weight:bold;">Welcome To GEODASH.GOV.BD</div><br>-->
+                                              <!--<span>An open source Geospatial data management and visualization platform.</span>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-2">-->
+                                              <!--<i class="fa fa-times fa-stack-1x" id="toolbar_remove" style="cursor:pointer;"></i>-->
+                                          <!--</div>-->
+                                      <!--</div>-->
+                                      <!--<div class="block-separator"></div>-->
+                                      <!--<div class="row">-->
+                                          <!--<div class="col-md-6">-->
+                                              <!--<a href="#" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                  <!--{% trans "Learn More" %}-->
+                                              <!--</a>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-5">-->
+                                              <!--<a href="{% url "layer_browse" %}" class="btn btn-gd-primary pull-right icon-btn-color" >-->
+                                                  <!--{% trans "Public Layers" %}-->
+                                              <!--</a>-->
+                                          <!--</div>-->
+                                          <!--<div class="col-md-1">-->
+
+                                          <!--</div>-->
+                                      <!--</div>-->
+                                  <!--</div>-->
+                              <!--</div>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                  <!--{% endif %}-->
+                  <!-- <div class="gd-stastic-control" >
+                      <ul class="text-center">
+                          <li>
+                              <a href="{% url "layer_browse" %}">
+                                  <div class="title animation_conuter">{{ layer_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Layers" %}
+                                  </div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "maps_browse" %}">
+                                  <div class="title animation_conuter">{{ map_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Maps" %}
+                                  </div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "group_list" %}">
+                                  <div class="title animation_conuter">{{ group_counter }}</div>
+                                  <div class="description">{% trans "Organizations" %}</div>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="{% url "profile_browse" %}">
+                                  <div class="title animation_conuter">{{ user_counter }}</div>
+                                  <div class="description">
+                                      {% trans "Users" %}
+                                  </div>
+                              </a>
+                          </li>
+                      </ul>
+                  </div> -->
+
+
+              </div>
+          </div>
+          {% endif %}
+      </div>
+    {% endif %}
+</div>
+{% endblock %}
+
 
 <!-- Carousel
     ================================================== -->
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
+<!-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
   <div class="container" style="max-width:1300px">
     <div class="row">
       <div class="slideBox01">
@@ -54,7 +484,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- /.carousel -->
 
 <div class="sectionDark sectionCount" style="padding: 0;">

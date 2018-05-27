@@ -13,17 +13,47 @@ body {
 /* Carousel base class */
 .carousel {
 	background-color:#e3f0f6;
-	padding:50px;
-	height: 746px;
+	padding:0;
+	height: 600px;
 	
+}
+.home-carousel
+{
+	max-width: 1300px;margin:0 auto;
+}
+.gd-slider-title
+{
+	font-size: 42px;
+	font-weight: 700;
+	color: #ffffff;
+}
+.gd-slider-msg
+{
+	font-size: 24px;
+	font-weight:normal;
+	color: #fff;	
+}
+.gd-slider-btn
+{
+	 margin: 25px 0 0;
+}
+.carousel-control.right-panel {
+    left: auto;
+    right: 0;
+}
+.carousel-control {
+    z-index: 12;
+    width: 4%;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
 	z-index: 10;
-	top:200px;
-	left:0;
-	width:500px;
-	text-align:left;
+left: 0;
+top: 28%;
+padding: 0 !important;
+
+	width: 500px;
+	text-align: left;
 }
 .carousel-caption h1 {
 	font-size:50px;
@@ -35,7 +65,7 @@ body {
 }
 /* Declare heights because of positioning of img element */
 .carousel .item {
-	height: 674px;
+	height: 600px;
 }
 .carousel-inner > .item > img {
 	position: absolute;
@@ -51,6 +81,55 @@ body {
 	width:100%;
 	text-align:center;
 }
+
+
+.carousel-fade .carousel-inner .item {
+	opacity: 0;
+	transition-property: opacity;
+  }
+  
+  .carousel-fade .carousel-inner .active {
+	opacity: 1;
+  }
+  
+  .carousel-fade .carousel-inner .active.left,
+  .carousel-fade .carousel-inner .active.right {
+	left: 0;
+	opacity: 0;
+	z-index: 1;
+  }
+  
+  .carousel-fade .carousel-inner .next.left,
+  .carousel-fade .carousel-inner .prev.right {
+	opacity: 1;
+  }
+  
+  .carousel-fade .carousel-control {
+	z-index: 2;
+  } 
+  @media all and (transform-3d), (-webkit-transform-3d) {
+	  .carousel-fade .carousel-inner > .item.next,
+	  .carousel-fade .carousel-inner > .item.active.right {
+		opacity: 0;
+		-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+	  }
+	  .carousel-fade .carousel-inner > .item.prev,
+	  .carousel-fade .carousel-inner > .item.active.left {
+		opacity: 0;
+		-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+	  }
+	  .carousel-fade .carousel-inner > .item.next.left,
+	  .carousel-fade .carousel-inner > .item.prev.right,
+	  .carousel-fade .carousel-inner > .item.active {
+		opacity: 1;
+		-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+	  }
+  } 
+
+
 /* MARKETING CONTENT
 -------------------------------------------------- */
 
@@ -114,3 +193,9 @@ body {
  margin-top: 120px;
 }
 }
+@media (max-width: 1366px) {
+    .carousel-caption{
+     left:7%;
+    }
+  
+   }
