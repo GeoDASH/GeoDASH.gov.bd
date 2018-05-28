@@ -7,6 +7,7 @@ from suit.widgets import HTML5Input
 
 from models import SliderImages, SectionManagementModel, IndexPageImagesModel
 from geonode.cms.models import FooterSectionDescriptions
+from geonode.local_settings import slider_image_dimension
 
 
 class SliderImageUpdateForm(forms.ModelForm):
@@ -19,8 +20,10 @@ class SliderImageUpdateForm(forms.ModelForm):
          image = self.cleaned_data.get('image',False)
          if image:
              w, h = get_image_dimensions(image)
-             if w != 700 or h != 600:
-                   raise ValidationError("Please upload image with dimension(w * h = 700 * 600)")
+             if w != slider_image_dimension['width'] or h != slider_image_dimension['height']:
+                 raise ValidationError(
+                     "Please upload image with dimension(w * h = {0} * {1})".format(slider_image_dimension['width'],
+                                                                                    slider_image_dimension['height']))
              return image
          else:
              raise ValidationError("Couldn't read uploaded image")
