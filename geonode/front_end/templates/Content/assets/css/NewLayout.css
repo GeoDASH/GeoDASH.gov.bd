@@ -1132,6 +1132,11 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     overflow-y: auto;
     border: 1px solid #ccc;
 }
+.stop-propagation label
+{
+font-size: 12px;
+width: 130px;
+}
 
 /*ui grid css*/
 /*.grid2 .ui-grid-cell-contents {*/
