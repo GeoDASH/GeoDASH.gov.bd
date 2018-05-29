@@ -193,6 +193,5 @@ def reloadFeatureTypes(layer):
     cat = Catalog(url, _user, _password)
 
     resource = cat.get_resource(layer.name, workspace=layer.workspace)
-    resource.native_bbox = ('88.0844222351', '92.6727209818', '20.670883287', '26.4465255803', 'EPSG:4326')
     resource.catalog.reload()
 
