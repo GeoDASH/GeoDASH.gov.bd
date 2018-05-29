@@ -18,6 +18,10 @@ NSDI_FRONT_END_SETTINGS = {
         'attributes': False,
         'button_name2': True
     },
+    'member_workspace_layer_page': {
+        'edit_layer': True,
+        'button_name2': True
+    },
     'attribute_permission' : True,
     'register' : False,
     'add_version' : True
