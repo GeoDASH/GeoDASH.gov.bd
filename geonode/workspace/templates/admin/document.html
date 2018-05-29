@@ -19,7 +19,7 @@
         {
             width: 100%;
         }
-        
+
     .nav-sidebar {
         margin-right: -21px;
         margin-bottom: 20px;
@@ -43,12 +43,12 @@
     }
     </style>
     <div class="row">
-       
+
 
             <div class="col-sm-3 col-md-2 workspace-sidebar">
-                    
-             
-             
+
+
+
                      <ul class="nav nav-sidebar">
                         <li role="presentation"><a href="{% url "admin-workspace-layer" %}"><i class="fa fa-clone" aria-hidden="true"></i>{% trans "Layers" %}</a></li>
                         <li role="presentation"><a href="{% url "admin-workspace-map" %}"><i class="fa fa-map" aria-hidden="true"></i>{% trans "Maps" %}</a></li>
@@ -56,20 +56,20 @@
                         <li role="presentation"><a href="{% url "admin-workspace-user-list" %}" ><i class="fa fa-users" aria-hidden="true"></i>{% trans "User List" %}</a></li>
                         <li role="presentation"><a href="{% url "create-user" %}" ><i class="fa fa-plus-circle" aria-hidden="true"></i>{% trans "Create User" %}</a></li>
                            </ul>
-             
-             
+
+
                    </div>
 
 
                    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                         <h1 class="d-title" style="margin: 0">{% trans "Admin Workspace" %}</h1>
                 <div class="gd-content">
-                
-                        
+
+
                                 <div class="row">
                                   <div class="col-md-12">
-                                      
-                                     
+
+
                                       <div id="viewuserlist"></div>
                                       <div id="viewuserlist_none">
                                         <ul class="nav nav-tabs">
@@ -100,7 +100,7 @@
 
                                                 </table>
                                                 <div id="showallAdminDraftdocspag">
-                    
+
                                                 </div>
                                             </ul>
                                           </article>
@@ -125,7 +125,7 @@
 
                                                 </table>
                                                 <div id="showallAdminDraftDocspag_panding">
-                    
+
                                                 </div>
                                             </ul>
                                           </article>
@@ -149,11 +149,11 @@
 
                                                 </table>
                                                 <div id="showallAdminDraftdocspag_denied">
-                    
+
                                                 </div>
                                             </ul>
                                           </article>
-                    
+
                                           <article id="denied-documents" class="tab-pane">
                                             <ul class="no-style-list">
                                                     <table class="table table-hover table-striped">
@@ -174,7 +174,7 @@
 
                                                 </table>
                                                 <div id="showallAdminDraftDocspag_active">
-                    
+
                                                 </div>
                                             </ul>
                                           </article>
@@ -182,13 +182,13 @@
                                       </div>
                                   </div>
                                 </div>
-                           
-                
+
+
                 </div>
               </div>
 
 
-        
+
     </div>
 {% include "document_templates/_delete_document.html" %}
 {% endblock %}
