@@ -1085,11 +1085,6 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     vertical-align: middle;
 }
 
-.navbar .nav li > a:hover, .navbar .nav li > a:focus
-{
-    border: none;
-}
-
 .visulization-legend-container
 {
     position: absolute;
