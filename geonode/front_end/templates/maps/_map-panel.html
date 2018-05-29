@@ -64,16 +64,16 @@
                 </div>
             </li>
             <li id="search" ng-show="toolsIsVisible('search')" >
-                <div class="btn-group">
+                <div class="btn-group navbar-right">
                     <button class="control-button icon dropdown-toggle" ng-click="getLayers()"  type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: 220px;width: 350px">
+                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: auto;width: 380px">
                         <form class="form-inline" style="padding: 10px">
                             <div class="form-group" style="margin: 5px">
-                                <label for="email" style="width: 125px;">Search</label>
-                                <select class="form-control" style="width: 189px;"
+                                <label for="email">Search</label>
+                                <select class="form-control" style="width: 214px;"
                                         ng-options="item.Id as item.Name for item in layers"
                                         ng-model="searchItemLayer"
                                 >
@@ -82,8 +82,8 @@
 
                             </div>
                             <div class="form-group" style="margin: 5px">
-                                <label for="pwd" style="width: 125px;">from selected item of</label>
-                                <select class="form-control" style="width: 189px;"
+                                <label for="pwd">from selected item of</label>
+                                <select class="form-control" style="width: 214px;"
                                         ng-options="item.Id as item.Name for item in layers"
                                         ng-change="clearBufferLayer(true)"
                                         ng-model="baseLayer"
@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="form-group" style="margin: 5px">
-                                <label style="width: 125px;">within </label>
+                                <label>within </label>
                                 <input type="number"
                                        style="width: 131px;"
                                        class="form-control"
@@ -105,13 +105,13 @@
                             </div>
 
 
-                            <label class="radio-inline"><input type="radio" ng-model="isAllSelectChecked" ng-value="true" ng-change="setCrossLayerSetting()">
+                            <label class="radio-inline" style="width: 75px;"><input type="radio" ng-model="isAllSelectChecked" ng-value="true" ng-change="setCrossLayerSetting()">
                                 <span class="label label-primary">Select All</span>
                             </label>
-                            <label class="radio-inline"><input type="radio" ng-model="isAllSelectChecked" ng-value="false" ng-change="setCrossLayerSetting()">
+                            <label class="radio-inline" style="width: 75px;"><input type="radio" ng-model="isAllSelectChecked" ng-value="false" ng-change="setCrossLayerSetting()">
                                 <span class="label label-success">From Selected</span>
                             </label>
-                            <label style="margin-left: 15px" ng-show="!isAllSelectChecked">
+                            <label style="margin-left: 15px;width:75px;" ng-show="!isAllSelectChecked">
                                 <span class="label label-success">
                                     [{selectedFeatureList.length}]
                                 </span>
@@ -120,12 +120,11 @@
                                 </span>
                             </label>
                         </form>
-                        <div class="col-md-7 col-md-offset-5">
-                            <button class="btn btn-primary btn-sm pull-left"
+                        <div class="col-md-7 col-md-offset-5" style="margin-bottom: 15px;">
+                            <button class="btn btn-primary btn-sm pull-left" style="background-color: #3896e2;width:auto"
                                     ng-click="getCrossLayerData(searchItemLayer,baseLayer,distance)"
                                     style="width: auto">Search Cross Layer
-                            </button>
-                            <button class="btn btn-success btn-sm pull-right" ng-click="resetCrossLayer()" style="width: auto">
+                            </button><button class="btn btn-success btn-sm pull-right" ng-click="resetCrossLayer()" style="width: auto">
                                 Reset
                             </button>
 
