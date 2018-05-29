@@ -366,6 +366,9 @@ footer {
 	padding: 30px;
 	height: auto;
 }
+.recent-activities li{
+	list-style-type: none;
+}
 .recent-activities h2 {
 	text-align: left;
 	margin-bottom: 15px;
