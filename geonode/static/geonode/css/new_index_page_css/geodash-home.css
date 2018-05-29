@@ -323,6 +323,16 @@ footer {
 	opacity: 1;
 	transform: translateY(-55%);
 }
+.white-box {
+	background-color: #fff;
+	height: 270px;
+	float: left;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	border: 1px solid #d9d9d9;
+	padding: 15px;
+}
 .latest-news {
 	padding: 30px;
 	height: auto;
@@ -360,9 +370,35 @@ footer {
 	text-align: left;
 	margin-bottom: 15px;
 }
-.activity-list {
+.activity-item {
 	border-bottom: 1px solid #f1f1f1;
 	padding: 15px 0;
+	line-height: normal;
+	min-height: 117px;
+}
+.activity-item p{
+	font-size: 14px;
+	margin-bottom: 3px;
+}
+.activity-timestamp
+{
+	font-size: 12px !important;
+	font-weight: bold;
+	color: #818181;
+}
+.thumb-activity
+{
+	margin-right: 10px;
+	border: 1px solid #d5d5d5;
+	display: inline-block;
+	padding: 5px;
+	float: left;
+	clear: left;
+}
+.thumb-activity img
+{
+	width: 100px;
+	vertical-align: top;
 }
 ul.offer-list {
 	list-style: square;
