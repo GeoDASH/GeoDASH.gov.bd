@@ -740,7 +740,7 @@ $('#carousel-home').carousel();
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-7">
-              <div class=" box latest-news">
+              <div class=" white-box latest-news">
                 <h2><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span><a href="{% url "news-list" %}"> {% trans "Latest News" %}</a></h2>
                 <div class="mCustomScrollbar" style="height: 400px;">
                     {% for news in latest_news_list %}
@@ -776,7 +776,7 @@ $('#carousel-home').carousel();
               </div>
             </div>
             <div class="col-md-5">
-              <div class="box recent-activities">
+              <div class="white-box recent-activities">
                 <h2>{% trans "Recent Activities" %}</h2>
                 <div class="mCustomScrollbar" style="height: 417px;">
                     {% for action in action_list %}

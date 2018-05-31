@@ -56,7 +56,10 @@ class ClassFactory(object):
             if column_name == self.primary_key:
                 return self.DJANGO_MODEL['primary_key'](primary_key=True)
             else:
+                if data_type == 'double precision':
+                    return self.DJANGO_MODEL[data_type](null=is_null, max_digits=19, decimal_places=10)
                 return self.DJANGO_MODEL[data_type](null=is_null)
+
         else:
             return self.DJANGO_MODEL[data_type](null=is_null, max_length=character_maximum_length)
 

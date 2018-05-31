@@ -273,15 +273,15 @@
 }
 
 .properties {
-    background: url("../images/icon_image_sprite_small.png") no-repeat scroll -286px 0 rgba(0, 0, 0, 0);
+    background: url("../images/icon_image_sprite_small.png") no-repeat scroll -276px -29px rgba(0, 0, 0, 0);
 }
 
     .properties:hover {
-        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -312px 0 rgba(0, 0, 0, 0);
+        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -242px -29px rgba(0, 0, 0, 0);
     }
 
     .properties[disabled="disabled"], .layer-buttons .properties[disabled="disabled"]:hover {
-        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -338px 0 rgba(0, 0, 0, 0);
+        background: url("../images/icon_image_sprite_small.png") no-repeat scroll -310px -29px rgba(0, 0, 0, 0);
     }
 
 .icon-zoom {

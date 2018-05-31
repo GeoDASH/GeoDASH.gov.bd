@@ -34,6 +34,7 @@ class LayerFeatureUploadView(CreateAPIView):
             model_instance = factory.get_model(name=str(layer.title_en), 
                                                 table_name=str(layer.name),
                                                 db=str(layer.store))
+
             with transaction.atomic(using=str(layer.store)):
                 for feature in request.data:
                     obj = model_instance(**feature)
@@ -41,13 +42,14 @@ class LayerFeatureUploadView(CreateAPIView):
 
                 #update bbox for the layer according to the
                 #updated feature
-                updateBoundingBox(layer)
+                # updateBoundingBox(layer)
 
         except Layer.DoesNotExist:
             out['success'] = False
             out['errors'] = "Layer Does not exist with this id"
             status_code = status.HTTP_404_NOT_FOUND
         except Exception as ex:
+
             out['success'] = False
             out['error'] = ex.message
             status_code = status.HTTP_400_BAD_REQUEST
@@ -89,6 +91,7 @@ class CreateFeaturedLayer(CreateAPIView):
         ## needed to reload this to geoserver
         ## this method does this task
         reloadFeatureTypes(saved_layer)
+        updateBoundingBox(saved_layer)
 
         out['layer_id'] = saved_layer.id
 
