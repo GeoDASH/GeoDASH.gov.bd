@@ -1,5 +1,5 @@
-﻿appModule.factory('attributeGridService', ['layerRepository', 'featureService', 'surfFeatureFactory', 'mapService', 'mapAccessLevel',
-    function (layerRepository, featureService, surfFeatureFactory, mapService, mapAccessLevel) {
+﻿appModule.factory('attributeGridService', ['layerRepository', 'featureService', 'surfFeatureFactory', 'mapService', 'mapAccessLevel','LayerService','layerService',
+    function (layerRepository, featureService, surfFeatureFactory, mapService, mapAccessLevel,LayerService,oldLayerService) {
         var deletedFids, editedRows;
         var image = new ol.style.Circle({
             radius: 5,
@@ -307,9 +307,21 @@
                     columns.push(column);
                 }
                 return columns;
+            },
+            getWfsData: function (requestObject) {
+                return LayerService.getWFS('api/geoserver/', requestObject,false);
+            },
+            exportFeaturesInCsv: function (features,filename) {
+                var csv = oldLayerService.getCsvFromGeoJson(features);
+                var file = new Blob([csv], {type: 'application/octet-stream'});
+                var csvDownloadUrl = URL.createObjectURL(file);
+                var anchortag = document.createElement('a');
+                anchortag.setAttribute('style','display: none');
+                anchortag.href=csvDownloadUrl;
+                anchortag.download=filename;
+                anchortag.click();
             }
         };
-
         return factory;
     }
 ]);
