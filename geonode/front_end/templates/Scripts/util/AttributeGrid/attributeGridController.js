@@ -22,6 +22,21 @@
             };
             return requestObj;
         }
+
+        function getRequestObjectTOExportData() {
+            var filter = $scope.query ;
+            var bboxFilter= $scope.isBoundaryBoxEnabled ? ' AND BBOX(the_geom,' +mapService.getBbox('EPSG:4326')+')' : '';
+            var requestObj = {
+                request: 'GetFeature',
+                typeName: surfLayer.LayerId,
+                version: '1.0.0',
+                CQL_FILTER: filter + bboxFilter,
+                outputFormat: 'json',
+                exceptions: 'application/json'
+            };
+            if(!$scope.isQueryEnabled)  delete requestObj.CQL_FILTER;
+            return requestObj;
+        }
         
         $scope.selectedFeatures = [];
         var selectedFeatures = [];
@@ -34,7 +49,26 @@
             multiSelect: false,
             enableRowHeaderSelection : true,
             enableGridMenu: true,
-            exporterCsvFilename: ""+ '.csv',
+            exporterMenuPdf: false,
+            exporterMenuCsv: false,
+            exporterMenuExcel: false,
+            gridMenuCustomItems : [
+                {
+                    title: 'Export all data in csv',
+                    icon: 'ui-grid-icon-down-dir',
+                    leaveOpen: true,
+                    order: 0,
+                    action: function ($event) {
+                        var requestObject=getRequestObjectTOExportData();
+                        $scope.loading = true;
+                        attributeGridService.getWfsData(requestObject).then(function (data) {
+                            $scope.loading = false;
+                            attributeGridService.exportFeaturesInCsv(data.features,surfLayer.LayerId);
+                        });
+                        $event.preventDefault();
+                    }
+                }
+            ],
             onRegisterApi: function(gridApi) {
                 $scope.gridApi = gridApi;
                 gridApi.selection.on.rowSelectionChanged($scope, function(rows) {
@@ -92,7 +126,26 @@
                 multiSelect: false,
                 enableRowHeaderSelection : true,
                 enableGridMenu: true,
-                exporterCsvFilename: surfLayer.Name + '.csv',
+                exporterMenuPdf: false,
+                exporterMenuCsv: false,
+                exporterMenuExcel: false,
+                gridMenuCustomItems: [
+                    {
+                        title: 'Export all data in csv',
+                        icon: 'ui-grid-icon-down-dir',
+                        leaveOpen: true,
+                        order: 0,
+                        action: function ($event) {
+                            var requestObject = getRequestObjectTOExportData();
+                            $scope.loading = true;
+                            attributeGridService.getWfsData(requestObject).then(function (data) {
+                                $scope.loading = false;
+                                attributeGridService.exportFeaturesInCsv(data.features, surfLayer.LayerId);
+                            });
+                            $event.preventDefault();
+                        }
+                    }
+                ],
                 columnDefs: attributeGridService.getColumns($scope.gridData.attributeDefinitions, attributeTypes),
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;

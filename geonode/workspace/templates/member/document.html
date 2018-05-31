@@ -20,7 +20,7 @@
         {
             width: 100%;
         }
-        
+
     .nav-sidebar {
         margin-right: -21px;
         margin-bottom: 20px;
@@ -43,7 +43,7 @@
         padding-bottom: 30px;
     }
     </style>
-   
+
         <div class="row">
 
                 <div class="col-sm-3 col-md-2 workspace-sidebar">
@@ -56,12 +56,12 @@
 
 
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                 
+
                         <h1 class="d-title" style="margin: 0"> {% trans "Member Workspace" %}</h1>
                         <div class="gd-content">
                                 <div class="row">
                                   <div class="col-md-12">
-                                 
+
                                     <ul class="nav nav-tabs">
                                       <li class="active"><a href="#draft" data-toggle="tab">{% trans "Draft" %}</a></li>
                                       <li><a href="#pending" id="pending_list_docs" data-toggle="tab">{% trans "Pending" %}</a></li>
@@ -87,7 +87,7 @@
 
                                             </table>
                                             <div id="showallMemberDraftdocspag">
-                    
+
                                             </div>
                                         </ul>
                                       </article>
@@ -109,7 +109,7 @@
 
                                             </table>
                                             <div id="showallMemberDraftdocspag_panding">
-                    
+
                                             </div>
                                         </ul>
                                       </article>
@@ -133,7 +133,7 @@
 
                                             </table>
                                             <div id="showallMemberDraftdocspag_denied">
-                    
+
                                             </div>
                                         </ul>
                                       </article>
@@ -157,7 +157,7 @@
 
                                             </table>
                                             <div id="showallMemberDraftdocspag_active">
-                    
+
                                             </div>
                                         </ul>
                                       </article>
@@ -165,13 +165,13 @@
                                   </div>
                                 </div>
                                 </div>
-                           
+
 
                 </div>
               </div>
 
 
-       
+
 
 
 {% include "document_templates/_delete_document.html" %}
@@ -463,7 +463,7 @@ $(function () {
                     offset = offset + 1;
                     output+='<tr>';
                     output+='<td>'+ offset +'</td>';
-                    output+='<td><a href="'+ draft.detail_url +'">'+ item.title+'</a></td>';
+                    output+='<td><a href="'+ item.detail_url +'">'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.last_auditor +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
