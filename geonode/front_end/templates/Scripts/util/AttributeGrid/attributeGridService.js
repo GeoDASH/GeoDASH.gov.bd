@@ -318,7 +318,7 @@
                 var anchortag = document.createElement('a');
                 anchortag.setAttribute('style','display: none');
                 anchortag.href=csvDownloadUrl;
-                anchortag.download=filename;
+                anchortag.download=filename+'.csv';
                 anchortag.click();
             }
         };

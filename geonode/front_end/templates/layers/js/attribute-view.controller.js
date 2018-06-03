@@ -37,7 +37,7 @@
             let anchor = document.getElementById('download-csv-button');
             if(anchor){   
                 anchor.href = self.csvDownloadUrl;
-                anchor.download = self.layerName;
+                anchor.download = self.layerName+'.csv';
             }
         };
 
