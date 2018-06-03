@@ -23,6 +23,10 @@
 
         self.gridApi={};
 
+        scope.getVisibilityStatus=function () {
+            return !new RegExp("/maps/\\d+\/embed").test($window.location.pathname);
+        };
+
         function getRequestObjectToGetFeature(featureID) {
             var requestObj = {
                 request: 'GetFeature',

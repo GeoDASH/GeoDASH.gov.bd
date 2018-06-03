@@ -35,6 +35,18 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
 
 
         $scope.mapToolsSettings = {
+            "/maps/\\d+\/embed" : [
+                'zoom-in-out-buttons',
+                'zoom-to-max-extent-button',
+                'zoom-to-extent-button',
+                'drag',
+                'toggle-feature-selection',
+                'set-marker',
+                'measurement-tools',
+                'nearest-configuration',
+                'legend',
+                'route-pop-up-directive'
+            ],
             "/maps/(new|\\d+/view)": [
                 'navigation-history-buttons',
                 'zoom-in-out-buttons',

@@ -21,7 +21,7 @@
         </tabset>
         <div style="clear:both"></div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" ng-if="getVisibilityStatus()">
          <button class="btn btn-primary" ng-click="ctrl.SaveAsLayer()">Save as layer [{ctrl.selectedTab.name}]</button>
     </div>
 </div>
