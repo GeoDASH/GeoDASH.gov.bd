@@ -135,10 +135,25 @@ padding: 0 !important;
 
 /* Center align the text within the three columns below the carousel */
 
-.marketing .col-lg-4 p {
-	margin-right: 10px;
-	margin-left: 10px;
-	font-size:18px;
+.offer
+{
+	display: flex;
+	align-items: center;
+	margin: 0;
+	margin-bottom: 10px;
+	height: 50px;
+}
+.offer .media-icon img {
+	width: 30px;
+	margin: 0 auto;
+	float: left;
+	margin-right: 5px;
+}
+.offer .media-body a
+{
+	text-align: left;
+	font-size: 17px;
+	display: block;
 }
 /* Featurettes
 ------------------------- */
