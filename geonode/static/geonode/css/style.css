@@ -3376,7 +3376,7 @@ width: 800px;
     -moz-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
-.dropBox:before {
+/* .dropBox:before {
     content:"";
     width: 0; 
     height: 0; 
@@ -3386,7 +3386,7 @@ width: 800px;
     position: absolute;
     right: 60px;
     top: -11px; 
-}
+} */
 .arrow-up {
     width: 0; 
     height: 0; 
