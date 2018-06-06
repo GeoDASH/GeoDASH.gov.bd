@@ -3708,6 +3708,7 @@ background-color: #fff;
     background: transparent;
     border: none;
     box-shadow: none;
+    margin-bottom: 0;
 }
 .gallery-container .panel-body
 {
@@ -3903,4 +3904,10 @@ footer {
     position: absolute;
     right: 0;
     top: 0;
+}
+.list-pagination
+{
+    padding: 0 0 15px;
+    border: none;
+    background: transparent;
 }

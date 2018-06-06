@@ -138,11 +138,11 @@
                                   {% trans "Explore Documents" %}
                               </div>
 
-
+                              <div class="panel-footer list-pagination">{% include 'search/_pagination.html' %}</div>
                               <div class="panel panel-default gallery-container">
                                 <div class="panel-body">
                                
-                                    <div>
+                                   
                                         {% with include_type_filter='true' %}
                                         {% with facet_type='documents' %}
                                         {% with header='Document Type' %}
@@ -155,14 +155,15 @@
                                         {% include "_bulk_permissions_form.html" %}
                         
                                        
-                                    </div>
+                                   
                                
 
                                 </div>
-                                <div class="container">
 
-                                <div class="panel-footer" style="padding: 10px 0">{% include 'search/_pagination.html' %}</div>
-                            </div>
+
+                                <div class="container">
+                                    <div class="panel-footer list-pagination">{% include 'search/_pagination.html' %}</div>
+                                    </div>
 
                               </div>
 
