@@ -28,7 +28,7 @@
             <li ng-show="toolsIsVisible('zoom-to-extent-button')">
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
             <li draft-only id="drag" ng-if="toolsIsVisible('drag')">
                 <button class="control-button icon" ng-class="{'active' : !toggleButtonsList['zoomTool'].isActive}"
                 ng-click="removeBoxZooming()" title="Drag">
@@ -162,7 +162,7 @@
                 </span>
             </li>
 
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
             <!-- <li draft-only>
                 <button class="control-button icon" id="close-project" ng-click="action.showCloseProjectOptions()" ng-disabled="(mapService.isEmpty() && !mapService.getMapName()) || isAttributeGridOn" title="Close Map">
                             <i class="fa fa-times-circle-o" aria-hidden="true"></i>                                                    
@@ -283,7 +283,7 @@
                             <i class="fa fa-database" aria-hidden="true"></i>                                    
                             </button>
             </li> -->
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
 
             <!-- <li draft-only>
                 <button class="control-button icon" onclick="animating()" title="Query">
