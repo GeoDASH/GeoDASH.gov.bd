@@ -325,7 +325,9 @@
                                             <ul class="text-center">
                                                 {% load notification_tags %}
                                                 {% include_notify_js_variables %}
-                                                {% user_notifications %}
+                                                {% if user_notifications %}
+                                                    {% user_notifications %}
+                                                {% endif %}
                                             </ul>
                                             <a class="btn btn-gd-primary icon-btn-color btn-block" href="{% url "notifications_all" %}" target="_self">
                                                 Show All Notifications
