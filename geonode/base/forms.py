@@ -214,8 +214,8 @@ def comment_subjects(comment_type):
 class ResourceApproveForm(forms.Form):
     comment_subject = forms.ChoiceField( choices=comment_subjects('approve'))
     comment = forms.CharField(max_length=500,  widget=forms.Textarea, required=False)
-    view_permission = forms.BooleanField(label="Anyone can view this layer", required=False)
-    download_permission = forms.BooleanField(label="Anyone can download this layer", required=False)
+    view_permission = forms.BooleanField(label="Anyone can view this resource", required=False)
+    download_permission = forms.BooleanField(label="Anyone can download this resource", required=False)
 
 
 class ResourceDenyForm(forms.Form):
