@@ -4,10 +4,11 @@ catalogBrowserController.$inject = ['$scope',
     'surfToastr',
     'mapService',
     'layerService',
-    '$modalInstance'
+    '$modalInstance',
+    '$timeout'
 ];
 
-function catalogBrowserController($scope, $rootScope, surfToastr, mapService, layerService, $modalInstance) {
+function catalogBrowserController($scope, $rootScope, surfToastr, mapService, layerService, $modalInstance, $timeout) {
 
     $scope.serverList = [{
             name: 'Geoserver',
@@ -58,5 +59,9 @@ function catalogBrowserController($scope, $rootScope, surfToastr, mapService, la
     $scope.closeDialog = function() {
         $modalInstance.close();
     };
+
+    $timeout(function () {
+        $scope.loadLayers($scope.serverList[0]);
+    })
 
 }
