@@ -1331,10 +1331,11 @@ def save_sld_geoserver(request_method, full_path, sld_body, content_type='applic
     headers["Content-Type"] = content_type
     headers["Authorization"] = "Basic " + auth
 
-    return http.request(
+    res = http.request(
         url, request_method,
         body=sld_body or None,
-        headers=headers)
+        headers=headers)  
+    return res
 
 
 class LayerStyleListAPIView(ListAPIView):
@@ -1494,7 +1495,7 @@ class LayerStyleView(View):
             json.dumps(
                 serializer.data,
                 ensure_ascii=False),
-            status=200,
+            status=201,
             content_type='application/javascript')
 
 
