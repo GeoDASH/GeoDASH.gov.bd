@@ -170,6 +170,7 @@ urlpatterns = patterns('',
                        
                        url(r'^api/security/', include('geonode.security.api.urls')),
                        url(r'^api/layers/', include('geonode.layers.api.urls')),
+                       url(r'^api/maps/', include('geonode.maps.api.urls')),
                        
                        url(r'', include(api.urls)),
 
