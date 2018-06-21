@@ -5,9 +5,9 @@ from geonode.maps.models import Map, MapLayer, MapSnapshot, MapSubmissionActivit
 from notify.signals import notify
 
 
-def approve_map(map_pk, user):
+def approve_map(id, user, map_status, map_audit_status):
     try:
-        map = Map.objects.get(id=map_pk)
+        map = Map.objects.get(id=id)
     except Map.DoesNotExist:
         return False, status.HTTP_404_NOT_FOUND
 
@@ -18,7 +18,7 @@ def approve_map(map_pk, user):
     map_submission_activity = MapSubmissionActivity.objects.get(map=map, group=group, iteration=map.current_iteration)
     map_audit_activity = MapAuditActivity(map_submission_activity=map_submission_activity)
     
-    map.status = 'ACTIVE'
+    map.status = map_status
     map.last_auditor = user
     map.save()
 
@@ -30,7 +30,7 @@ def approve_map(map_pk, user):
     map_submission_activity.is_audited = True
     map_submission_activity.save()
 
-    map_audit_activity.result = 'APPROVED'
+    map_audit_activity.result = map_audit_status
     map_audit_activity.auditor = user
     map_audit_activity.save()
     return True, status.HTTP_200_OK
@@ -42,7 +42,7 @@ class MultipleMapApproveAPIView(UpdateAPIView):
         map_ids = request.data.get('map_ids')
         res = {}
         for map_id in map_ids:
-            ret, ret_status = approve_map(map_id, request.user)
+            ret, ret_status = approve_map(id=map_id, user=request.user, map_status='ACTIVE', map_audit_status='APPROVED')
             res[map_id] = {
                 'is_approved': ret,
                 'status': ret_status
