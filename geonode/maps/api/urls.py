@@ -5,5 +5,5 @@ from django.conf.urls import url
 
 
 urlpatterns =[
-    url(r'^approve-multiple-map/$', views.MultipleMapApproveAPIView.as_view()),
+    url(r'^approve-multiple-maps/$', views.MultipleMapsApproveAPIView.as_view()),
 ]

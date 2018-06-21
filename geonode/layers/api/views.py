@@ -5,14 +5,15 @@ from django.db import transaction
 
 from geonode.class_factory import ClassFactory
 from geonode.layers.models import Layer
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from geonode.rest_authentications import CsrfExemptSessionAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from geonode.groups.models import GroupProfile
-from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer, changeDbFieldTypes, reloadFeatureTypes
+from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer, changeDbFieldTypes, reloadFeatureTypes, layer_status_update
+from notify.signals import notify
 
 
 class LayerFeatureUploadView(CreateAPIView):
@@ -104,3 +105,17 @@ class CreateFeaturedLayer(CreateAPIView):
             shutil.rmtree(tempdir)
 
         return Response(data=out, content_type='application/json', status=status_code)
+
+class MultipleLayersApproveAPIView(UpdateAPIView):
+    
+    def put(self, request):
+        layer_ids = request.data.get('layer_ids')
+        res = {}
+        for layer_id in layer_ids:
+            ret, ret_status = layer_status_update(id=layer_id, user=request.user, layer_status='ACTIVE', layer_audit_status='APPROVED')
+            res[layer_id] = {
+                'is_approved': ret,
+                'status': ret_status
+            }
+        return Response(data=res, content_type='application/json', status=status.HTTP_200_OK)
+    
