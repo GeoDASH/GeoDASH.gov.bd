@@ -222,7 +222,7 @@ def layer_status_update(id, user, layer_status, layer_audit_status):
     if user != layer.owner:
         recipient = layer.owner
         notify.send(user, recipient=recipient, actor=user,
-                    target=layer, verb='approved your layer')
+                    target=layer, verb='{} your layer'.format(layer_audit_status.lower()))
 
     layer_submission_activity.is_audited = True
     layer_submission_activity.save()

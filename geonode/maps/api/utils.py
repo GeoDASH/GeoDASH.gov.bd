@@ -23,7 +23,7 @@ def map_status_update(id, user, map_status, map_audit_status):
     # notify map owner that someone have approved the map
     if user != map.owner:
         recipient = map.owner
-        notify.send(user, recipient=recipient, actor=user, target=map, verb='approved your map')
+        notify.send(user, recipient=recipient, actor=user, target=map, verb='{} your map'.format(map_audit_status.lower()))
 
     map_submission_activity.is_audited = True
     map_submission_activity.save()

@@ -1,7 +1,6 @@
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from geonode.maps.models import Map, MapLayer, MapSnapshot
 from geonode.maps.api.utils import map_status_update
 
 
@@ -16,6 +15,5 @@ class MultipleMapsApproveAPIView(UpdateAPIView):
                 'is_approved': ret,
                 'status': ret_status
             }
-        
         return Response(data=res, content_type='application/json', status=status.HTTP_200_OK)
         
