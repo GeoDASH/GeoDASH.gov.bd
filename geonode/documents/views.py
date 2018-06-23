@@ -496,6 +496,7 @@ def document_metadata(
             "poc_form": poc_form,
             "author_form": author_form,
             "category_form": category_form,
+            "linked_resources": json.dumps([{'id': l.id, 'text': l.name} for l in document.layers.all()])
         }))
 
 

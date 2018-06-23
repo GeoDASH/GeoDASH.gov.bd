@@ -50,7 +50,7 @@
 
     $("#resource").select2({
         minimumInputLength: 1,
-        placeholder: 'Select layer, map or empty',
+        placeholder: 'Select layers',
         //width: 'element',
         width: 'copy',
         multiple: true,
@@ -60,7 +60,7 @@
           data: function(term,page){
 
             return {
-              type__in: ['layer','map'],
+              type__in: ['layer'],
               title__contains: term.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
             }
           },
@@ -73,5 +73,6 @@
           }
         }
     });
+    $('#resource').select2( 'data', {{linked_resources}});
 {% endautoescape %}
 </script>
