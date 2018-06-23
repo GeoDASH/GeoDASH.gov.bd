@@ -150,9 +150,13 @@
                                         <div class="tab-content">
                                           <article id="user-approval-request" class="tab-pane active">
                                             <ul class="no-style-list">
+                                                <a class="btn btn-gd-primary disabled" id="approve-all-button" style="margin-bottom: 10px" onclick="approveAll()">{% trans "Approve All" %}</a>
                                                 <table class="table table-hover" style="background:#ffffff;">
                                                     <thead>
                                                         <tr>
+                                                            <th>
+                                                                <input type="checkbox" value="" id="select-all-layer">
+                                                            </th>
                                                             <th>Serial No</th>
                                                             <th>Layer Title</th>
                                                             <th>Organization</th>
@@ -388,6 +392,68 @@
     });
     </script>
 <script type="text/javascript" language="JavaScript">
+        var csrftoken = "{{ csrf_token }}";
+        $("#select-all-layer").change(function () {
+            var status = $(this).is(":checked") ? true : false;
+            $('.layer-to-approve').prop('checked', status);
+            enableOrDisableApproveAllButton();
+        });
+        function disableAllContinueForApprovalButton(condition) {
+            if(condition) {
+                $('.approve-button').addClass('disabled');
+            }else {
+                $('.approve-button').removeClass('disabled');
+            }
+        }
+        function enableOrDisableApproveAllButton() {
+            var selecteds = [];
+            $('.layer-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            if(selecteds.length> 0) {
+                $('#approve-all-button').removeClass('disabled');
+            }else {
+                $('#approve-all-button').addClass('disabled');
+            }
+        }
+        function error(jqXHR,textStatus,errorThrown) {
+            $('#approve-all-button').removeClass('disabled');
+            $.toaster(errorThrown, 'Error', 'danger');
+            enableOrDisableApproveAllButton();
+        }
+        function success(data,textStatus,jqXHR) {
+            $.toaster('All Layer Approved', 'Success', 'success');
+            $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
+            showAdminDraftLayer();
+
+        }
+        function postAllLayersForApproval(layersIds) {
+            var data = {
+                "layer_ids": layersIds
+            };
+            $.ajax({
+                url: "/api/layers/approve-multiple-layers/",
+                method: "PUT",
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: error,
+                success: success
+            });
+        }
+        function approveAll(e) {
+            var selecteds = [];
+            $('.layer-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            $('#approve-all-button').addClass('disabled');
+            disableAllContinueForApprovalButton(true);
+            postAllLayersForApproval(selecteds);
+        }
         function showAdminDraftLayer(targeturl){
             var limit = 25;
             if(targeturl== undefined){
@@ -420,7 +486,7 @@
                   $.each(data, function(i, item) {
                     offset = offset + 1;
                     output+='<tr>';
-
+                    output+='<td>'+ '<input type="checkbox" value='+item.id+' class="layer-to-approve" onclick="enableOrDisableApproveAllButton();">' +'</td>';
                     output+='<td>'+ offset +'</td>';
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
@@ -430,7 +496,7 @@
                       {% if FRONT_END_SETTINGS.attribute_permission %}
                           output+='<td><a href="'+ item.detail_url +'/preview" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
                       {% else %}
-                          output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                          output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary approve-button">{% trans "Continue to Approve/Deny" %}</a></td>';
                       {% endif %}
 
                     output+='</tr>';
