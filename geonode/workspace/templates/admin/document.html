@@ -81,9 +81,14 @@
                                         <div class="tab-content">
                                           <article id="user-approval-request" class="tab-pane active">
                                             <ul class="no-style-list">
+                                                <a class="btn btn-gd-primary disabled" id="approve-all-button" style="margin-bottom: 10px" onclick="approveAll()">{% trans "Approve All" %}</a>
                                                     <table class="table table-hover table-striped">
                                                     <thead>
                                                         <tr>
+                                                            <th>
+                                                                    <input type="checkbox" value=""
+                                                                           id="select-all-doc">
+                                                                </th>
                                                             <th>Serial No</th>
                                                             <th>Document Title</th>
                                                             <th>Organization</th>
@@ -321,6 +326,70 @@ $(function () {
 </script>
 
 <script type="text/javascript" language="JavaScript">
+
+    var csrftoken = "{{ csrf_token }}";
+    $("#select-all-doc").change(function () {
+        var status = $(this).is(":checked") ? true : false;
+        $('.doc-to-approve').prop('checked', status);
+        enableOrDisableApproveAllButton();
+    });
+    function enableOrDisableApproveAllButton() {
+        var selecteds = [];
+        $('.doc-to-approve:checked').each(function () {
+            selecteds.push($(this).val());
+        });
+        if (selecteds.length > 0) {
+            $('#approve-all-button').removeClass('disabled');
+        } else {
+            $('#approve-all-button').addClass('disabled');
+        }
+    }
+    function disableAllContinueForApprovalButton(condition) {
+        if (condition) {
+            $('.approve-button').addClass('disabled');
+        } else {
+            $('.approve-button').removeClass('disabled');
+        }
+    }
+    function error(jqXHR, textStatus, errorThrown) {
+        $('#approve-all-button').removeClass('disabled');
+        enableOrDisableApproveAllButton();
+        $.toaster(errorThrown, 'Error', 'danger');
+    }
+    function success(data, textStatus, jqXHR) {
+        $.toaster('All Documents Approved', 'Success', 'success');
+        $('#approve-all-button').removeClass('disabled');
+        enableOrDisableApproveAllButton();
+        showAdminDraftDocs();
+
+    }
+    function postAllDocumentForApproval(documentIds) {
+        var data = {
+            "document_ids": documentIds
+        };
+        $.ajax({
+            url: "/api/documents/approve-multiple-documents/",
+            method: "PUT",
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: error,
+            success: success
+        });
+    }
+    function approveAll(e) {
+        var selecteds = [];
+        $('.doc-to-approve:checked').each(function () {
+            selecteds.push($(this).val());
+        });
+        $('#approve-all-button').addClass('disabled');
+        disableAllContinueForApprovalButton(true);
+        postAllDocumentForApproval(selecteds);
+    }
+
         function showAdminDraftDocs(targeturl){
             var limit = 25;
             if(targeturl== undefined){
@@ -353,13 +422,14 @@ $(function () {
                   $.each(data, function(i, item) {
                     offset = offset + 1;
                     output+='<tr>';
+                     output+='<td>'+ '<input type="checkbox" value='+item.id+' class="doc-to-approve" onclick="enableOrDisableApproveAllButton();">' +'</td>';
                     output+='<td>'+ offset +'</td>';
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.current_iteration +'</td>';
                     output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
-                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary approve-button">{% trans "Continue to Approve/Deny" %}</a></td>';
                     output+='</tr>';
                   });
                   outputpag+='<div>';

@@ -391,11 +391,13 @@ $(function () {
         }
         function error(jqXHR, textStatus, errorThrown) {
             $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
             $.toaster(errorThrown, 'Error', 'danger');
         }
         function success(data, textStatus, jqXHR) {
             $.toaster('All Maps Approved', 'Success', 'success');
             $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
             showAdminDraftMap();
 
         }

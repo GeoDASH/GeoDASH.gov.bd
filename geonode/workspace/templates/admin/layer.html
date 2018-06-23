@@ -419,10 +419,12 @@
         function error(jqXHR,textStatus,errorThrown) {
             $('#approve-all-button').removeClass('disabled');
             $.toaster(errorThrown, 'Error', 'danger');
+            enableOrDisableApproveAllButton();
         }
         function success(data,textStatus,jqXHR) {
             $.toaster('All Layer Approved', 'Success', 'success');
             $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
             showAdminDraftLayer();
 
         }
