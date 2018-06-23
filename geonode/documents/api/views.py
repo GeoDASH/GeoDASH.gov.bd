@@ -1,11 +1,16 @@
-from rest_framework.generics import UpdateAPIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from geonode.documents.api.utils import document_status_update
 
-
 class MultipleDocumentsApproveAPIView(UpdateAPIView):
+    """
+    This api view will approve multiple documents
+    """
     
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request):
         document_ids = request.data.get('document_ids')
         res = {}
