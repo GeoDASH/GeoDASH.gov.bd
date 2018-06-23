@@ -30,13 +30,7 @@ class Migration(migrations.Migration):
                 ('extension', models.CharField(max_length=128, null=True, blank=True)),
                 ('doc_type', models.CharField(max_length=128, null=True, blank=True)),
                 ('doc_url', models.URLField(help_text='The URL of the document if it is external.', max_length=255, null=True, verbose_name='URL', blank=True)),
-                ('current_iteration', models.IntegerField(default=0)),
-                ('status', models.CharField(default=b'DRAFT', max_length=10, choices=[(b'DRAFT', 'Draft'), (b'PENDING', 'Pending'), (b'ACTIVE', 'Active'), (b'INACTIVE', 'Inactive'), (b'DENIED', 'Denied'), (b'DELETED', 'Deleted'), (b'CANCELED', 'Canceled')])),
-                ('date_created', models.DateTimeField(auto_now_add=True)),
-                ('date_updated', models.DateTimeField(auto_now=True)),
                 ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
-                ('group', models.ForeignKey(blank=True, to='groups.GroupProfile', null=True)),
-                ('last_auditor', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
