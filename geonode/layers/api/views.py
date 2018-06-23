@@ -107,6 +107,11 @@ class CreateFeaturedLayer(CreateAPIView):
         return Response(data=out, content_type='application/json', status=status_code)
 
 class MultipleLayersApproveAPIView(UpdateAPIView):
+    """
+    This api view will approve multiple layers
+    """
+    
+    permission_classes = (IsAuthenticated,)
     
     def put(self, request):
         layer_ids = request.data.get('layer_ids')
