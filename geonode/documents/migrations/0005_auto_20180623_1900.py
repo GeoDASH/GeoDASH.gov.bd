@@ -8,8 +8,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
-        ('layers', '0026_auto_20171004_1311'),
-        ('documents', '0026_auto_20171004_1243'),
+        ('layers', '0006_auto_20180623_1900'),
+        ('documents', '0004_auto_20161115_1917'),
     ]
 
     operations = [
@@ -26,6 +26,10 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='document',
             name='content_type',
+        ),
+        migrations.RemoveField(
+            model_name='document',
+            name='object_id',
         ),
         migrations.AddField(
             model_name='documentlayers',

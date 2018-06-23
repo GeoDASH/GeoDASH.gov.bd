@@ -8,7 +8,7 @@ import taggit.managers
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '24_initial'),
+        ('base', '0008_auto_20161104_1944'),
     ]
 
     operations = [
@@ -48,8 +48,6 @@ class Migration(migrations.Migration):
             name='TaggedContentItem',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content_object', models.ForeignKey(to='base.ResourceBase')),
-                ('tag', models.ForeignKey(related_name='keywords', to='base.HierarchicalKeyword')),
             ],
             options={
                 'abstract': False,
@@ -101,10 +99,35 @@ class Migration(migrations.Migration):
             name='fa_class',
             field=models.CharField(default=b'fa-times', max_length=64),
         ),
-        migrations.AddField(
+        migrations.AlterField(
+            model_name='contactrole',
+            name='resource',
+            field=models.ForeignKey(blank=True, to='base.ResourceBase', null=True),
+        ),
+        migrations.AlterField(
+            model_name='link',
+            name='resource',
+            field=models.ForeignKey(blank=True, to='base.ResourceBase', null=True),
+        ),
+        migrations.AlterField(
             model_name='resourcebase',
             name='keywords',
             field=taggit.managers.TaggableManager(to='base.HierarchicalKeyword', through='base.TaggedContentItem', blank=True, help_text='commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject (space or comma-separated', verbose_name='keywords'),
+        ),
+        migrations.AlterField(
+            model_name='resourcebase',
+            name='regions',
+            field=models.ManyToManyField(help_text='keyword identifies a location', to='base.Region', verbose_name='keywords region', blank=True),
+        ),
+        migrations.AddField(
+            model_name='taggedcontentitem',
+            name='content_object',
+            field=models.ForeignKey(to='base.ResourceBase'),
+        ),
+        migrations.AddField(
+            model_name='taggedcontentitem',
+            name='tag',
+            field=models.ForeignKey(related_name='keywords', to='base.HierarchicalKeyword'),
         ),
         migrations.AddField(
             model_name='resourcebase',

@@ -25,10 +25,12 @@ class Migration(migrations.Migration):
                 ('constraints_other_en', models.TextField(help_text='other restrictions and legal prerequisites for accessing and using the resource or metadata', null=True, verbose_name='restrictions other', blank=True)),
                 ('supplemental_information_en', models.TextField(default='No information provided', help_text='any other descriptive information about the dataset', null=True, verbose_name='supplemental information')),
                 ('data_quality_statement_en', models.TextField(help_text="general explanation of the data producer's knowledge about the lineage of a dataset", null=True, verbose_name='data quality statement', blank=True)),
+                ('object_id', models.PositiveIntegerField(null=True, blank=True)),
                 ('doc_file', models.FileField(max_length=255, upload_to=b'documents', null=True, verbose_name='File', blank=True)),
                 ('extension', models.CharField(max_length=128, null=True, blank=True)),
                 ('doc_type', models.CharField(max_length=128, null=True, blank=True)),
                 ('doc_url', models.URLField(help_text='The URL of the document if it is external.', max_length=255, null=True, verbose_name='URL', blank=True)),
+                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
             ],
             options={
                 'abstract': False,

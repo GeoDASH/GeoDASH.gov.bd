@@ -11,30 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='document',
-            name='current_iteration',
-        ),
-        migrations.RemoveField(
-            model_name='document',
-            name='date_created',
-        ),
-        migrations.RemoveField(
-            model_name='document',
-            name='date_updated',
-        ),
-        migrations.RemoveField(
-            model_name='document',
-            name='group',
-        ),
-        migrations.RemoveField(
-            model_name='document',
-            name='last_auditor',
-        ),
-        migrations.RemoveField(
-            model_name='document',
-            name='status',
-        ),
         migrations.AlterField(
             model_name='document',
             name='title_en',

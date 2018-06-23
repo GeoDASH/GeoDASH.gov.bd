@@ -32,6 +32,12 @@ class Migration(migrations.Migration):
                 ('last_modified', models.DateTimeField(auto_now_add=True)),
                 ('urlsuffix', models.CharField(max_length=255, verbose_name='Site URL', blank=True)),
                 ('featuredurl', models.CharField(max_length=255, verbose_name='Featured Map URL', blank=True)),
+                ('current_iteration', models.IntegerField(default=0)),
+                ('status', models.CharField(default=b'DRAFT', max_length=10, choices=[(b'DRAFT', 'Draft'), (b'PENDING', 'Pending'), (b'ACTIVE', 'Active'), (b'INACTIVE', 'Inactive'), (b'DENIED', 'Denied'), (b'DELETED', 'Deleted'), (b'CANCELED', 'Canceled')])),
+                ('date_created', models.DateTimeField(auto_now_add=True)),
+                ('date_updated', models.DateTimeField(auto_now=True)),
+                ('group', models.ForeignKey(blank=True, to='groups.GroupProfile', null=True)),
+                ('last_auditor', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
