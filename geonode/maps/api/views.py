@@ -2,10 +2,16 @@ from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from geonode.maps.api.utils import map_status_update
+from rest_framework.permissions import IsAuthenticated
 
 
 class MultipleMapsApproveAPIView(UpdateAPIView):
+    """
+    This api view will approve multiple maps
+    """
     
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request):
         map_ids = request.data.get('map_ids')
         res = {}

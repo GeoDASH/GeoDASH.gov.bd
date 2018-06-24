@@ -1,0 +1,17 @@
+<!--<form id="file-uploader" method="post" enctype="multipart/form-data" action="{% url "restore-backedup-organization-layers" %}">-->
+                      <!--{% csrf_token %}-->
+                      <!--<input class="btn" id="file-input" type="file" name="xyz" multiple>-->
+                      <!--<button type="submit">Submit</button>-->
+                  <!--</form>-->
+{% load bootstrap_tags %}
+
+<form id=""  method="post" enctype="multipart/form-data" action="">
+                          {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form|as_bootstrap }}
+                            </div>
+                        </div>
+                        <div class="block-separator"></div>
+                        <button type="submit" id="" class="btn btn-gd-primary">Submit</button>
+                      </form>

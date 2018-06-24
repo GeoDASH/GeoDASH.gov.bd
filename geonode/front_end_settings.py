@@ -31,7 +31,7 @@ NSDI_FRONT_END_SETTINGS = {
 GEODASH_FRONT_END_SETTINGS = {
     'templates_base': {
         'invite_user': True,
-        'backup_organization_layers':False,
+        'backup_organization_layers':True,
         'manage_sector_dept_section_createOrg': False,
         'social_login':True,
         'administration_header_menu':False,

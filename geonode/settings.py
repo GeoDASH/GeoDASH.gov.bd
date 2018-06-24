@@ -1080,7 +1080,8 @@ SEARCH_FILTERS = {
 NOTIFICATION_QUEUE_ALL = False
 
 # BROKER_URL = os.getenv('BROKER_URL', "django://")
-CELERY_BROKER_URL = 'amqp://geodash:admin1234@localhost:5672/myvhost'
+# CELERY_BROKER_URL = 'amqp://geodash:admin1234@localhost:5672/myvhost'
+CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_ALWAYS_EAGER = True
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 CELERY_IGNORE_RESULT = True
