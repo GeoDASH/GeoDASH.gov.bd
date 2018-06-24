@@ -1,0 +1,78 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Admin Workspace" %}{% endblock %}
+
+{% comment %}
+{% block subnav %}
+<li><a href="{% url "actstream_object_feed" content_type_id=ctype.pk  object_id=actor.pk %}">RSS</a></li>
+<li><a href="{% url "actstream_object_feed_atom" content_type_id=ctype.pk  object_id=actor.pk %}">ATOM</a></li>
+{% endblock %}
+{% endcomment %}
+
+{% block body_outer %}
+<div class="gd-content">
+    <div class="gd-content-heading">
+        <div class="d-title small-content">
+            {% trans "Backup All Layers" %}
+        </div>
+        <div class="hr"></div>
+    </div>
+    <div class="gd-content-body gd-history transparent top-bottom-margin-20px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="col-md-12" ng-app="layerApp" ng-cloak>
+                        <div ng-controller="organizationLayerBackupController">
+                            <div class="alert alert-success" ng-show="success">
+                                <strong>Success!</strong> [{message}]
+                            </div>
+                            <div class="alert alert-info" ng-show="error">
+                                <strong>Info!</strong> [{message}]
+                            </div>
+                            <div class="form form-horizontal">
+                                <div class="form-group col-md-6">
+
+                                    <label class="col-md-4 control-label"> <span style="color:red;"> * </span>
+                                        Select Organization
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <select id="org-id" name="org-id" class="form-control">
+                                            {% for organization in organizations %}
+                                            <option value={{ organization.id }}>{{ organization.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="clearfix">
+
+                            </div>
+
+                            <h4>
+                                Are you sure to back up all the layers of the organizations?
+                            </h4>
+                            <button class="btn btn-primary" ng-click="backupLayer()" ng-disabled="showLoader">
+                                Backup Layers
+                                <span ng-if="showLoader">
+                                        <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+                                    </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}geonode/js/workspace/layer/layer.module.js"></script>
+<script src="{{ STATIC_URL }}geonode/js/workspace/layer/layer.service.js"></script>
+<script src="{{ STATIC_URL }}geonode/js/workspace/layer/organization-layer-backup.controller.js"></script>
+<script src="/static/.components//angular-cookies/angular-cookies.js"></script>
+{{ block.super }}
+{% endblock %}
