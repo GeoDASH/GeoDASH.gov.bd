@@ -181,11 +181,7 @@
                                             <li id="nav_maps">
                                               <a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>
                                             </li>
-                                            {% if user.is_authenticated %}
-                                            <li id="nav_layers">
-                                              <a href="{% url "profile_browse" %}">{% trans "Explore Users" %}</a>
-                                            </li>
-                                            {% endif %}
+                                            
                                         </ul>
                                     </li>
 				{% if request.user.is_manager_of_any_group and FRONT_END_SETTINGS.templates_base.administration_header_menu %}
@@ -206,6 +202,12 @@
 			            </ul>
 			        </li>
 			        {% endif %}
+
+                    {% if user.is_authenticated %}
+                    <li id="nav_layers">
+                      <a href="{% url "profile_browse" %}">{% trans "Users" %}</a>
+                    </li>
+                    {% endif %}
 
                                     <li><a href="{% url "news-list" %}">{% trans "NEWS" %}</a></li>
                                     {% if user.is_authenticated %}
