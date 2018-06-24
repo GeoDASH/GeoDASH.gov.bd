@@ -11,6 +11,7 @@
 {% block title %}{{ resource.title|default:resource.typename }} — {{ block.super }}{% endblock %}
 
 {% block head %}
+    <script src="{{ STATIC_URL }}geonode/js/utils/thumbnail.js" type="text/javascript"></script>
 <base href="/">
     <link rel="stylesheet" href="/static/.components/angular-ui-grid/ui-grid.min.css">
   {% if TWITTER_CARD %}
@@ -265,7 +266,7 @@
                                            {% if preview == 'geoext' %}
                                                <a class="btn btn-default btn-gd btn-block btn-xs style-edit"
                                                   data-dismiss="modal"
-                                                  href="#">{% trans "Edit" %}</a>
+                                                  onclick="openStyleModal()">{% trans "Edit" %}</a>
                                            {% endif %}
                                            <a class="btn btn-default btn-gd btn-block btn-xs"
                                               href="{% url "layer_style_manage" resource.service_typename %}">{% trans "Manage" %}</a>
@@ -277,7 +278,6 @@
                                        <i class="fa fa-photo fa-3x"></i>
                                        <h4>{% trans "Thumbnail" %}</h4>
                                        <a class="btn btn-default btn-gd btn-block btn-xs"
-                                          href="#"
                                           id="set_thumbnail">{% trans "Set" %}</a>
                                    </div>
                                {% endif %}
@@ -1143,8 +1143,11 @@
         {% endif %}
     </script>
     <script type="text/javascript">
+        function successToaster() {
+            $.toaster('Thumbnail saved', 'Success', 'success');
+        }
       $('#set_thumbnail').click(function(){
-        createMapThumbnail();
+        createMapThumbnail(undefined,successToaster);
         $('#edit-layer').modal('toggle');
       });
     </script>
