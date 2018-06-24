@@ -84,3 +84,14 @@ urlpatterns = patterns('',
     url(r'^(?P<layername>[^/]*)/unique-value-for-attribute/(?P<attributename>[^/]*)/$', LayerAttributeView.as_view(), name='layer_attribute'),
     url(r'^(?P<layername>[^/]*)/range-value-for-attribute/$', LayerAttributeRangeView.as_view(), name='layer_range_attribute'),
 ) + urlpatterns
+
+
+urlpatterns = patterns('geonode.layers.views',
+                       url(r'^backup/organization/layers$', 'restoreBackedupOrganizationLayers',
+                           name="restore-backedup-organization-layers"),
+
+                       url(r'^organization/(?P<org_pk>[0-9]+)/layers/backup$', 'backupOrganizationLayers',
+                           name='organization-layers-backup'),
+                       url(r'^organization/layers/backup/view$', 'organizationLayerBackupView',
+                           name='organization-layers-backup-view'),
+                       )+urlpatterns
