@@ -6,7 +6,7 @@
                 </button> 
             <h4 class="modal-title">[{nodeData.layer.name}] Properties</h4>
     </div>
-
+ <form ng-submit="save()" style="margin: 0" novalidate>
     <div class="modal-sub-header form-inline">
 
     <select name="styleSelect" class="form-control input-sm" style="width: 400px;margin-right: 5px;" ng-change="onStyleChange()" ng-model="nodeData.selectedStyle"  ng-options="style.title for style in Styles">
@@ -18,10 +18,31 @@
 
     </div>
 
-    <form ng-submit="save()" style="margin: 0" novalidate>
+
         <div class="modal-body" style="max-height: initial;">
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label class="col-sm-2 control-label">
+                        Style Name:
+                    </label>
+
+                    <div class="col-sm-4">
+                        <input class="form-control input-sm" draft-only type='text'
+                               ng-model='nodeData.layer.style.Title' maxlength="100" validatefilename focus-me="true"
+                               ng-change="onTitleChange()"
+                        />
+                    </div>
+                    <label class="col-sm-1 control-label">
+                        Type:
+                    </label>
+                    <div class="col-sm-4" style="padding-top: 3px">
+                        [{nodeData.layer.shapeType}]
+                    </div>
+                </div>
+            </div>
             <tabset>
-                <tab active='tabs[0].active'>
+
+              <!--  <tab active='tabs[0].active'>
                     <tab-heading>
                         General
                         <span ng-if="tabs[0].active" class="selected-down-arrow"></span>
@@ -73,11 +94,12 @@
                                     ng-init="nodeData.layer.zoomlevel = nodeData.layer.zoomlevel == undefined ? 0: nodeData.layer.zoomlevel"
                                 />
                             </div>
-                        </div> -->
+                        </div>
 
                     </div>
 
-                </tab>
+                </tab> -->
+
                 <tab active='tabs[1].active'>
                     <tab-heading>
                         Display style
@@ -272,7 +294,7 @@
                   </div>
             <input draft-only class="btn btn-success" ng-if="hasPermission" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
             />
-            <button draft-only class="btn btn-inverse" ng-click="cancel()">
+            <button draft-only class="btn btn-inverse btn-sm" ng-click="cancel()">
                 Cancel
             </button>
         </div>
