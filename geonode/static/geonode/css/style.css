@@ -2646,6 +2646,7 @@ body.layer-detail-page #gd-wrapper .container-fluid.padding-zero{
     border-bottom: 1px solid #eeeeef;
     margin-bottom: 0px;
     text-align:justify;
+    padding: 10px 0;
 }
 .list-group.gd-link-style.inaccordion .list-group-item:last-child {
     border-bottom: none;
