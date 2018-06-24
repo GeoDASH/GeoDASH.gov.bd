@@ -62,7 +62,6 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'over-pass-dialog',
                 'save',
                 'print',
-                'heat-map',
                 'share-map',
                 'legend',
                 'route-pop-up-directive'
