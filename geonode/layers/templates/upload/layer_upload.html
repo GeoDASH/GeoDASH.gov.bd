@@ -78,7 +78,7 @@
         <div class="gd-content-body transparent top-bottom-margin-20px">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="gd-content-body box-shadow full-pad-30px">
+                    <div class="gd-content-body box-shadow full-pad-30px" style="padding-bottom: 10px">
                         {% if incomplete %}
                             <section class="widget" id="incomplete-download-list">
                                 <h3>{% trans "Incomplete Uploads" %}</h3>
@@ -202,33 +202,6 @@
                             <div class="block-separator"></div>
                         </section>
 
-
-                        <div class="block-separator"></div>
-                        <section id="drop-zone">
-                            <div class="upload-info">
-                                <i class="fa fa-cloud-upload"></i><br/>
-                                {% trans "Drop files here" %}
-                            </div>
-                        </section>
-
-                        <div><span style="color:red;"> * </span> {% trans " or select them one by one:" %}</div>
-
-                        <form id="file-uploader" method="post" enctype="multipart/form-data">
-                            <input class="btn btn-gd" id="file-input" type="file" multiple>
-                            <!--<input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM
-                            <input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM-->
-                        </form>
-
-                        <section class="widget">
-                            <ul id="global-errors"></ul>
-                            <h4>{% trans "Files to be uploaded" %}</h4>
-                            <div id="file-queue"></div>
-                            <div class="checkbox" style="display:none;" id="metadata_uploaded_preserve_check">
-                                Preserve Metadata XML
-                                <input type="checkbox" name="metadata_uploaded_preserve"
-                                       id="id_metadata_uploaded_preserve"/>
-                            </div>
-                        </section>
                         <section id="csvLayerSection" style="display: none;">
                             <div class="row">
                                 <div class="col-md-12">
@@ -238,10 +211,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input checked="checked" type="radio" name="csvcategory" id="thegeo" class="thegeo" value="thegeo"/>
-                                        &nbsp;Well Known Text(WKT) <br>
-                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/> Latitude
-                                        Point Coordinates
+                                    <input checked="checked" type="radio" name="csvcategory" id="thegeo" class="thegeo"
+                                           value="thegeo"/>
+                                    &nbsp;Well Known Text(WKT) <br>
+                                    <input type="radio" name="csvcategory" id="latlon" class="latlon" value="latlon"/>
+                                    Latitude
+                                    Point Coordinates
                                 </div>
                             </div>
                             <!--<div class="block-separator"></div>-->
@@ -267,15 +242,15 @@
                                 </div>
                             </div>
                             <!--<div class="block-separator"></div>-->
-                             <!--<div class="row">-->
-                                <!--<div class="col-md-12">-->
-                                    <!--<label class="control-label"> {% trans "Select Y-field" %} </label>-->
-                                <!--</div>-->
+                            <!--<div class="row">-->
+                            <!--<div class="col-md-12">-->
+                            <!--<label class="control-label"> {% trans "Select Y-field" %} </label>-->
+                            <!--</div>-->
                             <!--</div>-->
                             <!--<div class="row">-->
-                                <!--<div class="col-md-4">-->
-                                    <!--<select id="csvLattitudeColumnName" class="col-md-12"></select>-->
-                                <!--</div>-->
+                            <!--<div class="col-md-4">-->
+                            <!--<select id="csvLattitudeColumnName" class="col-md-12"></select>-->
+                            <!--</div>-->
                             <!--</div>-->
                             <div class="block-separator"></div>
                         </section>
@@ -316,6 +291,34 @@
                                 </div>
                             </div>
                         </section>
+
+
+
+                        <div class="block-separator"></div>
+                        <section id="drop-zone">
+                            <div class="upload-info">
+                                <i class="fa fa-cloud-upload"></i><br/>
+                                {% trans "Drop files here" %}
+                            </div>
+                        </section>
+
+                        <div><span style="color:red;"> * </span> {% trans " or select them one by one:" %}</div>
+
+                        <form id="file-uploader" method="post" enctype="multipart/form-data">
+                            <input class="btn btn-gd" id="file-input" type="file" multiple>
+                            <!--<input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM
+                            <input type="radio" name="osmlayer" id="osmlayer" class="osmlayer" value=""/>OSM-->
+                        </form>
+                        <section class="widget">
+                            <ul id="global-errors"></ul>
+                            <h4>{% trans "Files to be uploaded" %}</h4>
+                            <div id="file-queue"></div>
+                            <div class="checkbox" style="display:none;" id="metadata_uploaded_preserve_check">
+                                Preserve Metadata XML
+                                <input type="checkbox" name="metadata_uploaded_preserve"
+                                       id="id_metadata_uploaded_preserve"/>
+                            </div>
+                        </section>
                     </div>
                     <div class="projection-alert">
 
@@ -328,7 +331,7 @@
                             </form>
                         </div>
                     {% endif %}
-                    <section class="gd-content-body full-pad-20px">
+                    <section class="gd-content-body full-pad-20px" style="padding-top: 10px">
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="#" id="clear-button" class="btn btn-gd-gray">{% trans "Clear" %}</a>

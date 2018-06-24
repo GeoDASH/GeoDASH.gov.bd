@@ -1,5 +1,5 @@
-var createMapThumbnail = function(obj_id) {
-    var xmap = $('.olMapViewport');
+var createMapThumbnail = function(obj_id,success) {
+    var xmap = $('.ol-viewport');
     height = xmap.height();
     width = xmap.width();
     var map = xmap.clone(); 
@@ -27,6 +27,9 @@ var createMapThumbnail = function(obj_id) {
         url: url, 
         data: ("<div style='height:" + height + "px; width: " + width + "px;'>" + map.html() + "</div>"), 
         success: function(data, status, jqXHR) {
+            if(success) {
+                success();
+            }
             return true;
         }
     });
