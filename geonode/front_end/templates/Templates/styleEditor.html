@@ -30,7 +30,7 @@
             <span>0</span><input ng-disabled="styleHash.textGraphicName" type='range' min="0" max="100" step="1" ng-model='styleHash.pointRadius' /><span>100</span>
         </div>
 
-        <div class="style-editor color">
+        <div class="style-editor color" ng-hide="true">
             <input style="width: 20px;" ng-disabled="!styleHash.textGraphicName"  ng-hide="styleHash.textFontAwesome"  allow-single-character type="text" ng-model="styleHash.text"/>
 
             <select  ng-show="styleHash.textFontAwesome" class="form-control fa" id="sel1" style="width: 50px;"  data-ng-model="styleHash.text">
