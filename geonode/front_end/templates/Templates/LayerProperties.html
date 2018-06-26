@@ -148,7 +148,7 @@
                         Classifier
                         <span ng-if="tabs[3].active" class="selected-down-arrow"></span>
                     </tab-heading>
-                    <classifier-definitions settings-data="settingsData" input-data="inputData" classifier-binder="classifierBinder" default-style="nodeData.layer.style['default']"
+                    <classifier-definitions settings-data="settingsData" layer-style="nodeData.layer.style" input-data="inputData" classifier-binder="classifierBinder" default-style="nodeData.layer.style['default']"
                         feature-type="nodeData.layer.shapeType">
                     </classifier-definitions>
                 </tab>
@@ -294,7 +294,7 @@
                   </div>
             <input draft-only class="btn btn-success" ng-if="hasPermission" type="submit" value="Save" ng-disabled="nodeData.invalidField() || !nodeData.layer.name"
             />
-            <button draft-only class="btn btn-inverse btn-sm" ng-click="cancel()">
+            <button draft-only class="btn btn-inverse" ng-click="cancel()">
                 Cancel
             </button>
         </div>

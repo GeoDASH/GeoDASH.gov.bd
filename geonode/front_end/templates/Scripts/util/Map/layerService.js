@@ -158,10 +158,6 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
             var labelingSld = layerStyleGenerator.getLabelingSld(style.labelConfig, surfLayer.getFeatureType());
 
-            if(style.classifierDefinitions.selected.length>0 || style.advancedRules.length>0){
-                var removeDefaultRegex=/<!--default style starts-->[\s\S]*?<!--default style ends-->/g;
-                defaultStyleSld=defaultStyleSld.replace(removeDefaultRegex,"");
-            }
             var classificationSlds = getClassificationSld(surfLayer.getFeatureType(), style.classifierDefinitions, excludeSld);
             var reClassifier = new RegExp("\\{classifierSld\\}", "g");
             var reLabel = new RegExp("\\{labelSld\\}", "g");
@@ -185,15 +181,20 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
                 sldRules = sldRules + sldRule;
             });
-            defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
-            defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
-            defaultStyleSld = defaultStyleSld.replace(/<!--advanceSld-->/g, sldRules);
+            if(style.advancedRules.length>0){
+                var removeDefaultRegex=/<!--default style starts-->[\s\S]*?<!--default style ends-->/g;
+                defaultStyleSld=defaultStyleSld.replace(removeDefaultRegex,"");
+                defaultStyleSld = defaultStyleSld.replace(/<!--advanceSld-->/g, sldRules);
+            } else {
+                defaultStyleSld = defaultStyleSld.replace(reClassifier, classificationSlds.classificationStyle);
+                defaultStyleSld = defaultStyleSld.replace(reLabel, labelingSld);
+            }
 
             surfLayer.Style = style;
             layerRenderingModeFactory.setLayerRenderingMode(surfLayer);
 
             var q = $q.defer();
-            if (surfLayer.Style.visualizationSettings) {
+            if (surfLayer.Style.visualizationSettings && style.advancedRules.length==0) {
                 visualizationService.getVisualizationSld(surfLayer, surfLayer.Style.visualizationSettings)
                     .then(function(visSld) {
                         if (visualizationService.isHeatMap(surfLayer.Style.visualizationSettings)) {

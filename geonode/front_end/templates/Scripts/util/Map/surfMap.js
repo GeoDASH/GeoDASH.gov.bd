@@ -131,7 +131,8 @@
             });
 
             function refreshSelectionLayer() {
-                _selectionLayer.getSource().updateParams({ time_: (new Date()).getTime() });
+                if(_selectionLayer)
+                        _selectionLayer.getSource().updateParams({ time_: (new Date()).getTime() });
             }
 
             factory.addLayer = function(layerInfo, preventZoom) {
