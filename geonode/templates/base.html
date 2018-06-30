@@ -8,7 +8,7 @@
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
     <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
     <link rel="shortcut icon" href="{{ STATIC_URL }}geonode/images/favicon.ico">
-   
+
     {% block head %}
       {% if DEBUG_STATIC %}
       <link href="{{ STATIC_URL }}lib/css/jquery.dataTables.css?v={{ VERSION }}" rel="stylesheet" />
@@ -181,7 +181,7 @@
                                             <li id="nav_maps">
                                               <a href="{% url "group_list" %}">{% trans "Explore Organizations" %}</a>
                                             </li>
-                                            
+
                                         </ul>
                                     </li>
 				{% if request.user.is_manager_of_any_group and FRONT_END_SETTINGS.templates_base.administration_header_menu %}
@@ -329,9 +329,7 @@
                                             <ul class="text-center">
                                                 {% load notification_tags %}
                                                 {% include_notify_js_variables %}
-                                                {% if user_notifications %}
-                                                    {% user_notifications %}
-                                                {% endif %}
+                                                {% user_notifications%}
                                             </ul>
                                             <a class="btn btn-gd-primary icon-btn-color btn-block" href="{% url "notifications_all" %}" target="_self">
                                                 Show All Notifications
@@ -746,7 +744,7 @@
             </article>
         </div>
         <ul class="c-menu__items">
-            
+
             <li class="c-menu__item">
                 <a href="{% url "layer_upload"  %}" class="c-menu__link">
                     <i class="fa fa-cloud-upload"></i>
@@ -778,7 +776,7 @@
             {% endif %}
 
             {% if FRONT_END_SETTINGS.templates_base.manage_sector_dept_section_createOrg %}
-            
+
                 {% if request.user.is_superuser and request.user.is_authenticated %}
                   <li class="c-menu__item">
                       <a href="{% url "sector_list" %}" class="c-menu__link">
@@ -811,7 +809,7 @@
                  {% endif%}
             {% endif %}
 
-            
+
             {% if request.user.is_superuser %}
                 <li class="c-menu__item">
                     <a href="{% url "topiccategory-list" %}" class="c-menu__link">
