@@ -375,7 +375,7 @@
             },
             removeLayer: function(layerId) {
                 map.removeLayer(layerId);
-                mapRepository.removeLayer(layerId);
+                // mapRepository.removeLayer(layerId);
             },
             saveMapAs: function(name, abstract, organizationId, categoryId) {
                 var mapObj = _map(name, abstract, organizationId, categoryId);

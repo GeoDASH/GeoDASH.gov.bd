@@ -13,7 +13,7 @@
                 <button class="icon add-layer "
                 ng-click="browseData()"
                 draft-only ng-disabled="isAttributeGridOn" ng-click="addBlankLayer()" title="Browse Data"></button>
-                <button class="icon delete-layer" draft-only ng-click="deleteSelectedLayer()" ng-disabled="!enableRemove()" title="Remove active layer">
+                <button class="icon delete-layer" draft-only ng-click="deleteSelectedLayer()" ng-disabled="!enableRemove() || checkLayersCount()" title="Remove active layer">
                     </button>
                 <!-- <button class="icon" ng-disabled="!enableZoom()" id="zoom-to-layer" ng-click="zoomToSelectedLayer()" title="Zoom to active layer">
                         <i class="fa fa-search-plus" aria-hidden="true"></i>                                        
