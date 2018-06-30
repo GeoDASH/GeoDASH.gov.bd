@@ -65,6 +65,30 @@
         padding-bottom: 30px;
     }
     </style>
+    {% if FRONT_END_SETTINGS.attribute_permission %}
+        <style>
+            .block {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .circle {
+                background: rgba(0, 72, 156, 0.97);
+                border-radius: 200px;
+                color: white;
+                height: 100px;
+                font-weight: bold;
+                width: 100px;
+                display: table;
+                margin: 20px auto;
+            }
+
+            .circle p {
+                vertical-align: middle;
+                display: table-cell;
+            }
+        </style>
+    {% endif %}
 
     <div class="row">
 
@@ -94,6 +118,27 @@
                                       
                                       
                                       <div id="viewuserlist"></div>
+                                      {% if FRONT_END_SETTINGS.attribute_permission %}
+                                          <div class="container">
+                                              <div class="row">
+                                                  <div class="col-md-5 block">
+                                                      <div class="circle pull-right">
+                                                          <p>{{ total_layer }} Layers</p>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-2 block">
+                                                      <div class="circle">
+                                                          <p>{% widthratio total_layer_size 1024 1 %} MB</p>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-5 block">
+                                                      <div class="circle pull-left">
+                                                          <p>1 Archived</p>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      {% endif %}
                     
                                       <div id="viewuserlist_none">
                                             <ul class="nav nav-tabs">
@@ -105,9 +150,13 @@
                                         <div class="tab-content">
                                           <article id="user-approval-request" class="tab-pane active">
                                             <ul class="no-style-list">
+                                                <a class="btn btn-gd-primary disabled" id="approve-all-button" style="margin-bottom: 10px" onclick="approveAll()">{% trans "Approve All" %}</a>
                                                 <table class="table table-hover" style="background:#ffffff;">
                                                     <thead>
                                                         <tr>
+                                                            <th>
+                                                                <input type="checkbox" value="" id="select-all-layer">
+                                                            </th>
                                                             <th>Serial No</th>
                                                             <th>Layer Title</th>
                                                             <th>Organization</th>
@@ -118,21 +167,11 @@
                                                             <!--<th>Denied Layer</th>-->
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for user_approval in user_approval_request_list %}-->
+
                                                         <tbody id="showallAdminDraftlayers">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>-->
-                                                                <!--<td>{{ user_approval.group }}</td>-->
-                                                                <!--<td>{{ user_approval.current_iteration }}</td>-->
-                                                                <!--<td>{{ user_approval.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>-->
-                                                                <!--&lt;!&ndash;<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>&ndash;&gt;-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No pending requests yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag">
                     
@@ -155,21 +194,11 @@
                                                             <th>Unpublish Layer</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for approved in approved_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_pen">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ approved.title }}</td>-->
-                                                                <!--<td>{{ approved.group }}</td>-->
-                                                                <!--<td>{{ approved.owner }}</td>-->
-                                                                <!--<td>{{ approved.last_auditor }}</td>-->
-                                                                <!--<td>{{ approved.date_updated }}</td>-->
-                                                                <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No approved layers yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_panding">
                     
@@ -189,22 +218,11 @@
                                                             <th>Layer Delete</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for draft in user_draft_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_denied">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ draft.title }}</td>-->
-                                                                <!--<td>{{ draft.group }}</td>-->
-                                                                <!--<td>{{ draft.owner }}</td>-->
-                                                                <!--<td>{{ draft.date_created }}</td>-->
-                                                                <!--<td>-->
-                                                                    <!--<button type="button" class="btn btn-gd-primary" onclick="deleteLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Layer" %}</button> <br>-->
-                                                                <!--</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No user drafts yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_denied">
                     
@@ -225,20 +243,11 @@
                                                             <th>Denied Date</th>
                                                         </tr>
                                                     </thead>
-                                                    <!--{% for deny in denied_list %}-->
+
                                                         <tbody id="allAdminDraftlayers_active">
-                                                            <!--<tr>-->
-                                                                <!--<td>{{ forloop.counter}}</td>-->
-                                                                <!--<td>{{ deny.title}}</td>-->
-                                                                <!--<td>{{ deny.group}}</td>-->
-                                                                <!--<td>{{ deny.owner }}</td>-->
-                                                                <!--<td>{{ deny.last_auditor }}</td>-->
-                                                                <!--<td>{{ deny.date_updated }}</td>-->
-                                                            <!--</tr>-->
+
                                                         </tbody>
-                                                    <!--{% empty %}-->
-                                                        <!--<p>{% trans "No denied layers yet" %}</p>-->
-                                                    <!--{% endfor %}-->
+
                                                 </table>
                                                 <div id="showallAdminDraftlayerspag_active">
                     
@@ -383,6 +392,68 @@
     });
     </script>
 <script type="text/javascript" language="JavaScript">
+        var csrftoken = "{{ csrf_token }}";
+        $("#select-all-layer").change(function () {
+            var status = $(this).is(":checked") ? true : false;
+            $('.layer-to-approve').prop('checked', status);
+            enableOrDisableApproveAllButton();
+        });
+        function disableAllContinueForApprovalButton(condition) {
+            if(condition) {
+                $('.approve-button').addClass('disabled');
+            }else {
+                $('.approve-button').removeClass('disabled');
+            }
+        }
+        function enableOrDisableApproveAllButton() {
+            var selecteds = [];
+            $('.layer-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            if(selecteds.length> 0) {
+                $('#approve-all-button').removeClass('disabled');
+            }else {
+                $('#approve-all-button').addClass('disabled');
+            }
+        }
+        function error(jqXHR,textStatus,errorThrown) {
+            $('#approve-all-button').removeClass('disabled');
+            $.toaster(errorThrown, 'Error', 'danger');
+            enableOrDisableApproveAllButton();
+        }
+        function success(data,textStatus,jqXHR) {
+            $.toaster('All Layer Approved', 'Success', 'success');
+            $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
+            showAdminDraftLayer();
+
+        }
+        function postAllLayersForApproval(layersIds) {
+            var data = {
+                "layer_ids": layersIds
+            };
+            $.ajax({
+                url: "/api/layers/approve-multiple-layers/",
+                method: "PUT",
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: error,
+                success: success
+            });
+        }
+        function approveAll(e) {
+            var selecteds = [];
+            $('.layer-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            $('#approve-all-button').addClass('disabled');
+            disableAllContinueForApprovalButton(true);
+            postAllLayersForApproval(selecteds);
+        }
         function showAdminDraftLayer(targeturl){
             var limit = 25;
             if(targeturl== undefined){
@@ -415,7 +486,7 @@
                   $.each(data, function(i, item) {
                     offset = offset + 1;
                     output+='<tr>';
-
+                    output+='<td>'+ '<input type="checkbox" value='+item.id+' class="layer-to-approve" onclick="enableOrDisableApproveAllButton();">' +'</td>';
                     output+='<td>'+ offset +'</td>';
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
@@ -425,7 +496,7 @@
                       {% if FRONT_END_SETTINGS.attribute_permission %}
                           output+='<td><a href="'+ item.detail_url +'/preview" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
                       {% else %}
-                          output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                          output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary approve-button">{% trans "Continue to Approve/Deny" %}</a></td>';
                       {% endif %}
 
                     output+='</tr>';

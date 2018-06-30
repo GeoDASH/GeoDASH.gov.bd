@@ -5,14 +5,15 @@ from django.db import transaction
 
 from geonode.class_factory import ClassFactory
 from geonode.layers.models import Layer
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from geonode.rest_authentications import CsrfExemptSessionAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from geonode.groups.models import GroupProfile
-from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer, changeDbFieldTypes, reloadFeatureTypes
+from geonode.layers.api.utils import updateBoundingBox, getShapeFileFromAttribute, uploadLayer, changeDbFieldTypes, reloadFeatureTypes, layer_status_update
+from notify.signals import notify
 
 
 class LayerFeatureUploadView(CreateAPIView):
@@ -34,6 +35,7 @@ class LayerFeatureUploadView(CreateAPIView):
             model_instance = factory.get_model(name=str(layer.title_en), 
                                                 table_name=str(layer.name),
                                                 db=str(layer.store))
+
             with transaction.atomic(using=str(layer.store)):
                 for feature in request.data:
                     obj = model_instance(**feature)
@@ -41,13 +43,14 @@ class LayerFeatureUploadView(CreateAPIView):
 
                 #update bbox for the layer according to the
                 #updated feature
-                updateBoundingBox(layer)
+                # updateBoundingBox(layer)
 
         except Layer.DoesNotExist:
             out['success'] = False
             out['errors'] = "Layer Does not exist with this id"
             status_code = status.HTTP_404_NOT_FOUND
         except Exception as ex:
+
             out['success'] = False
             out['error'] = ex.message
             status_code = status.HTTP_400_BAD_REQUEST
@@ -89,6 +92,7 @@ class CreateFeaturedLayer(CreateAPIView):
         ## needed to reload this to geoserver
         ## this method does this task
         reloadFeatureTypes(saved_layer)
+        updateBoundingBox(saved_layer)
 
         out['layer_id'] = saved_layer.id
 
@@ -101,3 +105,22 @@ class CreateFeaturedLayer(CreateAPIView):
             shutil.rmtree(tempdir)
 
         return Response(data=out, content_type='application/json', status=status_code)
+
+class MultipleLayersApproveAPIView(UpdateAPIView):
+    """
+    This api view will approve multiple layers
+    """
+    
+    permission_classes = (IsAuthenticated,)
+    
+    def put(self, request):
+        layer_ids = request.data.get('layer_ids')
+        res = {}
+        for layer_id in layer_ids:
+            ret, ret_status = layer_status_update(id=layer_id, user=request.user, layer_status='ACTIVE', layer_audit_status='APPROVED')
+            res[layer_id] = {
+                'is_approved': ret,
+                'status': ret_status
+            }
+        return Response(data=res, content_type='application/json', status=status.HTTP_200_OK)
+    

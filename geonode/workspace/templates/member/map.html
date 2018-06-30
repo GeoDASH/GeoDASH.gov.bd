@@ -76,24 +76,12 @@
                                                         <th>Map Title</th>
                                                         <th>Organization</th>
                                                         <th>Map Creation Date</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
-                                                <!--{% for draft in draft_list %}-->
                                                     <tbody id="showallMemberDraftmaps">
-                                                        <!--<tr>-->
-                                                            <!--<td>{{ forloop.counter}}</td>-->
-                                                            <!--<td><a href="{{ draft.detail_url }}">{{ draft.title }}</a></td>-->
-                                                            <!--<td>{{ draft.group }}</td>-->
-                                                            <!--<td>{{ draft.date_created }}</td>-->
-                                                            <!--<td><a href="{{ draft.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>-->
-                                                            <!--<td>-->
-                                                                <!--<button type="button" class="btn btn-gd-primary" onclick="mapLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Map" %}</button> <br>-->
-                                                            <!--</td>-->
-                                                        <!--</tr>-->
+
                                                     </tbody>
-                                                <!--{% empty %}-->
-                                                    <!--<p>{% trans "No drafts yet" %}</p>-->
-                                                <!--{% endfor %}-->
                                             </table>
                                             <div id="showallMemberDraftmapspag">
                     
@@ -111,18 +99,9 @@
                                                         <th>Request Date</th>
                                                     </tr>
                                                 </thead>
-                                                <!--{% for pending in pending_list %}-->
                                                     <tbody id="allMemberDraftmaps_pen">
-                                                        <!--<tr>-->
-                                                            <!--<td>{{ forloop.counter}}</td>-->
-                                                            <!--<td>{{ pending.title }}</td>-->
-                                                            <!--<td>{{ pending.group }}</td>-->
-                                                            <!--<td>{{ pending.date_updated }}</td>-->
-                                                        <!--</tr>-->
+
                                                     </tbody>
-                                                <!--{% empty %}-->
-                                                    <!--<p>{% trans "No pendings yet" %}</p>-->
-                                                <!--{% endfor %}-->
                                             </table>
                                             <div id="showallMemberDraftmapspag_panding">
                     
@@ -139,22 +118,14 @@
                                                         <th>Organization</th>
                                                         <th>Who Denied</th>
                                                         <th>Denied Date</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
-                                                <!--{% for denied in denied_list %}-->
+
                                                     <tbody id="allMemberDraftmaps_denied">
-                                                        <!--<tr>-->
-                                                            <!--<td>{{ forloop.counter}}</td>-->
-                                                            <!--<td><a href="{{ denied.detail_url }}">{{ denied.title }}</a></td>-->
-                                                            <!--<td>{{ denied.group }}</td>-->
-                                                            <!--<td>{{ denied.last_auditor }}</td>-->
-                                                            <!--<td>{{ denied.date_updated }}</td>-->
-                                                            <!--<td><a href="{{ denied.detail_url }}?user_role=member" class="btn btn-gd-primary"> {% trans "Edit and Push Again" %}</a></td>-->
-                                                        <!--</tr>-->
+
                                                     </tbody>
-                                                <!--{% empty %}-->
-                                                    <!--<p>{% trans "No denied maps yet" %}</p>-->
-                                                <!--{% endfor %}-->
+
                                             </table>
                                             <div id="showallMemberDraftmapspag_denied">
                     
@@ -174,20 +145,11 @@
                                                         <th>Map Edit</th>
                                                     </tr>
                                                 </thead>
-                                                <!--{% for active in active_list %}-->
+
                                                     <tbody id="allMemberDraftmaps_active">
-                                                        <!--<tr>-->
-                                                            <!--<td>{{ forloop.counter}}</td>-->
-                                                            <!--<td>{{ active.title }}</td>-->
-                                                            <!--<td>{{ active.group }}</td>-->
-                                                            <!--<td>{{ active.last_auditor }}</td>-->
-                                                            <!--<td>{{ active.date_updated }}</td>-->
-                                                            <!--<td><a href="{{ active.detail_url }}" class="btn btn-gd-primary"> {% trans "Edit" %}</a></td>-->
-                                                        <!--</tr>-->
+
                                                     </tbody>
-                                                <!--{% empty %}-->
-                                                    <!--<p>{% trans "No active maps yet" %}</p>-->
-                                                <!--{% endfor %}-->
+
                                             </table>
                                             <div id="showallMemberDraftmapspag_active">
                     
@@ -262,9 +224,8 @@ $(function () {
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.date_created +'</td>';
-                    output+='<td><a href="'+ item.detail_url +'?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a></td>';
-                    output+='<td>';
-                    output+='<button type="button" class="btn btn-gd-primary" onclick="mapLayer('+ item.id +')" style="color:#fff;">{% trans "Delete Map" %}</button> <br>';
+                    output+='<td><a href="'+ item.detail_url +'?user_role=member" class="btn btn-gd-primary"> {% trans "Continue for Approval" %}</a>';
+                    output+='<button type="button" class="btn btn-gd-primary" onclick="mapLayer('+ item.id +')" style="color:#fff;margin-left:6px">{% trans "Delete Map" %}</button> <br>';
                     output+='</td>';
                     output+='</tr>';
                   });

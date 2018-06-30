@@ -18,14 +18,20 @@ NSDI_FRONT_END_SETTINGS = {
         'attributes': False,
         'button_name2': True
     },
-    'attribute_permission' : True
+    'member_workspace_layer_page': {
+        'edit_layer': True,
+        'button_name2': True
+    },
+    'attribute_permission' : True,
+    'register' : False,
+    'add_version' : True
 }
 
 
 GEODASH_FRONT_END_SETTINGS = {
     'templates_base': {
         'invite_user': True,
-        'backup_organization_layers':False,
+        'backup_organization_layers':True,
         'manage_sector_dept_section_createOrg': False,
         'social_login':True,
         'administration_header_menu':False,
@@ -41,5 +47,7 @@ GEODASH_FRONT_END_SETTINGS = {
         'edit_layer': False,
         'button_name2': True
     },
-    'attribute_permission' : False
+    'attribute_permission' : False,
+    'register' : True,
+    'add_version' : False
 }

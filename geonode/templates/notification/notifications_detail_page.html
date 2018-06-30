@@ -20,7 +20,9 @@
               <div class="notifications">
                   {% load notification_tags %}
                   {% include_notify_js_variables %}
-                  {% user_notifications %}
+                  {% if user_notifications %}
+                    {% user_notifications %}
+                  {% endif %}
               </div>
          
       

@@ -58,7 +58,10 @@ class Migration(migrations.Migration):
                 ('time_regex', models.CharField(blank=True, max_length=128, null=True, choices=[(b'[0-9]{8}', 'YYYYMMDD'), (b'[0-9]{8}T[0-9]{6}', "YYYYMMDD'T'hhmmss"), (b'[0-9]{8}T[0-9]{6}Z', "YYYYMMDD'T'hhmmss'Z'")])),
                 ('elevation_regex', models.CharField(max_length=128, null=True, blank=True)),
                 ('charset', models.CharField(default=b'UTF-8', max_length=255)),
-                
+                ('current_iteration', models.IntegerField(default=0)),
+                ('status', models.CharField(default=b'DRAFT', max_length=10, choices=[(b'DRAFT', 'Draft'), (b'PENDING', 'Pending'), (b'ACTIVE', 'Active'), (b'INACTIVE', 'Inactive'), (b'DENIED', 'Denied'), (b'DELETED', 'Deleted'), (b'CANCELED', 'Canceled')])),
+                ('date_created', models.DateTimeField(auto_now_add=True)),
+                ('date_updated', models.DateTimeField(auto_now=True)),
             ],
             options={
                 'permissions': (('change_layer_data', 'Can edit layer data'), ('change_layer_style', 'Can change layer style')),
@@ -149,6 +152,16 @@ class Migration(migrations.Migration):
             model_name='layer',
             name='default_style',
             field=models.ForeignKey(related_name='layer_default_style', blank=True, to='layers.Style', null=True),
+        ),
+        migrations.AddField(
+            model_name='layer',
+            name='group',
+            field=models.ForeignKey(blank=True, to='groups.GroupProfile', null=True),
+        ),
+        migrations.AddField(
+            model_name='layer',
+            name='last_auditor',
+            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
         ),
         migrations.AddField(
             model_name='layer',

@@ -1085,11 +1085,6 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     vertical-align: middle;
 }
 
-.navbar .nav li > a:hover, .navbar .nav li > a:focus
-{
-    border: none;
-}
-
 .visulization-legend-container
 {
     position: absolute;
@@ -1131,6 +1126,11 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     height: 210px;
     overflow-y: auto;
     border: 1px solid #ccc;
+}
+.stop-propagation label
+{
+font-size: 12px;
+width: 130px;
 }
 
 /*ui grid css*/

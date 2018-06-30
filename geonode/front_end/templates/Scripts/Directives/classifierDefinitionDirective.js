@@ -7,7 +7,8 @@
                 inputData: '=',
                 classifierBinder: '=',
                 featureType: '=',
-                defaultStyle: '='
+                defaultStyle: '=',
+                layerStyle: '=',
             },
             templateUrl: 'static/Templates/classifierDefinitions.html',
             controller: ['$scope', '$http', '$filter', 'attributeDefinitionHelper', 'attributeTypes', 'layerRepository',
@@ -15,8 +16,9 @@
                     var isChosenPaletteSet = false;
                     var rangeFunctionalty;
                     $scope.styleHash = angular.copy($scope.defaultStyle);
+                    $scope.commonlayerStyle= angular.copy($scope.layerStyle);
 
-                    $scope.$watch('styleHash', function (newValue, oldValue) {
+                    $scope.$watch('commonlayerStyle.default', function (newValue, oldValue) {
                         if (newValue) {
                             angular.forEach(newValue, function (value, key) {
                                 if (value !== oldValue[key]) {

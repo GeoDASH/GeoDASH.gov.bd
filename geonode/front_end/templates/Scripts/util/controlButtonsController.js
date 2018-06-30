@@ -7,16 +7,19 @@
         }
     }
 });
-appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager', 'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q', 'BoxDrawTool', 'SurfMap', '$compile',
-    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler, mapTools, CircleDrawTool, LayerService, urlResolver, $q, BoxDrawTool, SurfMap, $compile) {
+appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout", "$rootScope", "$window", "projectService", 'mapModes', 'mapService', 'dirtyManager',
+    'featureService', 'interactionHandler', 'mapTools', 'CircleDrawTool', 'LayerService', 'urlResolver', '$q', 'BoxDrawTool', 'SurfMap', '$compile','surfToastr',
+    'layerRepository','attributeGridService',
+    function($scope, $modal, $timeout, $rootScope, $window, projectService, mapModes, mapService, dirtyManager, featureService, interactionHandler,
+             mapTools, CircleDrawTool, LayerService, urlResolver, $q, BoxDrawTool, SurfMap, $compile,surfToastr,layerRepository,attributeGridService) {
         $scope.mapService = mapService;
         $scope.mapTools = mapTools;
         var map = $scope.mapService.getMap();
         $scope.tooTipContent = '';
 
         $scope.toolsIsVisible = function(id) {
-            for (let e in $scope.mapToolsSettings) {
-                let re = new RegExp(e);
+            for (var e in $scope.mapToolsSettings) {
+                var re = new RegExp(e);
                 if (re.test($window.location.pathname) && $scope.mapToolsSettings[e].find(i => i === id)) {
                     return true;
                 }
@@ -32,6 +35,18 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
 
 
         $scope.mapToolsSettings = {
+            "/maps/\\d+\/embed" : [
+                'zoom-in-out-buttons',
+                'zoom-to-max-extent-button',
+                'zoom-to-extent-button',
+                'drag',
+                'toggle-feature-selection',
+                'set-marker',
+                'measurement-tools',
+                'nearest-configuration',
+                'legend',
+                'route-pop-up-directive'
+            ],
             "/maps/(new|\\d+/view)": [
                 'navigation-history-buttons',
                 'zoom-in-out-buttons',
@@ -47,7 +62,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'over-pass-dialog',
                 'save',
                 'print',
-                'heat-map',
+                ($window.mapConfig.id==0 || !$window.mapConfig.id) ? '' : 'heat-map',
                 'share-map',
                 'legend',
                 'route-pop-up-directive'
@@ -58,12 +73,14 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-max-extent-button',
                 'zoom-to-extent-button',
                 'drag',
+                'toggle-feature-selection',
                 'measurement-buttons',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
                 'print',
                 'legend',
+                'search',
                 'icon-visualization'
             ],
             "/layers/\\w+:\\w+": [
@@ -73,6 +90,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'zoom-to-extent-button',
                 'drag',
                 'measurement-buttons',
+                'toggle-feature-selection',
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
@@ -328,32 +346,6 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 }
             };
 
-            $scope.getCrossLayerData = function (searchItemLayer,baseLayer,distance) {
-                var meterPerDegree = 111325;
-                var radius = (distance * 1000) / meterPerDegree;
-                var requestObj = {
-                    //service: 'WFS',
-                    request: 'GetFeature',
-                    typeName: searchItemLayer,
-                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + baseLayer + "','the_geom','INCLUDE')), " + radius + ", meters)",
-                    version: '1.0.0',
-                    maxFeatures: 500,
-                    outputFormat: 'json',
-                    exceptions: 'application/json'
-                };
-                LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
-                    var data = {};
-                    data[searchItemLayer] = response.features.map(function (e) {
-                        e.properties["Feature_Id"] = e.id;
-                        return e.properties;
-                    });
-                    showFeaturePreviewDialog(data, requestObj);
-                });
-            };
-            $scope.routeConfig = {
-                layerId: undefined,
-                radius: undefined
-            };
             $scope.routeConfig = {
                 layerId: undefined,
                 radius: undefined
@@ -362,12 +354,6 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             var source = $window.GeoServerHttp2Root;
 
 
-            $scope.initializeCrossLayer = function () {
-                $scope.layers = [];
-                $scope.searchItemLayer='';
-                $scope.baseLayer='';
-                $scope.distance = 0;
-            };
 
             $scope.getLayers = function() {
                 var layers = mapService.getLayers();
@@ -379,6 +365,154 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                     $scope.layers = customArray;
                 });
             };
+            $scope.layers = [];
+            $scope.searchItemLayer = undefined;
+            $scope.baseLayer = undefined;
+            $scope.distance = 0;
+            $scope.isAllSelectChecked = true;
+            var parserJsts = new jsts.io.OL3Parser();
+            $scope.selectedFeatureList=[];
+
+            $scope.resetCrossLayer=function () {
+                $scope.searchItemLayer = undefined;
+                $scope.baseLayer = undefined;
+                $scope.distance = 0;
+                $scope.isAllSelectChecked = true;
+                $scope.clearBufferLayer(true);
+            };
+
+            $scope.clearBufferLayer=function (clearOriginal) {
+              attributeGridService.highlightCrossLayerFeature([],true);
+              if(clearOriginal) $scope.selectedFeatureList=[];
+            };
+
+            function parseId(olFeature) {
+                var idParts = (olFeature.getId() || '.').split('.');
+                return idParts[1];
+            }
+
+            function getFeatureIdFromSelectedFeature() {
+                var features=$scope.selectedFeatureList.map(function (feature) {
+                    return parseId(feature);
+                });
+                return features;
+            }
+
+            $scope.changeBufferOfAllFeatures=function () {
+                var featureList=angular.copy($scope.selectedFeatureList);
+                angular.forEach(featureList, function (feature) {
+                    var jstsGeom = parserJsts.read(feature.getGeometry());
+                    var buffered = jstsGeom.buffer($scope.distance * 1000);
+                    feature.setGeometry(parserJsts.write(buffered));
+                });
+                attributeGridService.highlightCrossLayerFeature(featureList,true);
+            };
+
+
+            function getFeatureFromSelectedLayer(event) {
+                if(!$scope.baseLayer){
+                    surfToastr.warning("Select base layer", 'Error');
+                }
+                else {
+                    var size = map.getSize();
+                    var bbox = map.getView().calculateExtent(size);
+                    var urlParams = {
+                        service: 'wms',
+                        version: '1.1.0',
+                        request: 'GetFeatureInfo',
+                        layers: $scope.baseLayer,
+                        query_layers: $scope.baseLayer,
+                        srs: 'EPSG:3857',
+                        bbox: bbox.join(','),
+                        width: size[0],
+                        height: size[1],
+                        info_format: 'application/json',
+                        exceptions: 'application/json',
+                        feature_count: 100,
+                        x: Math.round(event.pixel[0]),
+                        y: Math.round(event.pixel[1])
+                    };
+                    var wmsSource = $window.GeoServerTileRoot + '?access_token=' + $window.mapConfig.access_token;
+                    layerRepository.getWMS(wmsSource, urlParams).then(function (response) {
+                        var geoJson = response;
+                        geoJson.features.map(function (feature) {
+                            if (!feature.geometry) {
+                                feature.geometry = {
+                                    type: "MultiPolygon",
+                                    coordinates: [],
+                                    geometry_name: 'the_geom'
+                                };
+                            }
+
+                        });
+                        var mapFeatures = (new ol.format.GeoJSON()).readFeatures(geoJson, { featureProjection: 'EPSG:3857' });
+                        var bufferedFeatures = mapFeatures.map(function (of) {
+                            if (!_.any($scope.selectedFeatureList,function (feature) {
+                                    return _.isEqual(parseId(of),parseId(feature));
+                                })) {
+                                $scope.selectedFeatureList.push(angular.copy(of));
+                            }
+                            var jstsGeom = parserJsts.read(of.getGeometry());
+                            var buffered = jstsGeom.buffer($scope.distance*1000);
+                            of.setGeometry(parserJsts.write(buffered));
+                            return of;
+                        });
+                        attributeGridService.highlightCrossLayerFeature(bufferedFeatures);
+
+                    }).catch(function (error) {
+                            surfToastr.error('Internal Server error', 'Error');
+                    });
+                }
+            }
+
+            $scope.setCrossLayerSetting=function () {
+                if (!$scope.isAllSelectChecked) {
+                    map.on('singleclick', getFeatureFromSelectedLayer);
+                } else {
+                    map.un('singleclick', getFeatureFromSelectedLayer);
+                }
+            };
+
+
+            $scope.getCrossLayerData = function (searchItemLayer,baseLayer,distance) {
+                if (!searchItemLayer || !baseLayer) {
+                    surfToastr.warning('Select layers', 'Error');
+                    return;
+                }
+                var filter='INCLUDE';
+                if(!$scope.isAllSelectChecked){
+                    if(getFeatureIdFromSelectedFeature().length==0){
+                        surfToastr.warning('Select at least one feature','Error');
+                        return;
+                    }
+                    filter='id in ('+getFeatureIdFromSelectedFeature().join(',')+')';
+                }
+                var meterPerDegree = 111325;
+                var radius = (distance * 1000)/ meterPerDegree;
+                var requestObj = {
+                    //service: 'WFS',
+                    request: 'GetFeature',
+                    typeName: searchItemLayer,
+                    CQL_FILTER: "DWITHIN(the_geom, collectGeometries(queryCollection('" + baseLayer + "','the_geom','"+filter+"')), " + radius + ", meters)",
+                    version: '1.0.0',
+                    maxFeatures: 500,
+                    outputFormat: 'json',
+                    exceptions: 'application/json'
+                };
+                LayerService.getWFS('api/geoserver/', requestObj, false).then(function (response) {
+                    if(response.exceptions){
+                        surfToastr.error('Internal Server Error', 'Error');
+                        return;
+                    }
+                    var data = {};
+                    data[searchItemLayer] = response.features.map(function (e) {
+                        e.properties["Feature_Id"] = e.id;
+                        return e.properties;
+                    });
+                    showFeaturePreviewDialog(data, requestObj);
+                });
+            };
+
 
             $scope.action.browseData = function() {
                 $modal.open({

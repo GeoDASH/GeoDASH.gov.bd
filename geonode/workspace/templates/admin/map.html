@@ -117,9 +117,14 @@ footer
                                             <div class="tab-content">
                                               <article id="user-approval-request" class="tab-pane active">
                                                 <ul class="no-style-list">
+                                                    <a class="btn btn-gd-primary disabled" id="approve-all-button" style="margin-bottom: 10px" onclick="approveAll()">{% trans "Approve All" %}</a>
                                                     <table class="table table-hover table-striped">
                                                         <thead>
                                                             <tr>
+                                                                <th>
+                                                                    <input type="checkbox" value=""
+                                                                           id="select-all-map">
+                                                                </th>
                                                                 <th>Serial No</th>
                                                                 <th>Map Title</th>
                                                                 <th>Organization</th>
@@ -130,21 +135,11 @@ footer
                                                                 <!--<th>Denied Map</th>-->
                                                             </tr>
                                                         </thead>
-                                                        <!--{% for user_approval in user_approval_request_list %}-->
+
                                                             <tbody id="showallAdminDraftmaps">
-                                                                <!--<tr>-->
-                                                                    <!--<td>{{ forloop.counter}}</td>-->
-                                                                    <!--<td><a href="{{ user_approval.detail_url }}">{{ user_approval.title }}</a></td>-->
-                                                                    <!--<td>{{ user_approval.group }}</td>-->
-                                                                    <!--<td>{{ user_approval.current_iteration }}</td>-->
-                                                                    <!--<td>{{ user_approval.date_updated }}</td>-->
-                                                                    <!--<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>-->
-                                                                    <!--&lt;!&ndash;<td><a href="{{ user_approval.detail_url }}?user_role=manager" class="btn btn-gd-primary">{% trans "Procced To Deny" %}</a></td>&ndash;&gt;-->
-                                                                <!--</tr>-->
+
                                                             </tbody>
-                                                        <!--{% empty %}-->
-                                                            <!--<p>{% trans "No pending requests yet" %}</p>-->
-                                                        <!--{% endfor %}-->
+
                                                     </table>
                                                     <div id="showallAdminDraftmapspag">
                         
@@ -166,22 +161,11 @@ footer
                                                                 <th>Unpublish Map</th>
                                                             </tr>
                                                         </thead>
-                                                        <!--{% for approved in approved_list %}-->
+
                                                             <tbody id="allAdminDraftmaps_pen">
-                                                                <!--<tr>-->
-                                                                    <!--<td>{{ forloop.counter}}</td>-->
-                                                                    <!--<td>{{ approved.title }}</td>-->
-                                                                    <!--<td>{{ approved.group }}</td>-->
-                                                                    <!--<td>{{ approved.owner }}</td>-->
-                                                                    <!--<td>{{ approved.last_auditor }}</td>-->
-                                                                    <!--<td>{{ approved.date_updated }}</td>-->
-                                                                    <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">{% trans "Edit" %}</a></td>-->
-                                                                    <!--<td><a href="{{ approved.detail_url }}" class="btn btn-gd-primary">Unapproved</a></td>-->
-                                                                <!--</tr>-->
+
                                                             </tbody>
-                                                        <!--{% empty %}-->
-                                                            <!--<p>{% trans "No approved maps yet" %}</p>-->
-                                                        <!--{% endfor %}-->
+
                                                     </table>
                                                     <div id="showallAdminDraftmapspag_panding">
                         
@@ -201,22 +185,11 @@ footer
                                                                 <th>Map Delete</th>
                                                             </tr>
                                                         </thead>
-                                                        <!--{% for draft in user_draft_list %}-->
+
                                                             <tbody id="allAdminDraftmaps_denied">
-                                                                <!--<tr>-->
-                                                                    <!--<td>{{ forloop.counter}}</td>-->
-                                                                    <!--<td>{{ draft.title }}</td>-->
-                                                                    <!--<td>{{ draft.group }}</td>-->
-                                                                    <!--<td>{{ draft.owner.username }}</td>-->
-                                                                    <!--<td>{{ draft.date_created }}</td>-->
-                                                                    <!--<td>-->
-                                                                        <!--<button type="button" class="btn btn-gd-primary" onclick="mapLayer({{ draft.id }})" style="color:#fff;">{% trans "Delete Map" %}</button> <br>-->
-                                                                    <!--</td>-->
-                                                                <!--</tr>-->
+
                                                             </tbody>
-                                                        <!--{% empty %}-->
-                                                            <!--<p>{% trans "No user drafts yet" %}</p>-->
-                                                        <!--{% endfor %}-->
+
                                                     </table>
                                                     <div id="showallAdminDraftmapspag_denied">
                         
@@ -237,20 +210,11 @@ footer
                                                                 <th>Denied Date</th>
                                                             </tr>
                                                         </thead>
-                                                        <!--{% for deny in denied_list %}-->
+
                                                             <tbody id="allAdminDraftMaps_active">
-                                                                <!--<tr>-->
-                                                                    <!--<td>{{ forloop.counter}}</td>-->
-                                                                    <!--<td>{{ deny.title}}</td>-->
-                                                                    <!--<td>{{ deny.group}}</td>-->
-                                                                    <!--<td>{{ deny.owner }}</td>-->
-                                                                    <!--<td>{{ deny.last_auditor }}</td>-->
-                                                                    <!--<td>{{ deny.date_updated }}</td>-->
-                                                                <!--</tr>-->
+
                                                             </tbody>
-                                                        <!--{% empty %}-->
-                                                            <!--<p>{% trans "No denied maps yet" %}</p>-->
-                                                        <!--{% endfor %}-->
+
                                                     </table>
                                                     <div id="showallAdminDraftMapspag_active">
                         
@@ -401,6 +365,68 @@ $(function () {
 </script>
 
 <script type="text/javascript" language="JavaScript">
+        var csrftoken = "{{ csrf_token }}";
+        $("#select-all-map").change(function () {
+            var status = $(this).is(":checked") ? true : false;
+            $('.map-to-approve').prop('checked', status);
+            enableOrDisableApproveAllButton();
+        });
+        function enableOrDisableApproveAllButton() {
+            var selecteds = [];
+            $('.map-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            if(selecteds.length> 0) {
+                $('#approve-all-button').removeClass('disabled');
+            }else {
+                $('#approve-all-button').addClass('disabled');
+            }
+        }
+        function disableAllContinueForApprovalButton(condition) {
+            if (condition) {
+                $('.approve-button').addClass('disabled');
+            } else {
+                $('.approve-button').removeClass('disabled');
+            }
+        }
+        function error(jqXHR, textStatus, errorThrown) {
+            $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
+            $.toaster(errorThrown, 'Error', 'danger');
+        }
+        function success(data, textStatus, jqXHR) {
+            $.toaster('All Maps Approved', 'Success', 'success');
+            $('#approve-all-button').removeClass('disabled');
+            enableOrDisableApproveAllButton();
+            showAdminDraftMap();
+
+        }
+        function postAllMapForApproval(mapIds) {
+            var data = {
+                "map_ids": mapIds
+            };
+            $.ajax({
+                url: "/api/maps/approve-multiple-maps/",
+                method: "PUT",
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: error,
+                success: success
+            });
+        }
+        function approveAll(e) {
+            var selecteds = [];
+            $('.map-to-approve:checked').each(function () {
+                selecteds.push($(this).val());
+            });
+            $('#approve-all-button').addClass('disabled');
+            disableAllContinueForApprovalButton(true);
+            postAllMapForApproval(selecteds);
+        }
         function showAdminDraftMap(targeturl){
             var limit = 25;
             if(targeturl== undefined){
@@ -433,13 +459,14 @@ $(function () {
                   $.each(data, function(i, item) {
                     offset = offset + 1;
                     output+='<tr>';
+                    output+='<td>'+ '<input type="checkbox" value='+item.id+' class="map-to-approve" onclick="enableOrDisableApproveAllButton();">' +'</td>';
                     output+='<td>'+ offset +'</td>';
                     output+='<td><a href='+ item.detail_url +'>'+ item.title+'</a></td>';
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.current_iteration +'</td>';
                     output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_updated +'</td>';
-                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary">{% trans "Continue to Approve/Deny" %}</a></td>';
+                    output+='<td><a href="'+ item.detail_url +'?user_role=manager" class="btn btn-gd-primary approve-button">{% trans "Continue to Approve/Deny" %}</a></td>';
                     output+='</tr>';
                   });
                   outputpag+='<div>';
@@ -596,7 +623,7 @@ $(function () {
                     output+='<td>'+ item.group +'</td>';
                     output+='<td>'+ item.owner +'</td>';
                     output+='<td>'+ item.date_created +'</td>';
-                    output+='<td><button type="button" class="btn btn-gd-primary" onclick="mapLayer('+ item.id +')" style="color:#fff;">{% trans "Delete Layer" %}</button></td>';
+                    output+='<td><button type="button" class="btn btn-gd-primary" onclick="mapLayer('+ item.id +')" style="color:#fff;">{% trans "Delete Map" %}</button></td>';
                     output+='</tr>';
                   });
                   outputpag+='<div>';

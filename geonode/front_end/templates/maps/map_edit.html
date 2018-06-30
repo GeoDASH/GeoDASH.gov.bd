@@ -3,17 +3,11 @@
 <style>
     .sarsha-spinner-container {
         background: transparent;
-        color: black;
-        top: unset;
+        top: 40%;
         bottom: unset;
-    }
-    .sarsha-spinner {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100px;
-        top: calc(100vh - 600px);    
-        color: #fff;
+        left: 48%;
+        width: 110px;
+        height: 110px;
     }
 </style>
 {% endblock %}
@@ -21,14 +15,14 @@
 
 
 
-<div class="surfgis" ng-controller="appController" ng-app="appModule">
+<div class="surfgis" ng-controller="appController" ng-app="appModule" ng-cloak>
 
    <div class="application-font all-children-application-font"  ng-controller="MapController" ng-click="bodyClicked()" ng-class='{"draft": mapAccessLevel.IsPublic, "not-draft": !mapAccessLevel.IsPublic}'>
     <div class="row">
         <sarsha-spinner name="spinner1">
                     <div class="donot-print ng-scope"> 
                         <!-- Loading <i class="fa fa-spinner fa-spin"></i>  -->
-                        <img src="{{ STATIC_URL }}geonode/images/loader.gif" width="100"/>
+                        <img src="{{ STATIC_URL }}geonode/images/loader.gif" width="110"/>
                     </div>
         </sarsha-spinner>
     </div>
@@ -52,51 +46,9 @@
            <label class="latlng"></label>
        </div>
    </div>
-   <div id="property-grid-in-overlay" ng-if="enableFeatureIdentification">
-{#        <div class="donot-print" ng-style="layout.rightStyle" >#}
-{#                {% include 'maps/_layer-attributes.html'%}#}
-{#                   #}
-{#               </div>#}
-{#        <property-grid-overlay></property-grid-overlay>#}
-       <div class="property-grid-overlay" style="padding-top: 20px">
-           <a id="attribute-popup-closer" class="ol-route-popup-closer" style="cursor: pointer;top: -1px"></a>
-                   <div class="col-md-12" style="margin-bottom: 8px" ng-if="featureList.length>0">
-                       <button class="btn-sm btn-primary pull-left col-md-3" ng-hide="currentIndex==0" ng-click="getPreviousFeature()">Prev</button>
-                       <div class="text-center col-md-7 text-primary col-md-6" style="padding: 5px">[{currentIndex+1}] of [{featureList.length}]</div>
-                       <button class="btn-sm btn-primary pull-right col-md-3" ng-hide="currentIndex==featureList.length-1" ng-click="getNextFeature()">Next</button>
-                   </div>
-                    <table style="width: 100%;">
-                        <thead>
-                            <tr class="header-row">
-                                <th style="text-align: left"><font color="#FFF"> &nbsp Name</font></th>
-                                <th style="text-align: center"><font color="#FFF">Value</font></th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="property-grid-container" style="max-height: 260px; overflow: auto">
-                        <table class="propertyGridTable" cellspacing="0">
-                            <tbody>
-                                <tr ng-repeat="property in properties" class="propertyGrid-row">
-                                    <td class="propertyGridColumn propertyGridPropertyNameColumn">
-                                        [{property.name}]
-            {#                            <span ng-if="showUnit(property)">({{property.unit}})</span>#}
-                                    </td>
-                                    <td class="propertyGridColumn propertyGridPropertyValueColumn">
-                                        <div class="property-value-div" href-watcher="property.value">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr ng-if="properties.length == 0" class="propertyGrid-row">
-                                    <td class="propertyGridColumn propertyGridPropertyValueColumn" colspan="2" style="text-align: center; padding: 10px">
-                                        <div class="alert">No attribute available</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-        </div>
-
+    {% include 'maps/layer-feature-details.html'%}
 </div>
+
 <style>
         .header-expand-button
     {

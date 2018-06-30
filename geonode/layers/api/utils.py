@@ -10,6 +10,9 @@ from django.conf import settings
 from geonode.layers.utils import file_upload
 from geonode.geoserver.helpers import OGC_Servers_Handler
 from geoserver.catalog import Catalog
+from geonode.layers.models import Layer, LayerSubmissionActivity, LayerAuditActivity
+from notify.signals import notify
+from rest_framework import status
 
 
 logger = logging.getLogger("geonode.security.models")
@@ -105,7 +108,7 @@ def getShapeFileFromAttribute(attributes, name, layer_type, **kwargs):
 
     temp_vrt_file.close()
 
-    ogr2ogr_string = 'ogr2ogr -overwrite -f "ESRI Shapefile" "{0}" "{1}"'.format(temp_csv_dir, temp_vrt_path)
+    ogr2ogr_string = 'ogr2ogr -skipfailures -overwrite -f "ESRI Shapefile" "{0}" "{1}"'.format(temp_csv_dir, temp_vrt_path)
 
     os.system(ogr2ogr_string)
 
@@ -170,6 +173,9 @@ def changeDbFieldTypes(layer, attributes, **kwargs):
                                                                                                attr['type'])
             cur.execute(qstr)
             conn.commit()
+        # qstr = 'ALTER TABLE {0} ALTER COLUMN "{1}" TYPE geometry(Geometry,4326)'.format(layer.name, 'the_geom')
+        # cur.execute(qstr)
+        # conn.commit()
     except Exception as e:
         logger.error(
             "Error deleting PostGIS table %s:%s",
@@ -190,6 +196,40 @@ def reloadFeatureTypes(layer):
     cat = Catalog(url, _user, _password)
 
     resource = cat.get_resource(layer.name, workspace=layer.workspace)
-    resource.native_bbox = ('88.0844222351', '92.6727209818', '20.670883287', '26.4465255803', 'EPSG:4326')
     resource.catalog.reload()
+
+def layer_status_update(id, user, layer_status, layer_audit_status):
+    
+    try:
+        layer = Layer.objects.get(id=id)
+    except Layer.DoesNotExist:
+        return Http404("requested layer does not exists")
+    
+    group = layer.group
+    if user not in group.get_managers() and not user.is_superuser:
+        return False, status.HTTP_403_FORBIDDEN
+
+    layer_submission_activity = LayerSubmissionActivity.objects.get(
+        layer=layer, group=group, iteration=layer.current_iteration)
+    layer_audit_activity = LayerAuditActivity(
+        layer_submission_activity=layer_submission_activity)
+    
+    layer.status = layer_status # 'ACTIVE'
+    layer.last_auditor = user
+    layer.save()
+
+    # notify layer owner that someone have approved the layer
+    if user != layer.owner:
+        recipient = layer.owner
+        notify.send(user, recipient=recipient, actor=user,
+                    target=layer, verb='{} your layer'.format(layer_audit_status.lower()))
+
+    layer_submission_activity.is_audited = True
+    layer_submission_activity.save()
+
+    layer_audit_activity.result = layer_audit_status #'APPROVED'
+    layer_audit_activity.auditor = user
+    layer_audit_activity.save()
+
+    return True, status.HTTP_200_OK
 

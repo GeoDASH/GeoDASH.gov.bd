@@ -34,6 +34,7 @@ import requests
 import string
 import random
 import shutil
+import tempfile
 import re
 from osgeo import gdal, osr
 from geonode.layers.utils import (
@@ -56,6 +57,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
+from django.core import serializers
 from django.utils.translation import ugettext as _
 from django.template import RequestContext, loader
 from django.core.files import File
@@ -84,6 +86,7 @@ from geonode.base.forms import CategoryForm, ResourceApproveForm, ResourceDenyFo
 from geonode.layers.models import Layer, Attribute, UploadSession
 from geonode.base.enumerations import CHARSETS
 from geonode.base.models import TopicCategory
+from geonode.layers.tasks import backupOrganizationLayersMetadata
 
 from geonode.utils import default_map_config
 from geonode.utils import GXPLayer
@@ -99,6 +102,8 @@ from geonode.geoserver.helpers import ogc_server_settings
 from geonode import GeoNodeException
 from geonode.geoserver.helpers import OGC_Servers_Handler
 from geoserver.catalog import Catalog
+from geonode.layers.utils import unzip_file
+from geonode.layers.forms import OrganizationLayersUploadForm
 
 
 from geonode.groups.models import GroupProfile
@@ -1331,10 +1336,11 @@ def save_sld_geoserver(request_method, full_path, sld_body, content_type='applic
     headers["Content-Type"] = content_type
     headers["Authorization"] = "Basic " + auth
 
-    return http.request(
+    res = http.request(
         url, request_method,
         body=sld_body or None,
-        headers=headers)
+        headers=headers)  
+    return res
 
 
 class LayerStyleListAPIView(ListAPIView):
@@ -1494,7 +1500,7 @@ class LayerStyleView(View):
             json.dumps(
                 serializer.data,
                 ensure_ascii=False),
-            status=200,
+            status=201,
             content_type='application/javascript')
 
 
@@ -1612,3 +1618,142 @@ def save_geometry_type(layer):
                 else:
                     name = "point"
     return name
+
+
+def restoreBackedupOrganizationLayers(request, template='layers/organization_layer_restore.html'):
+
+
+    if request.method == 'GET':
+        ctx = {
+            'charsets': CHARSETS,
+            'form': OrganizationLayersUploadForm,
+        }
+        return render_to_response(template,
+                                  RequestContext(request, ctx))
+    elif request.method == 'POST':
+
+        out = {}
+        form = OrganizationLayersUploadForm(request.POST, request.FILES)
+        tempdir = tempfile.mkdtemp()
+        if form.is_valid():
+            file_list = form.get_files(tempdir)
+            layer_files = []
+            for file in file_list:
+                file_location = tempdir + '/' + file
+                if  os.path.isfile(file_location):
+                    filename, extension = os.path.splitext(os.path.basename(file_location))
+
+                    if extension == '.txt':
+                        metadata_file = file_location
+                    elif extension == '.zip':
+                        l = []
+                        l.append(filename)
+                        l.append(file_location)
+                        layer_files.append(l)
+
+            for l in layer_files:
+                layer_name = l[0]
+                layer_loc = l[1]
+                layer = Layer.objects.get(name=layer_name)
+
+
+                try:
+                    restoreLayer(layer, layer_loc)
+                    out['success'] = True
+                except Exception as e:
+                    out['success'] = False
+                    out['errors'] = str(e)
+            try:
+                restoreOrganizationLayersMetadata(metadata_file)
+            except Exception as e:
+                out['errors'] = str(e)
+
+        else:
+            errormsgs = []
+            for e in form.errors.values():
+                errormsgs.append([escape(v) for v in e])
+
+            out['errors'] = form.errors
+            out['errormsgs'] = errormsgs
+
+
+        if tempdir is not None:
+            shutil.rmtree(tempdir)
+
+        if out['success']:
+            status_code = 200
+        else:
+            status_code = 400
+
+        return HttpResponse(
+            json.dumps(out),
+            content_type='application/json',
+            status=status_code)
+
+
+def restoreLayer(layer, file_path):
+    cat = gs_catalog
+    cascading_delete(cat, layer.typename)
+    # file_path = '/home/streamstech/nsdipoc/geonode/uploaded/backup/organization/or2/vcvc.zip'
+
+    base_file = unzip_file(file_path, '.shp', tempdir=None)
+    user = layer.owner
+    saved_layer = file_upload(
+        base_file,
+        name=layer.name,
+        user=user,
+        overwrite=True,
+        # charset=form.cleaned_data["charset"],
+    )
+    # saved_layer.save()
+
+
+def restoreOrganizationLayersMetadata(metadata_file):
+    # with open("/home/streamstech/bk/or2/metadata.txt", "r") as out:
+    with open(metadata_file, "r") as out:
+        data = out.read()
+
+    for obj in serializers.deserialize("json", data):
+        obj.save()
+
+
+def organizationLayerBackupView(request, template='layers/org_layer_bk.html'):
+    """
+    This view is for backup organization layers.
+    """
+    context_dict = {
+    "organizations" : GroupProfile.objects.filter(groupmember__user=request.user)
+    }
+
+    return render_to_response(template, RequestContext(request, context_dict))
+
+
+@login_required
+def backupOrganizationLayers(request, org_pk):
+    out = {}
+    out['success'] = False
+    organization = GroupProfile.objects.get(id=org_pk)
+    if request.user.is_authenticated() and request.user in organization.get_managers():
+
+        try:
+            host = request.META['HTTP_HOST']
+            #used celery for backup layers asynchronously
+            backupOrganizationLayersMetadata.delay( host, request.user.id, org_pk)
+            # backupOrganizationLayersMetadata( host, request.user.id, organization)
+        except Exception as ex:
+            out['success'] = False
+            out['message'] = str(ex)
+        else:
+            out['success'] = True
+            out['message'] = 'Please check your email.' \
+                             'A download link has been sent to your mail.'
+
+    if out['success']:
+        status_code = 200
+    else:
+        status_code = 400
+
+    return HttpResponse(
+        json.dumps(out),
+        content_type='application/json',
+        status=status_code)

@@ -136,7 +136,6 @@
                                                 <i class="fa fa-photo fa-2x" style="color:#0b8e58"></i>
                                                 <h4>{% trans "Thumbnail" %}</h4>
                                                 <a class="btn btn btn-gd-primary btn-block"
-                                                   href="#"
                                                    id="set_thumbnail">{% trans "Set" %}</a>
                                             </div>
                                         {% endif %}
@@ -542,6 +541,7 @@
                         <!-- <div id="embedded_map"> -->
                             <!-- <div id="the_map"></div> -->
                             {% include 'maps/_map-panel.html'%}
+                            {% include 'maps/layer-feature-details.html' %}
 
                         <!-- </div> -->
                     </div>
@@ -675,8 +675,11 @@
 <script src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}layers/css/styles.css">
 <script type="text/javascript">
+    function successToaster() {
+        $.toaster('Thumbnail saved', 'Success', 'success');
+    }
   $('#set_thumbnail').click(function(){
-    createMapThumbnail();
+    createMapThumbnail(undefined,successToaster);
     $('#edit-map').modal('toggle');
   });
 </script>

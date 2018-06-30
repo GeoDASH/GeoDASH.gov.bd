@@ -19,7 +19,7 @@ function SetMarkerTool(mapService, layerService, SettingsService) {
                     anchorYUnits: 'pixels',
                     opacity: 1,
                     // size: [120, 120],
-                    src: '/static/geonode/img/marker.png'
+                    src: '/static/geonode/img/marker-tool.png'
                 }))
             })
         };

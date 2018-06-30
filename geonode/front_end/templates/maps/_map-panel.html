@@ -28,7 +28,7 @@
             <li ng-show="toolsIsVisible('zoom-to-extent-button')">
                 <zoom-to-extent-button></zoom-to-extent-button>
             </li>
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
             <li draft-only id="drag" ng-if="toolsIsVisible('drag')">
                 <button class="control-button icon" ng-class="{'active' : !toggleButtonsList['zoomTool'].isActive}"
                 ng-click="removeBoxZooming()" title="Drag">
@@ -63,17 +63,17 @@
                     </ul>
                 </div>
             </li>
-            <li id="search" ng-if="toolsIsVisible('search')" ng-init="initializeCrossLayer()">
-                <div class="btn-group">
+            <li id="search" ng-show="toolsIsVisible('search')" >
+                <div class="btn-group navbar-right">
                     <button class="control-button icon dropdown-toggle" ng-click="getLayers()"  type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: 200px;width: 350px">
+                    <ul class="dropdown-menu stop-propagation" aria-labelledby="dropdownMenu1" style="height: auto;width: 380px">
                         <form class="form-inline" style="padding: 10px">
                             <div class="form-group" style="margin: 5px">
-                                <label for="email" style="width: 125px;">Search</label>
-                                <select class="form-control" style="width: 189px;"
+                                <label for="email">Search</label>
+                                <select class="form-control" style="width: 214px;"
                                         ng-options="item.Id as item.Name for item in layers"
                                         ng-model="searchItemLayer"
                                 >
@@ -82,30 +82,53 @@
 
                             </div>
                             <div class="form-group" style="margin: 5px">
-                                <label for="pwd" style="width: 125px;">from selected item of</label>
-                                <select class="form-control" style="width: 189px;"
+                                <label for="pwd">from selected item of</label>
+                                <select class="form-control" style="width: 214px;"
                                         ng-options="item.Id as item.Name for item in layers"
+                                        ng-change="clearBufferLayer(true)"
                                         ng-model="baseLayer"
                                 >
                                     <option style="display: none;" value="">Select a layer</option>
                                 </select>
 
                             </div>
+
                             <div class="form-group" style="margin: 5px">
-                                <label style="width: 125px;">within </label>
-                                <input type="number" style="width: 131px;" class="form-control" ng-model="distance">
+                                <label>within </label>
+                                <input type="number"
+                                       style="width: 131px;"
+                                       class="form-control"
+                                       ng-model="distance"
+                                       ng-model-options="{ debounce: 500 }"
+                                       ng-change="changeBufferOfAllFeatures()">
                                 <label>km buffer</label>
                             </div>
 
 
-                            <div class="form-group" style="margin: 5px">
-                                <label style="width: 125px;"></label>
-                                <button class="btn btn-primary" ng-click="getCrossLayerData(searchItemLayer,baseLayer,distance)" style="width: auto">Search Cross Layer
-                                </button>
-
-                            </div>
-
+                            <label class="radio-inline" style="width: 75px;"><input type="radio" ng-model="isAllSelectChecked" ng-value="true" ng-change="setCrossLayerSetting()">
+                                <span class="label label-primary">Select All</span>
+                            </label>
+                            <label class="radio-inline" style="width: 75px;"><input type="radio" ng-model="isAllSelectChecked" ng-value="false" ng-change="setCrossLayerSetting()">
+                                <span class="label label-success">From Selected</span>
+                            </label>
+                            <label style="margin-left: 15px;width:75px;" ng-show="!isAllSelectChecked">
+                                <span class="label label-success">
+                                    [{selectedFeatureList.length}]
+                                </span>
+                                <span class="label" style="color: #000;">
+                                     Selected
+                                </span>
+                            </label>
                         </form>
+                        <div class="col-md-7 col-md-offset-5" style="margin-bottom: 15px;">
+                            <button class="btn btn-primary btn-sm pull-left" style="background-color: #3896e2;width:auto"
+                                    ng-click="getCrossLayerData(searchItemLayer,baseLayer,distance)"
+                                    style="width: auto">Search Cross Layer
+                            </button><button class="btn btn-success btn-sm pull-right" ng-click="resetCrossLayer()" style="width: auto">
+                                Reset
+                            </button>
+
+                        </div>
                         <!-- <p>
                                 Search 
                                 <select
@@ -139,7 +162,7 @@
                 </span>
             </li>
 
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
             <!-- <li draft-only>
                 <button class="control-button icon" id="close-project" ng-click="action.showCloseProjectOptions()" ng-disabled="(mapService.isEmpty() && !mapService.getMapName()) || isAttributeGridOn" title="Close Map">
                             <i class="fa fa-times-circle-o" aria-hidden="true"></i>                                                    
@@ -260,7 +283,7 @@
                             <i class="fa fa-database" aria-hidden="true"></i>                                    
                             </button>
             </li> -->
-            <li class="divider-vertical" draft-only></li>
+            <li class="divider-vertical" draft-only ng-if="toolsIsVisible('divider')"></li>
 
             <!-- <li draft-only>
                 <button class="control-button icon" onclick="animating()" title="Query">
@@ -338,9 +361,9 @@
     <div class="container-fluid" style="padding: 0;">
         <div class="row">
             <div class="col-md-4" style="padding-right: 0" id="query-grid">
-                <div class="well well-sm" style="background-color: #d9edf7;border-color: #bce8f1;color: #31708f;padding: 5px;margin-bottom: 5px;max-height: 30px">Query</div>
-                <div class="col-md-12">
-                    <div class="col-md-12" id="query-box" style="height: 210px;overflow-y: auto;padding: 5px">
+                <div class="well well-sm" style="background-color: #d9edf7;border-color: #bce8f1;color: #31708f;padding: 5px;margin-bottom: 1px;max-height: 30px">Query</div>
+                <div class="col-md-12" style="padding: 0px">
+                    <div class="col-md-12" id="query-box" style="height: 210px;overflow-y: auto;padding: 2px">
                         <div class="row">
                                     <sarsha-spinner name="spinner3">
                                                 <div class="donot-print ng-scope">
@@ -371,12 +394,12 @@
             </div>
 
             <div class="col-md-8" style="padding-left: 0px;padding-right: 0px" id="attribute-grid">
-                <div class="well well-sm" style="background-color: #d9edf7;border-color: #bce8f1;color: #31708f;padding: 5px;margin-bottom: 5px;max-height: 30px">
+                <div class="well well-sm" style="background-color: #d9edf7;border-color: #bce8f1;color: #31708f;padding: 5px;margin-bottom: 0px;max-height: 30px">
                     Attribute Grid
                     <a href="" ng-click="showAttributeGrid()" class="btn btn-default btn-sm pull-right" target="_self" style="position: absolute;right:20px;top:4px;padding:1px 6px;">
                                     <i class="fa fa-times" aria-hidden="true"></i></a>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding: 0px;">
                     <attribute-grid layer-id="layerId"></attribute-grid>
                 </div>
             </div>

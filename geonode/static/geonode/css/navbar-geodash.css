@@ -182,4 +182,8 @@
         right: -14px;
         border-radius: 0;
     }
+    .carousel .item
+    {
+        height: 600px;
+    }
      /*End style for header navbar*/
