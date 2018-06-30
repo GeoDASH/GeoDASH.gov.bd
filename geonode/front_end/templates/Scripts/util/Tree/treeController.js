@@ -151,7 +151,10 @@
         };
 
         $scope.enableRemove = function() {
-            return activeLayerTool.hasActiveLayer() && !$rootScope.isAttributeGridOn;
+            return (activeLayerTool.hasActiveLayer() && !$rootScope.isAttributeGridOn) || Object.keys(mapService.getLayers()).length !== 1;
+        };
+        $scope.checkLayersCount= function () {
+            return (Object.keys(mapService.getLayers()).length ===1) || (Object.keys(mapService.getLayers()).length === 0 );
         };
 
         $scope.enableAttributeGrid = function() {
