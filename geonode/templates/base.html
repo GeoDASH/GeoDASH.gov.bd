@@ -925,49 +925,49 @@
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "metadata-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-tags" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Metadata Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "data-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-cube" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Data Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "uploaded-folder-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-ticket" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Media Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "analytics" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Analytics" %}</span>
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Analytics" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "error_reporting" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Error Reporting" %}</span>
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Error Reporting" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "system_settings" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "System Settings" %}</span>
+                        <i class="fa fa-sliders" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "System Settings" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "locations" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Locations" %}</span>
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Locations" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "data-folder-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-server" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Geoserver Data Backup" %}</span>
                 </a>
             </li>
@@ -980,7 +980,7 @@
             </li>
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Help" %}</span>
                 </a>
             </li>
@@ -989,7 +989,7 @@
                   {% csrf_token %}
                   <a class="c-menu__link" href="javascript:{}"
                      onclick="document.getElementById('logout_form').submit();">
-                     <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/logout.png" alt="Logout"></i>
+                     <i class="fa fa-sign-out" aria-hidden="true"></i>                     
                       <span style="text-align:left;">{% trans "Log out" %}</span>
                   </a>
                 </form>
