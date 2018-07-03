@@ -88,14 +88,13 @@ label
 .gd-footer-language{
     margin: 0;
     padding: 0;
-    width:100px;
-    margin-top: 6px;
+    margin-top: 17px;
     color: #000;
+    margin-left: 40px;
 }
 @media (max-width: 767px) {
   .gd-footer-language{
     float:left;
-    margin-left: -110px;
     margin-top: 10px;
     padding-bottom: 25px;
   }
@@ -3912,3 +3911,4 @@ footer {
     border: none;
     background: transparent;
 }
+
