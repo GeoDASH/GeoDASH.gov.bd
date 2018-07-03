@@ -40,7 +40,7 @@ DATABASES = {
     'datastore' : {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         #'ENGINE': '', # Empty ENGINE name disables
-        'NAME': 'geodash_data_prod',
+        'NAME': 'geodash_data',
         'USER' : 'geodash',
         'PASSWORD' : 'geodash',
         'HOST' : 'localhost',

@@ -497,7 +497,7 @@ define(function (require, exports) {
      *  @params {file_queue}
      *  @returns {string}
      */
-    LayerInfo.prototype.display = function (file_queue) {
+    LayerInfo.prototype.display = function (file_queue,callBack) {
 
         var layerTemplate = _.template($('#layerTemplate').html()),
             li = layerTemplate({
@@ -510,7 +510,7 @@ define(function (require, exports) {
             });
         file_queue.append(li);
         this.errors = this.collectErrors();
-        this.displayFiles();
+        this.displayFiles(file_queue,callBack);
         this.displayErrors();
         this.element = $(this.selector);
 
@@ -627,8 +627,9 @@ define(function (require, exports) {
      *  @params
      *  @returns
      */
-    LayerInfo.prototype.displayFiles = function () {
+    LayerInfo.prototype.displayFiles = function (file_queue,callback) {
         var self = this,
+            selectedUl=$('#selected-files'),
             ul = $('#' + LayerInfo.safeSelector(this.name) + '-element .files');
 
         ul.empty();
@@ -637,12 +638,16 @@ define(function (require, exports) {
             var file_ext = file.name.substr(file.name.lastIndexOf('.') + 1);
 
             var li = $('<li/>').appendTo(ul),
+                selectedULLI = $('<li class="list-group-item"/>').appendTo(selectedUl),
                 p = $('<p/>', {text: file.name}).appendTo(li),
+                selectedUlP = $('<p/>', {text: file.name}).css('margin', '0px').appendTo(selectedULLI),
+                removeIcon = $('<span class="glyphicon glyphicon-remove"/>').css('cursor','pointer'),
                 a  = $('<a/>', {text: ' ' + gettext('Remove')});
 
             if (file_ext === 'xml') {
                 $('#metadata_uploaded_preserve_check').show();
             }
+            removeIcon.appendTo(selectedUlP);
             a.data('layer', self.name);
             a.data('file',  file.name);
             a.appendTo(p);
@@ -652,10 +657,16 @@ define(function (require, exports) {
                     layer_name = target.data('layer'),
                     file_name  = target.data('file');
                 self.removeFile(file_name);
+                selectedUl.empty();
+                if(callback) callback(file_queue,layer_name);
                 if (file_ext === 'xml') {
                     $('#metadata_uploaded_preserve_check').hide();
                 }
                 self.displayRefresh();
+            });
+            removeIcon.on('click', function (event) {
+                selectedUl.empty();
+                a.click();
             });
         });
     };
