@@ -39,6 +39,7 @@ define(['underscore',
         makeDropdownOptions,
         csvRows = [],
         sendOsmFile,
+        removeLayer,
         fileTypes = fileTypes;
 
     $('body').append(uploadTemplate);
@@ -81,7 +82,6 @@ define(['underscore',
         }
     };
 
-
     /** Function to ...
      *
      *  @params
@@ -113,6 +113,12 @@ define(['underscore',
         }
     };
 
+    removeLayer = function (file_queue, name) {
+        console.log(layers[name]);
+          delete layers[name];
+          displayFiles(file_queue);
+
+    };
 
     /** Function to ...
      *
@@ -135,7 +141,7 @@ define(['underscore',
                 });
                 delete layers[name];
             } else {
-                info.display(file_queue);
+                info.display(file_queue,removeLayer);
                 if(info.type.format=='vector'){
                     hasFullPermissionsWidget = true;
                 };
