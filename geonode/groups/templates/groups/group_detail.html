@@ -21,6 +21,13 @@
 
 {% endblock %}
 {% block body_outer %}
+
+<style>
+    .pagination
+    {
+        margin-left: 15px;
+    }
+</style>
 <div class="gd-content">
       <div class="gd-content-heading">
           <div class="row">
@@ -199,10 +206,11 @@
                                                   <div class="no-style-list">
                                                       <div class="gd-content-body transparent" id="search-content-layers">
                                                           {% if request.user.is_superuser %}
-                                                          <input type="button" class="btn btn-primary pull-right" id="org-layer-download" value="Backup Data">
+                                                          <input type="button" class="btn btn-primary pull-right" style="margin-right: 15px;margin-bottom:15px;" id="org-layer-download" value="Backup Data">
                                                           {% endif %}
                           
                                                         {% include 'search/_pagination.html' %}
+                                                        <div style="clear:both"></div>
                                                     </div>
                                                   </div>
                                               </article>
