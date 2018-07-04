@@ -33,5 +33,8 @@
     "angular-ui-grid": "^4.0.7",
     "angular-file-upload": "^2.5.0",
     "angularjs-slider": "^6.5.1"
+  },
+  "resolutions": {
+    "angular": "1.3.0"
   }
 }

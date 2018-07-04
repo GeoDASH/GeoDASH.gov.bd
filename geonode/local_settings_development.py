@@ -22,25 +22,27 @@ import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-SITEURL = "http://103.48.16.135:8000/"
+SITEURL = "http://localhost:8000/"
 
 REMOVE_ANONYMOUS_USER = False
 
-
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'geodash_dev1',
-         'USER': 'geodash_dev',
-         'PASSWORD': 'geodash_dev',
+         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        #  'NAME': 'test_migrations',
+         'NAME': 'geodash_metadata',
+         'USER': 'geodash',
+         'PASSWORD': 'geodash',
+         'HOST' : 'localhost',
+         'PORT' : '5432',
      },
     # vector datastore for uploads
     'datastore' : {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         #'ENGINE': '', # Empty ENGINE name disables
-        'NAME': 'geodash_dev1-imports',
-        'USER' : 'geodash_dev',
-        'PASSWORD' : 'geodash_dev',
+        'NAME': 'geodash_data',
+        'USER' : 'geodash',
+        'PASSWORD' : 'geodash',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -50,7 +52,7 @@ GEOSERVER_LOCATION = os.getenv(
     'GEOSERVER_LOCATION', 'http://localhost:8080/geoserver/'
 )
 GEOSERVER_PUBLIC_LOCATION = os.getenv(
-    'GEOSERVER_PUBLIC_LOCATION', 'http://103.48.16.135:8080/geoserver/'
+    'GEOSERVER_PUBLIC_LOCATION', 'http://localhost:8080/geoserver/'
 )
 
 # OGC (WMS/WFS/WCS) Server Settings
@@ -119,7 +121,20 @@ CATALOGUE = {
 
 #setting for token expiration of api
 OAUTH2_PROVIDER = {
-        'ACCESS_TOKEN_EXPIRE_SECONDS': 180,
+        'ACCESS_TOKEN_EXPIRE_SECONDS': 60*60*24*365,
         'OAUTH_SINGLE_ACCESS_TOKEN': True,
         'OAUTH_DELETE_EXPIRED': True
  }
+
+
+try:     
+    from geonode.front_end_settings import *
+    FRONT_END_SETTINGS = GEODASH_FRONT_END_SETTINGS
+except Exception:
+    pass   
+
+slider_image_dimension = {
+    "height":600,
+    "width": 700
+}
+
