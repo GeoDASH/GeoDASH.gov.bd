@@ -126,7 +126,9 @@ define(['underscore',
      *  @returns
      */
     displayFiles = function (file_queue) {
+        var selectedUl=$('#selected-files');
         file_queue.empty();
+        selectedUl.empty();
 
         var permission_edit = $("#permission-edit")
 
