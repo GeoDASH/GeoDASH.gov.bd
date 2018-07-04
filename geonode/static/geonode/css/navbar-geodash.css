@@ -1,11 +1,11 @@
 body {
 
-    padding-bottom: 113px !important;
+    padding-bottom: 108px !important;
 
 }
 footer
 {
-    padding: 30px 0;
+    padding: 27px 0 !important;
 }
 .navbar {
 	background-color: rgba(255, 255, 255, 0.97);
