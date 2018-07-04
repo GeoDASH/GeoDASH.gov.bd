@@ -420,18 +420,19 @@
 
     {% block footer %}
     <footer>
-        <div class="container text-center" style="max-width:1300px">
-        <div class="row" style="margin-bottom: 30px;">
-            <div class="col-md-12" style="margin-bottom: 30px;">
+        <div class="container" style="width:100%;max-width:1325px;margin:0 auto;">
+        <div class="row">
+           <div class="col-md-12">
 
-                <ul class="nav navbar-nav" style="display: inline-block;float: none;vertical-align: top">
+                        
+                <ul class="nav navbar-nav footer-nav">
                     <li><a href="{% url "footer-section-view" 'terms-and-condition' %}">{% trans "Terms and Condition" %}</a></li>
                     <li><a href="{% url "footer-section-view" 'privacy-policy' %}">{% trans "Privacy Policy" %}</a></li>
                     <li><a href="{% url "footer-section-view" 'terms-of-use' %}">{% trans "Terms of use" %}</a></li>
                     <li><a href="https://geodash.gov.bd/wiki/index.php?title=Main_Page">{% trans "GeoDASH Wiki" %}</a></li>
                     <li>
                             <div class="btn-group">
-                                    <button type="button" class="btn btn-link dropdown-toggle" style="padding: 6px 12px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Useful Resources <span class="caret"></span> </button>
+                                    <button type="button" class="btn btn-link dropdown-toggle" style="padding: 6px 12px;font-size:16px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Useful Resources <span class="caret"></span> </button>
                                     <ul class="dropdown-menu" style="top: -320px">
                                       <li><a href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo</a></li>
                                       <li><a href="https://github.com/GeoNode/geonode" target="_blank">Github</a></li>
@@ -445,53 +446,73 @@
                                   </div>
                     </li>
                     <!--<li><a href="#">{% trans "Admin Android APP" %}</a></li>-->
-                    <li>
 
-                                    <div class="gd-footer-language" >
-                                        <label class="hidden">{% trans "Language" %}</label>
-                        {% if csrf_token != "NOTPROVIDED" %}
-                        {% get_current_language as LANGUAGE %}
-                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
-                        {% csrf_token %}
-                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
-                                            {% for lang in LANGUAGES %}
-                                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
-                                              {% trans lang.1 %}
-                                            </option>
-                                            {% endfor %}
-                                          </select>
-                                        </form>
-                                        {% endif %}
-                                    </div>
-                                    <!-- <ul class="nav navbar-nav navbar-right">
-                                        <li>
-                                            <select class="selectpicker" data-width="auto">
-                                                <option>English</option>
-                                                <option>Bangla</option>
-                                                <option>Bangla</option>
-                                                <option>Bangla</option>
-                                            </select>
-                                        </li>
-                                    </ul> -->
+                   
 
-                    </li>
+                    
                 </ul>
+
+
+
+        
+        
+                            <ul class="nav navbar-nav footer-nav" style="float:right">
+                                    
+                                      
+                                        
+                                        <li style="margin-left:15px;">
+                                                <span style="font-size: 11px;float:left">Admin APP</span>
+                                                <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" style="padding: 0;line-height:normal" target="_blank">
+                                                    <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="width: 89px;"/>
+                                                </a>
+                                    
+                                    
+                                        </li>
+                                    
+                                        <li>
+                                                <a  href="https://ssl.comodo.com" style="padding:0;line-height:normal;margin-left:15px;"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
+                                        </li>
+
+                                        <li>
+                                                
+                                                                                    <div class="gd-footer-language" >
+                                                                                        <label class="hidden">{% trans "Language" %}</label>
+                                                                        {% if csrf_token != "NOTPROVIDED" %}
+                                                                        {% get_current_language as LANGUAGE %}
+                                                                        <form id="set-language-of-site" class="form-inline" action="/i18n/setlang/" method="post">
+                                                                        {% csrf_token %}
+                                                                          <select id="langOfSite" name="language" onchange="javascript:form.submit()">
+                                                                                            {% for lang in LANGUAGES %}
+                                                                                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
+                                                                                              {% trans lang.1 %}
+                                                                                            </option>
+                                                                                            {% endfor %}
+                                                                                          </select>
+                                                                                        </form>
+                                                                                        {% endif %}
+                                                                                    </div>
+                                                                                    <!-- <ul class="nav navbar-nav navbar-right">
+                                                                                        <li>
+                                                                                            <select class="selectpicker" data-width="auto">
+                                                                                                <option>English</option>
+                                                                                                <option>Bangla</option>
+                                                                                                <option>Bangla</option>
+                                                                                                <option>Bangla</option>
+                                                                                            </select>
+                                                                                        </li>
+                                                                                    </ul> -->
+                                                
+                                                                    </li>
+
+                                    </ul>
+        
+                              
+
+               
+
                 <!--</div>-->
-            </div>
-
-            <div>
-                            Admin APP
-                        <a href="https://play.google.com/store/apps/details?id=com.sdslbd.geodash" target="_blank">
-                            <img src="{{ STATIC_URL }}geonode/images/googleplay.jpg" style="margin-right: 15px;"/>
-                        </a>
-
-
-
-
-
-                        <a  href="https://ssl.comodo.com"><img src="{{ STATIC_URL }}geonode/images/comodo.png"/></a>
-
-            </div>
+           
+</div>
 
         </div>
     </div>
@@ -925,49 +946,49 @@
             {% if request.user.is_superuser %}
             <li class="c-menu__item">
                 <a href="{% url "metadata-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-tags" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Metadata Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "data-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-cube" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Data Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "uploaded-folder-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-ticket" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Media Backup" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "analytics" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Analytics" %}</span>
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Analytics" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "error_reporting" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Error Reporting" %}</span>
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Error Reporting" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "system_settings" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "System Settings" %}</span>
+                        <i class="fa fa-sliders" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "System Settings" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "locations" %}" class="c-menu__link">
-                    <img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help">
-                    <span style="text-align:left;margin-left:-10px;">{% trans "Locations" %}</span>
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>                        
+                    <span style="text-align:left;">{% trans "Locations" %}</span>
                 </a>
             </li>
             <li class="c-menu__item">
                 <a href="{% url "data-folder-backup" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-server" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Geoserver Data Backup" %}</span>
                 </a>
             </li>
@@ -980,7 +1001,7 @@
             </li>
             <li class="c-menu__item">
                 <a href="{% url "help" %}" class="c-menu__link">
-                    <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/help.png" alt="Help"></i>
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>                        
                     <span style="text-align:left;">{% trans "Help" %}</span>
                 </a>
             </li>
@@ -989,7 +1010,7 @@
                   {% csrf_token %}
                   <a class="c-menu__link" href="javascript:{}"
                      onclick="document.getElementById('logout_form').submit();">
-                     <i class="fa"><img src="{{ STATIC_URL }}geonode/images/user-icon/logout.png" alt="Logout"></i>
+                     <i class="fa fa-sign-out" aria-hidden="true"></i>                     
                       <span style="text-align:left;">{% trans "Log out" %}</span>
                   </a>
                 </form>

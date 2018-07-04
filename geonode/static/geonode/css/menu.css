@@ -113,7 +113,7 @@ and open the template in the editor.
 .c-menu--slide-right .c-menu__link .fa,
 .c-menu--push-left .c-menu__link .fa,
 .c-menu--push-right .c-menu__link .fa{
-    margin-right: 15px;
+    margin-right: 5px;
     font-size: 18px;
     color: #3896e2;
     display: inline-block;
