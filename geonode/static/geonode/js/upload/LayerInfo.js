@@ -662,7 +662,7 @@ define(function (require, exports) {
                 if (file_ext === 'xml') {
                     $('#metadata_uploaded_preserve_check').hide();
                 }
-                self.displayRefresh();
+                self.displayRefresh(file_queue,callback);
             });
             removeIcon.on('click', function (event) {
                 selectedUl.empty();
@@ -694,9 +694,9 @@ define(function (require, exports) {
      *  @params {options}
      *  @returns {string}
      */
-    LayerInfo.prototype.displayRefresh = function () {
+    LayerInfo.prototype.displayRefresh = function (file_queue,callback) {
         this.errors = this.collectErrors();
-        this.displayFiles();
+        this.displayFiles(file_queue,callback);
         this.displayErrors();
     };
 
