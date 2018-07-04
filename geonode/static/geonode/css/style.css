@@ -3912,3 +3912,15 @@ footer {
     border: none;
     background: transparent;
 }
+
+.web-page-content {
+    visibility: hidden;
+}
+
+.web-page-loader {
+    width: 150px;
+    height: 150px;
+    position: fixed;
+    top: 43%;
+    left: 46%;
+}
