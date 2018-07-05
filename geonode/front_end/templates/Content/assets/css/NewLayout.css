@@ -1094,10 +1094,10 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     border-radius: 4px;
     top: 48px;
     overflow: auto;
-    font-size: x-small;
     height: auto;
     right: 100px;
     width: 354px;
+    font-size: 14px;
 }
 
 .visulization-legend-container td {
