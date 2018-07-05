@@ -7,6 +7,36 @@
 
 {% block body %}
 
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    .navbar .nav > li button
+    {
+        margin: 0;
+    }
+    .stop-propagation2
+    {
+        right: 0;
+        left: auto; 
+    }
+    #map-legend
+    {
+    position: absolute;
+    right: 151px !important;
+    top: 47px !important;
+    width: 300px;
+    height: 200px;
+    z-index: 99999;
+    background-color: rgb(255, 255, 255);
+    }
+    .tree-angle ul
+    {
+list-style: none;
+    }
+</style>
+
 <div class="col-md-8  margin-zero left-pad-zero r surfgis" ng-controller="appController" style="width: 100%;padding-right: 0;" ng-app="appModule" ng-click="bodyClicked()">
     <div class="gd-content-body map-details-info" ng-controller="MapController">
         <!-- <div id="embedded_map"> -->
