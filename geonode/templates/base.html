@@ -1161,12 +1161,12 @@
 
     <script type="text/javascript">
         $(function () {
-            $(".web-page-loader").fadeOut(2000, function () {
+            $(".web-page-loader").toggle(0,'linear', function () {
                 $('.web-page-content').css({
                     opacity: 0.0,
                     visibility: "visible",
                     backgroundColor: '#3896e2'
-                }).animate({opacity: 1.0, backgroundColor: 'white'}, {duration: 2000});
+                }).animate({opacity: 1.0, backgroundColor: 'white'}, {duration: 1500});
             });
         });
         var autocomplete = $('#search_input').yourlabsAutocomplete({
