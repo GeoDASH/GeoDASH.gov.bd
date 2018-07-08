@@ -258,6 +258,7 @@ ul.user-actions li a .fa{
 }
 .grid-container .user-info.buttons ul li a{
     margin-bottom: 10px;
+    text-align: left;
 }
 .grid-container .top-content .avater{
 
