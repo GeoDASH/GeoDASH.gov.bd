@@ -27,31 +27,34 @@
             Geo Location
       </div>
       
-      <div id="help-content" class="gd-content-body" style="margin-top:0">
+      <div id="help-content" class="gd-content-body top-bottom-margin-20px" style="margin-top:0">
 
       <label for="">Upload CSV to get geo location</label>
       <input type="file" nv-file-select uploader="ctrl.file">
-      <table ng-if="ctrl.fileHeaders.length > 0">
+      <table ng-if="ctrl.fileHeaders.length > 0" class="table table-striped" style="width:500px;margin:15px 0">
+            <thead>
           <tr>
-              <td>Total Rows</td>
-              <td style="text-align: right;">[{ctrl.totalRows}]</td>
+              <th>Total Rows</th>
+              <th style="text-align: right;">[{ctrl.totalRows}]</th>
           </tr>
+        </thead>
           <tr ng-repeat="head in ctrl.headers">
               <td>[{head}]</td>
               <td>
-                  <select ng-options="fileHead for fileHead in ctrl.fileHeaders" ng-model="ctrl.mappedHeaders[head]">
+                  <select ng-options="fileHead for fileHead in ctrl.fileHeaders" ng-model="ctrl.mappedHeaders[head]" class="form-control">
                       <option value=""> ---Please select one---</option>
                     </select>
                 </td>
             </tr>
         </table>
 
-        </div>
+        
 
         
-        <input ng-if="ctrl.fileHeaders.length > 0" type="button" ng-click="ctrl.upload()" ng-disabled="ctrl.file.queue.length == 0" value="Upload" class="btn"> 
+        <input ng-if="ctrl.fileHeaders.length > 0" type="button" ng-click="ctrl.upload()" ng-disabled="ctrl.file.queue.length == 0" value="Upload" class="btn btn-gd-primary" style="margin-bottom:15px;"> 
         <div ng-if='ctrl.gridOptions.data.length > 0' ui-grid="ctrl.gridOptions" ui-grid-pagination ui-grid-exporter class="grid"></div>
         {% endblock %}
+    </div>
         
         {% block extra_script %}
         <script src="{{ STATIC_URL }}.components/angular-ui-grid/ui-grid.min.js"></script>
