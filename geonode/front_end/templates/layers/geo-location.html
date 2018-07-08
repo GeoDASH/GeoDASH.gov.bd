@@ -23,7 +23,12 @@
         <strong>Error!</strong> [{ctrl.Message.Error}]
       </div> -->
 
+      <div class="d-title">
+            Geo Location
+      </div>
       
+      <div id="help-content" class="gd-content-body" style="margin-top:0">
+
       <label for="">Upload CSV to get geo location</label>
       <input type="file" nv-file-select uploader="ctrl.file">
       <table ng-if="ctrl.fileHeaders.length > 0">
@@ -40,6 +45,9 @@
                 </td>
             </tr>
         </table>
+
+        </div>
+
         
         <input ng-if="ctrl.fileHeaders.length > 0" type="button" ng-click="ctrl.upload()" ng-disabled="ctrl.file.queue.length == 0" value="Upload" class="btn"> 
         <div ng-if='ctrl.gridOptions.data.length > 0' ui-grid="ctrl.gridOptions" ui-grid-pagination ui-grid-exporter class="grid"></div>
