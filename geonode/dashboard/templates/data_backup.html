@@ -9,12 +9,12 @@
 {% block body_outer %}
 <div class="gd-content">
     <div class="gd-content-heading">
-        <div class="title small-content">
+        <div class="d-title">
             {% trans "User and password for machine where geoserver is running" %}
         </div>
-        <div class="hr"></div>
+       
     </div>
-    <div class="gd-content-body top-bottom-margin-20px full-pad-30px">
+    <div class="gd-content-body full-pad-30px">
       <div class="row">
         <div class="col-md-8">
              <form  role="form" method="POST" action="{% url "data-folder-backup" %}" autocapitalize="off" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
