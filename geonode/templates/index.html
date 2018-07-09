@@ -618,7 +618,7 @@ $('#carousel-home').carousel();
             </div> <!-- cd-timeline__img -->
     
             <div class="cd-timeline__content js-cd-content layers-timeline-circle">
-            <a onclick="layerpopup('SigninModal');" role="button">
+            <a data-toggle="modal" data-target="#SigninModal" role="button">
               <h2>
                 <img class="" src="{{ STATIC_URL }}geonode/images/new_index_page_images/layers-ico.svg" width="50" height="50" alt=""/>
               </h2>
@@ -626,7 +626,7 @@ $('#carousel-home').carousel();
              
           
               <span class="cd-timeline__date">
-                  <h3 style="margin: 0;color:#009071"><a onclick="layerpopup('SigninModal');" role="button" style="color:#009071">Upload Layers</a></h3>
+                  <h3 style="margin: 0;color:#009071"><a data-toggle="modal" data-target="#SigninModal" role="button" style="color:#009071">Upload Layers</a></h3>
                   
                  </span>
             </div> <!-- cd-timeline__content -->
