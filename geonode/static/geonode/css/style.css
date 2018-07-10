@@ -261,6 +261,7 @@ ul.user-actions li a .fa{
     text-align: left;
 }
 .grid-container .top-content .avater{
+    height: 265px;
 
 }
 .grid-container .top-content .avater a{
@@ -268,27 +269,20 @@ ul.user-actions li a .fa{
     font-size: 15px;
     color: #3896e2;
 }
-.grid-container .top-content .avater a img{
-   border-radius: 50%;
-}
 .grid-container .top-content .avater .avater-img{
-    margin:10px auto;
-    height:160px;
-    max-width:150px;
-    overflow: hidden;
+    margin:0 auto;
+    height: 150px;
+    display: table;
 }
 
 .grid-container .top-content .avater .avater-img-mid img{
-    margin:5px auto;
-    height:150px;
+    margin:15px;
     width:150px;
     text-align: center;
 }
 .grid-container .top-content .avater .avater-img-mid{
     vertical-align:middle;
     display:table-cell;
-    height:150px;
-    width:150px;
 }
 .grid-container .top-content .avater .txt{
     color: #3896e2;
