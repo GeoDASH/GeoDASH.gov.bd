@@ -1795,7 +1795,7 @@ def create_gs_thumbnail(instance, overwrite=False):
         'layers': layers,
         'format': 'image/png8',
         'width': 200,
-        'height': 150,
+        'height': 300,
         'TIME': '-99999999999-01-01T00:00:00.0Z/99999999999-01-01T00:00:00.0Z'
     }
 
