@@ -2514,10 +2514,10 @@ ul#global-errors li{
     max-width:240px;
     overflow: hidden;
     text-align: center;
+    padding: 15px;
 }
 
 .grid-container.lmd .avater .avater-img-mid{
-    vertical-align:middle;
     display:table-cell;
     height:180px;
     width:240px;
