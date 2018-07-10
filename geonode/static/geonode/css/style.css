@@ -1932,6 +1932,7 @@ fieldset[disabled] .btn-gd-yellow.focus {
     padding: 20px 0px;
 }
 .gd-content .gd-content-body .description{
+    text-align: justify;
 
 }
 .gd-content .gd-content-body .keywords{
