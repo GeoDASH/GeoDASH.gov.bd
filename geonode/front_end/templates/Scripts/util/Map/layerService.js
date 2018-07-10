@@ -137,6 +137,7 @@ function layerService($rootScope, layerRepository, featureService, layerStyleGen
 
     var factory = {
 
+        _map: _map,
         downloadData: function(surfLayer) {
             layerRepository.downloadData(surfLayer.getId());
         },

@@ -5,33 +5,29 @@ catalogBrowserController.$inject = ['$scope',
     'mapService',
     'layerService',
     '$modalInstance',
-    '$timeout'
+    '$timeout',
+    'layerRepository'
 ];
 
-function catalogBrowserController($scope, $rootScope, surfToastr, mapService, layerService, $modalInstance, $timeout) {
+function catalogBrowserController($scope, $rootScope, surfToastr, mapService, layerService, $modalInstance, $timeout,layerRepository) {
 
-    $scope.serverList = [{
-            name: 'Geoserver',
-            method: loadLayersByApi
-        },
-        // {
-        //     name: 'geodata.nationaalgeoregister',
-        //     url: 'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
-        //     type: 'wms',
-        //     method: loadLayersByWms
-
-        // }
-    ];
+    $scope.serverList = [];
 
     function loadLayersByWms(server) {
-        var url = server.url + '?service=wms&tiled=true&request=GetCapabilities&access_token=9df608bcabe911e7a833080027252357';
-        layerService.fetchWmsLayers(url)
-            .then(function(res) {
-                $scope.layers = res;
-                $scope.layers.forEach(function(e) {
-                    e.geoserverUrl = server.url;
-                }, this);
-            });
+        var url = server.url + '?service=wms&tiled=true&request=GetCapabilities';
+        layerRepository.getWmsLayers(url).then(function (response) {
+            var mappedLayer = response.map(function(e) {
+                        return layerService._map({
+                            Name: e.Name,
+                            bbox: ol.proj.transformExtent(e.BoundingBox,
+                                'EPSG:4326', 'EPSG:3857'),
+                            geoserverUrl: server.url
+                        });
+                    });
+            $scope.layers =  mappedLayer;
+        }, function (error) {
+            surfToastr.error('Can not load layers', 'Error!!!');
+        });
     }
 
     function loadLayersByApi(server) {
@@ -41,7 +37,7 @@ function catalogBrowserController($scope, $rootScope, surfToastr, mapService, la
             });
     }
     $scope.loadLayers = function(server) {
-        $scope.selectedServerName = server.name;
+        $scope.selectedServerName = server.title;
         server.method(server);
 
     };
@@ -52,16 +48,31 @@ function catalogBrowserController($scope, $rootScope, surfToastr, mapService, la
             .then(function(res) {               
                 surfToastr.success('Layer Added to The Map Successfully.', 'Success');
             }, function(res){
-                surfToastr.success('Layer Add Failed', 'Error!!!');
+                surfToastr.error('Layer Add Failed', 'Error!!!');
             });
     };
 
     $scope.closeDialog = function() {
         $modalInstance.close();
     };
+    $scope.loadExternalGeoservers= function () {
+        layerRepository.get('/api/layersource/').then(function (response) {
+            $scope.serverList.push({
+                title: 'Geoserver',
+                method: loadLayersByApi,
+                isExternalServer: false
+            });
+            angular.forEach(response.objects,function (externalServer) {
+                externalServer.isExternalServer = true;
+                externalServer.method = loadLayersByWms
+                $scope.serverList.push(externalServer);
+            });
+            $scope.loadLayers($scope.serverList[0]);
+        })
+    };
 
     $timeout(function () {
-        $scope.loadLayers($scope.serverList[0]);
+        $scope.loadExternalGeoservers();
     })
 
 }
