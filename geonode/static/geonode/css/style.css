@@ -2507,7 +2507,6 @@ ul#global-errors li{
     margin:0 auto;
     height:180px;
     max-width:240px;
-    overflow: hidden;
     text-align: center;
     padding: 15px;
 }
@@ -2542,6 +2541,7 @@ ul#global-errors li{
 .grid-container .information .top-content .details{
     font-size: 12px;
     min-height: 70px;
+    height: 95px;
 }
 .grid-container.lmd .information .title {
     font-size: 20px;
