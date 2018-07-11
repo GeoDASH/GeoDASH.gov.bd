@@ -3269,7 +3269,7 @@ width: 800px;
     border: none;
     border-radius: 0;
     margin-right: -1px;
-    padding: 10px 25px;
+    padding: 12px 14px;
     color: #777777;
     border-width: 0 0 0 3px;
     border-color: #000;
@@ -3280,6 +3280,8 @@ width: 800px;
     border-color: #f2555b;
     color: rgb(68, 68, 68);
     background-color: #ffffff;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 
 }
 .layerNav > li.active > a i
@@ -3291,6 +3293,18 @@ width: 800px;
 {
     background: none;
     color: #000;
+}
+.layerNav > li.active
+{
+    border-bottom: none;
+}
+.layerNav > li.active a
+{
+    padding: 11px 14px;
+}
+.globalNav li.active
+{
+    top: 2px;
 }
 #gd-featurd-maps .carousel-control
 {
@@ -3965,5 +3979,11 @@ footer {
     to {
         opacity: 1;
     }
+}
+
+.nav-tabs > li {
+    float: none;
+    display: inline-block;
+    border-bottom: 1px solid #ccc;
 }
 
