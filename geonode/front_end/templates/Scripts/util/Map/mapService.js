@@ -126,7 +126,7 @@
                     // "SavedMapId": "s_9f7029846ea7428a914f85348cf7eda5",
                     // "IsPublic": false,
                     // "PublicId": "s_18c0563060544068bcd058d2bb7655bd",
-                    // "BaseLayerName": "Google Street",
+                    "BaseLayerName": "Open Street Map"
                     // "Title": null,
                     // "Description": null,
                     // "IsAuthorNamePublic": false,

@@ -315,7 +315,7 @@
                             })
     
                         }),
-                        groupName: 'Others',
+                        groupName: 'No Base Map',
                         thumb : 'map-thumb.jpg'
     
                     }
