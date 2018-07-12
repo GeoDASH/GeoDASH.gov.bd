@@ -39,7 +39,6 @@
       <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/carousel.css" rel="stylesheet">
       <link href="{{ STATIC_URL }}geonode/css/new_index_page_css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-      <script src="{{ STATIC_URL }}geonode/js/new_index_page_js/bootstrap.min.js"></script>
       <script src="{{ STATIC_URL }}geonode/js/new_index_page_js/jquery-1.6.1.min.js"></script>
 
       <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700" rel="stylesheet">
@@ -685,41 +684,44 @@
 
                               {% if FRONT_END_SETTINGS.templates_base.social_login %}
 
-                                <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-2"><span style=""> or </span> </div>
-                                    <div class="col-md-5"></div>
-                                </div>
-                                <div class="block-separator"></div>
-                                <div class="row">
-                                    <div class="col-md-12">
-{#                                        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">#}
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <i class="fa fa-facebook fbicon" aria-hidden="true" style=""></i>
-                                                </div>
-                                                <div class="col-md-8 text-center">
-                                                    <span class="fbsign">{% trans "Sign in with Facebook" %}</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="block-separator"></div>
-                                <div class="row">
-                                    <div class="col-md-12">
-{#                                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">#}
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <i class="fa fa-google-plus golicon" aria-hidden="true" style=""></i>
-                                                </div>
-                                                <div class="col-md-8 text-center">
-                                                    <span class="fbsign">{% trans "Sign in with Google+" %}</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+                                  <div class="row">
+                                      <div class="col-md-5"></div>
+                                      <div class="col-md-2"><span style=""> or </span></div>
+                                      <div class="col-md-5"></div>
+                                  </div>
+                                  <div class="block-separator"></div>
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+                                             class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">
+                                              <div class="row">
+                                                  <div class="col-md-2">
+                                                      <i class="fa fa-facebook fbicon" aria-hidden="true" style=""></i>
+                                                  </div>
+                                                  <div class="col-md-8 text-center">
+                                                      <span class="fbsign">{% trans "Sign in with Facebook" %}</span>
+                                                  </div>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  </div>
+                                  <div class="block-separator"></div>
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"
+                                             class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">
+                                              <div class="row">
+                                                  <div class="col-md-2">
+                                                      <i class="fa fa-google-plus golicon" aria-hidden="true"
+                                                         style=""></i>
+                                                  </div>
+                                                  <div class="col-md-8 text-center">
+                                                      <span class="fbsign">{% trans "Sign in with Google+" %}</span>
+                                                  </div>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  </div>
 
                               {% endif %}
 
@@ -784,42 +786,46 @@
                                   <div>{% trans "Sorry, registrations are not open at this time." %}</div>
                                   {% endif %}
                                 <div class="block-separator"></div>
-                                <div class="row">
-                                    <div class="col-md-5"></div>
-                                    <div class="col-md-2"><span style=""> or </span> </div>
-                                    <div class="col-md-5"></div>
-                                </div>
-                                <div class="block-separator"></div>
-                                <div class="row">
-                                    <div class="col-md-12">
-{#                                        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">#}
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <i class="fa fa-facebook fbicon" aria-hidden="true" style=""></i>
-                                                </div>
-                                                <div class="col-md-8 text-center">
-                                                    <span class="fbsign">{% trans "Register with Facebook" %}</span>
-                                                </div>
-                                            </div>
-                                        </a>
+                                {% if FRONT_END_SETTINGS.templates_base.social_login %}
+                                    <div class="row">
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-2"><span style=""> or </span></div>
+                                        <div class="col-md-5"></div>
                                     </div>
-                                </div>
-                                <div class="block-separator"></div>
-                                <div class="row">
-                                    <div class="col-md-12">
-{#                                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">#}
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <i class="fa fa-google-plus golicon" aria-hidden="true" style=""></i>
+                                    <div class="block-separator"></div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+                                               class="btn btn-gd-gray-facebook btn-lg col-md-12 col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <i class="fa fa-facebook fbicon" aria-hidden="true" style=""></i>
+                                                    </div>
+                                                    <div class="col-md-8 text-center">
+                                                        <span class="fbsign">{% trans "Register with Facebook" %}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-8 text-center">
-                                                    <span class="fbsign">{% trans "Register with Google+" %}</span>
-                                                </div>
-                                            </div>
-                                        </a>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="block-separator"></div>
+                                    <div class="block-separator"></div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"
+                                               class="btn btn-gd-gray-gplus btn-lg col-md-12 col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <i class="fa fa-google-plus golicon" aria-hidden="true" style=""></i>
+                                                    </div>
+                                                    <div class="col-md-8 text-center">
+                                                        <span class="fbsign">{% trans "Register with Google+" %}</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="block-separator"></div>
+                                {% endif %}
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <span>
@@ -1287,13 +1293,18 @@
         };
     </script>
     <script>
-        function layerpopup(){
+        function layerpopup() {
             $('#SigninModal').modal('show');
             $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
         }
-        function documentpopup(){
+
+        function documentpopup() {
             $('#SigninModal').modal('show');
             $('#uploadsignlayer').attr('action', '/account/login/?next=/documents/upload/');
+        }
+
+        function showRegistrationModal() {
+            $('#SignupModal').modal('show');
         }
     </script>
   <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
