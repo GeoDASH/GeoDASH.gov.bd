@@ -9,6 +9,9 @@
         $scope.isQueryEnabled=false;
         $scope.query="";
         $scope.isBoundaryBoxEnabled=false;
+        var activeLayerTool = mapTools.activeLayer || {
+            hasActiveLayer: function() { return false; }
+        };
 
         function getRequestObjectToGetFeature(featureID, typeName) {
             var requestObj = {
@@ -78,12 +81,25 @@
                         return feature.Fid;
                     });
                     var featureId = features.join(",");
+                    var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
+                    var url = 'api/geoserver/';
+                    if (isExternalUrl) {
+                        url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms', '');
+                    }
                     if (surfLayer) {
                         var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
-                        LayerService.getWFSWithGeom('api/geoserver/', requestObj, false).then(function(response) {
-                            attributeGridService.highlightFeature(response);
-                            selectedFeatures=$scope.selectedFeatures;
-                        });
+                        if (isExternalUrl) {
+                            LayerService.getWFS(url, requestObj, isExternalUrl).then(function (response) {
+                                attributeGridService.highlightFeature(response);
+                                selectedFeatures = $scope.selectedFeatures;
+                            });
+                        } else {
+                            LayerService.getWFSWithGeom(url, requestObj, isExternalUrl).then(function (response) {
+                                attributeGridService.highlightFeature(response);
+                                selectedFeatures = $scope.selectedFeatures;
+                            });
+                        }
+
                     }
                 });
             },
@@ -156,12 +172,25 @@
                             return feature.Fid;
                         });
                         var featureId = features.join(",");
+                        var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
+                        var url = 'api/geoserver/';
+                        if (isExternalUrl) {
+                            url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                        }
                         if (surfLayer) {
                             var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
-                            LayerService.getWFSWithGeom('api/geoserver/', requestObj, false).then(function(response) {
-                                attributeGridService.highlightFeature(response);
-                                selectedFeatures=$scope.selectedFeatures;
-                            });
+                            if (isExternalUrl) {
+                                LayerService.getWFS(url, requestObj, isExternalUrl).then(function (response) {
+                                    attributeGridService.highlightFeature(response);
+                                    selectedFeatures = $scope.selectedFeatures;
+                                });
+                            } else {
+                                LayerService.getWFSWithGeom(url, requestObj, isExternalUrl).then(function (response) {
+                                    attributeGridService.highlightFeature(response);
+                                    selectedFeatures = $scope.selectedFeatures;
+                                });
+                            }
+
                         }
                     });
                 },
@@ -298,13 +327,18 @@
         function loadGridDataFromServerUsingCqlFilter(currentPage, query,isBoundaryBoxEnabled, onSuccess, onError) {
             if($rootScope.layerId){
                 $scope.loading = true;
+                var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
+                var url = 'api/geoserver/';
+                if(isExternalUrl) {
+                    url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                }
                 var requestObj = getRequestObject(currentPage);
                 requestObj.CQL_FILTER = query;
                 if(isBoundaryBoxEnabled){
                     requestObj.CQL_FILTER= requestObj.CQL_FILTER + ' AND BBOX(the_geom,' +mapService.getBbox('EPSG:4326')+')';
                 }
                 requestObj.outputFormat='json';
-                LayerService.getWFS('api/geoserver/', requestObj,false).then(function(data){
+                LayerService.getWFS(url, requestObj, isExternalUrl).then(function(data){
                     populateGrid(data.features);
                     $scope.pagination.totalItems=data.totalFeatures;
                 }).catch(function() {
@@ -325,9 +359,14 @@
             if($scope.isQueryEnabled){
                 loadGridDataFromServerUsingCqlFilter(currentPage,$scope.query,$scope.isBoundaryBoxEnabled);
             }else{
+                var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
+                var url = 'api/geoserver/';
+                if(isExternalUrl) {
+                    url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                }
                 var requestObj = getRequestObject(currentPage);
                 requestObj.outputFormat='json';
-                LayerService.getWFS('api/geoserver/', requestObj,false).then(function(data){
+                LayerService.getWFS(url, requestObj, isExternalUrl).then(function(data){
                     populateGrid(data.features);
                     $scope.pagination.totalItems=data.totalFeatures;
                 }).catch(function() {

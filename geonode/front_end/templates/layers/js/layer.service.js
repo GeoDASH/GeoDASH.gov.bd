@@ -281,6 +281,9 @@
             },
             checkLayerStylePermision: function(layerName, styleId){
                 return get(`/api/security/layer/${layerName}/style/${styleId}/`);
+            },
+            checkIfExternalLayer : function (layer) {
+                return layer.geoserverUrl == $window.GeoServerTileRoot ? false : true;
             }
         };
     }
