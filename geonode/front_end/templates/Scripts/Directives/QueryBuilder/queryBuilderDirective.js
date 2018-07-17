@@ -112,8 +112,8 @@ appHelperModule.factory('queryOutputFactory', function() {
     };
 });
 
-appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','LayerService','$window',
- function ($compile,controlVisibleFactory,LayerService,$window) {
+appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','LayerService','$window','mapTools',
+ function ($compile,controlVisibleFactory,LayerService,$window,mapTools) {
     return {
         restrict: 'E',
         scope:{
@@ -132,8 +132,13 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
             content = element.contents().remove();
             return function (scope, element, attrs) {
 
-                 var numberControlsTypes=['xsd:number','xsd:integer','xsd:int','xsd:byte','xsd:short','xsd:long','xsd:decimal','xsd:float','xsd:double'];
-                 var stringControlTypes=['xsd:string','xsd:text'];
+                var numberControlsTypes = ['xsd:number', 'xsd:integer', 'xsd:int', 'xsd:byte', 'xsd:short', 'xsd:long', 'xsd:decimal', 'xsd:float', 'xsd:double'];
+                var stringControlTypes = ['xsd:string', 'xsd:text'];
+                var activeLayerTool = mapTools.activeLayer || {
+                        hasActiveLayer: function () {
+                            return false;
+                        }
+                    };
                 if (!scope.fields) {
                     scope.fields = [];
                 }
@@ -185,7 +190,8 @@ appHelperModule.directive('queryBuilder', ['$compile','controlVisibleFactory','L
                     if(newValue){
                         newValue=newValue.split(":")[1];
                         if(newValue){
-                            LayerService.getLayerFeatureByName($window.GeoServerHttp2Root,newValue).then(function(response){
+                            var url =  LayerService.removeWMSFromGeoserverUrl(activeLayerTool.getActiveLayer().geoserverUrl);
+                            LayerService.getLayerFeatureByName(url,newValue).then(function(response){
                                 if(response.featureTypes){
                                     if(response.featureTypes[0]){
                                         scope.options.customFields.splice(0,scope.options.customFields.length);
