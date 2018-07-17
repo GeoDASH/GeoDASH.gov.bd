@@ -97,7 +97,7 @@ function catalogBrowserController($scope, $rootScope, surfToastr, mapService, la
                 externalServer.method = loadLayersByWms
                 $scope.serverList.push(externalServer);
             });
-            // $scope.loadLayers($scope.serverList[0]);
+            $scope.loadLayers($scope.serverList[0]);
         })
     };
 

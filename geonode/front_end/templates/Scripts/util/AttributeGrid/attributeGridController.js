@@ -20,6 +20,7 @@
                 maxFeatures: 1,
                 featureID: featureID,
                 version: '2.0.0',
+                srsName: 'EPSG:3857',
                 outputFormat: 'json',
                 exceptions: 'application/json'
             };
@@ -84,7 +85,7 @@
                     var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
                     var url = 'api/geoserver/';
                     if (isExternalUrl) {
-                        url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms', '');
+                        url =  LayerService.removeWMSFromGeoserverUrl(activeLayerTool.getActiveLayer().geoserverUrl);
                     }
                     if (surfLayer) {
                         var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
@@ -175,7 +176,7 @@
                         var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
                         var url = 'api/geoserver/';
                         if (isExternalUrl) {
-                            url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                            url = LayerService.removeWMSFromGeoserverUrl(activeLayerTool.getActiveLayer().geoserverUrl);
                         }
                         if (surfLayer) {
                             var requestObj = getRequestObjectToGetFeature(featureId, surfLayer.LayerId);
@@ -330,7 +331,7 @@
                 var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
                 var url = 'api/geoserver/';
                 if(isExternalUrl) {
-                    url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                    url = LayerService.removeWMSFromGeoserverUrl(activeLayerTool.getActiveLayer().geoserverUrl);
                 }
                 var requestObj = getRequestObject(currentPage);
                 requestObj.CQL_FILTER = query;
@@ -362,7 +363,7 @@
                 var isExternalUrl = LayerService.checkIfExternalLayer(activeLayerTool.getActiveLayer());
                 var url = 'api/geoserver/';
                 if(isExternalUrl) {
-                    url = activeLayerTool.getActiveLayer().geoserverUrl.replace('wms','');
+                    url = LayerService.removeWMSFromGeoserverUrl(activeLayerTool.getActiveLayer().geoserverUrl);
                 }
                 var requestObj = getRequestObject(currentPage);
                 requestObj.outputFormat='json';

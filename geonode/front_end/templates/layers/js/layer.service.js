@@ -135,6 +135,10 @@
             getLayerByName: function(layerName) {
                 return get('layers/' + layerName + '/get');
             },
+            removeWMSFromGeoserverUrl: function (url) {
+               var regex = new RegExp('/[^/]*$');
+               return url.replace(regex, '/');
+            },
             getWFS: function(url, params, useProxy) {
                 url = url + "wfs/?service=WFS";
                 for (var k in params) {
@@ -220,9 +224,10 @@
             updateLayerByMap: function(mapId, layerName, obj) {
                 return put('/maps/' + mapId + '/layer/' + layerName + '/', obj);
             },
-            getAttributesName: function(layerName) {
+            getAttributesName: function(layer) {
                 var deferred = $q.defer();
-                this.getLayerFeatureByName($window.GeoServerHttp2Root, layerName).then(function(res) {
+                var url = this.removeWMSFromGeoserverUrl(layer.geoserverUrl);
+                this.getLayerFeatureByName(url, layer.Name).then(function(res) {
                     if (typeof res.featureTypes === 'undefined') {
                         deferred.resolve([]);
                         return;
@@ -248,9 +253,10 @@
                 });
                 return deferred.promise;
             },
-            getShapeType: function(layerName) {
+            getShapeType: function(layer) {
                 var deferred = $q.defer();
-                this.getLayerFeatureByName($window.GeoServerHttp2Root, layerName).then(function(res) {
+                var url = this.removeWMSFromGeoserverUrl(layer.geoserverUrl);
+                this.getLayerFeatureByName(url, layer.Name).then(function(res) {
                     var shapeType = "";
                     if (typeof res.featureTypes === 'undefined') {
                         deferred.resolve('geoTiff');
@@ -283,7 +289,9 @@
                 return get(`/api/security/layer/${layerName}/style/${styleId}/`);
             },
             checkIfExternalLayer : function (layer) {
-                return layer.geoserverUrl == $window.GeoServerTileRoot ? false : true;
+                var applicationUrl = new URL($window.GeoServerTileRoot);
+                var layerUrl= new URL(layer.geoserverUrl);
+                return layerUrl.origin == applicationUrl.origin ? false : true;
             }
         };
     }

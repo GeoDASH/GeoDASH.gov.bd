@@ -355,11 +355,11 @@
                             p1_deferred.resolve({});
                         });
                 }
-                var p2 = newLayerService.getAttributesName(layer.Name)
+                var p2 = newLayerService.getAttributesName(layer)
                     .then(function(res) {
                         layer.AttributeDefinition = res;
                     });
-                var p3 = newLayerService.getShapeType(layer.Name)
+                var p3 = newLayerService.getShapeType(layer)
                     .then(function(res) {
                         layer.ShapeType = res;
                     });
