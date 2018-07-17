@@ -1294,7 +1294,9 @@
     </script>
     <script>
         function layerpopup() {
-            $('#SigninModal').modal('show');
+{#            $('#SigninModal').modal('show');#}
+            $('body').append('<a id="link-sign-in" href="" data-toggle="modal" data-target="#SigninModal" role="button" style="display:none"></a>');
+            $('#link-sign-in')[0].click();
             $('#uploadsignlayer').attr('action', '/account/login/?next=/layers/upload');
         }
 
@@ -1304,7 +1306,9 @@
         }
 
         function showRegistrationModal() {
-            $('#SignupModal').modal('show');
+            $('body').append('<a id="link-sign-up" href="" data-toggle="modal" data-target="#SigninModal" role="button" style="display:none"></a>');
+            $('#link-sign-up')[0].click();
+{#            $('#SignupModal').modal('show');#}
         }
     </script>
   <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
