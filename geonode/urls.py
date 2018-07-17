@@ -55,7 +55,7 @@ sitemaps = {
 urlpatterns = patterns('',
 
                        # Social authentication
-                       #url('', include('social.apps.django_app.urls', namespace='social')),
+                       url('', include('social.apps.django_app.urls', namespace='social')),
 
                        # Static pages
                        url(r'^categories_key_words/?$', TemplateView.as_view(template_name='categories_key_words.html'),name='categories_key_words'),

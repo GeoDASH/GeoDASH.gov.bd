@@ -33,7 +33,7 @@ GEODASH_FRONT_END_SETTINGS = {
         'invite_user': True,
         'backup_organization_layers':True,
         'manage_sector_dept_section_createOrg': False,
-        'social_login':False,
+        'social_login':True,
         'administration_header_menu':False,
         'search_engine_title': 'GeoDASH',
         'navbar_css': settings.STATIC_URL + 'geonode/css/navbar-geodash.css?'
