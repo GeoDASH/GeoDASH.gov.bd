@@ -3987,3 +3987,12 @@ footer {
     border-bottom: 1px solid #ccc;
 }
 
+
+/* Responsive start */
+@media (max-width: 1200px) {
+    .container{
+      width: 100%;
+    }
+  
+   }
+/* Responsive End */
