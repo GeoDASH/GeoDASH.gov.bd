@@ -220,7 +220,7 @@ class DocumentUploadView(CreateView):
         except GroupProfile.DoesNotExist:
             raise Http404('Selected organization does not exists')
         try:
-            category = [TopicCategory.objects.get(gn_description=category_id)]
+            category = [TopicCategory.objects.get(identifier=category_id)]
 
             if isinstance(category, list):
                 category = category[0]
