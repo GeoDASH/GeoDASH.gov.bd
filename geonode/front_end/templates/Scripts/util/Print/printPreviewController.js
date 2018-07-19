@@ -4,9 +4,9 @@
     appModule
         .controller('printPreviewController', printPreviewController);
 
-    printPreviewController.$inject = ['$scope', 'mapService', '$modalInstance', '$rootScope', 'mapTools', '$window', '$http'];
+    printPreviewController.$inject = ['$scope', 'mapService', '$modalInstance', '$rootScope', 'mapTools', '$window', '$http','surfToastr'];
 
-    function printPreviewController($scope, map, $modalInstance, $rootScope, mapTools, $window, $http) {
+    function printPreviewController($scope, map, $modalInstance, $rootScope, mapTools, $window, $http,surfToastr) {
         var self = this;
 
         function initialize(){
@@ -153,7 +153,10 @@
         $scope.pageSize = 'LEGAL';
         self.downloadMap = function() {
             var baseMap = mapTools.baseMap.getBaseMap();
-            console.log(map);
+            if(baseMap.groupName === 'Google') {
+                surfToastr.error('Can not print with google map', 'Error');
+                return;
+            }
             // window.print();
             var data = {
                 "units": "m",
