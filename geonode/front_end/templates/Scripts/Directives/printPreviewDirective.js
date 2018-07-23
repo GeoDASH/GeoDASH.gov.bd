@@ -1,17 +1,32 @@
 /**
  * Created by atiq on 7/19/18.
  */
-appModule.directive('printPreview', function () {
+appModule.directive('printPreview', function() {
     return {
         templateUrl: 'static/Templates/Print/printPreviewDirective.html',
         restrict: 'AE',
         controllerAs: 'ctrl',
-        controller: ['$scope', 'mapService', '$rootScope', 'mapTools', '$window', '$http', 'surfToastr', function ($scope, map, $rootScope, mapTools, $window, $http, surfToastr) {
+        controller: ['$scope', 'mapService', '$rootScope', 'mapTools', '$window', '$http', 'surfToastr', function($scope, map, $rootScope, mapTools, $window, $http, surfToastr) {
             var self = this;
+
+            function findClosestScale(l, h, scale) {
+                if (l >= h) {
+                    return l;
+                }
+                let mid = (l + h) / 2;
+                let mid_scale = Number(self.scales[mid].value);
+                if (mid_scale == scale) {
+                    return mid;
+                } else if (mid_scale < scale) {
+                    return findClosestScale(mid + 1, h, scale);
+                } else {
+                    return findClosestScale(l, mid - 1, scale);
+                }
+            }
 
             function initialize() {
                 map.getPrintingConfiguration()
-                    .then(function (res) {
+                    .then(function(res) {
                         var metaInfo = map.getMeta();
                         self.mapTitle = metaInfo.title;
                         self.comments = metaInfo.abstract;
@@ -22,24 +37,75 @@ appModule.directive('printPreview', function () {
                         self.scales = res.data.scales;
 
                         self.selectedLayout = self.layouts[0].name;
-                        self.selectedScale = self.scales[0].value;
                         self.selectedDpi = self.dpis[0].value;
                         self.includeLegend = true;
+                        let scale = getScaleFromResolution();
+                        self.selectedScaleIndex = findClosestScale(0, self.scales.length - 1, parseInt(scale));
+                        self.selectedScale = self.scales[self.selectedScaleIndex].value;
+                        self.OnScaleChange(self.selectedScale);
                     });
             }
 
-            self.init = function () {
+            var _map = map.getMap();
+            var _view = _map.getView();
+            var _inches_per_unit = {
+                'm': 39.37,
+                'dd': 4374754
+            };
+            var _dpi = (function getDPI() {
+                var div = document.createElement("div");
+                div.style.height = "1in";
+                div.style.width = "1in";
+                div.style.top = "-100%";
+                div.style.left = "-100%";
+                div.style.position = "absolute";
+
+                document.body.appendChild(div);
+
+                var result = div.offsetHeight;
+
+                document.body.removeChild(div);
+
+                return result;
+
+            }());
+
+            function getScaleFromResolution() {
+                var scale = _inches_per_unit[_map.getView().getProjection().getUnits()] * _dpi * _view.getResolution();
+                return scale;
+            }
+
+            function getResolutionFromScale(scale) {
+                var units = _map.getView().getProjection().getUnits();
+                var dpi = _dpi;
+                var mpu = ol.proj.METERS_PER_UNIT[units];
+                var resolution = scale / (mpu * 39.37 * dpi);
+                return resolution;
+            }
+
+            self.OnScaleChange = function(scale) {
+                let resolution = getResolutionFromScale(scale);
+                // _view.setResolution(resolution);
+                _view.setZoom(0);
+                while (_view.getResolution() > resolution) {
+                    _view.setZoom(_view.getZoom() + 1);
+                }
+                _view.setZoom(_view.getZoom() - 1);
+
+            };
+
+            self.init = function() {
                 initialize();
             };
 
-            var mapInstance = map.olMap;
+            // var mapInstance = map.olMap;
 
-            mapInstance.once('postcompose', function (event) {
-                var canvas = event.context.canvas;
-                // $rootScope.mapImage.shapeUrl = canvas.toDataURL('image/png');
-            });
+            // mapInstance.once('postcompose', function (event) {
+            //     var canvas = event.context.canvas;
+            //     // $rootScope.mapImage.shapeUrl = canvas.toDataURL('image/png');
+            // });
 
-            mapInstance.renderSync();
+            // mapInstance.renderSync();
 
             $scope.legendPositions = ['top', 'right', 'bottom', 'left'];
 
@@ -59,7 +125,7 @@ appModule.directive('printPreview', function () {
                 color: '#000000',
                 showBackground: true,
                 height: 'auto',
-                onShowBackgroundToggle: function () {
+                onShowBackgroundToggle: function() {
                     $scope.headerOptions.height = $scope.headerOptions.showBackground ? 'auto' : 0;
                 }
             };
@@ -75,16 +141,16 @@ appModule.directive('printPreview', function () {
                 showBackground: true,
                 height: 'auto',
                 top: 'sss',
-                onShowBackgroundToggle: function () {
+                onShowBackgroundToggle: function() {
                     $scope.footerOptions.height = $scope.footerOptions.showBackground ? 'auto' : 0;
                 }
             };
 
-            $scope.highlightTitleBox = function () {
+            $scope.highlightTitleBox = function() {
                 $(document.querySelector('#map-title-box')).focus();
             };
 
-            $scope.highlightFooterBox = function () {
+            $scope.highlightFooterBox = function() {
                 $(document.querySelector('#map-footer-box')).focus();
             };
 
@@ -139,7 +205,7 @@ appModule.directive('printPreview', function () {
                         ],
                         "format": "image/png",
                         "styles": [
-                            ""
+                            layer.getStyle().Name
                         ],
                         "customParams": {
                             "TRANSPARENT": true,
@@ -152,7 +218,42 @@ appModule.directive('printPreview', function () {
             }
 
             $scope.pageSize = 'LEGAL';
-            self.downloadMap = function () {
+
+            function getLegendsConf(layers) {
+                var legends = [];
+                for (var k in layers) {
+                    var layer = layers[k];
+                    let options = {
+                        request: 'GetLegendGraphic',
+                        width: '20',
+                        height: '20',
+                        layer: layer.Name,
+                        style: layer.getStyle().Name,
+                        transparent: 'true',
+                        format: 'image%2Fpng',
+                        legend_options: 'fontAntiAliasing%3Atrue%2CfontSize%3A11%3BfontName%3AArial',
+                        SCALE: self.selectedScale,
+
+                    };
+                    let params = '';
+                    for (let k in options) {
+                        params += k + '=' + options[k] + '&';
+                    }
+                    let uri = $window.GeoServerTileRoot + "?" + params;
+
+                    legends.push({
+                        "name": "",
+                        "classes": [{
+                            "name": "",
+                            "icons": [
+                                uri
+                            ]
+                        }]
+                    });
+                }
+                return legends;
+            }
+            self.downloadMap = function() {
                 var baseMap = mapTools.baseMap.getBaseMap();
                 if (baseMap.groupName === 'Google') {
                     surfToastr.error('Can not print with google map', 'Error');
@@ -172,16 +273,18 @@ appModule.directive('printPreview', function () {
                         "center": map.getCenter(),
                         "scale": self.selectedScale,
                         "rotation": 0
-                    }]
+                    }],
                 };
-
+                if (self.includeLegend) {
+                    data["legends"] = getLegendsConf(map.getLayers());
+                }
                 $http.post('/geoserver/pdf/create.json', data)
-                    .then(function (res) {
+                    .then(function(res) {
                         $window.location = res.data.getURL;
                     });
             };
 
-            $scope.closeDialog = function () {
+            $scope.closeDialog = function() {
                 $rootScope.showPrintingProperties = false;
             };
         }]
