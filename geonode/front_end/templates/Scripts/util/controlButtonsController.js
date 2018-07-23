@@ -733,18 +733,19 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
             };
 
             $scope.action.printPreview = function() {
-
                 $rootScope.mapImage = { baseMapUrl: undefined, shapeUrl: undefined };
-                $modal.open({
-                    templateUrl: 'static/Templates/Print/PrintPreview.html',
-                    controller: 'printPreviewController as ctrl',
-                    backdrop: 'static',
-                    keyboard: false,
-                    windowClass: 'fullScreenModal First',
-                    windowTopClass: 'Second',
-                    openedClass: 'Third'
-                        // windowClass: 'fullScreenModal printPreviewModal'
-                });
+                $rootScope.showPrintingProperties = true;
+
+                // $modal.open({
+                //     templateUrl: 'static/Templates/Print/PrintPreview.html',
+                //     controller: 'printPreviewController as ctrl',
+                //     backdrop: 'static',
+                //     keyboard: false,
+                //     windowClass: 'fullScreenModal First',
+                //     windowTopClass: 'Second',
+                //     openedClass: 'Third'
+                //         // windowClass: 'fullScreenModal printPreviewModal'
+                // });
 
                 // moveShape();
                 // removeLayerSwitcher();

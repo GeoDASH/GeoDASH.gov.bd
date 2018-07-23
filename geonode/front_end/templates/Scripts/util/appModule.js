@@ -34,6 +34,10 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
 
         });
     };
+    $rootScope.showPrintingProperties = false;
+    $rootScope.closePrintPreview = function () {
+        $rootScope.showPrintingProperties = false;
+    };
 
     var navAnCount = 0; 
     function naVAnimating(){
