@@ -1,12 +1,21 @@
 <div ng-show="layout.leftVisible">
-    <div class="titleBar">
+    <div class="titleBar" ng-if="!showPrintingProperties">
         <div class="arrow-left-container" ng-click="layout.setLeftVisible(false)">
             <button class="icon icon18 icon-arrow-left"></button>
         </div>
         Data layers 
     </div>
+    <div class="titleBar" ng-if="showPrintingProperties">
+        <div class="arrow-left-container" ng-click="layout.setLeftVisible(false)">
+            <button class="icon icon18 icon-arrow-left"></button>
+        </div>
+        Print Preview
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closePrintPreview()" style="padding: 3px">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
 
-    <div>
+    <div ng-if="!showPrintingProperties">
         <div data-ng-controller="treeController">
                 
             <div class="layer-buttons">
@@ -39,6 +48,7 @@
             </div>
         </div>
     </div>
+    <print-preview ng-if="showPrintingProperties"></print-preview>
 </div>
 <div ng-hide="layout.leftVisible" class="">
     <div class="titleBar nopadding">

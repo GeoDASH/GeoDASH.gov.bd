@@ -43,7 +43,7 @@
                         <div class="col-md-4">
                             <select id= "category-id" name="category-id" class="form-control">
                             {% for category in categories %}
-                            <option  value={{ category.gn_description }} >{{ category.gn_description }}</option>
+                            <option  value={{ category.identifier }} >{{ category.gn_description }}</option>
                             {% endfor %}
                            </select>
                         </div>
