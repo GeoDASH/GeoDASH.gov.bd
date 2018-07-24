@@ -78,7 +78,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
-                'print',
+                'printModal',
                 'legend',
                 'search',
                 'icon-visualization'
@@ -94,7 +94,7 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                 'set-marker',
                 'measurement-tools',
                 'over-pass-dialog',
-                'print',
+                'printModal',
                 'legend',
                 'icon-visualization'
             ]
@@ -729,6 +729,19 @@ appModule.controller("controlButtonsController", ["$scope", "$modal", "$timeout"
                     windowClass: 'fullScreenModal First',
                     windowTopClass: 'Second',
                     openedClass: 'Third'
+                });
+            };
+
+            $scope.action.printPreviewModal = function(){
+                $modal.open({
+                    templateUrl: 'static/Templates/Print/PrintPreview.html',
+                    controller: 'printPreviewController as ctrl',
+                    backdrop: 'static',
+                    keyboard: false,
+                    windowClass: 'fullScreenModal First',
+                    windowTopClass: 'Second',
+                    openedClass: 'Third'
+                        // windowClass: 'fullScreenModal printPreviewModal'
                 });
             };
 
