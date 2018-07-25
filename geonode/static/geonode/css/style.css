@@ -434,15 +434,7 @@ table.gd-list-table tr td .media-body {
         padding: 5px;
         text-transform: uppercase;
     }
-    #search_input{
-        /*
-        height: 30px;
-        width: 150px;
-        border: none;
-        background:#fff;*/
-        display:none;
-    }
-    #search .user_dropdown{
+     #search .user_dropdown{
         width:55px;
         margin-top:6px;
 
@@ -4028,16 +4020,68 @@ footer {
     }
    }
 
-   @media (max-width: 767px) {
+   @media (max-width: 1066px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+        margin: 18px 0;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin: 0;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
     #gd-navbar-collapse{
-        background-color: #f6f6f6;
+        background-color: #fff;
         -webkit-box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.14);
         -moz-box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.14);
         box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.14);
+        padding: 15px;
+        margin-top: 1px;
+        border-top: 1px solid #ddd;
     }
     .workspace-sidebar ul li a span
     {
         display: none;
     }
-   }
+    .nav-left
+    {
+        padding-left: 0 !important;
+    }
+    #navbar
+    {
+        margin-top: 0 !important;
+    }
+    #search_lay_map_doc
+    {
+        float: left !important;
+    }
+    .container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse
+    {
+        margin: 0;
+        padding: 0;
+    }
+}
 /* Responsive End */

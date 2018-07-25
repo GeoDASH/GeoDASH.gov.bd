@@ -196,7 +196,7 @@ footer {
 	font-size: 18px;
 }
 .navbar-toggle .icon-bar {
-	background-color: #ccc;
+	background-color: #3896e2 !important;
 }
 .feature div {
 	opacity: 1;
