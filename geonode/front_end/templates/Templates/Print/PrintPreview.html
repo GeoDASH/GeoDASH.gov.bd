@@ -41,8 +41,8 @@
          <div class="form-inline" style="margin-bottom: 15px;">
             <div class="form-group">
                  <label for="" style="display:block">Scales:</label>
-                <select class="form-control" style="width: 200px;" ng-model="ctrl.selectedScale">
-                    <option ng-repeat="scale in ctrl.scales" value="[{scale.value}]" ng-selected="$index == 0"> [{scale.name}]</option>
+                <select class="form-control" style="width: 200px;" ng-model="ctrl.selectedScale" ng-change="ctrl.OnScaleChange(ctrl.selectedScale)">
+                    <option ng-repeat="scale in ctrl.scales" value="[{scale.value}]" ng-selected="$index == ctrl.selectedScaleIndex"> [{scale.name}]</option>
                 </select>
             </div>
             <div class="form-group" style="margin-left: 30px;margin-top: 25px;">

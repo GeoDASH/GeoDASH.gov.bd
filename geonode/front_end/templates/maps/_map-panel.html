@@ -285,6 +285,19 @@
                             </button>
 
             </li>
+            <li draft-only id="print" ng-if="toolsIsVisible('printModal')">
+                    <!-- @* <button class="control-button icon icon32 icon-print" data-ng-click="action.printPreview()" title="Print">
+                                    <span>Print
+                                        <br />
+                                        Map
+                                    </span>
+                                </button>*@ -->
+                    <button class="control-button icon" data-ng-click="action.printPreviewModal()" title="Print Map">
+                                <i class="fa fa-print" aria-hidden="true"></i>                                    
+                                   
+                                </button>
+    
+                </li>
             <!-- <li class="divider-vertical" draft-only></li> -->
             <!-- <li draft-only>
                 <button class="control-button icon" id="browse-data" ng-click="action.browseData()" ng-disabled="isAttributeGridOn" remove-focus title="Browse Data">
