@@ -4061,6 +4061,7 @@ footer {
         padding: 15px;
         margin-top: 1px;
         border-top: 1px solid #ddd;
+        overflow: visible;
     }
     .workspace-sidebar ul li a span
     {
@@ -4082,6 +4083,21 @@ footer {
     {
         margin: 0;
         padding: 0;
+    }
+    .navbar-nav .open .dropdown-menu {
+        position: absolute;
+        float: left;
+        width: auto;
+        margin-top: 0;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .15);
+        -webkit-box-shadow: none;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    }
+    .dropdown-menu > li > a
+    {
+        padding: 9px 20px !important;
+        line-height: normal !important;
     }
 }
 /* Responsive End */
