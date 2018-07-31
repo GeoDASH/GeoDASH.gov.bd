@@ -3984,7 +3984,10 @@ footer {
 {
     float: right;
 }
-
+.workspace-sidebar ul li a
+{
+text-align: left;
+}
 
 /* Responsive start */
 @media (max-width: 1280px) {
@@ -4067,6 +4070,10 @@ footer {
     {
         display: none;
     }
+    .workspace-sidebar ul li a
+    {
+    text-align: center;
+    }
     .nav-left
     {
         padding-left: 0 !important;
@@ -4098,6 +4105,37 @@ footer {
     {
         padding: 9px 20px !important;
         line-height: normal !important;
+    }
+    html
+    {
+        overflow-x: hidden;
+    }
+    .slide-img {
+        width: 40%;
+        height: auto;
+        position: absolute;
+        right: 0;
+        top: 6%;
+    }
+    .carousel .item
+    {
+        height: 400px !important;
+    }
+    .carousel
+    {
+    height: 400px !important;
+    }
+    .box
+    {
+        margin-bottom: 15px;
+    }
+    #media
+    {
+        height: auto !important;
+    }
+    .latest-news
+    {
+        margin-bottom: 15px;
     }
 }
 /* Responsive End */
