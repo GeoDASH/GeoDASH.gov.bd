@@ -256,7 +256,7 @@
                 "srs": "EPSG:3857",
                 "layout": self.selectedLayout,
                 "dpi": self.selectedDpi,
-                "outputFilename": "GeoExplorer-print",
+                "outputFilename": self.mapTitle || "GeoDASH-print",
                 "mapTitle": self.mapTitle,
                 "comment": self.comments,
                 "layers": mapLayers(baseMap, map.getLayers()),
