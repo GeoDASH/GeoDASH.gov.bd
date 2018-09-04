@@ -50,7 +50,7 @@ def backupOrganizationLayersMetadata( host, user_id, organization_id):
 
     user = Profile.objects.get(id=user_id)
     # organization = GroupProfile.objects.filter(groupmember__user=user).first()
-    organization = GroupProfile.objects.get(id=organization_id)
+    organization = GroupProfile.objects.filter(id=organization_id)[0]
 
     layer_objects = Layer.objects.filter(group=organization)
     resource_base_objects = ResourceBase.objects.filter(group=organization)
