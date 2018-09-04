@@ -320,7 +320,7 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             maxZoom: 21,
             projection: 'EPSG:3857',
             center: centerExtent,
-            extent:maxExtent,
+            // extent:maxExtent,
             zoom: 6
         });
 
