@@ -59,8 +59,9 @@ def backupOrganizationLayersMetadata( host, user_id, organization_id):
     all_objects = list(layer_objects) + list(resource_base_objects)
 
     temdir = MEDIA_ROOT + '/backup/organization/' + organization.slug
-    if not os.path.exists(temdir):
-        os.makedirs(temdir)
+    if os.path.exists(temdir):
+        shutil.rmtree(temdir, ignore_errors=True)
+    os.makedirs(temdir)
     metadata_location = temdir + '/metadata.txt'
     with open(metadata_location, "w") as out:
         json_serializer.serialize(all_objects, stream=out)
