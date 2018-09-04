@@ -86,7 +86,6 @@ def send_mail_to_admin(host, organization, temdir, user):
     from_email = settings.EMAIL_FROM
     recipient_list = [str(user.email)]  # str(request.user.email)
     html_message = "<a href='" + org_download_link + "'>Please go to the following link to download organizations layers:</a> <br/><br/><br/>" + org_download_link
-    import pdb; pdb.set_trace()
     try:
 
         send_mail(subject=subject, message=html_message, from_email=from_email, recipient_list=recipient_list,

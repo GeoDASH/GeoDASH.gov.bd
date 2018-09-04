@@ -1738,7 +1738,7 @@ def backupOrganizationLayers(request, org_pk):
         try:
             host = request.META['HTTP_HOST']
             #used celery for backup layers asynchronously
-            backupOrganizationLayersMetadata.delay( host, request.user.id, org_pk)
+            backupOrganizationLayersMetadata( host, request.user.id, org_pk)
             # backupOrganizationLayersMetadata( host, request.user.id, organization)
         except Exception as ex:
             out['success'] = False
