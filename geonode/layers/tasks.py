@@ -34,7 +34,7 @@ from celery import shared_task
 
 def backupOneLayer(layer, temdir):
     if layer.link_set.filter(name='Zipped Shapefile').exists():
-        download_link = layer.link_set.get(name='Zipped Shapefile')
+        download_link = layer.link_set.filter(name='Zipped Shapefile')[0]
     else:
         return
     # download_link = layer.link_set.get(name='Zipped Shapefile')
@@ -59,8 +59,9 @@ def backupOrganizationLayersMetadata( host, user_id, organization_id):
     all_objects = list(layer_objects) + list(resource_base_objects)
 
     temdir = MEDIA_ROOT + '/backup/organization/' + organization.slug
-    if not os.path.exists(temdir):
-        os.makedirs(temdir)
+    if os.path.exists(temdir):
+        shutil.rmtree(temdir, ignore_errors=True)
+    os.makedirs(temdir)
     metadata_location = temdir + '/metadata.txt'
     with open(metadata_location, "w") as out:
         json_serializer.serialize(all_objects, stream=out)
@@ -86,7 +87,6 @@ def send_mail_to_admin(host, organization, temdir, user):
     from_email = settings.EMAIL_FROM
     recipient_list = [str(user.email)]  # str(request.user.email)
     html_message = "<a href='" + org_download_link + "'>Please go to the following link to download organizations layers:</a> <br/><br/><br/>" + org_download_link
-    import pdb; pdb.set_trace()
     try:
 
         send_mail(subject=subject, message=html_message, from_email=from_email, recipient_list=recipient_list,
