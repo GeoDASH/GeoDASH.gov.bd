@@ -34,7 +34,7 @@ from celery import shared_task
 
 def backupOneLayer(layer, temdir):
     if layer.link_set.filter(name='Zipped Shapefile').exists():
-        download_link = layer.link_set.get(name='Zipped Shapefile')
+        download_link = layer.link_set.filter(name='Zipped Shapefile')[0]
     else:
         return
     # download_link = layer.link_set.get(name='Zipped Shapefile')
@@ -50,7 +50,7 @@ def backupOrganizationLayersMetadata( host, user_id, organization_id):
 
     user = Profile.objects.get(id=user_id)
     # organization = GroupProfile.objects.filter(groupmember__user=user).first()
-    organization = GroupProfile.objects.filter(id=organization_id)[0]
+    organization = GroupProfile.objects.get(id=organization_id)
 
     layer_objects = Layer.objects.filter(group=organization)
     resource_base_objects = ResourceBase.objects.filter(group=organization)
