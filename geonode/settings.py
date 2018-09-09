@@ -387,6 +387,8 @@ INSTALLED_APPS = (
 
     'oauth2_provider',
 
+    'corsheaders',
+
 ) + GEONODE_APPS
 
 # TODO: Old settings. Need to delete in future
@@ -552,7 +554,10 @@ MIDDLEWARE_CLASSES = (
     # Middleware class for social auth
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'geonode.middleware.ExceptionHandlerMiddleware',
-    
+
+    #middleware class for cors checking
+    'corsheaders.middleware.CorsMiddleware',
+
 
 )
 
@@ -604,6 +609,7 @@ DEFAULT_ANONYMOUS_DOWNLOAD_PERMISSION = strtobool(
 #
 DEFAULT_SEARCH_SIZE = int(os.getenv('DEFAULT_SEARCH_SIZE', '10'))
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 #
 # Settings for third party apps
