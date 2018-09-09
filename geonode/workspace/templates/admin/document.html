@@ -45,23 +45,23 @@
     <div class="row">
 
 
-            <div class="col-sm-3 col-md-2 workspace-sidebar">
+        <div class="col-sm-2 col-xs-1 col-md-2 workspace-sidebar">
 
 
 
                      <ul class="nav nav-sidebar">
-                        <li role="presentation"><a href="{% url "admin-workspace-layer" %}"><i class="fa fa-clone" aria-hidden="true"></i>{% trans "Layers" %}</a></li>
-                        <li role="presentation"><a href="{% url "admin-workspace-map" %}"><i class="fa fa-map" aria-hidden="true"></i>{% trans "Maps" %}</a></li>
-                        <li role="presentation" class="active"><a href="{% url "admin-workspace-document" %}"><i class="fa fa-file" aria-hidden="true"></i>{% trans "Documents" %}</a></li>
-                        <li role="presentation"><a href="{% url "admin-workspace-user-list" %}" ><i class="fa fa-users" aria-hidden="true"></i>{% trans "User List" %}</a></li>
-                        <li role="presentation"><a href="{% url "create-user" %}" ><i class="fa fa-plus-circle" aria-hidden="true"></i>{% trans "Create User" %}</a></li>
+                        <li role="presentation"><a href="{% url "admin-workspace-layer" %}"><i class="fa fa-clone" aria-hidden="true"></i><span>{% trans "Layers" %}</span></a></li>
+                        <li role="presentation"><a href="{% url "admin-workspace-map" %}"><i class="fa fa-map" aria-hidden="true"></i><span>{% trans "Maps" %}</span></a></li>
+                        <li role="presentation" class="active"><a href="{% url "admin-workspace-document" %}"><i class="fa fa-file" aria-hidden="true"></i><span>{% trans "Documents" %}</span></a></li>
+                        <li role="presentation"><a href="{% url "admin-workspace-user-list" %}" ><i class="fa fa-users" aria-hidden="true"></i><span>{% trans "User List" %}</span></a></li>
+                        <li role="presentation"><a href="{% url "create-user" %}" ><i class="fa fa-plus-circle" aria-hidden="true"></i><span>{% trans "Create User" %}</span></a></li>
                            </ul>
 
 
                    </div>
 
 
-                   <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                   <div class="col-sm-10 col-sm-offset-2 col-xs-11 col-xs-offset-1 col-md-10 col-md-offset-2 main">
                         <h1 class="d-title" style="margin: 0">{% trans "Admin Workspace" %}</h1>
                 <div class="gd-content">
 
@@ -82,7 +82,8 @@
                                           <article id="user-approval-request" class="tab-pane active">
                                             <ul class="no-style-list">
                                                 <a class="btn btn-gd-primary disabled" id="approve-all-button" style="margin-bottom: 10px" onclick="approveAll()">{% trans "Approve All" %}</a>
-                                                    <table class="table table-hover table-striped">
+                                                <div class="table-responsive">    
+                                                <table class="table table-hover table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th>
@@ -104,6 +105,7 @@
                                                         </tbody>
 
                                                 </table>
+                                                </div>
                                                 <div id="showallAdminDraftdocspag">
 
                                                 </div>

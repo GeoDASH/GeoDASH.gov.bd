@@ -1743,6 +1743,7 @@ def backupOrganizationLayers(request, org_pk):
         except Exception as ex:
             out['success'] = False
             out['message'] = str(ex)
+            print ex
         else:
             out['success'] = True
             out['message'] = 'Please check your email.' \

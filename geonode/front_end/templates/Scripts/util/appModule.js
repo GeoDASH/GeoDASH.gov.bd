@@ -34,6 +34,10 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
 
         });
     };
+    $rootScope.showPrintingProperties = false;
+    $rootScope.closePrintPreview = function () {
+        $rootScope.showPrintingProperties = false;
+    };
 
     var navAnCount = 0; 
     function naVAnimating(){
@@ -316,7 +320,7 @@ function($rootScope, $window, $timeout, $http, mapRepository, mapService, dirtyM
             maxZoom: 21,
             projection: 'EPSG:3857',
             center: centerExtent,
-            extent:maxExtent,
+            // extent:maxExtent,
             zoom: 6
         });
 

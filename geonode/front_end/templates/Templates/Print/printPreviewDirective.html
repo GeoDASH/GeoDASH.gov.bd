@@ -1,0 +1,43 @@
+<div id="map-print-preview" ng-init="ctrl.init()">
+    <div style="padding: 15px;">
+        <div class="form-inline" style="margin-bottom: 15px;">
+            <div class="form-group">
+                <label for="" style="width: 80px;display:block">Paper size:</label>
+                <select class="form-control" style="width: 200px;" ng-model="ctrl.selectedLayout">
+                    <option ng-repeat="layout in ctrl.layouts" value="[{layout.name}]" ng-selected="$index == 0">[{layout.name}]</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" style="display:block">Resolution:</label>
+                <select class="form-control" style="width: 200px;" ng-model="ctrl.selectedDpi">
+                    <option ng-repeat="dpi in ctrl.dpis" value="[{dpi.value}]" ng-selected="$index == 0"> [{dpi.name}] dpi</option>
+                </select>
+            </div>
+            <div class="form-group" >
+                <label for="" style="display:block">Map Title:</label>
+                <input class="form-control" style="width: 200px;" id="" placeholder="Map title" type="text" ng-model="ctrl.mapTitle">
+            </div>
+            <div class="form-group">
+                 <label for="" style="display:block">Scales:</label>
+                <select class="form-control" style="width: 200px;" ng-model="ctrl.selectedScale" ng-change="ctrl.OnScaleChange(ctrl.selectedScale)">
+                    <option ng-repeat="scale in ctrl.scales" value="[{scale.value}]" ng-selected="$index == ctrl.selectedScaleIndex"> [{scale.name}]</option>
+                </select>
+            </div>
+            <div class="form-group" style="padding: 20px">
+               <input autocomplete="off" id="ext-comp-1094" name="legend" class=" x-form-checkbox x-form-field" checked="" ng-model="ctrl.includeLegend" type="checkbox"> <label for="ext-comp-1094" class="x-form-cb-label" id="ext-gen294">Include legend?</label>
+            </div>
+            <div class="form-group">
+                <label for="" style="display:block">Comments:</label>
+                <textarea class="form-control" rows="3" style="width: 200px;" ng-model="ctrl.comments"></textarea>
+            </div>
+        </div>
+        <div>
+            <div class="text-center">
+                <button class="btn btn-gd-primary icon-btn-color" ng-click="ctrl.downloadMap()">
+                    <i class="fa fa-print" aria-hidden="true" style="margin: 0"></i>
+                    Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

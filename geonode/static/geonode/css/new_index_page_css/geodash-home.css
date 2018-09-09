@@ -101,7 +101,6 @@ background-size: 100% 746px;
 footer {
 	background-color: #1c2025;
 	color: #a8aeb7;
-	padding: 50px 0;
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -197,7 +196,7 @@ footer {
 	font-size: 18px;
 }
 .navbar-toggle .icon-bar {
-	background-color: #ccc;
+	background-color: #3896e2 !important;
 }
 .feature div {
 	opacity: 1;

@@ -84,7 +84,7 @@
                                         <div class="message-box"></div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="">
                                       <div class="col-md-12">
                                           <div class="tab-content activity-style-list">
                                               <article id="org-profile" class="tab-pane active">
@@ -202,8 +202,13 @@
                                                 </div>
                                               </article>
                                               <article id="layerslist" class="tab-pane">
-                          
+                                                  <div class="row">
+                                                      <div class="form-group col-md-4">
+                                                          <input type="text" class="form-control" placeholder="Search layers" id="search-box-layer">
+                                                      </div>
+                                                  </div>
                                                   <div class="no-style-list">
+
                                                       <div class="gd-content-body transparent" id="search-content-layers">
                                                           {% if request.user.is_superuser %}
                                                           <input type="button" class="btn btn-primary pull-right" style="margin-right: 15px;margin-bottom:15px;" id="org-layer-download" value="Backup Data">
@@ -211,6 +216,9 @@
                           
                                                         {% include 'search/_pagination.html' %}
                                                         <div style="clear:both"></div>
+                                                      <div class="row" id="layer-list-div">
+
+                                                      </div>
                                                     </div>
                                                   </div>
                                               </article>
@@ -335,6 +343,194 @@
   {% include 'search/search_scripts.html' %}
   {% endwith %}
     <script type="text/javascript" language="JavaScript">
+        var layerList= [];
+        $(document).ready(function () {
+            $('#search-box-layer').keyup(function () {
+                var searchString = $(this).val();
+                if (searchString) {
+                    var data = $.grep(layerList, function (layer) {
+                        return layer.title.includes(searchString);
+                    });
+                    var output = getLayerDataOutput(data);
+                    $("#layer-list-div").empty();
+                    $("#layer-list-div").append(output);
+                }else {
+                    var output = getLayerDataOutput(layerList);
+                    $("#layer-list-div").empty();
+                    $("#layer-list-div").append(output);
+                }
+            });
+        });
+        function getLayerDataOutput(data) {
+            var output = '';
+            $.each(data, function (i, item) {
+                //alert(item.date);
+                output += '<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">';
+                output += '<div class="grid-container lmd">';
+                output += '{% if request.user.is_superuser %}';
+                    output += '<div class="checkbox pull-right"><label><input type="checkbox" id="' + item.id + '" value="' + item.id + '"></label></div></br>';
+                    output += '{% endif %}';
+                output += '<div class="avater">';
+                output += '<div class="avater-img">';
+                output += '<a class="avater-img-mid" href="' + item.detail_url + '" target="_self">';
+                if (item.thumbnail_url) {
+                    output += '<img src="' + item.thumbnail_url + '" alt="" class="group-logo" />';
+                }
+                else {
+                    output += '<img src="/static/geonode/img/missing_thumb.png" alt="" class="group-logo" />';
+                }
+                output += '</a>';
+                output += '</div>';
+                output += '</div>';
+                output += '<div class="information">';
+                output += '<div class="top-content text-center">';
+                output += '<div class="title">';
+                output += '<a href="' + item.detail_url + '" target="_self" title="' + item.title + '">';
+                if (item.title.length >= 25) {
+                    output += '' + item.title.slice(0, 15) + '.....';
+                } else {
+                    output += '' + item.title + '';
+                }
+                output += '</a>';
+                output += '</div>';
+                output += '<div class="category">';
+                if (item.category__gn_description) {
+                    output += '' + item.category__gn_description + '';
+                }
+                else {
+                    output += 'Not provided';
+                }
+                output += '</div>';
+                output += '<div class="details">';
+                if (item.abstract.length >= 250) {
+                    output += '' + item.abstract.slice(0, 220) + '.....';
+                } else {
+                    output += '' + item.abstract + '';
+                }
+                output += '</div>';
+                output += '</div>';
+                output += '<div class="summery">';
+                output += '<div class="item-items">';
+                output += '<ul class="list-inline lmd">';
+                output += '<li>';
+                output += '<a href="/people/profile/' + item.owner__username + '" title="' + item.resource_type + ' owner">';
+                output += '<i class="fa fa-user"></i> ';
+                output += '' + item.owner__username + '';
+                output += '</a>';
+                output += '</li>';
+                output += '<li>';
+                output += '<a href="' + item.detail_url + '" title="' + item.resource_type + ' information">';
+                output += '<i class="fa fa-calendar-o"></i> ';
+
+                output += '</a>';
+                output += '</li>';
+                output += '<li>';
+                output += '<a href="' + item.detail_url + '#info" title="' + item.resource_type + ' popular count">';
+                output += '<i class="fa fa-eye"></i> ';
+                output += '' + item.popular_count + '';
+                output += '</a>';
+                output += '</li>';
+                output += '<li>';
+                output += '<a href="' + item.detail_url + '#share" title="' + item.resource_type + ' share count">';
+                output += '<i class="fa fa-share"></i> ';
+                output += '' + item.share_count + '';
+                output += '</a>';
+                output += '</li>';
+                output += '<li>';
+                output += '<a href="' + item.detail_url + '#rate" title="' + item.resource_type + ' rating">';
+                output += '<i class="fa fa-star"></i> ';
+                output += '' + item.rating + '';
+                output += '</a>';
+                output += '</li>';
+                output += '</ul>';
+                output += '</div>';
+                output += '</div>';
+                output += '</div>';
+
+                output += '<div class="bottom-content">';
+                output += '<div class="row">';
+                output += '<div class="profile-items text-center">';
+                output += '<ul class="list-inline">';
+                {% if request.user.is_manager_of_any_group %}
+                    if (item.can_make_featured) {
+                        if (item.featured) {
+                            output += '<li ng-click=""class="col-md-6">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
+                            output += 'data-layerID="' + item.id + '" dataname="' + item.can_make_featured + '" data-statusID="false" onclick="featuredorgpage(' + item.id + ',false);" >';
+                            output += '<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output += 'Unfeatured';
+                            output += '</button>';
+                            output += '</li>';
+                        } else {
+                            output += '<li class="col-md-6" id="featured_chng">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" dataname="{{item.group}}" onclick="featuredorgpage(' + item.id + ',true);" data-layerID="' + item.id + '" data-statusID="true">';
+                            output += '<i class="fa fa-heart-o"></i>';
+                            output += 'Make Featured';
+                            output += '</button>';
+                            output += '</li>';
+                        }
+                        if (item.favorite) {
+                            output += '<li class="col-md-6">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
+                            output += 'data-favouriteID="{{item.id}}" data-favouriteStatus="false">';
+                            output += '<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output += 'Unfavorite';
+                            output += '</button>';
+                            output += '</li>';
+                        } else {
+                            output += '<li class="col-md-6">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',true);" data-favouriteID="' + item.id + '" data-favouriteStatus="true">';
+                            output += '<i class="fa fa-heart-o"></i>';
+                            output += 'Add to favorite';
+                            output += '</button>';
+                            output += '</li>';
+                        }
+                    }
+                    else {
+                        if (item.favorite) {
+                            output += '<li class="col-md-12">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="' + item.id + '" data-favouriteStatus="false">';
+                            output += '<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output += 'Unfavorite';
+                            output += '</button>';
+                            output += '</li>';
+                        } else {
+                            output += '<li class="col-md-12">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',true);" data-favouriteID="' + item.id + '" data-favouriteStatus="true">';
+                            output += '  <i class="fa fa-heart-o"></i>';
+                            output += ' Add to favorite';
+                            output += ' </button>';
+                            output += '</li>';
+                        }
+                    }
+                {% else %}
+                    {% if user.is_authenticated %}
+                        if (item.favorite) {
+                            output += '<li class="col-md-12">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="' + item.id + '" data-favouriteStatus="false">';
+                            output += '    <i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
+                            output += '    Unfavorite';
+                            output += '</button>';
+                            output += '</li>';
+                        } else {
+                            output += '<li class="col-md-12">';
+                            output += '<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage(' + item.id + ',true);" data-favouriteID="' + item.id + '" data-favouriteStatus="true">';
+                            output += '  <i class="fa fa-heart-o"></i>';
+                            output += ' Add to favorite';
+                            output += ' </button>';
+                            output += '</li>';
+                        }
+                    {% endif %}
+                {% endif %}
+                output += '</ul>';
+                output += '</div>';
+                output += '</div>';
+                output += '</div>';
+                output += '</div>';
+                output += '</div>';
+            });
+            return output;
+        }
         $(document).ready(function(){
             $("#layers_list").click(function(){
                 var url = "{% url 'api_dispatch_list' api_name='api' resource_name='layers_with_favorite' %}"+ '?group='+ '{{ object.id }}';
@@ -351,174 +547,11 @@
                         //console.log(JSON.stringify(jsondata));
 
                         var data = eval(jsondata.objects);
-                        var output='';
-                      $.each(data, function(i, item) {
-                        //alert(item.date);
-                            output +='<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">';
-                            output +='<div class="grid-container lmd">';
-                            output +='{% if request.user.is_superuser %}';
-                            output +='<div class="checkbox pull-right"><label><input type="checkbox" id="'+item.id+'" value="'+item.id+'"></label></div></br>';
-                            output += '{% endif %}';
-                            output +='<div class="avater">';
-                            output +='<div class="avater-img">';
-                            output +='<a class="avater-img-mid" href="'+item.detail_url+'" target="_self">';
-                                    if(item.thumbnail_url){
-                            output +='<img src="' +item.thumbnail_url+ '" alt="" class="group-logo" />';
-                                    }
-                                    else{
-                            output +='<img src="/static/geonode/img/missing_thumb.png" alt="" class="group-logo" />';
-                                        }
-                            output +='</a>';
-                            output +='</div>';
-                            output +='</div>';
-                            output +='<div class="information">';
-                            output +='<div class="top-content text-center">';
-                            output +='<div class="title">';
-                            output +='<a href="'+item.detail_url+'" target="_self" title="' +item.title+ '">';
-                                    if (item.title.length >= 25){
-                            output +=''+item.title.slice(0,15)+'.....';
-                                    }else{
-                            output +=''+ item.title +'';
-                                    }
-                            output +='</a>';
-                            output +='</div>';
-                            output +='<div class="category">';
-                                    if(item.category__gn_description){
-                            output +='' +item.category__gn_description+ '';
-                                    }
-                                    else{
-                            output +='Not provided';
-                                    }
-                            output +='</div>';
-                            output +='<div class="details">';
-                                    if (item.abstract.length >= 250){
-                            output +=''+item.abstract.slice(0,220)+'.....';
-                                    }else{
-                            output +=''+ item.abstract+ '';
-                                    }
-                            output +='</div>';
-                            output +='</div>';
-                            output +='<div class="summery">';
-                            output +='<div class="item-items">';
-                            output +='<ul class="list-inline lmd">';
-                            output +='<li>';
-                            output +='<a href="/people/profile/'+ item.owner__username +'" title="'+item.resource_type+' owner">';
-                            output +='<i class="fa fa-user"></i> ';
-                            output +=''+ item.owner__username +'';
-                            output +='</a>';
-                            output +='</li>';
-                            output +='<li>';
-                            output +='<a href="' +item.detail_url+ '" title="'+item.resource_type+' information">';
-                            output +='<i class="fa fa-calendar-o"></i> ';
+                        layerList = data;
+                        var output=getLayerDataOutput(data);
 
-                            output +='</a>';
-                            output +='</li>';
-                            output +='<li>';
-                            output +='<a href="' +item.detail_url+ '#info" title="'+item.resource_type+' popular count">';
-                            output +='<i class="fa fa-eye"></i> ';
-                            output +=''+ item.popular_count +'';
-                            output +='</a>';
-                            output +='</li>';
-                            output +='<li>';
-                            output +='<a href="'+ item.detail_url +'#share" title="'+item.resource_type+' share count">';
-                            output +='<i class="fa fa-share"></i> ';
-                            output +=''+ item.share_count +'';
-                            output +='</a>';
-                            output +='</li>';
-                            output +='<li>';
-                            output +='<a href="'+ item.detail_url+'#rate" title="'+item.resource_type+' rating">';
-                            output +='<i class="fa fa-star"></i> ';
-                            output +=''+ item.rating +'';
-                            output +='</a>';
-                            output +='</li>';
-                            output +='</ul>';
-                            output +='</div>';
-                            output +='</div>';
-                            output +='</div>';
-
-                            output +='<div class="bottom-content">';
-                            output +='<div class="row">';
-                            output +='<div class="profile-items text-center">';
-                            output +='<ul class="list-inline">';
-                              {% if request.user.is_manager_of_any_group %}
-                              if(item.can_make_featured){
-                              if(item.featured){
-                            output +='<li ng-click=""class="col-md-6">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
-                            output +='data-layerID="'+item.id+'" dataname="'+item.can_make_featured+'" data-statusID="false" onclick="featuredorgpage('+item.id+',false);" >';
-                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
-                            output +='Unfeatured';
-                            output +='</button>';
-                            output +='</li>';
-                                }else{
-                            output +='<li class="col-md-6" id="featured_chng">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" dataname="{{item.group}}" onclick="featuredorgpage('+item.id+',true);" data-layerID="'+item.id+'" data-statusID="true">';
-                            output +='<i class="fa fa-heart-o"></i>';
-                            output +='Make Featured';
-                            output +='</button>';
-                            output +='</li>';
-                                }
-                                if(item.favorite){
-                            output +='<li class="col-md-6">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;"';
-                            output +='data-favouriteID="{{item.id}}" data-favouriteStatus="false">';
-                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
-                            output +='Unfavorite';
-                            output +='</button>';
-                            output +='</li>';
-                                }else{
-                            output +='<li class="col-md-6">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
-                            output +='<i class="fa fa-heart-o"></i>';
-                            output +='Add to favorite';
-                            output +='</button>';
-                            output +='</li>';
-                                }
-                              }
-                              else{
-                              if(item.favorite){
-                            output +='<li class="col-md-12">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="'+item.id+'" data-favouriteStatus="false">';
-                            output +='<i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
-                            output +='Unfavorite';
-                            output +='</button>';
-                            output +='</li>';
-                              }else{
-                            output +='<li class="col-md-12">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
-                            output +='  <i class="fa fa-heart-o"></i>';
-                            output +=' Add to favorite';
-                            output +=' </button>';
-                            output +='</li>';
-                              }
-                              }
-                            {% else %}
-                            {% if user.is_authenticated %}
-                              if(item.favorite){
-                            output +='<li class="col-md-12">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',false);" style="background:#d0d0d0;border:none;color:#000;font-size:12px;padding:5px;" href="" data-favouriteID="'+item.id+'" data-favouriteStatus="false">';
-                            output +='    <i class="fa fa-heart-o" style="border:none;color:#000;"></i>';
-                            output +='    Unfavorite';
-                            output +='</button>';
-                            output +='</li>';
-                              }else{
-                            output +='<li class="col-md-12">';
-                            output +='<button class="btn btn-gd-primary-all btn-block" onclick="favoriteorgpage('+item.id+',true);" data-favouriteID="'+item.id+'" data-favouriteStatus="true">';
-                            output +='  <i class="fa fa-heart-o"></i>';
-                            output +=' Add to favorite';
-                            output +=' </button>';
-                            output +='</li>';
-                              }
-                            {% endif %}
-                            {% endif %}
-                            output +='</ul>';
-                            output +='</div>';
-                            output +='</div>';
-                            output +='</div>';
-                            output +='</div>';
-                            output +='</div>';
-                      });
-                    $("#search-content-layers").append(output);
+                        $("#layer-list-div").empty();
+                        $("#layer-list-div").append(output);
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         console.log("error");
@@ -652,7 +685,7 @@
                   $.each(data, function(i, item) {
                     //alert(item.activity_class);
                     output+='<div class="row" id="shownextact">';
-                    output+='<div class="col-md-1" style="padding:0px;">';
+                    output+='<div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px;">';
                     output+='<div class="history-lines">';
                     output+='<div class="history-lines-icon">';
                                    if(item.activity_class == 'map'){
@@ -671,7 +704,7 @@
                     output+='</div>';
                     output+='</div>';
                     output+='</div>';
-                    output+='<div class="col-md-11" style="padding:0px;margin-top: 10px;">';
+                    output+='<div class="col-md-11 col-sm-11 col-xs-11" style="padding:0px;margin-top: 10px;">';
                     output+='<div class="gd-history-content" >';
                     output+='<div class="'+ item.activity_class +'">';
 

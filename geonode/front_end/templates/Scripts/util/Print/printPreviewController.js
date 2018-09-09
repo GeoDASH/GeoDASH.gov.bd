@@ -1,17 +1,32 @@
 ﻿(function() {
     'use strict';
-
+    // '$modalInstance',
     appModule
         .controller('printPreviewController', printPreviewController);
 
-    printPreviewController.$inject = ['$scope', 'mapService', '$modalInstance', '$rootScope', 'mapTools', '$window', '$http'];
+    printPreviewController.$inject = ['$scope', 'mapService', 'mapTools', '$window', '$http', 'surfToastr'];
 
-    function printPreviewController($scope, map, $modalInstance, $rootScope, mapTools, $window, $http) {
+    function printPreviewController($scope, map, mapTools, $window, $http, surfToastr) {
         var self = this;
 
-        function initialize(){
+        function findClosestScale(l, h, scale) {
+            if (l >= h) {
+                return l;
+            }
+            let mid = (l + h) / 2;
+            let mid_scale = Number(self.scales[mid].value);
+            if (mid_scale == scale) {
+                return mid;
+            } else if (mid_scale < scale) {
+                return findClosestScale(mid + 1, h, scale);
+            } else {
+                return findClosestScale(l, mid - 1, scale);
+            }
+        }
+
+        function initialize() {
             map.getPrintingConfiguration()
-                .then(function(res){
+                .then(function(res) {
                     var metaInfo = map.getMeta();
                     self.mapTitle = metaInfo.title;
                     self.comments = metaInfo.abstract;
@@ -22,24 +37,66 @@
                     self.scales = res.data.scales;
 
                     self.selectedLayout = self.layouts[0].name;
-                    self.selectedScale = self.scales[0].value;
-                    self.selectedDpi  = self.dpis[0].value;
+                    self.selectedDpi = self.dpis[0].value;
                     self.includeLegend = true;
-            });
+                    let scale = getScaleFromResolution();
+                    self.selectedScaleIndex = findClosestScale(0, self.scales.length - 1, parseInt(scale));
+                    self.selectedScale = self.scales[self.selectedScaleIndex].value;
+                    self.OnScaleChange(self.selectedScale);
+                });
         }
 
-        self.init = function(){
-            initialize();
+        var _map = map.getMap();
+        var _view = _map.getView();
+        var _inches_per_unit = {
+            'm': 39.37,
+            'dd': 4374754
+        };
+        var _dpi = (function getDPI() {
+            var div = document.createElement("div");
+            div.style.height = "1in";
+            div.style.width = "1in";
+            div.style.top = "-100%";
+            div.style.left = "-100%";
+            div.style.position = "absolute";
+
+            document.body.appendChild(div);
+
+            var result = div.offsetHeight;
+
+            document.body.removeChild(div);
+
+            return result;
+
+        }());
+
+        function getScaleFromResolution() {
+            var scale = _inches_per_unit[_map.getView().getProjection().getUnits()] * _dpi * _view.getResolution();
+            return scale;
+        }
+
+        function getResolutionFromScale(scale) {
+            var units = _map.getView().getProjection().getUnits();
+            var dpi = _dpi;
+            var mpu = ol.proj.METERS_PER_UNIT[units];
+            var resolution = scale / (mpu * 39.37 * dpi);
+            return resolution;
+        }
+
+        self.OnScaleChange = function(scale) {
+            let resolution = getResolutionFromScale(scale);
+            // _view.setResolution(resolution);
+            _view.setZoom(0);
+            while (_view.getResolution() > resolution) {
+                _view.setZoom(_view.getZoom() + 1);
+            }
+            _view.setZoom(_view.getZoom() - 1);
+
         };
 
-        var mapInstance = map.olMap;
-
-        mapInstance.once('postcompose', function(event) {
-            var canvas = event.context.canvas;
-            // $rootScope.mapImage.shapeUrl = canvas.toDataURL('image/png');
-        });
-
-        mapInstance.renderSync();
+        self.init = function() {
+            initialize();
+        };
 
         $scope.legendPositions = ['top', 'right', 'bottom', 'left'];
 
@@ -89,10 +146,10 @@
         };
 
         function mapLayers(baseMap, layers) {
-           
+
             var baseMap = {
                 "baseURL": baseMap.url,
-                "customParams":baseMap.customParams,
+                "customParams": baseMap.customParams,
                 "opacity": 1,
                 "type": baseMap.type || "xyz",
                 "maxExtent": [-20037508.3392, -20037508.3392,
@@ -139,7 +196,7 @@
                     ],
                     "format": "image/png",
                     "styles": [
-                        ""
+                        layer.getStyle().Name
                     ],
                     "customParams": {
                         "TRANSPARENT": true,
@@ -150,17 +207,56 @@
 
             return mappedLayers;
         }
+
         $scope.pageSize = 'LEGAL';
+
+        function getLegendsConf(layers) {
+            var legends = [];
+            for (var k in layers) {
+                var layer = layers[k];
+                let options = {
+                    request: 'GetLegendGraphic',
+                    width: '20',
+                    height: '20',
+                    layer: layer.Name,
+                    style: layer.getStyle().Name,
+                    transparent: 'true',
+                    format: 'image%2Fpng',
+                    legend_options: 'fontAntiAliasing%3Atrue%2CfontSize%3A11%3BfontName%3AArial',
+                    SCALE: self.selectedScale,
+
+                };
+                let params = '';
+                for (let k in options) {
+                    params += k + '=' + options[k] + '&';
+                }
+                let uri = $window.GeoServerTileRoot + "?" + params;
+
+                legends.push({
+                    "name": "",
+                    "classes": [{
+                        "name": "",
+                        "icons": [
+                            uri
+                        ]
+                    }]
+                });
+            }
+            return legends;
+        }
         self.downloadMap = function() {
             var baseMap = mapTools.baseMap.getBaseMap();
-            console.log(map);
+            if (baseMap.groupName === 'Google') {
+                surfToastr.error('Can not print with google map', 'Error');
+                return;
+            }
             // window.print();
             var data = {
                 "units": "m",
                 "srs": "EPSG:3857",
                 "layout": self.selectedLayout,
                 "dpi": self.selectedDpi,
-                "outputFilename": "GeoExplorer-print",
+                "outputFilename": self.mapTitle || "GeoDASH-print",
                 "mapTitle": self.mapTitle,
                 "comment": self.comments,
                 "layers": mapLayers(baseMap, map.getLayers()),
@@ -168,17 +264,23 @@
                     "center": map.getCenter(),
                     "scale": self.selectedScale,
                     "rotation": 0
-                }]
+                }],
             };
-
-            $http.post('/geoserver/pdf/create.json', data )
+            if (self.includeLegend) {
+                data["legends"] = getLegendsConf(map.getLayers());
+            }
+            $http.post('/geoserver/pdf/create.json', data)
                 .then(function(res) {
                     $window.location = res.data.getURL;
                 });
         };
 
         $scope.closeDialog = function() {
-            $modalInstance.close();
+            this.$close();
+        };
+
+        $scope.hidePrint = function() {
+            $rootScope.showPrintingProperties = false;
         };
     }
 })();

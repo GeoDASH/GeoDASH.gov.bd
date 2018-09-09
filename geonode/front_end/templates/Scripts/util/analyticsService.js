@@ -46,7 +46,7 @@
             return deferred.promise;
         }
         angular.isUndefinedOrNull = function(val) {
-            return angular.isUndefined(val) || val === null 
+            return angular.isUndefined(val) || val === null;
         };
 
         function saveGISToLocalStorage(data){
