@@ -2773,12 +2773,7 @@ ul.termsuseandcondition li {
 
  }
 @media (max-width: 767px) {
-  .gd-slider{
-    height:200px;
-  }
-  .gd-slider .item img{
-    height:200px;
-  }
+ 
   .gd-slider .item .gd-slider-title{
     font-size:16px;
     margin-left:70px;
@@ -3993,6 +3988,12 @@ text-align: left;
 @media (max-width: 1280px) {
     .container{
       width: 100%;
+    }
+   }
+
+   @media (max-width: 1000px) {
+    #carousel-home{
+      display: none;
     }
    }
 
