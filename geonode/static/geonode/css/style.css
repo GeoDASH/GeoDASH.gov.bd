@@ -261,7 +261,7 @@ ul.user-actions li a .fa{
     text-align: left;
 }
 .grid-container .top-content .avater{
-    height: 265px;
+    height: 120px;
 
 }
 .grid-container .top-content .avater a{
@@ -2773,12 +2773,7 @@ ul.termsuseandcondition li {
 
  }
 @media (max-width: 767px) {
-  .gd-slider{
-    height:200px;
-  }
-  .gd-slider .item img{
-    height:200px;
-  }
+ 
   .gd-slider .item .gd-slider-title{
     font-size:16px;
     margin-left:70px;
@@ -3996,6 +3991,12 @@ text-align: left;
     }
    }
 
+   @media (max-width: 1000px) {
+    #carousel-home{
+      display: none;
+    }
+   }
+
    @media (max-width: 980px) {
     .footer-nav{
      float: none;
@@ -4138,4 +4139,5 @@ text-align: left;
         margin-bottom: 15px;
     }
 }
+
 /* Responsive End */

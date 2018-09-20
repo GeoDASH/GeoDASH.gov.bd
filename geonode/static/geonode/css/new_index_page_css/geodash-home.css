@@ -1302,3 +1302,26 @@ ul.offer-list li {
 	margin-top: 0;
 }
 }
+
+@media (max-width: 780px) {
+	.cd-timeline__container{
+		width: 480px !important;
+	}
+	.cd-timeline__content{
+			margin-left: 80px;
+	}
+	.layers-timeline-circle
+	{
+	margin-right: 80px !important;
+	}
+	.cd-timeline__date
+	{
+		left:187px;
+	}
+	.cd-timeline__block:nth-child(2n) .cd-timeline__date
+	{
+		right: 187px;
+	}
+
+
+ }
