@@ -1325,3 +1325,13 @@ ul.offer-list li {
 
 
  }
+
+ @media (max-width: 465px) {
+	
+			.count p
+			{
+					font-size: 11px;
+			}
+	
+	
+	}
