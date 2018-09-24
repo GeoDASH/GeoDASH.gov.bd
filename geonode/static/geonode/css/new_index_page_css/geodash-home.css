@@ -1391,3 +1391,11 @@ ul.offer-list li {
 		
 		
 		}
+
+
+		@media (max-width: 992px) {
+			#vAlign {
+				 display: block;
+			}
+	
+	}
