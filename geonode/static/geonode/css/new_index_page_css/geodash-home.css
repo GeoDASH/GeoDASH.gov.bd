@@ -1388,6 +1388,10 @@ ul.offer-list li {
 		{
 			margin-top: 0;
 		}
+
+		body {
+			padding-bottom: 177px !important;
+	}
 		
 		
 		}
