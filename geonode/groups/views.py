@@ -28,6 +28,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 
+from django.contrib import messages
+
 
 from actstream.models import Action
 from guardian.models import UserObjectPermission
@@ -54,6 +56,9 @@ def group_create(request):
             form.save_m2m()
             user = Profile.objects.get(id=request.POST['admin'])
             group.join(user, role="manager")
+            confirm_message = 'Created new organization "{0}" successfully'.format(group.title)
+            messages.info(
+                request, confirm_message)
             return HttpResponseRedirect(
                 reverse(
                     "group_detail",

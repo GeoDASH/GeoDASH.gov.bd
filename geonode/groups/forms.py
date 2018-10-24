@@ -38,7 +38,7 @@ class GroupForm(forms.ModelForm):
         widget=forms.HiddenInput,
         required=False)
 
-    admin = forms.ModelChoiceField(queryset=Profile.objects.all().filter(is_active=True),
+    admin = forms.ModelChoiceField(queryset=Profile.objects.all().filter(is_active=True).order_by('username'),
         help_text=_('select an admin for this organization'),
         label=_('Organization Admin'),
 

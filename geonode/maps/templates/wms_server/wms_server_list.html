@@ -27,7 +27,7 @@
                           <form id=""  method="post"  action="">
                             {% csrf_token %}
                             <div class="row topic-cat-list">
-                                <div class="col-md-2" style="color:#fff;">
+                                <div class="col-md-1" style="color:#fff;">
                                     <h4 >No.</h4>
                                 </div>
                                 <div class="col-md-3" style="color:#fff;">
@@ -36,7 +36,7 @@
                                 <div class="col-md-2" style="color:#fff;">
                                     <h4>Ptype</h4>
                                 </div>
-                                <div class="col-md-3" style="color:#fff;">
+                                <div class="col-md-4" style="color:#fff;">
                                     <h4>URL</h4>
                                 </div>
                                 <div class="col-md-2" style="color:#fff;">
@@ -45,7 +45,7 @@
                             </div>
                               {% for data in object_list %}
                                 <div class="row topic-cat-list-data">
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         {{ forloop.counter }}
                                     </div>
                                     <div class="col-md-3">
@@ -54,7 +54,7 @@
                                     <div class="col-md-2">
                                         {{ data.ptype }}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         {{ data.url }}
                                     </div>
                                     <div class="col-md-2">
