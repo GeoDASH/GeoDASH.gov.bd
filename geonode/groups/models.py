@@ -51,8 +51,8 @@ class GroupProfile(models.Model):
                         'such as a mailing list, shared email, or exchange group.')
 
     group = models.OneToOneField(Group)
-    title = models.CharField(_('Title'), max_length=200)
-    slug = models.SlugField(unique=True)
+    title = models.CharField(_('Title'), max_length=500)
+    slug = models.SlugField(unique=True, max_length=550)
     logo = models.ImageField(_('Logo'), upload_to="people_group", blank=True)
     description = models.TextField(_('Description'))
 
