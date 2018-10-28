@@ -315,7 +315,7 @@ GEONODE_CONTRIB_APPS = (
 # GEONODE_APPS = GEONODE_APPS + GEONODE_CONTRIB_APPS
 
 INSTALLED_APPS = (
-
+    'geonode.modelhack',
     'modeltranslation',
 
     # Boostrap admin theme
