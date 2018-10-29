@@ -1244,6 +1244,83 @@
                 reInityourlabsAutocomplete(url)
                 //alert(capacityValue);
          });
+
+
+        //...............................................................
+        //jahangir changes for second search
+        // this is for second search box
+
+
+        function reInityourlabsAutocomplete2(URL){
+            $('#search_input2').yourlabsAutocomplete('destroy');
+            autocomplete2 = $('#search_input2').yourlabsAutocomplete({
+                url: URL,
+                choiceSelector: 'span',
+                hideAfter: 200,
+                minimumCharacters: 1,
+                placeholder: '{% trans 'Type your search here ...' %}',
+                appendAutocomplete: $('#search_input2'),
+                autoHilightFirst: false
+            });
+            $('#search_input2').bind('selectChoice', function(e, choice, autocomplete2) {
+                if(choice[0].children[0] == undefined) {
+                    $('#search_input2').val($(choice[0]).text());
+                    $('#search2').submit();
+                }
+            });
+        }
+
+
+         $(document).ready(function () {
+
+                var compPar = location.pathname;
+                if(compPar === '/groups/')
+                {
+                     url = '{% url "autocomplete_light_autocomplete" "GroupProfileAutocomplete" %}';
+                    $('#search_input2').attr('placeholder','Search organizations');
+                    $('#search2').attr('action', '/searchorg/');
+                    reInityourlabsAutocomplete2(url)
+
+                }
+                else if (compPar === '/layers/')
+                {
+                    url = '{% url "autocomplete_light_autocomplete" "LayerAutocomplete" %}';
+                    $('#search_input2').attr('placeholder','Search Layers');
+                    $('#search2').attr('action', '/searchlayers/');
+                    reInityourlabsAutocomplete2(url)
+
+                }
+                else if(compPar === '/maps/')
+                {
+                    url = '{% url "autocomplete_light_autocomplete" "MapAutocomplete" %}';
+                    $('#search_input2').attr('placeholder','Search Maps');
+                    $('#search2').attr('action', '/searchmaps/');
+                    reInityourlabsAutocomplete2(url)
+
+                }
+                else if(compPar === '/documents/')
+                {
+                    url = '{% url "autocomplete_light_autocomplete" "DocumentAutocomplete" %}';
+                    $('#search_input2').attr('placeholder','Search documents');
+                    $('#search2').attr('action', '/searchdocuments/');
+                    reInityourlabsAutocomplete2(url)
+
+                }
+                else if(compPar === '/people/')
+                {
+                    url = '{% url "autocomplete_light_autocomplete" "ProfileAutocomplete" %}';
+                    $('#search_input2').attr('placeholder','Search users');
+                    $('#search_input2').attr('name', 'username__icontains');
+                    $('#search2').attr('action', '/searchuser/');
+                    reInityourlabsAutocomplete2(url)
+
+                }
+
+         })
+
+        //............................................................
+
+
         $(document).ready(function (){
             $("#lang-selection").click(function(){
                 var lang = $("#set-language-of-site #langOfSite").val();

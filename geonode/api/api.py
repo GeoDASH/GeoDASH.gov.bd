@@ -465,7 +465,7 @@ class ProfileResource(TypeFilteredResource):
             # end
 
     class Meta:
-        queryset = get_user_model().objects.exclude(username='AnonymousUser')
+        queryset = get_user_model().objects.filter(is_active=True).exclude(username='AnonymousUser')
         resource_name = 'profiles'
         allowed_methods = ['get']
         ordering = ['username', 'date_joined']
@@ -854,6 +854,9 @@ class MetaFavorite:
     authorization = GeoNodeAuthorization()
     allowed_methods = ['get']
     ordering = ['date', 'title', 'popular_count']
+    filtering = {
+        'title': ALL,
+    }
     fields = [
         'id',
         'uuid',

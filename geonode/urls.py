@@ -112,6 +112,9 @@ urlpatterns = patterns('',
                        url(r'^search/$', TemplateView.as_view(template_name='search/search.html'), name='search'),
                        url(r'^searchuser/$', TemplateView.as_view(template_name='search/searchuser.html'), name='searchuser'),
                        url(r'^searchorg/$', TemplateView.as_view(template_name='search/searchorg.html'), name='searchorg'),
+                       url(r'^searchlayers/$', TemplateView.as_view(template_name='search/search_layers.html'), name='searchlayers'),
+                       url(r'^searchmaps/$', TemplateView.as_view(template_name='search/search_maps.html'), name='searchmaps'),
+                       url(r'^searchdocuments/$', TemplateView.as_view(template_name='search/search_documents.html'), name='searchdocuments'),
 
                        # user notification url
                        url(r'^notifications/', include('notify.urls', 'notifications')),

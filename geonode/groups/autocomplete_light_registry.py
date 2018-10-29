@@ -29,5 +29,6 @@ class GroupProfileAutocomplete(autocomplete_light.AutocompleteModelTemplate):
 autocomplete_light.register(
     GroupProfile,
     GroupProfileAutocomplete,
+    order_by=['title'],
     search_fields=['title'],
 )

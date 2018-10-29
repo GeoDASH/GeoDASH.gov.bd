@@ -25,6 +25,10 @@ from models import Layer
 class LayerAutocomplete(autocomplete_light.AutocompleteModelTemplate):
     choice_template = 'autocomplete_response.html'
 
+    def choices_for_request(self):
+        self.choices = self.choices.filter(status='ACTIVE')
+        return super(LayerAutocomplete, self).choices_for_request()
+
 
 autocomplete_light.register(
     Layer,

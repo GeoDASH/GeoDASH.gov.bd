@@ -26,12 +26,13 @@ class ProfileAutocomplete(autocomplete_light.AutocompleteModelTemplate):
     choice_template = 'autocomplete_response.html'
 
     def choices_for_request(self):
-        self.choices = self.choices.exclude(username='AnonymousUser')
+        self.choices = self.choices.filter(is_active=True).exclude(username='AnonymousUser')
         return super(ProfileAutocomplete, self).choices_for_request()
 
 
 autocomplete_light.register(
     Profile,
     ProfileAutocomplete,
+    order_by=['username'],
     search_fields=['first_name', 'last_name', 'email', 'username'],
 )

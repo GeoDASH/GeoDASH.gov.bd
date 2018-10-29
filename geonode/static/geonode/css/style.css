@@ -3983,6 +3983,10 @@ footer {
 {
 text-align: left;
 }
+.yourlabs-autocomplete
+{
+    top: 35px !important;
+}
 
 /* Responsive start */
 @media (max-width: 1280px) {

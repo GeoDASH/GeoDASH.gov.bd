@@ -13,7 +13,29 @@
 <div class="d-title">
     
                                     <div class="pull-right">
-    
+
+                                       <div class="btn-group" role="group" aria-label="tools">
+                                            <form class="top-site-search" id="search2" action="{% url "searchdocuments" %}">
+                                                <div class="input-group">
+                                                    {% if HAYSTACK_SEARCH %}
+                                                        <input id="search_input2" type="text" placeholder="" name="q"
+                                                        style="height: 38px;border-radius:0;" class="form-control">
+                                                        {% else %}
+                                                    <input id="search_input2" type="text" placeholder="Search Documents"
+                                                       style="height: 38px;border-radius:0;" class="form-control"
+                                                       name="title__icontains">
+                                                    {% endif %}
+
+                                                <span class="input-group-btn">
+                                                  <button class="btn btn-primary" type="submit"
+                                                          style="padding: 8px 12px;font-size: 14px;">
+                                                      <i class="fa fa-search"></i>
+                                                  </button>
+                                                </span>
+                                                </div>
+
+                                            </form>
+                                        </div>
                                        
                                         
                                                     <div class="btn-group" role="group" aria-label="tools">

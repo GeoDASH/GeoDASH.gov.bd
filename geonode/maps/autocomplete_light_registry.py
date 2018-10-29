@@ -25,6 +25,10 @@ from models import Map
 class MapAutocomplete(autocomplete_light.AutocompleteModelTemplate):
     choice_template = 'autocomplete_response.html'
 
+    def choices_for_request(self):
+        self.choices = self.choices.filter(status='ACTIVE')
+        return super(MapAutocomplete, self).choices_for_request()
+
 
 autocomplete_light.register(
     Map,
