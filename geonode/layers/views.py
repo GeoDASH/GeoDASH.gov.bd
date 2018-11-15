@@ -261,7 +261,7 @@ def layer_upload(request, template='upload/layer_upload.html'):
                     data_dict = reprojection(tmp_dir, str(request.FILES['base_file'].name))
                 else:
                     if settings.ALLOW_NON_STANDARD_PROJECTION:
-                        data_dict = reprojection(tmp_dir, shp_file_name)
+                        data_dict = reprojection(tmp_dir, str(request.FILES['base_file'].name))
                     else:
                         out['success'] = False
                         out['errors'] = "Geodash can not detect projection for the uploaded layer" \
