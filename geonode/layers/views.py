@@ -233,14 +233,17 @@ def layer_upload(request, template='upload/layer_upload.html'):
                                          "and it will be converted to epsg:4326"
                     data_dict = reprojection(tmp_dir, shp_file_name)
                 else:
-                    out['success'] = False
-                    out['errors'] = "Geodash can not detect projection for the uploaded layer" \
-                                    "Please upload layer with known projection"
-                    status_code = 400
-                    return HttpResponse(
-                        json.dumps(out),
-                        content_type='application/json',
-                        status=status_code)
+                    if settings.ALLOW_NON_STANDARD_PROJECTION:
+                        data_dict = reprojection(tmp_dir, shp_file_name)
+                    else:
+                        out['success'] = False
+                        out['errors'] = "Geodash can not detect projection for the uploaded layer" \
+                                        "Please upload layer with known projection"
+                        status_code = 400
+                        return HttpResponse(
+                            json.dumps(out),
+                            content_type='application/json',
+                            status=status_code)
 
             if str(file_extension) == 'shp':
 
@@ -257,14 +260,17 @@ def layer_upload(request, template='upload/layer_upload.html'):
                                          "and it will be converted to epsg:4326"
                     data_dict = reprojection(tmp_dir, str(request.FILES['base_file'].name))
                 else:
-                    out['success'] = False
-                    out['errors'] = "Geodash can not detect projection for the uploaded layer" \
-                                    "Please upload layer with known projection"
-                    status_code = 400
-                    return HttpResponse(
-                        json.dumps(out),
-                        content_type='application/json',
-                        status=status_code)
+                    if settings.ALLOW_NON_STANDARD_PROJECTION:
+                        data_dict = reprojection(tmp_dir, shp_file_name)
+                    else:
+                        out['success'] = False
+                        out['errors'] = "Geodash can not detect projection for the uploaded layer" \
+                                        "Please upload layer with known projection"
+                        status_code = 400
+                        return HttpResponse(
+                            json.dumps(out),
+                            content_type='application/json',
+                            status=status_code)
 
         form = NewLayerUploadForm(request.POST, request.FILES)
         tempdir = None

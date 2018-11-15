@@ -872,13 +872,17 @@ class SafeDict(dict):
 
 def get_epsg_code(file):
     prj_file = open(file, 'r')
-    request_string = "http://prj2epsg.org/search.json?terms=" + prj_file.read()
-    prj_file.close()
-    r = requests.get(request_string)
-    if r.status_code != 200:
+    try:
+        request_string = "http://prj2epsg.org/search.json?terms=" + prj_file.read()
+    except Exception as e:
         return ''
-
-    if len(r.json()['codes']) == 1:
-        return r.json()['codes'][0]['code']
     else:
-        return ''
+        prj_file.close()
+        r = requests.get(request_string)
+        if r.status_code != 200:
+            return ''
+
+        if len(r.json()['codes']) == 1:
+            return r.json()['codes'][0]['code']
+        else:
+            return ''
