@@ -17,37 +17,38 @@
     margin: 0 auto;
 }
 .carousel-caption{
-    top: 30%;
-    left: 60%;
+    top: 22%;
+    left: 0;
+    right: 0;
     margin: 0 auto;
-    width: 1170px;
+    width: 800px;
     overflow: hidden;
 }
 .gd-slider-title{
-    font-size:36px;
+    font-size:45px;
     color:#fff;
     font-weight:bold;
-    text-align:left;
+    text-align:center;
     /*margin-top:-45%;
     padding-right:15%;
     text-align:right;*/
 }
 .gd-slider-msg{
-    text-align:left;
-    font-size:23px;
+    text-align:center;
+    font-size:27px;
     color:#fff;
     /*margin: 0px auto;
     padding-left:60%;*/
 }
 .gd-slider-btn {
-    text-align: left;    
+    text-align: center;    
     margin-top: 20px;
 }
 
 #gd-stastic{
     color:#FFF;
     width:100%;
-    background:#3896e2;
+    background:#00489c;
 }
 .gd-stastic-control{
     /*margin:0px 120px;*/
@@ -59,7 +60,7 @@
 #gd-stastic .gd-stastic-control li {
     list-style: none;
     display: inline-table;
-    border-right:1px solid #74b6eb;
+    border-right:1px solid #003879;
     padding: 10px 50px;
 }
 #gd-stastic .gd-stastic-control li:last-child {
@@ -69,7 +70,7 @@
     color: #FFF;
 }
 #gd-stastic .gd-stastic-control li a .title{
-    color: #FFF;
+    color: #66ccff;
     font-size: 25px;
     font-weight: 600;
 }
@@ -165,9 +166,9 @@
 /*---Geo dash featured start---*/
 #gd-featurd-maps{
     color:#fff;
-    background: #f7f7f7;
+    background: #fff;
     /*margin-bottom: 20px;*/
-    padding-bottom: 20px;
+    padding: 50px 0;
 }
 #gd-featurd-maps .header-title{
     color:#6e6b6b;
@@ -179,16 +180,16 @@
     font-size: 18px;
 }
 #gd-featurd-maps .gd-featurd-maps-content .gd-featurd-maps-container {
-    /*background: #FFF; */
-    background: #f7f7f7;
-    border-radius: 3px;
-    margin-bottom: 20px;
-    padding-top: 22px;
-     /*
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
-    box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
-    */
+   /*background: #FFF; */
+   background: #f7f7f7;
+   border-radius: 3px;
+   margin-bottom: 20px;
+   padding-top: 22px;
+    /*
+   -webkit-box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
+   -moz-box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
+   box-shadow: 0px 2px 5px 0px rgba(224,217,224,1);
+   */
 
 }
 
@@ -319,7 +320,7 @@
 #gd-latestnews{
     height:auto;
     background:url('../images/updatenews.png');
-    padding-bottom:30px;
+    padding:50px 0;
 }
 #gd-latestnews .header-title{
     color:#fff;
@@ -332,7 +333,7 @@
 }
 #gd-latestnews-content{
     border:none;
-    margin: 20px 120px;
+    margin: 20px 0;
     border-radius: 3px;
 }
 @media (max-width: 767px) {
@@ -445,23 +446,23 @@
 
 #gd-featurehighlight{
     background:#f7f7f7;
-    padding-bottom:0px;
+    padding:50px 0px;
     min-height:450px;
 }
 #gd-featurehighlight .header-title{
-    color:#6e6b6b;
+    color:#fff;
     text-transform: uppercase;
     font-size: 30px;
     padding-bottom:30px;
     font-family:Titillium Web;
 }
 #gd-featurehighlight .header-sub-title{
-    color:#333333;
+    color:#fff;
     font-size: 18px;
 }
 .gd-featurehighlight-main{
     border:none;
-    margin: 20px 120px;
+    margin: 50px 0;
     /*margin: 0 25px 0 97px;*/
    /* margin:20px 0px; */
 }
@@ -472,7 +473,7 @@
   }
 
  }
-#gd-featurehighlight-left{
+ #gd-featurehighlight-left{
     /*padding: 20px;*/
     text-align:left;
 }
@@ -480,14 +481,14 @@
     color:#6e6b6b;
     text-transform: uppercase;
     text-align:left;
-    font-size: 25px;
+    font-size: 30px;
     margin-bottom: 10px;
     font-family:Titillium Web;
 }
 #gd-featurehighlight-left .description{
-    color:#6e6b6b;
+    color:#fff;
     text-align:left;
-    font-size:13px;
+    font-size:17px;
 }
 #gd-featurehighlight-right{
 
@@ -499,8 +500,7 @@
 
 #gd-interprobability{
     background:#21d0e8;  /*2c3e50*/
-    padding-top:20px;
-    /*padding-bottom:50px;*/
+    padding:50px 0;
     min-height:450px;
 }
 .gd-interprobability-main{
@@ -511,7 +511,7 @@
 }
 @media (min-width: 768px) {
   .gd-interprobability-main{
-    margin-left:100px;
+    margin-left:0;
   }
 
  }
@@ -519,7 +519,6 @@
 #gd-interprobability-right{
     /*padding:0px 80px 0px 0px;*/
     text-align:right;
-    margin-right: 120px;
 }
 @media (max-width: 767px) {
   #gd-interprobability-right{
@@ -528,8 +527,8 @@
   }
 
  }
-#gd-interprobability-right .title{
-    color:#fff;
+ #gd-interprobability-right .title{
+    color:#4d4d4d;
     text-transform: uppercase;
     text-align:left;
     font-size:30px;
@@ -538,9 +537,8 @@
     font-family:Titillium Web;
 }
 #gd-interprobability-right .description{
-    color:#fff;
-    text-align:center;
-    font-size:13px;
+    color:#4d4d4d;
+    font-size:17px;
 }
 #gd-interprobability-left{
 
@@ -562,14 +560,14 @@
 
 #gd-makepretty{
     background:#f7f7f7;
-    padding-top:30px;
-    min-height:450px;
+    padding:50px 0;
+    min-height:792px;
+    max-height:792px;
 }
 .gd-makepretty-main{
     border:none;
     /*margin-top:0px;
     margin-left:0px;*/
-    margin-left:100px;
 }
 @media (max-width: 767px) {
   .gd-makepretty-main{
@@ -579,31 +577,33 @@
 
  }
 #gd-makepretty-right{
-    text-align:left;
-    margin-right: 0px;
+    text-align:center;
+    margin: 0 auto;
+    width: 90%;
+    height: 300px;
 }
 #gd-makepretty-right .title{
-    color:#6e6b6b;
+    color:#fff;
     text-transform: uppercase;
-    text-align:left;
-    font-size:25px;
+    text-align:center;
+    font-size:30px;
     margin:auto;
     padding-top: 35px;
     font-family:Titillium Web;
 }
 #gd-makepretty-right .description{
-    color:#6e6b6b;
-    text-align:left;
-    font-size:13px;
-    padding-top:55px;
+    color:#bbdaff;
+    text-align:center;
+    font-size:17px;
+    margin-bottom: 30px;
 }
 #gd-makepretty-left{
     min-width:452px;
     margin:auto;
 }
 #gd-makepretty-left img{
-    max-width:452px;
-    border:none;
+    border: 3px solid #002559;
+    max-width: 80%;
 }
 @media (max-width: 767px) {
   #gd-makepretty-left img{
@@ -621,7 +621,6 @@
     padding-bottom:10px;
     /*padding-left: 51px;*/
 }
-
 
 /*--- Geo dash makepretty end --*/
 /*--- Geo dash view maps start --*/
@@ -680,14 +679,12 @@
 
 #gd-sharemap{
     /*background:url('../images/shear-footer.png') no-repeat;*/
-    padding-top:30px;
+    padding:50px 0;
     min-height:500px;
     margin:0 auto;
     background:#21d0e8;
 }
-#gd-sharemap .gd-sharemap-main{
-    margin-left: 100px;
-}
+
 #gd-sharemap-content .title{
     color:#fff;
     text-transform: uppercase;
@@ -699,7 +696,7 @@
 #gd-sharemap-content .description{
     color:#fff;
     text-align:justify;
-    font-size:13px;
+    font-size:17px;
     margin-top:10px;
 }
 #gd-sharemap-bottom{
@@ -718,8 +715,7 @@
 }
 #gd-partners{
     background:#D8D8D8;
-    padding-top:20px;
-    padding-bottom:30px;
+    padding:50px 0;
     margin:0 auto;
 }
 #gd-partners-content .title{
@@ -741,17 +737,17 @@
 }
 #gd-partners-bottom .title{
     /*color:#898887;*/
-    color:#898887;
+    color:#4d4d4d;
     text-transform: uppercase;
     font-size:30px;
     /*margin-top:210px;
     margin-top: -120px;*/
-    padding-bottom:10px;
-    text-align:right;
+    padding-bottom:30px;
+    text-align:center;
     font-family:Titillium Web;
 }
 .sponsor-image{
-    text-align:right;
+    text-align:center;
 }
 .sponsor-image img.wb{
     text-align:right;
@@ -882,7 +878,7 @@
 }
 .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next,
 .carousel-control .glyphicon-chevron-left, .carousel-control .icon-prev{
-    color: #1ac4e3;
+    color: #00489c
 }
 
 /* dashboard style start */
@@ -995,12 +991,14 @@
 /*--- Geo dash what offer --*/
 
 #gd-whatoffer{
-    background:#f7f7f7;
+    background:#f2f8fc;
     min-height:500px;
     border-top:2px solid #fff;
+    font-size: 17px;
+    padding: 50px 0;
 }
 #gd-whatoffer .header-title{
-    color:#6e6b6b;
+    color:#4d4d4d;
     text-transform: uppercase;
     font-size: 30px;
     /*padding-bottom:10px;*/
@@ -1045,9 +1043,7 @@
 }
 #gd-whatoffer #help-content-offer.gd-content-body-offer {
     /*box-shadow: 0 0 5px 0 rgba(224, 217, 224, 1);*/
-    margin-top: 20px;
-    padding: 10px;
-    margin-left:170px;
+
 }
 
  @media (max-width: 767px) {
@@ -1061,7 +1057,8 @@
 
 #gd-whatoffer .termsuseandcondition .gd-offer-txt{
     padding-right:10px;
-    color:#2ecc71; /*#3896e2*/
+    color:#0071bc; /*#3896e2*/
+    font-size: 20px;
 }
 /*--- Geo dash what offer end --*/
 
@@ -1069,14 +1066,14 @@
 
 #gd-3dsection{
     background:#21d0e8;
-    padding-top:30px;
-    min-height:450px;
+    padding:50px 0;
+    min-height:792px;
+    max-height:792px;
 }
 .gd-3dsection-main{
     border:none;
     /*margin-top:0px;
     margin-left:0px;*/
-    margin-left:100px;
 }
 @media (max-width: 767px) {
   .gd-3dsection-main{
@@ -1087,30 +1084,32 @@
  }
 #gd-3dsection-right{
     text-align:left;
-    margin-right: 0px;
+    margin: 0 auto;
+    width: 90%;
+    height: 300px;
 }
 #gd-3dsection-right .title{
     color:#fff;
     text-transform: uppercase;
-    text-align:right;
     font-size:30px;
     margin:auto;
     padding-top: 35px;
     font-family:Titillium Web;
 }
 #gd-3dsection-right .description{
-    color:#fff;
-    text-align:right;
-    font-size:13px;
-    padding-top:55px;
+    color:#d5f4ff;
+    text-align:center;
+    font-size:17px;
+    margin-bottom: 30px;
 }
 #gd-3dsection-left{
     min-width:452px;
     margin:auto;
 }
 #gd-3dsection-left img{
-    max-width:452px;
+    max-width:80%;
     border:none;
+    border: 3px solid #007aa3;
 }
 @media (max-width: 767px) {
   #gd-3dsection-left img{
@@ -1211,7 +1210,25 @@ toolbar_right .border-dotted {
         display: block;
     }
 
-.what-offer-text-color{
-    color:#6e6b6b;
+.caret
+{
+    color: #c1ddff;
 }
-
+#search .input-group
+{
+    background-color: #0f345f;
+    border: 1px solid #185aa8;
+}
+#lang-selection {
+    color: #fff;
+}
+.vAlign {
+    align-items: center;
+    display: flex;
+}
+#gd-makepretty-right .title a{
+    color: #fff;
+}
+#gd-featurehighlight-left .title a{
+    color: #fff;
+}

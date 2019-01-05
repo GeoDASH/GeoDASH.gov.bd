@@ -21,7 +21,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-from account.views import InviteUserView
+# from account.views import InviteUserView
 
 from geonode.people.views import CreateUser, activateuser, UserSignup, InviteUser
 

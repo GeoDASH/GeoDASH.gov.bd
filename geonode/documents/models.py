@@ -271,7 +271,7 @@ class DocumentSubmissionActivity(models.Model):
         unique_together = (('document', 'group', 'iteration'),)
 
     def __str__(self):
-        return self.document.name
+        return self.document.title
 
 
 class DocumentAuditActivity(models.Model):

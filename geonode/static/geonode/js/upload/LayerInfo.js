@@ -158,12 +158,23 @@ define(function (require, exports) {
             form_data = new FormData();
         }
         // this should be generate from the permission widget
-        if (typeof permissionsString == 'undefined'){
-            perm = {}
-        }
-        else {
-            perm = permissionsString('#permission_form','layers');
-        }
+        var permissions = {
+            'users': {},
+            'groups': {}
+          };
+          permissions.users['AnonymousUser'] = [];
+          var permissionAttributes=
+          ['view_resourcebase', 'download_resourcebase'];
+          $('#organization-checkbox input:checked').each(function() {
+            permissions.groups[$(this).attr('value')]= permissionAttributes;
+          });
+          perm=permissions;
+        // if (typeof permissionsString == 'undefined'){
+        //     perm = {}
+        // }
+        // else {
+        //     perm = permissionsString('#permission_form','layers');
+        // }
 
         if (geogig_enabled) {
             geogig = $('#' + base_name + '\\:geogig_toggle').is(':checked');

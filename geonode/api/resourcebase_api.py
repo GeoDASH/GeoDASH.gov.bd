@@ -40,7 +40,7 @@ from actstream.models import Action
 from guardian.shortcuts import get_objects_for_user
 from tastypie.utils.mime import build_content_type
 
-from geonode.layers.models import Layer
+from geonode.layers.models import Layer, Attribute
 from geonode.maps.models import Map
 from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
@@ -50,6 +50,8 @@ from geonode.groups.models import GroupProfile
 from geonode.social.templatetags.social_tags import get_data
 
 from .authorization import GeoNodeAuthorization
+
+import unicodedata
 
 from .api import TagResource, RegionResource, ProfileResource, \
     TopicCategoryResource, \
@@ -584,6 +586,8 @@ class CommonFavorite(ModelResource):
         bundle.data['owner__username'] = bundle.obj.owner.username
         bundle.data['category'] = bundle.obj.category
         bundle.data['group'] = bundle.obj.group
+        bundle.data['organization_logo'] = bundle.obj.group.logo
+        bundle.data['organization_slug'] = bundle.obj.group.slug
         if bundle.request.user in bundle.obj.group.get_managers():
             bundle.data['can_make_featured'] = True
         else:
@@ -1022,3 +1026,45 @@ class WorkSpaceMapApi(ModelResource):
         bundle.data['owner'] = bundle.obj.owner.username
         bundle.data['last_auditor'] = bundle.obj.last_auditor
         return bundle
+
+# class MyEncoder(JSONEncoder):
+#         def default(self, o):
+#             return o.__dict__
+
+class AttributeApi(ModelResource):
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'layer-attributes'
+        allowed_method = 'get'
+        fields = ['attribute', 'attribute_type', 'id']       
+
+
+class LayerAttributeApi(ModelResource):
+    
+    attributes = fields.ToManyField('geonode.api.resourcebase_api.AttributeApi', 'attributes', full=True, null=True)
+    
+    def dehydrate(self, bundle):
+        bundle.data['limited_access'] = True
+        bundle.data['owner'] = bundle.obj.owner.username
+        bundle.data['is_wg_admin'] = False
+        bundle.data['layer_type'] = bundle.obj.display_type
+
+        if bundle.obj.group is not None:
+            bundle.data['department'] = bundle.obj.group.department.title if bundle.obj.group.department else None
+            bundle.data['sector'] = bundle.obj.group.department.sector.title if bundle.obj.group.department else None
+            bundle.data['organization'] = bundle.obj.group.title
+        else:
+            bundle.data['department'] = None
+            bundle.data['sector'] = None
+            bundle.data['organization'] = None
+
+        return  bundle
+
+    class Meta:
+        queryset = Layer.objects.all()
+        resource_name = 'layer-attributes-permission'
+        allowed_method = 'get'
+        fields = ['title', 'section', 'date_created', 'thumbnail_url']    
+
+    def dehydrate_date_created(self, bundle):
+        return bundle.obj.date_created.strftime('%b %d %Y  %H:%M:%S ')

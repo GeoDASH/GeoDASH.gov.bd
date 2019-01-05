@@ -10,7 +10,7 @@ dist
 # supporting stuff pulled in by paver script
 geonode/development.db
 /geoserver/
-migrations/
+# migrations/
 python
 uploaded.zip
 uploaded_bk
@@ -92,3 +92,6 @@ uploaded
 development.db
 master
 slave
+
+#editor
+.vscode/
