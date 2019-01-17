@@ -231,8 +231,9 @@
                                             </li>
                                             {% if not user.is_authenticated %}
                                                 <li id="nav_maps">
-                                                    <a onclick="documentpopup('SigninModal');"
-                                                       style="cursor:pointer;">{% trans "Upload Documents" %}</a>
+                                                    <a href="#" data-toggle="modal" data-target="#SigninModal" role="button">
+                                                        {% trans "Upload Documents" %}<br>
+                                                    </a>
                                                 </li>
                                             {% endif %}
                                             {% if user.is_authenticated %}
