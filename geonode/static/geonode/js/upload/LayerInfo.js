@@ -506,6 +506,7 @@ define(function (require, exports) {
                 type: this.type.name,
                 format: this.type.format,
                 geogig: geogig_enabled,
+                mosaic: mosaic_enabled,
                 time: time_enabled
             });
         file_queue.append(li);
