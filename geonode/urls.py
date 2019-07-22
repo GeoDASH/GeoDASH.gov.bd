@@ -238,7 +238,7 @@ urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.LOCAL_MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler403 = 'geonode.views.err403'
 
-# Featured Maps Pattens
+# Featured Maps Pattenslayers/attribute-view/
 urlpatterns += patterns('',
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/$', 'geonode.maps.views.featured_map'),
                         (r'^featured/(?P<site>[A-Za-z0-9_\-]+)/info$', 'geonode.maps.views.featured_map_info'),

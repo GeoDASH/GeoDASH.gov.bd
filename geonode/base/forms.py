@@ -18,12 +18,14 @@
 #
 #########################################################################
 
+import os
 import autocomplete_light
 from autocomplete_light.contrib.taggit_field import TaggitField, TaggitWidget
 
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+from django.conf import settings
 
 from mptt.forms import TreeNodeMultipleChoiceField
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -199,9 +201,9 @@ class ResourceBaseForm(TranslationModelForm):
 #@jahangir091
 def comment_subjects(comment_type):
     if comment_type == 'approve':
-        subjects_file = open("geonode/approve_comment_subjects.txt", "r")
+        subjects_file = open(os.path.join(settings.PROJECT_ROOT, 'approve_comment_subjects.txt'), "r")
     elif comment_type == 'deny':
-        subjects_file = open("geonode/deny_comment_subjects.txt", "r")
+        subjects_file = open(os.path.join(settings.PROJECT_ROOT, 'deny_comment_subjects.txt'), "r")
 
     approve_comment_subjects = [line.rstrip('\n') for line in subjects_file]
     iter_list = []
