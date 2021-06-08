@@ -1,4 +1,4 @@
-pillow==3.2.0    # python-pillow
+pillow==8.2.0    # python-pillow
 lxml==3.6.1    # python-lxml
 
 #  psycopg2==2.4.5    # python-psycopg2
